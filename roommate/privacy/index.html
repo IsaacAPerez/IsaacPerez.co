@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Privacy Policy for the Roommate iOS app.">
+  <meta name="author" content="Isaac Perez">
+  <meta name="robots" content="index, follow">
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/favicon.svg">
+
+  <title>Privacy Policy — Roommate</title>
+
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme) {
+        document.documentElement.setAttribute('data-theme', savedTheme);
+      }
+    })();
+  </script>
+
+  <link rel="stylesheet" href="/css/design-system.css">
+
+  <style>
+    body {
+      background: var(--color-surface);
+      color: var(--color-text-primary);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+    }
+
+    .legal-container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: var(--space-12) var(--space-6) var(--space-16);
+    }
+
+    .legal-header {
+      margin-bottom: var(--space-12);
+      padding-bottom: var(--space-8);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .legal-eyebrow {
+      font-size: var(--text-sm);
+      font-weight: var(--font-semibold);
+      color: var(--color-accent);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: var(--space-2);
+    }
+
+    .legal-title {
+      font-size: var(--text-3xl);
+      font-weight: var(--font-bold);
+      color: var(--color-text-primary);
+      margin: 0 0 var(--space-3);
+      letter-spacing: -0.02em;
+    }
+
+    .legal-meta {
+      font-size: var(--text-sm);
+      color: var(--color-text-tertiary);
+    }
+
+    .legal-content h2 {
+      font-size: var(--text-xl);
+      font-weight: var(--font-semibold);
+      color: var(--color-text-primary);
+      margin: var(--space-10) 0 var(--space-3);
+      letter-spacing: -0.01em;
+    }
+
+    .legal-content h2:first-child { margin-top: 0; }
+
+    .legal-content p,
+    .legal-content li {
+      font-size: var(--text-base);
+      color: var(--color-text-secondary);
+    }
+
+    .legal-content p {
+      margin: 0 0 var(--space-4);
+    }
+
+    .legal-content ul {
+      margin: 0 0 var(--space-4);
+      padding-left: var(--space-6);
+    }
+
+    .legal-content li {
+      margin-bottom: var(--space-2);
+    }
+
+    .legal-content a {
+      color: var(--color-accent);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.15s ease;
+    }
+
+    .legal-content a:hover {
+      border-bottom-color: var(--color-accent);
+    }
+
+    .legal-content strong {
+      color: var(--color-text-primary);
+      font-weight: var(--font-semibold);
+    }
+
+    .legal-footer {
+      margin-top: var(--space-12);
+      padding-top: var(--space-8);
+      border-top: 1px solid var(--color-border);
+      font-size: var(--text-sm);
+      color: var(--color-text-tertiary);
+    }
+
+    .legal-footer a {
+      color: var(--color-text-secondary);
+      text-decoration: none;
+    }
+
+    .legal-footer a:hover { color: var(--color-accent); }
+  </style>
+</head>
+<body>
+  <main class="legal-container">
+    <header class="legal-header">
+      <div class="legal-eyebrow">Roommate iOS App</div>
+      <h1 class="legal-title">Privacy Policy</h1>
+      <p class="legal-meta">Last updated: May 4, 2026</p>
+    </header>
+
+    <article class="legal-content">
+      <p>
+        This privacy policy describes how the <strong>Roommate</strong> iOS app
+        ("the App") collects, uses, and shares your information.
+      </p>
+
+      <h2>Information we collect</h2>
+
+      <p>When you sign in to the App with your Apple ID, we receive:</p>
+      <ul>
+        <li>A unique user identifier from Sign in with Apple (we never receive your raw Apple ID or password).</li>
+        <li>Your email address (only if you choose to share it during sign-in).</li>
+        <li>The display name you type when creating or joining a household.</li>
+      </ul>
+
+      <p>When you use the App, we collect:</p>
+      <ul>
+        <li>Photos you upload as cleaning task proof or as chat attachments.</li>
+        <li>The profile picture you optionally upload.</li>
+        <li>Messages you send to other members of your household.</li>
+        <li>Push-notification device tokens, so we can deliver alerts to your phone.</li>
+        <li>Bills, rotation schedules, and household membership data you create.</li>
+      </ul>
+
+      <p>We do <strong>not</strong> collect:</p>
+      <ul>
+        <li>Location data.</li>
+        <li>Contacts, calendars, microphone, or other system data outside what you explicitly grant in iOS Settings.</li>
+        <li>Behavioral analytics (we run no third-party analytics SDKs).</li>
+      </ul>
+
+      <h2>How we use your information</h2>
+      <ul>
+        <li>To operate the App: route messages, render rotations, send push reminders.</li>
+        <li>To authenticate you and authorize you to access your household's data.</li>
+        <li>To deliver photos to your roommates and back to you when needed.</li>
+      </ul>
+      <p>
+        We do <strong>not</strong> sell, rent, or share your information with third parties for marketing purposes.
+      </p>
+
+      <h2>Data storage and security</h2>
+      <p>
+        Your data is stored on Supabase infrastructure (Postgres database, encrypted storage buckets) hosted in the AWS us-west-1 region. Row-level security policies enforce that only members of your household can read or write your household's data.
+      </p>
+
+      <h2>Your choices</h2>
+      <ul>
+        <li>
+          <strong>Account deletion.</strong> You can permanently delete your account from inside the App: tap your avatar → Delete account. This removes your authentication record, your member entry in any household, your push tokens, and any messages, cleaning completions, bill shares, or rotation completions you created. Photos you uploaded remain only as orphan storage objects; we run a periodic cleanup but cannot guarantee instant erasure of every blob.
+        </li>
+        <li>
+          <strong>Notifications.</strong> Toggle off in iOS Settings → Notifications → Roommate at any time.
+        </li>
+        <li>
+          <strong>Photo permissions.</strong> Toggle off in iOS Settings → Privacy &amp; Security → Photos → Roommate.
+        </li>
+      </ul>
+
+      <h2>Children</h2>
+      <p>
+        The App is not directed to children under 13 and we do not knowingly collect information from them.
+      </p>
+
+      <h2>Changes to this policy</h2>
+      <p>
+        We may update this policy from time to time. Material changes will be communicated in an in-app notice.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        Questions: <a href="mailto:iperez2435@gmail.com">iperez2435@gmail.com</a>
+      </p>
+    </article>
+
+    <footer class="legal-footer">
+      <a href="/">← Back to isaacperez.co</a>
+    </footer>
+  </main>
+</body>
+</html>
