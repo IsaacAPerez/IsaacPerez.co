@@ -36,8 +36,62 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="css/rpg.css">
+  <link rel="stylesheet" href="css/game.css">
 </head>
 <body>
+  <!-- ==================== PLAYABLE GAME OVERLAY ==================== -->
+  <div id="gameRoot" aria-label="Interactive portfolio game">
+    <canvas id="gameCanvas" tabindex="0"></canvas>
+
+    <div class="game-progress" id="gameProgress" hidden>
+      <div class="game-progress-fill" id="gameProgressFill"></div>
+      <span class="game-progress-star" id="gameProgressStar" hidden>★</span>
+    </div>
+
+    <div class="game-hud" hidden id="gameHud">
+      <span class="game-zone-label" id="gameZoneLabel">The Foyer</span>
+      <div class="game-hud-right">
+        <button class="game-hud-btn" id="gameMuteBtn" title="Toggle sound">🔊</button>
+        <button class="game-hud-btn" id="gameAchBtn" title="Achievements">🏆 <span id="gameAchCount">0/8</span></button>
+        <button class="game-hud-btn" id="gameExitBtn">✕ <span class="game-hud-label">Exit to Site</span></button>
+      </div>
+    </div>
+
+    <div class="game-start" id="gameStart">
+      <div class="game-start-emblem">IP</div>
+      <h1 class="game-start-title" id="gameStartTitle">Isaac Perez</h1>
+      <p class="game-start-sub" id="gameStartSub">
+        An interactive portfolio. Walk around, talk to things, and discover
+        what I've built — or skip straight to the classic site.
+      </p>
+      <button class="game-start-btn" id="gameStartBtn">▶ Press Start</button>
+      <button class="game-start-skip" id="gameSkipBtn">Just browsing — take me to the classic site</button>
+      <div class="game-start-controls" id="gameStartControls">
+        <span><b>WASD</b>move</span>
+        <span><b>E</b>interact</span>
+        <span><b>ESC</b>menu</span>
+      </div>
+    </div>
+
+    <div class="game-dialog" id="gameDialog" role="dialog" aria-modal="false" aria-labelledby="gameDialogTitle">
+      <div class="game-dialog-head">
+        <span class="game-dialog-emoji" id="gameDialogEmoji">📜</span>
+        <div>
+          <div class="game-dialog-kicker" id="gameDialogKicker">Signpost</div>
+          <div class="game-dialog-title" id="gameDialogTitle">Hello</div>
+        </div>
+        <button class="game-dialog-close" id="gameDialogClose"><b>E</b>close</button>
+      </div>
+      <div class="game-dialog-body" id="gameDialogBody"></div>
+      <div class="game-dialog-actions" id="gameDialogActions"></div>
+    </div>
+
+    <div class="touch-controls">
+      <div class="joystick" id="gameJoystick"><div class="joystick-stick" id="gameJoystickStick"></div></div>
+      <button class="action-btn" id="gameActionBtn">E</button>
+    </div>
+  </div>
+
   <!-- ==================== HUD NAV ==================== -->
   <nav class="hud">
     <div class="hud-inner">
@@ -110,7 +164,10 @@
               <span class="vital"><span class="dot" style="background: var(--uncommon); box-shadow: 0 0 8px var(--uncommon);"></span><b>2</b>&nbsp;Guilds Joined</span>
             </div>
             <div class="hero-actions">
-              <a href="#quests" class="btn btn-gold">
+              <button class="btn btn-gold" id="playGameBtn">
+                🎮 Play the Game
+              </button>
+              <a href="#quests" class="btn btn-ghost">
                 View Quest Log
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
               </a>
@@ -718,5 +775,6 @@
       });
     });
   </script>
+  <script src="js/game.js" defer></script>
 </body>
 </html>
