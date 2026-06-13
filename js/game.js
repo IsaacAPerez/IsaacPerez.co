@@ -1145,9 +1145,10 @@
   const muteBtn = document.getElementById('gameMuteBtn');
 
   // Touch devices get touch-appropriate control hints on the start screen.
+  // The joystick isn't visible until play starts, so name its corner explicitly.
   if (isTouch) {
     const ctrls = document.getElementById('gameStartControls');
-    if (ctrls) ctrls.innerHTML = '<span><b>Drag</b>move</span><span><b>Tap ●</b>interact</span><span><b>✕</b>exit</span>';
+    if (ctrls) ctrls.innerHTML = '<span><b>Drag&nbsp;(left)</b>move</span><span><b>Tap&nbsp;●</b>interact</span><span><b>✕</b>exit</span>';
   }
 
   function openOverlay() {

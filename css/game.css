@@ -146,7 +146,9 @@
 
 .game-start-controls {
   display: flex;
-  gap: 22px;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px 22px;
   margin-top: 10px;
   font-family: var(--font-mono);
   font-size: 11px;
