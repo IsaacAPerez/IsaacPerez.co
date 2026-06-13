@@ -1638,7 +1638,8 @@
   rebuildArt();
   refreshProgress();
 
-  let skipped = false;
-  try { skipped = sessionStorage.getItem('ip-game-skip') === '1'; } catch (e) {}
-  if (!location.hash && !skipped) openOverlay();
+  // The site is the landing experience now; the office opens via the
+  // "Explore my office" link (#playGameBtn) or an #office deep link.
+  if (location.hash === '#office') openOverlay();
+  window.addEventListener('hashchange', () => { if (location.hash === '#office' && !gameActive) openOverlay(); });
 })();
