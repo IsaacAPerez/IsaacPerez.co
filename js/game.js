@@ -40,10 +40,10 @@
     { x1: 9, y1: 12, x2: 10, y2: 17, floor: T.STONE },    // campaign -> study
   ];
   const PLAQUES = [
-    { x: 28, y: 15.6, text: 'SKILLS SANCTUM' },
-    { x: 18.5, y: 20.6, text: 'CAMPAIGN HALL' },
-    { x: 37.5, y: 20.6, text: 'QUEST ARCADE' },
-    { x: 28, y: 28.6, text: 'THE ROOKERY' },
+    { x: 28, y: 15.6, text: 'SKILLS SANCTUM', arrow: '▲', foyer: true },
+    { x: 18.5, y: 20.6, text: 'CAMPAIGN HALL', arrow: '◀', foyer: true },
+    { x: 37.5, y: 20.6, text: 'QUEST ARCADE', arrow: '▶', foyer: true },
+    { x: 28, y: 28.6, text: 'THE ROOKERY', arrow: '▼', foyer: true },
     { x: 10, y: 13.6, text: "HERO'S STUDY" },
   ];
   // Torches flank each corridor mouth (tile coords, drawn on walls)
@@ -81,8 +81,8 @@
       bg: v('--bg', '#0b0e14'),
       // dungeon tones
       floor: light ? '#e3d7bc' : '#1a2032',
-      floorB: light ? '#dccfb0' : '#171c2c',
-      floorC: light ? '#eadfc8' : '#1d2438',
+      floorB: light ? '#d0c096' : '#171c2c',
+      floorC: light ? '#efe6cf' : '#1d2438',
       blue: light ? '#d3d8cf' : '#18243a',
       blueB: light ? '#c9d0c8' : '#152033',
       marbleA: light ? '#efe6d2' : '#222a40',
@@ -247,7 +247,9 @@
     let drawn = false;
     for (let i = 3; i < data.length; i += 16) if (data[i] > 8) { drawn = true; break; }
     if (!drawn) { g.fillStyle = PAL.gold; g.fillRect(px * 0.25, px * 0.25, px * 0.5, px * 0.5); }
-    emojiCache[key] = c;
+    // Only cache a real glyph — on a cold load the emoji font may not be ready
+    // yet, so a later frame re-rasterizes instead of caching gold squares forever.
+    if (drawn) emojiCache[key] = c;
     return c;
   }
 
@@ -303,25 +305,25 @@
   // kind: drawing recipe. core: counts toward completion. group: achievement group.
   const ENTITIES = [
     { id: 'sign_welcome', x: 28, y: 19, w: 1, h: 1, kind: 'sign', emoji: '', core: true, kicker: 'Signpost', title: 'Welcome, Traveler', body: "You've found the Dungeon of Isaac — Isaac Perez: iOS engineer, founder, Angeleno. Five wings, zero monsters, one suspiciously hireable hero. Walk up to anything glowing and press E. That's the whole tutorial." },
-    { id: 'npc_sage', x: 24, y: 19, w: 1, h: 1, kind: 'sage', emoji: '', core: true, solid: false, kicker: 'NPC', title: 'The Old Sage', body: "I've swept these halls since the Objective-C era. Two tips, traveler: the Arcade's south wall has one brick too many... and the old codes — up, up, down, down — still work in this dungeon." },
+    { id: 'npc_sage', x: 24, y: 19, w: 1, h: 1, kind: 'sage', emoji: '', core: true, solid: false, kicker: 'NPC', title: 'The Old Sage', body: "I've swept these halls since the Objective-C era. Two tips, traveler: the Arcade's south wall has one brick too many... and if your thumbs still remember the old arcade dance — the one every 90s kid knows by heart — this dungeon answers to it." },
     { id: 'dungeon_cat', x: 24, y: 25, w: 1, h: 1, kind: 'emoji', emoji: '🐈‍⬛', core: false, solid: false, kicker: 'Cat', title: 'Dungeon Cat', body: 'Mrow. (The cat has audited all five wings and finds the code acceptable. This is the highest rating the cat gives.)' },
     { id: 'stairs_exit', x: 33, y: 25, w: 1, h: 1, kind: 'stairs', emoji: '', core: false, solid: false, kicker: 'Exit', title: 'Stairs to the Overworld', body: 'Beyond lies the classic site — same lore, fewer pixels. Your achievements climb with you.' },
     // Quest Arcade
-    { id: 'cab_curbside', x: 42, y: 16, w: 1, h: 2, kind: 'cabinet', emoji: '🚚', accent: '#e8590c', core: true, group: 'project', kicker: 'Main Quest · In Progress', title: 'CurbSide', body: 'A street-food discovery iOS app for finding the taco truck before the line forms. Swift-built, currently cooking, launching soon — get in before the secret menu sells out.', link: 'https://thecurbside.app', linkLabel: 'Visit thecurbside.app' },
-    { id: 'cab_runsbyip', x: 45, y: 16, w: 1, h: 2, kind: 'cabinet', emoji: '🏀', accent: '#b86cff', core: true, group: 'project', kicker: 'Weekly Raid', title: 'Runs by IP', body: "Weekly pickup basketball in LA with RSVPs and payments built in. No flaky group chats, no 'who's got cash' — just hoops that actually happen. Isaac founded it, built it, and occasionally gets crossed over at it.", link: 'https://runsbyip.com', linkLabel: 'Join at runsbyip.com' },
-    { id: 'cab_kangs', x: 48, y: 16, w: 1, h: 2, kind: 'cabinet', emoji: '🍜', accent: '#4aa8ff', core: true, group: 'project', kicker: 'Side Quest', title: "Kang's Kuisine", body: 'Online ordering for a Korean pop-up kitchen: menu drops, pre-orders, instant sellouts. Isaac built the storefront; the tteokbokki handles the marketing.', link: 'https://kangskuisine.food', linkLabel: 'Order at kangskuisine.food' },
-    { id: 'cab_teamup', x: 51, y: 16, w: 1, h: 2, kind: 'cabinet', emoji: '⚽', accent: '#4ade80', core: true, group: 'project', kicker: 'Live on the App Store', title: 'TeamUp', body: 'Find a pickup game for any sport and join in two taps. Shipped and live on the App Store right now — this is the one you can download mid-dungeon.', link: 'https://theteamup.app', linkLabel: 'Visit theteamup.app' },
+    { id: 'cab_curbside', x: 42, y: 16, w: 1, h: 2, kind: 'cabinet', emoji: '🚚', accent: '#e8590c', core: true, group: 'project', kicker: 'Main Quest · In Progress', title: 'CurbSide', body: 'A street-food discovery iOS app for finding the taco truck before the line forms. Currently cooking, launching soon. Built in SwiftUI on a Supabase backend.', link: 'https://thecurbside.app', linkLabel: 'Visit thecurbside.app' },
+    { id: 'cab_runsbyip', x: 45, y: 16, w: 1, h: 2, kind: 'cabinet', emoji: '🏀', accent: '#b86cff', core: true, group: 'project', kicker: 'Weekly Raid', title: 'Runs by IP', body: "Weekly pickup basketball in LA with RSVPs and payments built in — no flaky group chats, no 'who's got cash.' Founded, built, and occasionally crossed-over-at by Isaac. SwiftUI, Supabase, Stripe, with waitlists and a team randomizer under the hood.", link: 'https://runsbyip.com', linkLabel: 'Join at runsbyip.com' },
+    { id: 'cab_kangs', x: 48, y: 16, w: 1, h: 2, kind: 'cabinet', emoji: '🍜', accent: '#4aa8ff', core: true, group: 'project', kicker: 'Side Quest', title: "Kang's Kuisine", body: 'Online ordering for a Korean pop-up kitchen: menu drops, pre-orders, instant sellouts. Next.js + Supabase + Stripe, with real-time inventory and an admin dashboard. (The tteokbokki handles marketing.)', link: 'https://kangskuisine.food', linkLabel: 'Order at kangskuisine.food' },
+    { id: 'cab_teamup', x: 51, y: 16, w: 1, h: 2, kind: 'cabinet', emoji: '⚽', accent: '#4ade80', core: true, group: 'project', kicker: 'Live on the App Store', title: 'TeamUp', body: 'Find a pickup game for any sport and join in two taps. Shipped in SwiftUI on Firebase and live on the App Store right now — the one you can download mid-dungeon.', link: 'https://theteamup.app', linkLabel: 'Visit theteamup.app' },
     { id: 'pad_captured', x: 45, y: 24, w: 2, h: 2, kind: 'drone', emoji: '🚁', core: true, group: 'project', solid: false, kicker: 'The Aerial Mount', title: 'CapturedByIP', body: "Isaac's photography and drone brand: portraits, aerials, and golden-hour LA from angles the freeway will never know. The drone likes you — it'll tag along for the rest of the run.", link: 'https://capturedbyip.com', linkLabel: 'View capturedbyip.com' },
     { id: 'wall_cracked', x: 52, y: 29, w: 1, h: 1, kind: 'hidden', emoji: '', core: false, kicker: 'Hm?', title: 'A Suspicious Wall', body: "These bricks don't match. You push — and the wall slides aside with a satisfied click." },
     { id: 'shrine_taco', x: 52, y: 32, w: 1, h: 1, kind: 'taco', emoji: '🌮', core: false, kicker: 'Secret', title: 'The Golden Taco', body: "The hero's one documented weakness, enshrined in gold. You found the secret room — Curiosity stat maxed. (The Sage owes you a sweep of this floor.)" },
     // Campaign Hall
-    { id: 'statue_tinder', x: 7, y: 20, w: 1, h: 2, kind: 'statue', emoji: '🔥', accent: '#fd5564', core: true, group: 'statue', kicker: 'Chapter II — Current', title: 'Guild of the Flame — Tinder', body: 'iOS Engineer, 2026–present. Currently building iOS at Tinder, where a dropped frame is a matter of the heart. New chapter, same Swift.' },
-    { id: 'statue_nextdoor', x: 13, y: 20, w: 1, h: 2, kind: 'statue', emoji: '🏘️', accent: '#8ed500', core: true, group: 'statue', kicker: 'Chapter I — 2021–2025', title: 'Guild of the Neighborhood — Nextdoor', body: "iOS Engineer, 2021–2025: four and a half years shipping community features to millions of neighbors. Every quest in the Arcade traces back to this building's obsession with local." },
+    { id: 'statue_tinder', x: 7, y: 20, w: 1, h: 2, kind: 'statue', emoji: '🔥', accent: '#fd5564', core: true, group: 'statue', kicker: 'Chapter II — Current', title: 'Guild of the Flame — Tinder', body: 'iOS Engineer, 2026–present. Building features for one of the world’s most-used dating apps — millions of users, where a dropped frame is a matter of the heart. Focus: launch performance and Xcode tooling.' },
+    { id: 'statue_nextdoor', x: 13, y: 20, w: 1, h: 2, kind: 'statue', emoji: '🏘️', accent: '#8ed500', core: true, group: 'statue', kicker: 'Chapter I — 2021–2025', title: 'Guild of the Neighborhood — Nextdoor', body: 'iOS Engineer, 2021–2025. Four and a half years scaling the iOS app for millions of neighbors — core features in Swift, SwiftUI, TCA & Combine, and the experiments that decided what stayed. Every quest in the Arcade traces back here.' },
     // Skills Sanctum
-    { id: 'crystal_ios', x: 24, y: 7, w: 1, h: 1, kind: 'crystal', accent: '#4aa8ff', stat: 96, core: true, group: 'crystal', kicker: 'Skill Crystal', title: 'iOS Development — 96', body: 'Forged in Swift, tempered in production. The main weapon, fully upgraded.' },
-    { id: 'crystal_mobile', x: 28, y: 7, w: 1, h: 1, kind: 'crystal', accent: '#2dd4bf', stat: 92, core: true, group: 'crystal', kicker: 'Skill Crystal', title: 'Mobile Apps — 92', body: "Prototype to App Store, over and over. Here, shipping isn't a milestone — it's a habit." },
+    { id: 'crystal_ios', x: 24, y: 7, w: 1, h: 1, kind: 'crystal', accent: '#4aa8ff', stat: 96, core: true, group: 'crystal', kicker: 'Skill Crystal', title: 'iOS Development — 96', body: 'Forged in Swift, tempered across 5+ years of production iOS. The main weapon, fully upgraded.' },
+    { id: 'crystal_mobile', x: 28, y: 7, w: 1, h: 1, kind: 'crystal', accent: '#2dd4bf', stat: 92, core: true, group: 'crystal', kicker: 'Skill Crystal', title: 'Mobile Apps — 92', body: "Five apps from prototype to App Store and counting. Here, shipping isn't a milestone — it's a habit." },
     { id: 'crystal_ai', x: 31, y: 7, w: 1, h: 1, kind: 'crystal', accent: '#4ade80', stat: 90, core: true, group: 'crystal', kicker: 'Skill Crystal', title: 'AI Tools — 90', body: 'Fights alongside the machines, not against them. A big part of why this dungeon shipped in one sitting.' },
-    { id: 'crystal_startups', x: 24, y: 10, w: 1, h: 1, kind: 'crystal', accent: '#f5b942', stat: 88, core: true, group: 'crystal', kicker: 'Skill Crystal', title: 'Startups — 88', body: 'Founder-class stat: see the gap, build the thing, ship the thing. Repeat.' },
+    { id: 'crystal_startups', x: 24, y: 10, w: 1, h: 1, kind: 'crystal', accent: '#f5b942', stat: 88, core: true, group: 'crystal', kicker: 'Skill Crystal', title: 'Startups — 88', body: 'Founder-class stat: four products shipped solo. See the gap, build the thing, ship the thing, learn in public. Repeat.' },
     { id: 'crystal_photo', x: 28, y: 10, w: 1, h: 1, kind: 'crystal', accent: '#b86cff', stat: 85, core: true, group: 'crystal', kicker: 'Skill Crystal', title: 'Photography — 85', body: 'An off-hours specialization that went pro. Exhibit A hangs in the Rookery; Exhibit B flies.' },
     { id: 'crystal_drones', x: 31, y: 10, w: 1, h: 1, kind: 'crystal', accent: '#5da9e9', stat: 83, core: true, group: 'crystal', kicker: 'Skill Crystal', title: 'Drones — 83', body: 'Licensed aerial mount, steady hands, cinematic instincts. The sky is just another viewfinder.' },
     // Hero's Study
@@ -346,6 +348,7 @@
   let particles = [];
   let tacoRain = [];
   let gameActive = false, playing = false, raf = 0, acc = 0, last = 0, time = 0;
+  let hintUsed = false;
   let camX = 0, camY = 0, SCALE = 3, viewW = 0, viewH = 0, dpr = 1;
   let currentRoom = null, zoneFade = 0;
 
@@ -410,6 +413,8 @@
     else if (name === 'chime') { tone(740, 0, 0.25, 'sine', 0.04); tone(1108, 0.08, 0.3, 'sine', 0.03); }
     else if (name === 'fanfare') { tone(523, 0, 0.16, 'triangle', 0.05); tone(659, 0.14, 0.16, 'triangle', 0.05); tone(784, 0.28, 0.34, 'triangle', 0.06); }
     else if (name === 'meow') { tone(880, 0, 0.09, 'sine', 0.03); tone(660, 0.07, 0.12, 'sine', 0.025); }
+    else if (name === 'step') tone(118 + hash2(player.dist | 0, 3) * 42, 0, 0.045, 'triangle', 0.016);
+    else if (name === 'near') tone(880, 0, 0.05, 'sine', 0.018);
   }
 
   // ---------------- Particles ----------------
@@ -474,9 +479,6 @@
   window.addEventListener('keydown', (ev) => {
     if (!gameActive) return;
     const k = ev.key.toLowerCase();
-    // game-side konami (parallel to the site's — unlock() dedupes)
-    kIdx = (k === KONAMI[kIdx]) ? kIdx + 1 : (k === KONAMI[0] ? 1 : 0);
-    if (kIdx === KONAMI.length) { kIdx = 0; startTacoRain(); }
     if (dialogOpen) {
       // Let Enter/Space activate a focused link/button inside the dialog
       const onAction = document.activeElement && document.activeElement.closest &&
@@ -490,6 +492,10 @@
       return;
     }
     if (!playing) return;
+    // game-side konami (parallel to the site's — unlock() dedupes); gated so it
+    // can't advance while a dialog is open or the game is paused
+    kIdx = (k === KONAMI[kIdx]) ? kIdx + 1 : (k === KONAMI[0] ? 1 : 0);
+    if (kIdx === KONAMI.length) { kIdx = 0; startTacoRain(); }
     if (['arrowup', 'arrowdown', 'arrowleft', 'arrowright', 'w', 'a', 's', 'd', ' ', 'e', 'enter'].includes(k)) ev.preventDefault();
     keys[k] = true;
     if (k === 'e' || k === ' ' || k === 'enter') tryInteract();
@@ -499,14 +505,14 @@
 
   // Touch
   const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-  const joy = { active: false, id: null, dx: 0, dy: 0 };
+  const joy = { active: false, id: null, dx: 0, dy: 0, ox: 0, oy: 0 };
   if (isTouch) root.classList.add('touch');
   const joyEl = document.getElementById('gameJoystick');
   const stickEl = document.getElementById('gameJoystickStick');
+  // Movement is relative to where the thumb first landed, so touching the pad's
+  // edge doesn't start the hero pre-walking.
   function joyFrom(t) {
-    const r = joyEl.getBoundingClientRect();
-    const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
-    let dx = t.clientX - cx, dy = t.clientY - cy;
+    let dx = t.clientX - joy.ox, dy = t.clientY - joy.oy;
     const len = Math.hypot(dx, dy), max = 40;
     if (len > max) { dx = dx / len * max; dy = dy / len * max; }
     stickEl.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
@@ -514,11 +520,15 @@
     joy.dy = Math.abs(dy) / max > 0.12 ? dy / max : 0;
   }
   function joyReset() { joy.active = false; joy.id = null; joy.dx = 0; joy.dy = 0; stickEl.style.transform = 'translate(-50%,-50%)'; }
+  function nearJoystick(t) {
+    const r = joyEl.getBoundingClientRect(), m = 30;
+    return t.clientX >= r.left - m && t.clientX <= r.right + m && t.clientY >= r.top - m && t.clientY <= r.bottom + m;
+  }
   root.addEventListener('touchstart', (ev) => {
     if (!playing) return;
     for (const t of ev.changedTouches) {
-      if (!joy.active && t.clientX < window.innerWidth * 0.45 && t.clientY > window.innerHeight * 0.4) {
-        joy.active = true; joy.id = t.identifier; joyFrom(t); ev.preventDefault();
+      if (!joy.active && nearJoystick(t)) {
+        joy.active = true; joy.id = t.identifier; joy.ox = t.clientX; joy.oy = t.clientY; joyFrom(t); ev.preventDefault();
       } else if (ev.target === canvas) {
         // tap-to-interact: tap an entity near the player
         tapInteract(t.clientX, t.clientY);
@@ -528,9 +538,11 @@
   root.addEventListener('touchmove', (ev) => {
     for (const t of ev.changedTouches) if (joy.active && t.identifier === joy.id) { joyFrom(t); ev.preventDefault(); }
   }, { passive: false });
-  root.addEventListener('touchend', (ev) => {
+  function endTouch(ev) {
     for (const t of ev.changedTouches) if (joy.active && t.identifier === joy.id) joyReset();
-  });
+  }
+  root.addEventListener('touchend', endTouch);
+  root.addEventListener('touchcancel', endTouch);
   const actionBtn = document.getElementById('gameActionBtn');
   actionBtn.addEventListener('touchstart', (ev) => { ev.preventDefault(); ev.stopPropagation(); if (dialogOpen) { typing ? finishType() : closeDialog(); } else tryInteract(); }, { passive: false });
   actionBtn.addEventListener('click', (ev) => { ev.stopPropagation(); if (dialogOpen) { typing ? finishType() : closeDialog(); } else tryInteract(); });
@@ -577,6 +589,7 @@
 
   function interact(e) {
     ensureAudio();
+    hintUsed = true;
     if (e.id === 'wall_cracked') {
       openDialog(e);
       if (!state.vaultOpen) {
@@ -711,7 +724,7 @@
       const moved = Math.hypot(player.x - ox, player.y - oy);
       player.dist += moved;
       player.ft += dt;
-      if (player.ft > 0.14) { player.ft = 0; player.frame = 1 - player.frame; if (player.frame) dust(player.x, player.y + 10); }
+      if (player.ft > 0.14) { player.ft = 0; player.frame = 1 - player.frame; if (player.frame) { dust(player.x, player.y + 10); sfx('step'); } }
       if (cat.follow > 0) cat.follow -= moved;
       drone.idleT = 0;
     } else { player.frame = 0; drone.idleT += dt; }
@@ -782,12 +795,15 @@
 
     updateZone();
 
-    // mobile action button readiness
-    if (isTouch) {
-      const t = interactTarget();
-      actionBtn.classList.toggle('ready', !!t && !dialogOpen);
-    }
+    // interaction target: chirp + glyph pop the moment a new target comes in range
+    const tgt = dialogOpen ? null : interactTarget();
+    const tgtId = tgt ? tgt.id : null;
+    if (tgtId && tgtId !== lastTargetId) { sfx('near'); promptPop = REDUCED ? 0 : 0.18; }
+    lastTargetId = tgtId;
+    if (promptPop > 0) promptPop = Math.max(0, promptPop - dt);
+    if (isTouch) actionBtn.classList.toggle('ready', !!tgt);
   }
+  let lastTargetId = null, promptPop = 0;
 
   // ---------------- Render ----------------
   function drawShadow(x, y, w) {
@@ -799,14 +815,14 @@
   function sx(wx) { return Math.round((wx - camX) * SCALE); }
   function sy(wy) { return Math.round((wy - camY) * SCALE); }
 
-  function drawRig(rig, x, y, dir, frame) {
+  function drawRig(rig, x, y, dir, frame, bob) {
     const side = dir === 'left' || dir === 'right';
     const img = rig[side ? 'side' : dir][frame];
     const w = 16 * SCALE, h = 24 * SCALE;
     drawShadow(x, y + 10, 12);
     ctx.save();
     if (dir === 'left') { ctx.translate(sx(x), 0); ctx.scale(-1, 1); ctx.translate(-sx(x), 0); }
-    ctx.drawImage(img, sx(x) - w / 2, sy(y) - h + 10 * SCALE, w, h);
+    ctx.drawImage(img, sx(x) - w / 2, sy(y) - h + 10 * SCALE + (bob || 0) * SCALE, w, h);
     ctx.restore();
   }
 
@@ -814,9 +830,11 @@
     const px = e.px, py = e.py;
     const X = sx(px), Y = sy(py);
     const S = SCALE;
-    const pulse = REDUCED ? 0.5 : (Math.sin(time * Math.PI) + 1) / 2;
+    // desynced by position so a room of crystals shimmers instead of beating in lockstep
+    const pulse = REDUCED ? 0.5 : (Math.sin(time * Math.PI + (px + py) * 0.05) + 1) / 2;
     switch (e.kind) {
       case 'sign': {
+        drawShadow(px + 8, py + 14, 11);
         ctx.fillStyle = '#6b4a2a'; ctx.fillRect(X + 7 * S, Y + 6 * S, 2 * S, 9 * S);
         ctx.fillStyle = '#8a623c'; ctx.fillRect(X + 2 * S, Y + 1 * S, 12 * S, 7 * S);
         ctx.strokeStyle = PAL.gold; ctx.lineWidth = S; ctx.strokeRect(X + 2 * S, Y + 1 * S, 12 * S, 7 * S);
@@ -841,6 +859,7 @@
       }
       case 'cabinet': {
         const acc = e.accent || PAL.gold;
+        drawShadow(px + 8, py + 30, 14);
         ctx.fillStyle = PAL.light ? '#5a5142' : '#10141f';
         ctx.fillRect(X + 1 * S, Y + 0, 14 * S, 30 * S);
         ctx.fillStyle = acc; ctx.fillRect(X + 1 * S, Y, 14 * S, 4 * S);
@@ -882,6 +901,7 @@
         break;
       }
       case 'statue': {
+        drawShadow(px + 8, py + 30, 13);
         // banner
         ctx.fillStyle = e.accent; ctx.globalAlpha = 0.85;
         ctx.fillRect(X + 3 * S, Y - 8 * S, 10 * S, 7 * S);
@@ -897,6 +917,7 @@
         break;
       }
       case 'crystal': {
+        drawShadow(px + 8, py + 15, 9);
         ctx.fillStyle = PAL.light ? '#b9ae90' : '#39435f';
         ctx.fillRect(X + 4 * S, Y + 10 * S, 8 * S, 5 * S);
         ctx.fillRect(X + 5 * S, Y + 8 * S, 6 * S, 3 * S);
@@ -915,12 +936,14 @@
         break;
       }
       case 'emojiBase': {
+        drawShadow(px + 8, py + 15, 9);
         ctx.fillStyle = PAL.light ? '#b9ae90' : '#39435f';
         ctx.fillRect(X + 3 * S, Y + 11 * S, 10 * S, 4 * S);
         ctx.drawImage(rasterEmoji(e.emoji, 32), X + 2.5 * S, Y - 1 * S, 11 * S, 11 * S);
         break;
       }
       case 'chest': {
+        drawShadow(px + 8, py + 15, 11);
         const open = state.chestOpened;
         ctx.fillStyle = PAL.goldDeep;
         ctx.fillRect(X + 2 * S, Y + (open ? 6 : 4) * S, 12 * S, 9 * S);
@@ -966,21 +989,19 @@
       ctx.fillRect(X + 6 * SCALE, Y + 4 * SCALE, 4 * SCALE, 4 * SCALE);
       ctx.fillStyle = '#ffe08a';
       ctx.fillRect(X + 7 * SCALE, Y + (5 + fl) * SCALE, 2 * SCALE, 2 * SCALE);
-      if (!PAL.light) {
-        ctx.save();
-        ctx.globalCompositeOperation = 'lighter';
-        const g = glowSprite();
-        ctx.globalAlpha = 0.5 + (fl ? 0.12 : 0);
-        ctx.drawImage(g, X - 16 * SCALE, Y - 14 * SCALE, 36 * SCALE, 36 * SCALE);
-        ctx.restore();
-        ctx.globalAlpha = 1;
-      }
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.globalAlpha = (PAL.light ? 0.22 : 0.5) + (fl ? 0.1 : 0);
+      ctx.drawImage(glowSprite(), X - 16 * SCALE, Y - 14 * SCALE, 36 * SCALE, 36 * SCALE);
+      ctx.restore();
+      ctx.globalAlpha = 1;
     }
 
     // entities y-sorted with player
     const drawables = ENTITIES.filter(e => e.kind !== 'hidden' && !(e.kind === 'taco' && !state.vaultOpen));
     const items = drawables.map(e => ({ y: e.py + e.h * TILE, f: () => drawEntity(e) }));
-    items.push({ y: player.y + 10, f: () => drawRig(heroRig, player.x, player.y, player.dir, player.moving ? player.frame : 0) });
+    const idleBob = (!player.moving && !REDUCED) ? Math.sin(time * 2.2) * 0.6 : 0;
+    items.push({ y: player.y + 10, f: () => drawRig(heroRig, player.x, player.y, player.dir, player.moving ? player.frame : 0, idleBob) });
     if (drone.active || state.drone) items.push({ y: 1e9, f: drawDrone });
     items.sort((a, b) => a.y - b.y);
     for (const it of items) it.f();
@@ -991,29 +1012,44 @@
       if (t) {
         const bob = REDUCED ? 0 : Math.sin(time * 5) * 2;
         const X = sx(t.px + t.w * TILE / 2), Y = sy(t.py) - (t.kind === 'cabinet' || t.kind === 'statue' ? 16 : 10) * SCALE + bob * SCALE / 2;
+        // springy pop when it first appears
+        const popScale = 1 + (promptPop > 0 ? (promptPop / 0.18) * 0.9 : 0);
         ctx.fillStyle = PAL.gold;
-        ctx.font = `bold ${9 * SCALE}px "JetBrains Mono",monospace`;
+        ctx.font = `bold ${Math.round(9 * SCALE * popScale)}px "JetBrains Mono",monospace`;
         ctx.textAlign = 'center';
         ctx.fillText('!', X, Y);
+        // teach the actual key/tap until the player interacts once (this session)
+        if (!hintUsed) {
+          ctx.font = `${5 * SCALE}px "JetBrains Mono",monospace`;
+          ctx.fillStyle = 'rgba(0,0,0,0.5)';
+          const label = isTouch ? 'Tap ●' : 'Press E';
+          const lw = ctx.measureText(label).width;
+          ctx.fillRect(X - lw / 2 - 3 * SCALE, Y + 4 * SCALE, lw + 6 * SCALE, 8 * SCALE);
+          ctx.fillStyle = PAL.gold;
+          ctx.fillText(label, X, Y + 10 * SCALE);
+        }
       }
     }
 
-    // door plaques
+    // door plaques — proximity fade everywhere, plus full-strength signposts in
+    // the Foyer so a new arrival immediately sees where each wing is.
     ctx.textAlign = 'center';
+    const inFoyer = currentRoom && currentRoom.id === 'foyer';
     for (const p of PLAQUES) {
       const d = Math.hypot(player.x - p.x * TILE, player.y - p.y * TILE);
-      if (d < 3.5 * TILE) {
-        const a = Math.min(1, (3.5 * TILE - d) / TILE);
-        ctx.globalAlpha = a;
-        ctx.font = `${5 * SCALE}px "JetBrains Mono",monospace`;
-        const X = sx(p.x * TILE), Y = sy(p.y * TILE) - a * 3;
-        ctx.fillStyle = 'rgba(0,0,0,0.45)';
-        const w = ctx.measureText(p.text).width;
-        ctx.fillRect(X - w / 2 - 3 * SCALE, Y - 6 * SCALE, w + 6 * SCALE, 9 * SCALE);
-        ctx.fillStyle = PAL.gold;
-        ctx.fillText(p.text, X, Y);
-        ctx.globalAlpha = 1;
-      }
+      const prox = d < 3.5 * TILE ? Math.min(1, (3.5 * TILE - d) / TILE) : 0;
+      const a = Math.max(prox, (inFoyer && p.foyer) ? 0.92 : 0);
+      if (a <= 0.01) continue;
+      ctx.globalAlpha = a;
+      ctx.font = `${5 * SCALE}px "JetBrains Mono",monospace`;
+      const label = (inFoyer && p.foyer && prox < 0.5 && p.arrow) ? p.arrow + ' ' + p.text : p.text;
+      const X = sx(p.x * TILE), Y = sy(p.y * TILE) - a * 3;
+      ctx.fillStyle = 'rgba(0,0,0,0.5)';
+      const w = ctx.measureText(label).width;
+      ctx.fillRect(X - w / 2 - 3 * SCALE, Y - 6 * SCALE, w + 6 * SCALE, 9 * SCALE);
+      ctx.fillStyle = PAL.gold;
+      ctx.fillText(label, X, Y);
+      ctx.globalAlpha = 1;
     }
 
     // particles
@@ -1076,8 +1112,10 @@
   }
 
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden) { cancelAnimationFrame(raf); last = 0; }
-    else if (playing) raf = requestAnimationFrame(frame);
+    if (document.hidden) {
+      cancelAnimationFrame(raf); last = 0;
+      Object.keys(keys).forEach(k => keys[k] = false); joyReset();
+    } else if (playing) { last = 0; acc = 0; raf = requestAnimationFrame(frame); }
   });
 
   // ---------------- Sizing / theme ----------------
@@ -1106,6 +1144,12 @@
   const progress = document.getElementById('gameProgress');
   const muteBtn = document.getElementById('gameMuteBtn');
 
+  // Touch devices get touch-appropriate control hints on the start screen.
+  if (isTouch) {
+    const ctrls = document.getElementById('gameStartControls');
+    if (ctrls) ctrls.innerHTML = '<span><b>Drag</b>move</span><span><b>Tap ●</b>interact</span><span><b>✕</b>exit</span>';
+  }
+
   function openOverlay() {
     gameActive = true;
     root.classList.add('active');
@@ -1130,11 +1174,11 @@
     gameActive = false;
     playing = false;
     cancelAnimationFrame(raf);
+    Object.keys(keys).forEach(k => keys[k] = false); acc = 0; joyReset();
     if (dialogOpen) closeDialog();
     root.classList.remove('active');
     document.body.classList.remove('game-active');
     try { sessionStorage.setItem('ip-game-skip', '1'); } catch (e) {}
-    joyReset();
   }
 
   document.getElementById('gameStartBtn').addEventListener('click', startGame);

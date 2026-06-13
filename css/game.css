@@ -23,7 +23,20 @@
   display: block;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
-  outline: none;
+}
+
+#gameCanvas:focus-visible { outline: 2px solid var(--gold); outline-offset: -2px; }
+
+.game-hud-btn:focus-visible,
+.game-dialog-close:focus-visible,
+.game-start-btn:focus-visible,
+.game-start-skip:focus-visible,
+.game-start-resume:focus-visible,
+.game-dialog-actions a:focus-visible,
+.game-dialog-actions button:focus-visible,
+.action-btn:focus-visible {
+  outline: 2px solid var(--gold-bright);
+  outline-offset: 2px;
 }
 
 /* ============ START SCREEN ============ */
@@ -115,6 +128,19 @@
   cursor: pointer;
   transition: color 0.2s;
 }
+
+.game-start-resume {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--gold);
+  text-decoration: none;
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.game-start-resume:hover { border-color: var(--border-strong); background: var(--gold-subtle); }
 
 .game-start-skip:hover { color: var(--gold); }
 
@@ -278,6 +304,11 @@
 .game-dialog-close {
   margin-left: auto;
   align-self: center;
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   font-family: var(--font-mono);
   font-size: 11px;
   color: var(--text-faint);
@@ -414,6 +445,15 @@
 /* Body lock while playing */
 body.game-active { overflow: hidden; }
 
+/* Bigger touch targets on coarse pointers */
+@media (pointer: coarse) {
+  .game-start-skip, .game-start-resume { min-height: 44px; display: inline-flex; align-items: center; padding-left: 18px; padding-right: 18px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .game-start-btn { animation: none; }
+  .action-btn.ready { animation: none; }
+  .game-zone-label { transition: none !important; }
+  .game-dialog { transition: opacity 0.15s !important; transform: translateX(-50%) !important; }
+  .game-dialog.open { transform: translateX(-50%) !important; }
 }
