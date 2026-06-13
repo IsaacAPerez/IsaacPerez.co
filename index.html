@@ -31,16 +31,705 @@
     })();
   </script>
 
+  <!-- Design System -->
+  <link rel="stylesheet" href="css/design-system.css">
+
+  <!-- Game overlay (fonts + self-contained styles) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="css/rpg.css">
   <link rel="stylesheet" href="css/game.css">
+
+  <style>
+    /* ============================================================
+       FOUNDER PORTFOLIO — CUSTOM STYLES
+       ============================================================ */
+
+    /* -------------------- Hero -------------------- */
+
+    .hero-section {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: calc(64px + var(--space-16)) var(--space-6) var(--space-16);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      right: -15%;
+      width: 50%;
+      height: 70%;
+      background: radial-gradient(circle, var(--color-accent-subtle) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      max-width: var(--container-lg);
+      margin: 0 auto;
+      width: 100%;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-2) var(--space-4);
+      background: var(--color-accent-subtle);
+      border-radius: var(--radius-full);
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+      color: var(--color-accent);
+      margin-bottom: var(--space-6);
+      animation: fadeInUp var(--duration-slow) var(--ease-out);
+    }
+
+    .hero-name {
+      font-size: var(--text-5xl);
+      font-weight: var(--font-bold);
+      letter-spacing: var(--tracking-tighter);
+      line-height: 1.05;
+      margin-bottom: var(--space-6);
+      animation: fadeInUp var(--duration-slow) var(--ease-out) 100ms both;
+    }
+
+    .hero-description {
+      font-size: var(--text-xl);
+      color: var(--color-text-secondary);
+      line-height: var(--leading-relaxed);
+      max-width: 600px;
+      margin-bottom: var(--space-10);
+      animation: fadeInUp var(--duration-slow) var(--ease-out) 200ms both;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: var(--space-4);
+      animation: fadeInUp var(--duration-slow) var(--ease-out) 300ms both;
+    }
+
+    @media (max-width: 768px) {
+      .hero-section {
+        min-height: auto;
+        padding-top: calc(64px + var(--space-12));
+        padding-bottom: var(--space-12);
+        text-align: center;
+      }
+
+      .hero-name {
+        font-size: var(--text-3xl);
+      }
+
+      .hero-description {
+        font-size: var(--text-lg);
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .hero-actions .btn {
+        width: 100%;
+      }
+    }
+
+    /* -------------------- Section Headers -------------------- */
+
+    .section-header {
+      max-width: 600px;
+      margin-bottom: var(--space-12);
+    }
+
+    .section-header.centered {
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+
+    .section-label {
+      display: block;
+      font-size: var(--text-xs);
+      font-weight: var(--font-semibold);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-bottom: var(--space-4);
+    }
+
+    .section-title {
+      font-size: var(--text-3xl);
+      font-weight: var(--font-semibold);
+      margin-bottom: var(--space-4);
+    }
+
+    .section-subtitle {
+      font-size: var(--text-lg);
+      color: var(--color-text-secondary);
+      line-height: var(--leading-relaxed);
+    }
+
+    /* -------------------- Projects Section -------------------- */
+
+    .projects-section {
+      padding: var(--section-gap) 0;
+      background: var(--color-surface-secondary);
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-8);
+    }
+
+    .project-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-2xl);
+      padding: var(--space-8);
+      display: flex;
+      flex-direction: column;
+      transition: all var(--duration-normal) var(--ease-default);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--project-accent, var(--color-accent));
+      opacity: 0;
+      transition: opacity var(--duration-normal);
+    }
+
+    .project-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-xl);
+      border-color: transparent;
+    }
+
+    .project-card:hover::before {
+      opacity: 1;
+    }
+
+    .project-icon-wrap {
+      width: 56px;
+      height: 56px;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      margin-bottom: var(--space-6);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .project-icon-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .project-icon-wrap.icon-placeholder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--project-accent, var(--color-accent));
+      color: var(--color-white);
+    }
+
+    .project-icon-wrap.icon-placeholder svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    .project-card-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: var(--text-xs);
+      font-weight: var(--font-medium);
+      color: var(--color-text-tertiary);
+      margin-bottom: var(--space-3);
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--color-success);
+    }
+
+    .status-dot.building {
+      background: var(--color-warning);
+    }
+
+    .project-card-name {
+      font-size: var(--text-xl);
+      font-weight: var(--font-semibold);
+      margin-bottom: var(--space-3);
+    }
+
+    .project-card-desc {
+      font-size: var(--text-base);
+      color: var(--color-text-secondary);
+      line-height: var(--leading-relaxed);
+      margin-bottom: var(--space-6);
+      flex-grow: 1;
+    }
+
+    .project-card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      margin-bottom: var(--space-6);
+    }
+
+    .project-tag {
+      padding: var(--space-1) var(--space-3);
+      background: var(--color-surface-secondary);
+      border-radius: var(--radius-full);
+      font-size: var(--text-xs);
+      font-weight: var(--font-medium);
+      color: var(--color-text-tertiary);
+    }
+
+    .project-card-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-size: var(--text-sm);
+      font-weight: var(--font-semibold);
+      color: var(--color-accent);
+      text-decoration: none;
+      transition: gap var(--duration-normal);
+    }
+
+    .project-card-link:hover {
+      gap: var(--space-3);
+    }
+
+    .project-card-link svg {
+      width: 16px;
+      height: 16px;
+      transition: transform var(--duration-normal);
+    }
+
+    .project-card-link:hover svg {
+      transform: translateX(2px);
+    }
+
+    @media (max-width: 1024px) {
+      .projects-grid {
+        grid-template-columns: 1fr;
+        max-width: 560px;
+        margin: 0 auto;
+      }
+    }
+
+    /* -------------------- Experience Section -------------------- */
+
+    .experience-section {
+      padding: var(--section-gap) 0;
+    }
+
+    .experience-list {
+      max-width: 720px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-8);
+    }
+
+    .experience-item {
+      display: grid;
+      grid-template-columns: 64px 1fr;
+      gap: var(--space-6);
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-2xl);
+      padding: var(--space-8);
+      transition: all var(--duration-normal) var(--ease-default);
+    }
+
+    .experience-item:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--color-accent-subtle);
+    }
+
+    .experience-logo {
+      width: 64px;
+      height: 64px;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      flex-shrink: 0;
+    }
+
+    .experience-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      padding: 6px;
+    }
+
+    .experience-content {
+      min-width: 0;
+    }
+
+    .experience-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: var(--space-4);
+      margin-bottom: var(--space-1);
+    }
+
+    .experience-company {
+      font-size: var(--text-xl);
+      font-weight: var(--font-semibold);
+    }
+
+    .experience-date {
+      font-size: var(--text-sm);
+      color: var(--color-text-tertiary);
+      white-space: nowrap;
+    }
+
+    .experience-role {
+      font-size: var(--text-base);
+      font-weight: var(--font-medium);
+      color: var(--color-accent);
+      margin-bottom: var(--space-3);
+    }
+
+    .experience-description {
+      font-size: var(--text-base);
+      color: var(--color-text-secondary);
+      line-height: var(--leading-relaxed);
+      margin-bottom: var(--space-4);
+    }
+
+    .experience-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+    }
+
+    .experience-tag {
+      padding: var(--space-1) var(--space-3);
+      background: var(--color-surface-secondary);
+      border-radius: var(--radius-full);
+      font-size: var(--text-xs);
+      font-weight: var(--font-medium);
+      color: var(--color-text-tertiary);
+    }
+
+    @media (max-width: 640px) {
+      .experience-item {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .experience-logo {
+        margin: 0 auto;
+      }
+
+      .experience-header {
+        flex-direction: column;
+        align-items: center;
+        gap: var(--space-1);
+      }
+    }
+
+    /* -------------------- About Section -------------------- */
+
+    .about-section {
+      padding: var(--section-gap) 0;
+    }
+
+    .about-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-16);
+      align-items: center;
+    }
+
+    .about-photo {
+      width: 100%;
+      max-width: 400px;
+      aspect-ratio: 1;
+      border-radius: var(--radius-3xl);
+      object-fit: cover;
+      box-shadow: var(--shadow-xl);
+    }
+
+    .about-text p {
+      font-size: var(--text-lg);
+      color: var(--color-text-secondary);
+      line-height: var(--leading-relaxed);
+      margin-bottom: var(--space-6);
+    }
+
+    .about-text p:last-child {
+      margin-bottom: 0;
+    }
+
+    @media (max-width: 768px) {
+      .about-inner {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .about-photo {
+        max-width: 240px;
+        margin: 0 auto;
+      }
+    }
+
+    /* -------------------- Skills Section -------------------- */
+
+    .skills-section {
+      padding: var(--section-gap) 0;
+      background: var(--color-surface-secondary);
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-6);
+    }
+
+    .skill-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-6);
+      text-align: center;
+      transition: all var(--duration-normal) var(--ease-default);
+    }
+
+    .skill-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--color-accent-subtle);
+    }
+
+    .skill-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      margin: 0 auto var(--space-4);
+      background: var(--color-accent-subtle);
+      border-radius: var(--radius-lg);
+      color: var(--color-accent);
+    }
+
+    .skill-icon svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .skill-name {
+      font-size: var(--text-base);
+      font-weight: var(--font-semibold);
+      margin-bottom: var(--space-2);
+    }
+
+    .skill-detail {
+      font-size: var(--text-sm);
+      color: var(--color-text-tertiary);
+    }
+
+    @media (max-width: 768px) {
+      .skills-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .skills-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* -------------------- Contact Section -------------------- */
+
+    .contact-section {
+      padding: var(--section-gap) 0;
+    }
+
+    .contact-inner {
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: var(--space-4);
+      margin-top: var(--space-8);
+      flex-wrap: wrap;
+    }
+
+    .contact-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-3) var(--space-5);
+      background: var(--color-surface-secondary);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-full);
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+      color: var(--color-text-primary);
+      text-decoration: none;
+      transition: all var(--duration-normal);
+    }
+
+    .contact-link:hover {
+      background: var(--color-accent);
+      color: var(--color-white);
+      border-color: var(--color-accent);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-accent);
+    }
+
+    .contact-link svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* -------------------- Minimal Footer -------------------- */
+
+    .site-footer {
+      padding: var(--space-8) 0;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-copy {
+      font-size: var(--text-xs);
+      color: var(--color-text-tertiary);
+    }
+
+    .footer-nav {
+      display: flex;
+      gap: var(--space-6);
+      list-style: none;
+    }
+
+    .footer-nav a {
+      font-size: var(--text-xs);
+      color: var(--color-text-tertiary);
+      text-decoration: none;
+      transition: color var(--duration-fast);
+    }
+
+    .footer-nav a:hover {
+      color: var(--color-text-primary);
+    }
+
+    @media (max-width: 640px) {
+      .footer-inner {
+        flex-direction: column;
+        gap: var(--space-4);
+        text-align: center;
+      }
+    }
+
+    /* -------------------- Dark Mode Adjustments -------------------- */
+
+    :root[data-theme="dark"] .project-card {
+      background: var(--color-surface-elevated);
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+
+    :root[data-theme="dark"] .project-card:hover {
+      border-color: transparent;
+    }
+
+    :root[data-theme="dark"] .project-tag {
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    :root[data-theme="dark"] .skill-card {
+      background: var(--color-surface-elevated);
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+
+    :root[data-theme="dark"] .experience-item {
+      background: var(--color-surface-elevated);
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+
+    :root[data-theme="dark"] .experience-tag {
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    :root[data-theme="dark"] .contact-link {
+      background: var(--color-surface-elevated);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) .project-card {
+        background: var(--color-surface-elevated);
+        border-color: rgba(255, 255, 255, 0.08);
+      }
+
+      :root:not([data-theme="light"]) .project-tag {
+        background: rgba(255, 255, 255, 0.06);
+      }
+
+      :root:not([data-theme="light"]) .skill-card {
+        background: var(--color-surface-elevated);
+        border-color: rgba(255, 255, 255, 0.08);
+      }
+
+      :root:not([data-theme="light"]) .experience-item {
+        background: var(--color-surface-elevated);
+        border-color: rgba(255, 255, 255, 0.08);
+      }
+
+      :root:not([data-theme="light"]) .experience-tag {
+        background: rgba(255, 255, 255, 0.06);
+      }
+
+      :root:not([data-theme="light"]) .contact-link {
+        background: var(--color-surface-elevated);
+        border-color: rgba(255, 255, 255, 0.1);
+      }
+    }
+
+    /* Smooth transitions for theme changes */
+    html, body, .project-card, .experience-item, .skill-card, .contact-link, .nav {
+      transition: background-color var(--duration-normal) var(--ease-default),
+                  color var(--duration-normal) var(--ease-default),
+                  border-color var(--duration-normal) var(--ease-default);
+    }
+  </style>
 </head>
 <body>
   <!-- ==================== PLAYABLE GAME OVERLAY ==================== -->
-  <div id="gameRoot" aria-label="Interactive portfolio game">
+  <div id="gameRoot" aria-label="Interactive home-office">
     <canvas id="gameCanvas" tabindex="0"></canvas>
 
     <div class="game-progress" id="gameProgress" hidden>
@@ -49,11 +738,11 @@
     </div>
 
     <div class="game-hud" hidden id="gameHud">
-      <span class="game-zone-label" id="gameZoneLabel">The Foyer</span>
+      <span class="game-zone-label" id="gameZoneLabel">Home Office</span>
       <div class="game-hud-right">
         <button class="game-hud-btn" id="gameMuteBtn" title="Toggle sound">🔊</button>
         <button class="game-hud-btn" id="gameAchBtn" title="Achievements">🏆 <span id="gameAchCount">0/8</span></button>
-        <button class="game-hud-btn" id="gameExitBtn">✕ <span class="game-hud-label">Exit to Site</span></button>
+        <button class="game-hud-btn" id="gameExitBtn">✕ <span class="game-hud-label">Back to Site</span></button>
       </div>
     </div>
 
@@ -62,10 +751,10 @@
       <h1 class="game-start-title" id="gameStartTitle">Isaac's Home Office</h1>
       <p class="game-start-sub" id="gameStartSub">
         Step into my studio — check out the desk setup, the camera gear, the shelf.
-        Everything's real. Or skip straight to the classic site.
+        Everything's real. Or skip straight to the site.
       </p>
       <button class="game-start-btn" id="gameStartBtn">▶ Step Inside</button>
-      <button class="game-start-skip" id="gameSkipBtn">Just browsing — take me to the classic site</button>
+      <button class="game-start-skip" id="gameSkipBtn">Just browsing — take me to the site</button>
       <a class="game-start-resume" id="gameResumeLink" href="Resume.pdf" target="_blank" rel="noopener">Recruiter? Grab the résumé →</a>
       <div class="game-start-controls" id="gameStartControls">
         <span><b>WASD</b>move</span>
@@ -76,9 +765,9 @@
 
     <div class="game-dialog" id="gameDialog" role="dialog" aria-modal="false" aria-labelledby="gameDialogTitle">
       <div class="game-dialog-head">
-        <span class="game-dialog-emoji" id="gameDialogEmoji">📜</span>
+        <span class="game-dialog-emoji" id="gameDialogEmoji">📄</span>
         <div>
-          <div class="game-dialog-kicker" id="gameDialogKicker">Signpost</div>
+          <div class="game-dialog-kicker" id="gameDialogKicker"></div>
           <div class="game-dialog-title" id="gameDialogTitle">Hello</div>
         </div>
         <button class="game-dialog-close" id="gameDialogClose"><b>E</b>close</button>
@@ -93,502 +782,403 @@
     </div>
   </div>
 
-  <!-- ==================== HUD NAV ==================== -->
-  <nav class="hud">
-    <div class="hud-inner">
-      <a href="/" class="hud-brand">
-        <span class="hud-emblem">IP</span>
-        <span class="hud-brand-name">Isaac Perez</span>
-      </a>
-      <button class="hud-burger" id="hudBurger" aria-label="Toggle navigation">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg>
+  <!-- Achievement toasts (rendered by the engine below) -->
+  <div class="toast-stack" id="toastStack" aria-live="polite"></div>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-brand">Isaac Perez</a>
+      <button class="nav-toggle" aria-label="Toggle navigation" onclick="toggleNav()">
+        <span class="nav-toggle-icon"></span>
       </button>
-      <ul class="hud-links" id="hudLinks">
-        <li><a href="#quests" class="hud-link">Quests</a></li>
-        <li><a href="#campaign" class="hud-link">Campaign</a></li>
-        <li><a href="#character" class="hud-link">Character</a></li>
-        <li><a href="#skills" class="hud-link">Skill Tree</a></li>
-        <li><a href="#contact" class="hud-link">Guild Hall</a></li>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#projects" class="nav-link">Projects</a></li>
+        <li><a href="#experience" class="nav-link">Experience</a></li>
+        <li><a href="#about" class="nav-link">About</a></li>
+        <li><a href="#skills" class="nav-link">Skills</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
+        <li>
+          <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="5"/>
+              <line x1="12" y1="1" x2="12" y2="3"/>
+              <line x1="12" y1="21" x2="12" y2="23"/>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+              <line x1="1" y1="12" x2="3" y2="12"/>
+              <line x1="21" y1="12" x2="23" y2="12"/>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            </svg>
+          </button>
+        </li>
       </ul>
-      <div class="hud-meta">
-        <a href="#achievements" class="achievement-counter" id="achCounter" title="Achievements unlocked">
-          🏆 <span id="achCount">0/8</span>
-        </a>
-        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
-          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-          </svg>
-          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="5"/>
-            <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-            <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-          </svg>
-        </button>
-      </div>
     </div>
-    <div class="scroll-xp" id="scrollXp"></div>
   </nav>
 
   <main>
-    <!-- ==================== HERO: CHARACTER CARD ==================== -->
-    <section class="hero">
-      <div class="container">
-        <div class="character-card panel">
-          <span class="corner-b"></span>
-          <div class="portrait-wrap">
-            <div class="portrait-ring">
-              <img src="isaac.JPG" alt="Isaac Perez">
-            </div>
-            <div class="level-badge"><small>LVL</small><span id="charLevel">24</span></div>
-          </div>
-          <div class="char-info">
-            <span class="char-class">⚔️ Class: Builder · Engineer · Creator</span>
-            <h1 class="char-name">Isaac Perez</h1>
-            <p class="char-title">
-              iOS engineer, founder, and creator building <strong>apps, media, and local communities</strong>.
-              Turning side quests into products people use every day.
-            </p>
-            <div class="xp-block">
-              <div class="xp-labels">
-                <span class="xp-now" id="xpNow">XP 0</span>
-                <span id="xpNext">NEXT LEVEL</span>
-              </div>
-              <div class="xp-track">
-                <div class="xp-fill" id="xpFill"></div>
-              </div>
-            </div>
-            <div class="vitals">
-              <span class="vital"><span class="dot" style="background: var(--hp); box-shadow: 0 0 8px var(--hp);"></span><b>Base</b>&nbsp;Los Angeles</span>
-              <span class="vital"><span class="dot" style="background: var(--mp); box-shadow: 0 0 8px var(--mp);"></span><b>5</b>&nbsp;Quests Shipped</span>
-              <span class="vital"><span class="dot" style="background: var(--uncommon); box-shadow: 0 0 8px var(--uncommon);"></span><b>2</b>&nbsp;Guilds Joined</span>
-            </div>
-            <div class="hero-actions">
-              <button class="btn btn-gold" id="playGameBtn">
-                🎮 Tour My Office
-              </button>
-              <a href="#quests" class="btn btn-ghost">
-                View Quest Log
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-              </a>
-              <a href="Resume.pdf" class="btn btn-ghost" target="_blank" rel="noopener">
-                📜 Scroll of Experience
-              </a>
-            </div>
-          </div>
+    <!-- ==================== HERO ==================== -->
+    <section class="hero-section">
+      <div class="hero-inner">
+        <span class="hero-eyebrow">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          Builder &middot; Engineer &middot; Creator
+        </span>
+        <h1 class="hero-name">Isaac Perez</h1>
+        <p class="hero-description">
+          iOS engineer, founder, and creator building apps, media, and local communities.
+          Turning ideas into products people use every day.
+        </p>
+        <div class="hero-actions">
+          <button class="btn btn-primary btn-lg" id="playGameBtn">🎮 Tour My Office</button>
+          <a href="#projects" class="btn btn-ghost btn-lg">View Projects</a>
+          <a href="#contact" class="btn btn-ghost btn-lg">Get in Touch</a>
         </div>
       </div>
     </section>
 
-    <!-- ==================== QUESTS (PROJECTS) ==================== -->
-    <section id="quests">
+    <!-- ==================== PROJECTS ==================== -->
+    <section id="projects" class="projects-section">
       <div class="container">
-        <div class="section-head" data-reveal>
-          <span class="section-tag">Quest Log</span>
-          <h2 class="section-title">Active &amp; Completed Quests</h2>
-          <p class="section-sub">Products and brands built from the ground up. Every quest started at level 0.</p>
+        <div class="section-header centered" data-animate="fade-in-up">
+          <span class="section-label">Projects</span>
+          <h2 class="section-title">What I'm Building</h2>
+          <p class="section-subtitle">Products and brands I've created from the ground up.</p>
         </div>
 
-        <div class="quests-grid">
+        <div class="projects-grid">
           <!-- CurbSide -->
-          <article class="quest panel" style="--rarity: var(--legendary);" data-reveal>
-            <span class="corner-b"></span>
-            <div class="quest-top">
-              <div class="quest-icon"><img src="images/curbside-icon.png" alt="CurbSide"></div>
-              <span class="rarity-tag">Main Quest</span>
+          <article class="project-card" data-animate="fade-in-up" style="--project-accent: #e8590c;">
+            <div class="project-icon-wrap">
+              <img src="images/curbside-icon.png" alt="CurbSide">
             </div>
-            <span class="quest-status"><span class="dot progress"></span>In Progress</span>
-            <h3 class="quest-name">CurbSide</h3>
-            <p class="quest-desc">
+            <span class="project-card-status">
+              <span class="status-dot building"></span>
+              Launching soon
+            </span>
+            <h3 class="project-card-name">CurbSide</h3>
+            <p class="project-card-desc">
               Discover local street vendors, food trucks, and pop-ups near you in real-time. Built for the communities that make cities feel alive.
             </p>
-            <div class="quest-loot">
-              <span class="loot">iOS</span>
-              <span class="loot">SwiftUI</span>
-              <span class="loot">Supabase</span>
+            <div class="project-card-tags">
+              <span class="project-tag">iOS</span>
+              <span class="project-tag">SwiftUI</span>
+              <span class="project-tag">Supabase</span>
             </div>
-            <div class="quest-foot">
-              <a href="https://thecurbside.app" class="quest-link" target="_blank" rel="noopener" data-ach-contact="false">
-                Begin Quest
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
-              </a>
-              <span class="quest-xp">+2,500 XP</span>
-            </div>
-          </article>
-
-          <!-- Runs by IP -->
-          <article class="quest panel" style="--rarity: var(--epic);" data-reveal>
-            <span class="corner-b"></span>
-            <div class="quest-top">
-              <div class="quest-icon"><img src="images/runsbyip-icon.png" alt="Runs by IP"></div>
-              <span class="rarity-tag">Weekly Raid</span>
-            </div>
-            <span class="quest-status"><span class="dot"></span>Live</span>
-            <h3 class="quest-name">Runs by IP</h3>
-            <p class="quest-desc">
-              Web and iOS platform for organizing pickup basketball in LA. RSVP, pay, and show up — real-time rosters, waitlists, and a team randomizer.
-            </p>
-            <div class="quest-loot">
-              <span class="loot">iOS</span>
-              <span class="loot">SwiftUI</span>
-              <span class="loot">Supabase</span>
-              <span class="loot">Stripe</span>
-            </div>
-            <div class="quest-foot">
-              <a href="https://runsbyip.com" class="quest-link" target="_blank" rel="noopener">
-                Join the Run
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
-              </a>
-              <span class="quest-xp">+1,800 XP</span>
-            </div>
+            <a href="https://thecurbside.app" class="project-card-link" target="_blank" rel="noopener">
+              Visit thecurbside.app
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+            </a>
           </article>
 
           <!-- Kang's Kuisine -->
-          <article class="quest panel" style="--rarity: var(--rare);" data-reveal>
-            <span class="corner-b"></span>
-            <div class="quest-top">
-              <div class="quest-icon"><img src="images/kangskuisine-icon.png" alt="Kang's Kuisine"></div>
-              <span class="rarity-tag">Side Quest</span>
+          <article class="project-card" data-animate="fade-in-up" style="--project-accent: #00459B; animation-delay: 100ms;">
+            <div class="project-icon-wrap">
+              <img src="images/kangskuisine-icon.png" alt="Kang's Kuisine">
             </div>
-            <span class="quest-status"><span class="dot"></span>Live</span>
-            <h3 class="quest-name">Kang's Kuisine</h3>
-            <p class="quest-desc">
-              Ordering platform for a Korean-inspired pop-up food brand in LA. Real-time inventory, Stripe payments, and an admin dashboard.
+            <span class="project-card-status">
+              <span class="status-dot"></span>
+              Live
+            </span>
+            <h3 class="project-card-name">Kang's Kuisine</h3>
+            <p class="project-card-desc">
+              Website and ordering platform for a Korean-inspired pop-up food brand in LA. Real-time inventory, Stripe payments, and an admin dashboard.
             </p>
-            <div class="quest-loot">
-              <span class="loot">Next.js</span>
-              <span class="loot">Supabase</span>
-              <span class="loot">Stripe</span>
+            <div class="project-card-tags">
+              <span class="project-tag">Next.js</span>
+              <span class="project-tag">Supabase</span>
+              <span class="project-tag">Stripe</span>
             </div>
-            <div class="quest-foot">
-              <a href="https://www.kangskuisine.food" class="quest-link" target="_blank" rel="noopener">
-                Order Up
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
-              </a>
-              <span class="quest-xp">+1,200 XP</span>
+            <a href="https://www.kangskuisine.food" class="project-card-link" target="_blank" rel="noopener">
+              Visit kangskuisine.food
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+            </a>
+          </article>
+
+          <!-- Runs by IP -->
+          <article class="project-card" data-animate="fade-in-up" style="--project-accent: #ffffff; animation-delay: 200ms;">
+            <div class="project-icon-wrap">
+              <img src="images/runsbyip-icon.png" alt="Runs by IP">
             </div>
+            <span class="project-card-status">
+              <span class="status-dot"></span>
+              Live
+            </span>
+            <h3 class="project-card-name">Runs by IP</h3>
+            <p class="project-card-desc">
+              Web and iOS platform for organizing pickup basketball games in LA. RSVP, pay, and show up. Features real-time player lists, waitlists, and team randomizer.
+            </p>
+            <div class="project-card-tags">
+              <span class="project-tag">iOS</span>
+              <span class="project-tag">SwiftUI</span>
+              <span class="project-tag">Supabase</span>
+              <span class="project-tag">Stripe</span>
+            </div>
+            <a href="https://runsbyip.com" class="project-card-link" target="_blank" rel="noopener">
+              Visit runsbyip.com
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+            </a>
           </article>
 
           <!-- TeamUp -->
-          <article class="quest panel" style="--rarity: var(--rare);" data-reveal>
-            <span class="corner-b"></span>
-            <div class="quest-top">
-              <div class="quest-icon"><img src="images/teamup-icon-new.png" alt="TeamUp"></div>
-              <span class="rarity-tag">Co-op</span>
+          <article class="project-card" data-animate="fade-in-up" style="--project-accent: #5A9FD4; animation-delay: 300ms;">
+            <div class="project-icon-wrap">
+              <img src="images/teamup-icon-new.png" alt="TeamUp">
             </div>
-            <span class="quest-status"><span class="dot"></span>Live on App Store</span>
-            <h3 class="quest-name">TeamUp</h3>
-            <p class="quest-desc">
+            <span class="project-card-status">
+              <span class="status-dot"></span>
+              Live on App Store
+            </span>
+            <h3 class="project-card-name">TeamUp</h3>
+            <p class="project-card-desc">
               Find pickup games, coordinate teams, and build sports communities. Making it easy to stay active and connected.
             </p>
-            <div class="quest-loot">
-              <span class="loot">iOS</span>
-              <span class="loot">SwiftUI</span>
-              <span class="loot">Firebase</span>
+            <div class="project-card-tags">
+              <span class="project-tag">iOS</span>
+              <span class="project-tag">SwiftUI</span>
+              <span class="project-tag">Firebase</span>
             </div>
-            <div class="quest-foot">
-              <a href="https://theteamup.app" class="quest-link" target="_blank" rel="noopener">
-                Form a Party
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
-              </a>
-              <span class="quest-xp">+1,500 XP</span>
-            </div>
+            <a href="https://theteamup.app" class="project-card-link" target="_blank" rel="noopener">
+              Visit theteamup.app
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+            </a>
           </article>
 
           <!-- CapturedByIP -->
-          <article class="quest panel" style="--rarity: var(--uncommon);" data-reveal>
-            <span class="corner-b"></span>
-            <div class="quest-top">
-              <div class="quest-icon placeholder" style="background: linear-gradient(135deg, #d4a574 0%, #b8875a 100%);">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-                  <circle cx="12" cy="13" r="4"/>
-                </svg>
-              </div>
-              <span class="rarity-tag">Recurring</span>
+          <article class="project-card" data-animate="fade-in-up" style="--project-accent: #d4a574; animation-delay: 400ms;">
+            <div class="project-icon-wrap icon-placeholder" style="background: linear-gradient(135deg, #d4a574 0%, #b8875a 100%);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                <circle cx="12" cy="13" r="4"/>
+              </svg>
             </div>
-            <span class="quest-status"><span class="dot"></span>Active</span>
-            <h3 class="quest-name">CapturedByIP</h3>
-            <p class="quest-desc">
+            <span class="project-card-status">
+              <span class="status-dot"></span>
+              Active
+            </span>
+            <h3 class="project-card-name">CapturedByIP</h3>
+            <p class="project-card-desc">
               Photography, drone work, and visual storytelling. Cinematic content for sports, real estate, and lifestyle brands.
             </p>
-            <div class="quest-loot">
-              <span class="loot">Photography</span>
-              <span class="loot">Drone</span>
-              <span class="loot">Video</span>
+            <div class="project-card-tags">
+              <span class="project-tag">Photography</span>
+              <span class="project-tag">Drone</span>
+              <span class="project-tag">Video</span>
             </div>
-            <div class="quest-foot">
-              <a href="https://capturedbyip.com" class="quest-link" target="_blank" rel="noopener">
-                View Gallery
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
-              </a>
-              <span class="quest-xp">+900 XP</span>
-            </div>
+            <a href="https://capturedbyip.com" class="project-card-link" target="_blank" rel="noopener">
+              Visit capturedbyip.com
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+            </a>
           </article>
         </div>
       </div>
     </section>
 
-    <!-- ==================== CAMPAIGN LOG (EXPERIENCE) ==================== -->
-    <section id="campaign">
+    <!-- ==================== EXPERIENCE ==================== -->
+    <section id="experience" class="experience-section">
       <div class="container">
-        <div class="section-head" data-reveal>
-          <span class="section-tag">Campaign Log</span>
-          <h2 class="section-title">Story So Far</h2>
-          <p class="section-sub">Guilds joined along the way — building products at companies that value craft and impact.</p>
+        <div class="section-header centered" data-animate="fade-in-up">
+          <span class="section-label">Experience</span>
+          <h2 class="section-title">Where I've Worked</h2>
+          <p class="section-subtitle">Building products at companies that value craft and impact.</p>
         </div>
 
-        <div class="campaign">
+        <div class="experience-list">
           <!-- Tinder -->
-          <div class="chapter panel" data-reveal>
-            <span class="corner-b"></span>
-            <span class="chapter-node current"></span>
-            <div class="chapter-head">
-              <div class="chapter-logo"><img src="tinderLogo.png" alt="Tinder"></div>
-              <div class="chapter-titles">
-                <span class="chapter-label">Chapter II — Current</span>
-                <h3 class="chapter-company">Tinder</h3>
-                <span class="chapter-role">iOS Engineer</span>
-              </div>
-              <span class="chapter-date">2026 – Present</span>
+          <div class="experience-item" data-animate="fade-in-up">
+            <div class="experience-logo">
+              <img src="tinderLogo.png" alt="Tinder">
             </div>
-            <p class="chapter-desc">
-              Building features for one of the world's most popular dating apps, reaching millions of users globally.
-              Focused on seamless, engaging mobile experiences with an eye on performance and user delight.
-            </p>
-            <p class="chapter-loot-label">Loot Acquired</p>
-            <div class="quest-loot">
-              <span class="loot">Swift</span>
-              <span class="loot">iOS Platform</span>
-              <span class="loot">CI/CD</span>
-              <span class="loot">Xcode Tooling</span>
-              <span class="loot">Automation Testing</span>
-              <span class="loot">Launch Performance</span>
+            <div class="experience-content">
+              <div class="experience-header">
+                <h3 class="experience-company">Tinder</h3>
+                <span class="experience-date">2026 – Present</span>
+              </div>
+              <p class="experience-role">iOS Engineer</p>
+              <p class="experience-description">
+                Building features for one of the world's most popular dating apps,
+                reaching millions of users globally. Focused on creating seamless,
+                engaging mobile experiences with a focus on performance and user delight.
+              </p>
+              <div class="experience-tags">
+                <span class="experience-tag">Swift</span>
+                <span class="experience-tag">iOS Platform</span>
+                <span class="experience-tag">CI/CD</span>
+                <span class="experience-tag">Xcode Tooling</span>
+                <span class="experience-tag">Automation Testing</span>
+                <span class="experience-tag">Launch Performance</span>
+              </div>
             </div>
           </div>
 
           <!-- Nextdoor -->
-          <div class="chapter panel" data-reveal>
-            <span class="corner-b"></span>
-            <span class="chapter-node"></span>
-            <div class="chapter-head">
-              <div class="chapter-logo"><img src="ndLogo.webp" alt="Nextdoor"></div>
-              <div class="chapter-titles">
-                <span class="chapter-label">Chapter I — Completed · +4.5 yrs XP</span>
-                <h3 class="chapter-company">Nextdoor</h3>
-                <span class="chapter-role">iOS Engineer</span>
+          <div class="experience-item" data-animate="fade-in-up">
+            <div class="experience-logo">
+              <img src="ndLogo.webp" alt="Nextdoor" style="padding: 2px;">
+            </div>
+            <div class="experience-content">
+              <div class="experience-header">
+                <h3 class="experience-company">Nextdoor</h3>
+                <span class="experience-date">2021 – 2025</span>
               </div>
-              <span class="chapter-date">2021 – 2025</span>
-            </div>
-            <p class="chapter-desc">
-              Spent 4.5 years building and scaling the iOS app for the neighborhood network connecting millions of neighbors.
-              Contributed to core features, improved app performance, and helped foster local community connections.
-            </p>
-            <p class="chapter-loot-label">Loot Acquired</p>
-            <div class="quest-loot">
-              <span class="loot">Swift</span>
-              <span class="loot">SwiftUI</span>
-              <span class="loot">TCA</span>
-              <span class="loot">Combine</span>
-              <span class="loot">Async/Await</span>
-              <span class="loot">Dependency Injection</span>
-              <span class="loot">Experimentation</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== CHARACTER LORE (ABOUT) ==================== -->
-    <section id="character">
-      <div class="container">
-        <div class="section-head" data-reveal>
-          <span class="section-tag">Character</span>
-          <h2 class="section-title">Lore &amp; Backstory</h2>
-        </div>
-
-        <div class="lore-grid panel" data-reveal>
-          <span class="corner-b"></span>
-          <img src="isaac.JPG" alt="Isaac Perez" class="lore-photo">
-          <div class="lore-text">
-            <p>
-              I'm an iOS engineer and founder based in Los Angeles. I build products that connect people to their local
-              communities — whether that's finding a street vendor around the corner or a pickup basketball game across town.
-            </p>
-            <p>
-              Outside of code, I run CapturedByIP — a photography and video brand focused on drone, real estate, and
-              lifestyle media. I'm interested in the intersection of technology, media, and the real world.
-            </p>
-            <p>
-              I believe in building things that are useful, shipping fast, and learning from the people who use what you make.
-            </p>
-            <div class="lore-attrs">
-              <div class="lore-attr"><span>Alignment</span><b>Chaotic Builder</b></div>
-              <div class="lore-attr"><span>Faction</span><b>Los Angeles</b></div>
-              <div class="lore-attr"><span>Main Weapon</span><b>Swift</b></div>
-              <div class="lore-attr"><span>Mount</span><b>DJI Drone</b></div>
-              <div class="lore-attr"><span>Special Move</span><b>Ship It</b></div>
-              <div class="lore-attr"><span>Weakness</span><b>Street Tacos</b></div>
+              <p class="experience-role">iOS Engineer</p>
+              <p class="experience-description">
+                Spent 4.5 years building and scaling the iOS app for the neighborhood
+                network connecting millions of neighbors. Contributed to core features,
+                improved app performance, and helped foster local community connections
+                through thoughtful mobile experiences.
+              </p>
+              <div class="experience-tags">
+                <span class="experience-tag">Swift</span>
+                <span class="experience-tag">SwiftUI</span>
+                <span class="experience-tag">TCA</span>
+                <span class="experience-tag">Combine</span>
+                <span class="experience-tag">Async/Await</span>
+                <span class="experience-tag">Dependency Injection</span>
+                <span class="experience-tag">Experimentation</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ==================== SKILL TREE ==================== -->
-    <section id="skills">
+    <!-- ==================== ABOUT ==================== -->
+    <section id="about" class="about-section">
       <div class="container">
-        <div class="section-head" data-reveal>
-          <span class="section-tag">Skill Tree</span>
-          <h2 class="section-title">Unlocked Abilities</h2>
+        <div class="about-inner">
+          <div data-animate="fade-in-up">
+            <img src="isaac.JPG" alt="Isaac Perez" class="about-photo">
+          </div>
+          <div data-animate="fade-in-up" style="animation-delay: 100ms;">
+            <span class="section-label">About</span>
+            <h2 class="section-title">Hey, I'm Isaac.</h2>
+            <div class="about-text">
+              <p>
+                I'm an iOS engineer and founder based in Los Angeles. I build products that connect people to their local
+                communities — whether that's finding a street vendor around the corner or a pickup basketball game across town.
+              </p>
+              <p>
+                Outside of code, I run CapturedByIP — a photography and video brand focused on drone, real estate, and
+                lifestyle media. I'm interested in the intersection of technology, media, and the real world.
+              </p>
+              <p>
+                I believe in building things that are useful, shipping fast, and learning from the people who use what you make.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SKILLS ==================== -->
+    <section id="skills" class="skills-section">
+      <div class="container">
+        <div class="section-header centered" data-animate="fade-in-up">
+          <span class="section-label">Toolkit</span>
+          <h2 class="section-title">What I Work With</h2>
         </div>
 
         <div class="skills-grid">
-          <div class="skill panel" data-reveal>
-            <span class="corner-b"></span>
-            <div class="skill-head">
-              <div class="skill-glyph">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
-              </div>
-              <div>
-                <h3 class="skill-name">iOS Development</h3>
-                <p class="skill-detail">Swift, SwiftUI, UIKit</p>
-              </div>
+          <div class="skill-card" data-animate="fade-in-up">
+            <div class="skill-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12" y2="18"/>
+              </svg>
             </div>
-            <div class="skill-stat">
-              <div class="stat-track"><div class="stat-fill" data-stat="96"></div></div>
-              <span class="stat-num">96</span>
-            </div>
+            <h3 class="skill-name">iOS Development</h3>
+            <p class="skill-detail">Swift, SwiftUI, UIKit</p>
           </div>
 
-          <div class="skill panel" data-reveal>
-            <span class="corner-b"></span>
-            <div class="skill-head">
-              <div class="skill-glyph">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-              </div>
-              <div>
-                <h3 class="skill-name">Mobile Apps</h3>
-                <p class="skill-detail">Full product lifecycle</p>
-              </div>
+          <div class="skill-card" data-animate="fade-in-up" style="animation-delay: 50ms;">
+            <div class="skill-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+              </svg>
             </div>
-            <div class="skill-stat">
-              <div class="stat-track"><div class="stat-fill" data-stat="92"></div></div>
-              <span class="stat-num">92</span>
-            </div>
+            <h3 class="skill-name">Mobile Apps</h3>
+            <p class="skill-detail">Full product lifecycle</p>
           </div>
 
-          <div class="skill panel" data-reveal>
-            <span class="corner-b"></span>
-            <div class="skill-head">
-              <div class="skill-glyph">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-              </div>
-              <div>
-                <h3 class="skill-name">Startups</h3>
-                <p class="skill-detail">0 to 1, ship and iterate</p>
-              </div>
+          <div class="skill-card" data-animate="fade-in-up" style="animation-delay: 100ms;">
+            <div class="skill-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+              </svg>
             </div>
-            <div class="skill-stat">
-              <div class="stat-track"><div class="stat-fill" data-stat="88"></div></div>
-              <span class="stat-num">88</span>
-            </div>
+            <h3 class="skill-name">Startups</h3>
+            <p class="skill-detail">0 to 1, ship and iterate</p>
           </div>
 
-          <div class="skill panel" data-reveal>
-            <span class="corner-b"></span>
-            <div class="skill-head">
-              <div class="skill-glyph">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-              </div>
-              <div>
-                <h3 class="skill-name">Photography</h3>
-                <p class="skill-detail">Sports, real estate, lifestyle</p>
-              </div>
+          <div class="skill-card" data-animate="fade-in-up" style="animation-delay: 150ms;">
+            <div class="skill-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>
+              </svg>
             </div>
-            <div class="skill-stat">
-              <div class="stat-track"><div class="stat-fill" data-stat="85"></div></div>
-              <span class="stat-num">85</span>
-            </div>
+            <h3 class="skill-name">Photography</h3>
+            <p class="skill-detail">Sports, real estate, lifestyle</p>
           </div>
 
-          <div class="skill panel" data-reveal>
-            <span class="corner-b"></span>
-            <div class="skill-head">
-              <div class="skill-glyph">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
-              </div>
-              <div>
-                <h3 class="skill-name">Drones</h3>
-                <p class="skill-detail">Aerial photo &amp; video</p>
-              </div>
+          <div class="skill-card" data-animate="fade-in-up" style="animation-delay: 200ms;">
+            <div class="skill-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+              </svg>
             </div>
-            <div class="skill-stat">
-              <div class="stat-track"><div class="stat-fill" data-stat="83"></div></div>
-              <span class="stat-num">83</span>
-            </div>
+            <h3 class="skill-name">Drones</h3>
+            <p class="skill-detail">Aerial photo & video</p>
           </div>
 
-          <div class="skill panel" data-reveal>
-            <span class="corner-b"></span>
-            <div class="skill-head">
-              <div class="skill-glyph">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 0 1 10 10c0 5.52-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2z"/><path d="M12 8v4l3 3"/></svg>
-              </div>
-              <div>
-                <h3 class="skill-name">AI Tools</h3>
-                <p class="skill-detail">Building with AI in the loop</p>
-              </div>
+          <div class="skill-card" data-animate="fade-in-up" style="animation-delay: 250ms;">
+            <div class="skill-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2a10 10 0 0 1 10 10c0 5.52-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2z"/><path d="M12 8v4l3 3"/>
+              </svg>
             </div>
-            <div class="skill-stat">
-              <div class="stat-track"><div class="stat-fill" data-stat="90"></div></div>
-              <span class="stat-num">90</span>
-            </div>
+            <h3 class="skill-name">AI Tools</h3>
+            <p class="skill-detail">Building with AI in the loop</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ==================== ACHIEVEMENTS ==================== -->
-    <section id="achievements">
+    <!-- ==================== CONTACT ==================== -->
+    <section id="contact" class="contact-section">
       <div class="container">
-        <div class="section-head" data-reveal>
-          <span class="section-tag">Achievements</span>
-          <h2 class="section-title">Your Visit, Gamified</h2>
-          <p class="section-sub">Explore the site to unlock them all. Progress saves between visits.</p>
-        </div>
-        <div class="achievements-grid" id="achGrid" data-reveal>
-          <!-- populated by JS -->
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== GUILD HALL (CONTACT) ==================== -->
-    <section id="contact">
-      <div class="container">
-        <div class="guild panel" data-reveal>
-          <span class="corner-b"></span>
-          <span class="section-tag">Guild Hall</span>
-          <h2 class="section-title">Join the Party</h2>
-          <p class="section-sub">
-            Have a quest in mind, want to collaborate, or just want to say hey? Send a raven.
+        <div class="contact-inner" data-animate="fade-in-up">
+          <span class="section-label">Connect</span>
+          <h2 class="section-title">Let's Work Together</h2>
+          <p class="section-subtitle">
+            Have a project in mind, want to collaborate, or just want to say hey? Reach out.
           </p>
-          <div class="guild-links">
-            <a href="mailto:iperez2435@gmail.com" class="guild-link" data-ach="raven">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <div class="contact-links">
+            <a href="mailto:iperez2435@gmail.com" class="contact-link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+              </svg>
               Email
             </a>
-            <a href="https://github.com/IsaacAPerez" class="guild-link" target="_blank" rel="noopener" data-ach="raven">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+            <a href="https://github.com/IsaacAPerez" class="contact-link" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+              </svg>
               GitHub
             </a>
-            <a href="https://linkedin.com/in/isaacabelperez" class="guild-link" target="_blank" rel="noopener" data-ach="raven">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            <a href="https://linkedin.com/in/isaacabelperez" class="contact-link" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+              </svg>
               LinkedIn
             </a>
-            <a href="https://instagram.com/isaacabelperez" class="guild-link" target="_blank" rel="noopener" data-ach="raven">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            <a href="https://instagram.com/isaacabelperez" class="contact-link" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+              </svg>
               Instagram
             </a>
           </div>
@@ -597,14 +1187,11 @@
     </section>
   </main>
 
-  <!-- Achievement toasts -->
-  <div class="toast-stack" id="toastStack" aria-live="polite"></div>
-
   <!-- Footer -->
   <footer class="site-footer">
     <div class="container">
       <div class="footer-inner">
-        <p class="footer-copy">&copy; 2026 Isaac Perez · No NPCs were harmed in the making of this site.</p>
+        <p class="footer-copy">&copy; 2025 Isaac Perez. All rights reserved.</p>
         <ul class="footer-nav">
           <li><a href="https://thecurbside.app" target="_blank" rel="noopener">CurbSide</a></li>
           <li><a href="https://theteamup.app" target="_blank" rel="noopener">TeamUp</a></li>
@@ -614,167 +1201,126 @@
     </div>
   </footer>
 
+  <!-- Scripts -->
   <script>
-    /* ============ THEME ============ */
+    // Mobile Navigation Toggle
+    function toggleNav() {
+      const navLinks = document.getElementById('navLinks');
+      navLinks.classList.toggle('active');
+    }
+
+    // Close mobile nav when clicking a link
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        document.getElementById('navLinks').classList.remove('active');
+      });
+    });
+
+    // Theme Toggle
+    const themeToggle = document.getElementById('themeToggle');
     const root = document.documentElement;
-    document.getElementById('themeToggle').addEventListener('click', () => {
-      const current = root.getAttribute('data-theme');
-      const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      let next;
-      if (current === 'dark') next = 'light';
-      else if (current === 'light') next = 'dark';
-      else next = systemDark ? 'light' : 'dark';
-      root.setAttribute('data-theme', next);
-      localStorage.setItem('theme', next);
-      unlock('shifter');
-    });
 
-    /* ============ MOBILE NAV ============ */
-    const hudLinks = document.getElementById('hudLinks');
-    document.getElementById('hudBurger').addEventListener('click', () => hudLinks.classList.toggle('open'));
-    hudLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => hudLinks.classList.remove('open')));
+    function toggleTheme() {
+      const currentTheme = root.getAttribute('data-theme');
+      const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      let newTheme;
 
-    /* ============ LEVEL & XP (computed from career start) ============ */
-    // Career epoch: first shipped iOS app, May 2020. One level per quarter since.
-    const EPOCH = new Date('2020-05-26T00:00:00Z').getTime();
-    const QUARTER_MS = 1000 * 60 * 60 * 24 * 91.25;
-    const elapsed = Date.now() - EPOCH;
-    const level = Math.floor(elapsed / QUARTER_MS);
-    const intoLevel = (elapsed % QUARTER_MS) / QUARTER_MS;
-    const totalXp = Math.floor(elapsed / 86400000) * 150; // 150 XP per day, flavor only
-
-    document.getElementById('charLevel').textContent = level;
-    document.getElementById('xpNow').textContent = 'XP ' + totalXp.toLocaleString();
-    document.getElementById('xpNext').textContent = 'LVL ' + (level + 1) + ' AT ' + Math.ceil(intoLevel * 100) + '%';
-    requestAnimationFrame(() => {
-      document.getElementById('xpFill').style.width = Math.max(6, intoLevel * 100) + '%';
-    });
-
-    /* ============ SCROLL XP BAR ============ */
-    const scrollXp = document.getElementById('scrollXp');
-    let ticking = false;
-    window.addEventListener('scroll', () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => {
-        const max = document.documentElement.scrollHeight - window.innerHeight;
-        scrollXp.style.width = (max > 0 ? (window.scrollY / max) * 100 : 0) + '%';
-        ticking = false;
-      });
-    }, { passive: true });
-
-    /* ============ ACHIEVEMENTS ============ */
-    const ACHIEVEMENTS = [
-      { id: 'adventurer', emoji: '🗺️', name: 'New Adventurer', how: 'Arrive at the realm' },
-      { id: 'quests',     emoji: '⚔️', name: 'Quest Browser',  how: 'Scout the quest log' },
-      { id: 'historian',  emoji: '📖', name: 'Historian',      how: 'Read the campaign log' },
-      { id: 'lorekeeper', emoji: '🧙', name: 'Lore Keeper',    how: 'Study the backstory' },
-      { id: 'statcheck',  emoji: '📊', name: 'Stat Checker',   how: 'Inspect the skill tree' },
-      { id: 'shifter',    emoji: '🌗', name: 'Day/Night Shifter', how: 'Toggle the theme' },
-      { id: 'raven',      emoji: '🪶', name: 'Raven Sent',     how: 'Reach out via Guild Hall' },
-      { id: 'completionist', emoji: '👑', name: 'Completionist', how: 'Reach the end of the realm' },
-    ];
-    const SECRET = { id: 'konami', emoji: '🕹️', name: 'Cheat Code Entered', how: '↑↑↓↓←→←→BA' };
-
-    const STORE_KEY = 'ip-achievements';
-    let unlocked = new Set(JSON.parse(localStorage.getItem(STORE_KEY) || '[]'));
-
-    const achGrid = document.getElementById('achGrid');
-    const achCount = document.getElementById('achCount');
-
-    function renderAchievements() {
-      const list = [...ACHIEVEMENTS, ...(unlocked.has('konami') ? [SECRET] : [])];
-      achGrid.innerHTML = list.map(a => `
-        <div class="ach panel ${unlocked.has(a.id) ? 'unlocked' : 'locked'}">
-          <span class="corner-b"></span>
-          <span class="ach-emoji">${a.emoji}</span>
-          <div>
-            <div class="ach-name">${unlocked.has(a.id) ? a.name : '???'}</div>
-            <div class="ach-how">${a.how}</div>
-          </div>
-        </div>`).join('');
-      achCount.textContent = [...unlocked].filter(id => id !== 'konami').length + '/' + ACHIEVEMENTS.length;
-    }
-
-    function unlock(id) {
-      if (unlocked.has(id)) return;
-      const a = [...ACHIEVEMENTS, SECRET].find(x => x.id === id);
-      if (!a) return;
-      unlocked.add(id);
-      localStorage.setItem(STORE_KEY, JSON.stringify([...unlocked]));
-      renderAchievements();
-      const toast = document.createElement('div');
-      toast.className = 'toast';
-      toast.innerHTML = `
-        <span class="toast-emoji">${a.emoji}</span>
-        <div>
-          <div class="toast-label">🏆 Achievement Unlocked</div>
-          <div class="toast-name">${a.name}</div>
-        </div>`;
-      document.getElementById('toastStack').appendChild(toast);
-      setTimeout(() => toast.remove(), 4600);
-    }
-
-    renderAchievements();
-    setTimeout(() => unlock('adventurer'), 1200);
-
-    // Section-visit achievements
-    const sectionAch = { quests: 'quests', campaign: 'historian', character: 'lorekeeper', skills: 'statcheck' };
-    const sectionObserver = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (e.isIntersecting && sectionAch[e.target.id]) {
-          unlock(sectionAch[e.target.id]);
-          sectionObserver.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.35 });
-    Object.keys(sectionAch).forEach(id => {
-      const el = document.getElementById(id);
-      if (el) sectionObserver.observe(el);
-    });
-
-    // Contact links
-    document.querySelectorAll('[data-ach="raven"]').forEach(el =>
-      el.addEventListener('click', () => unlock('raven')));
-
-    // Bottom of page
-    window.addEventListener('scroll', () => {
-      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 40) {
-        unlock('completionist');
+      if (currentTheme === 'dark') {
+        newTheme = 'light';
+      } else if (currentTheme === 'light') {
+        newTheme = 'dark';
+      } else {
+        newTheme = systemPrefersDark ? 'light' : 'dark';
       }
-    }, { passive: true });
 
-    // Konami code
-    const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
-    let kIdx = 0;
-    window.addEventListener('keydown', e => {
-      kIdx = (e.key === KONAMI[kIdx]) ? kIdx + 1 : (e.key === KONAMI[0] ? 1 : 0);
-      if (kIdx === KONAMI.length) { kIdx = 0; unlock('konami'); }
-    });
+      root.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+    }
 
-    /* ============ SCROLL REVEAL + STAT BARS ============ */
-    const revealObserver = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (!e.isIntersecting) return;
-        e.target.classList.add('revealed');
-        e.target.querySelectorAll('.stat-fill[data-stat]').forEach(bar => {
-          bar.style.width = bar.dataset.stat + '%';
+    if (themeToggle) {
+      themeToggle.addEventListener('click', toggleTheme);
+    }
+
+    // Scroll-triggered animations
+    const animateOnScroll = () => {
+      const elements = document.querySelectorAll('[data-animate]');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('animated');
+            observer.unobserve(entry.target);
+          }
         });
-        revealObserver.unobserve(e.target);
+      }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-    document.querySelectorAll('[data-reveal]').forEach(el => revealObserver.observe(el));
 
-    /* ============ SMOOTH ANCHOR SCROLL ============ */
+      elements.forEach(el => observer.observe(el));
+    };
+
+    document.addEventListener('DOMContentLoaded', animateOnScroll);
+
+    // Smooth scroll for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function(e) {
+        e.preventDefault();
         const target = document.querySelector(this.getAttribute('href'));
         if (target) {
-          e.preventDefault();
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
         }
       });
     });
+  </script>
+
+  <!-- Achievement engine — drives the in-game toasts + HUD counter -->
+  <script>
+    (function () {
+      const KEY = 'ip-achievements';
+      // id -> [emoji, display name]. Covers everything game.js unlocks, plus konami.
+      const A = {
+        adventurer: ['🚪', 'Stepped Inside'],
+        quests: ['📱', 'App Browser'],
+        historian: ['💼', 'Career Read'],
+        lorekeeper: ['📚', 'Lore Keeper'],
+        statcheck: ['🛠️', 'Stat Checker'],
+        shifter: ['🌗', 'Day / Night Shifter'],
+        raven: ['✉️', 'Reached Out'],
+        completionist: ['👑', 'Whole Office Toured'],
+        konami: ['🕹️', 'Cheat Code Entered'],
+      };
+      let unlocked = new Set();
+      try { unlocked = new Set(JSON.parse(localStorage.getItem(KEY) || '[]')); } catch (e) {}
+      window.unlock = function (id) {
+        if (unlocked.has(id) || !A[id]) return;
+        unlocked.add(id);
+        try { localStorage.setItem(KEY, JSON.stringify([...unlocked])); } catch (e) {}
+        const stack = document.getElementById('toastStack');
+        if (!stack) return;
+        const t = document.createElement('div');
+        t.className = 'toast';
+        t.innerHTML = '<span class="toast-emoji">' + A[id][0] + '</span><div>' +
+          '<div class="toast-label">🏆 Achievement Unlocked</div>' +
+          '<div class="toast-name">' + A[id][1] + '</div></div>';
+        stack.appendChild(t);
+        setTimeout(function () { t.remove(); }, 4600);
+      };
+      // Arriving counts (mirrors the old "New Adventurer")
+      setTimeout(function () { window.unlock('adventurer'); }, 1200);
+      // Theme toggle achievement
+      const tt = document.getElementById('themeToggle');
+      if (tt) tt.addEventListener('click', function () { window.unlock('shifter'); });
+      // Konami code on the classic site too (game.js has its own; unlock() dedupes)
+      const K = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+      let ki = 0;
+      window.addEventListener('keydown', function (e) {
+        ki = (e.key === K[ki]) ? ki + 1 : (e.key === K[0] ? 1 : 0);
+        if (ki === K.length) { ki = 0; window.unlock('konami'); }
+      });
+    })();
   </script>
   <script src="js/game.js" defer></script>
 </body>

@@ -1264,6 +1264,7 @@
     exitGame();
     const t = document.getElementById('achievements');
     if (t) t.scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth' });
+    else window.scrollTo(0, 0);
   });
   function syncMute() { muteBtn.textContent = state.muted ? '🔇' : '🔊'; }
   muteBtn.addEventListener('click', () => { state.muted = !state.muted; saveState(); syncMute(); ensureAudio(); });
