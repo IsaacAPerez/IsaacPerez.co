@@ -1,8 +1,7 @@
 /* ============================================================
-   THE DUNGEON OF ISAAC — playable portfolio
-   Vanilla canvas game. World is generated from room rects,
-   baked once to an offscreen canvas, and re-baked only on
-   theme change or when the secret vault opens.
+   ISAAC'S STUDIO — playable portfolio
+   A sleek home office you walk around. World is a single room
+   baked once to an offscreen canvas, re-baked only on theme change.
    ============================================================ */
 (function () {
   'use strict';
@@ -14,46 +13,32 @@
 
   // ---------------- Constants ----------------
   const TILE = 16;
-  const MAPW = 60, MAPH = 42;
+  const MAPW = 40, MAPH = 26;
   const STEP = 1 / 60;
-  const PLAYER_SPEED = 4.5 * TILE; // logical px/sec
+  const PLAYER_SPEED = 4.4 * TILE; // logical px/sec
   const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // Tile ids
-  const T = { VOID: 0, STONE: 1, BLUESTONE: 2, MARBLE: 3, WOOD: 4, GOLDFLOOR: 5, CARPET: 6, RUNE: 7, DAIS: 8, HELIPAD: 9, WALL: 10, CRACKED: 11 };
-  const FLOOR_MAX = 9; // ids <= FLOOR_MAX are walkable
+  const T = { VOID: 0, FLOOR: 1, RUG: 2, MAT: 3, WALL: 10, WINDOW: 11, DOOR: 12 };
 
-  const ROOMS = [
-    { id: 'foyer', title: 'The Foyer', x1: 21, y1: 17, x2: 34, y2: 26, floor: T.STONE },
-    { id: 'sanctum', title: 'Skills Sanctum', x1: 23, y1: 5, x2: 32, y2: 12, floor: T.BLUESTONE },
-    { id: 'campaign', title: 'Campaign Hall', x1: 5, y1: 18, x2: 15, y2: 25, floor: T.MARBLE },
-    { id: 'arcade', title: 'Quest Arcade', x1: 40, y1: 15, x2: 54, y2: 28, floor: T.STONE },
-    { id: 'rookery', title: 'The Rookery', x1: 22, y1: 31, x2: 33, y2: 38, floor: T.WOOD },
-    { id: 'study', title: "Hero's Study", x1: 6, y1: 5, x2: 13, y2: 11, floor: T.WOOD },
-    { id: 'vault', title: 'The Secret Vault', x1: 50, y1: 31, x2: 54, y2: 34, floor: T.GOLDFLOOR },
+  // Single open studio. Interior is walkable; the surrounding ring is wall.
+  const ROOM = { x1: 2, y1: 3, x2: 37, y2: 22 };
+  const WINDOWS = [[6, 12], [22, 28]]; // x ranges set into the top wall row
+  const DOORX = [19, 20];              // door tiles in the bottom wall
+  const RUG = { x1: 3, y1: 15, x2: 13, y2: 21 }; // work-nook rug
+
+  // Named zones for the HUD "you are here" label (anchor tile)
+  const ZONES = [
+    { name: 'The Desk', x: 19, y: 7 },
+    { name: 'Shipped Apps', x: 30, y: 7 },
+    { name: 'Camera Corner', x: 34, y: 12 },
+    { name: 'Wall of Work', x: 4, y: 7 },
+    { name: 'The Shelf', x: 8, y: 17 },
+    { name: 'Comms', x: 7, y: 20 },
   ];
-  const CORRIDORS = [
-    { x1: 27, y1: 13, x2: 28, y2: 16, floor: T.CARPET },  // foyer -> sanctum
-    { x1: 16, y1: 21, x2: 20, y2: 22, floor: T.CARPET },  // foyer -> campaign
-    { x1: 35, y1: 21, x2: 39, y2: 22, floor: T.CARPET },  // foyer -> arcade
-    { x1: 27, y1: 27, x2: 28, y2: 30, floor: T.CARPET },  // foyer -> rookery
-    { x1: 9, y1: 12, x2: 10, y2: 17, floor: T.STONE },    // campaign -> study
-  ];
-  const PLAQUES = [
-    { x: 28, y: 15.6, text: 'SKILLS SANCTUM', arrow: '▲', foyer: true },
-    { x: 18.5, y: 20.6, text: 'CAMPAIGN HALL', arrow: '◀', foyer: true },
-    { x: 37.5, y: 20.6, text: 'QUEST ARCADE', arrow: '▶', foyer: true },
-    { x: 28, y: 28.6, text: 'THE ROOKERY', arrow: '▼', foyer: true },
-    { x: 10, y: 13.6, text: "HERO'S STUDY" },
-  ];
-  // Torches flank each corridor mouth (tile coords, drawn on walls)
-  const TORCHES = [
-    [26, 16], [29, 16], [26, 13], [29, 13],     // sanctum corridor
-    [20, 20], [20, 23], [16, 20], [16, 23],     // campaign corridor
-    [35, 20], [35, 23], [39, 20], [39, 23],     // arcade corridor
-    [26, 27], [29, 27], [26, 30], [29, 30],     // rookery corridor
-    [8, 13], [11, 13], [8, 16], [11, 16],       // study corridor
-  ];
+
+  // Warm light sources (desk lamp, floor lamp) in tile coords
+  const LIGHTS = [[15, 4], [33, 18]];
 
   // ---------------- Persistence ----------------
   const GS_KEY = 'ip-game-state';
@@ -68,35 +53,43 @@
   // ---------------- Theme palette ----------------
   let PAL = {};
   function readPalette() {
-    const cs = getComputedStyle(document.documentElement);
-    const v = (name, fb) => (cs.getPropertyValue(name) || fb).trim() || fb;
     const light = document.documentElement.getAttribute('data-theme') === 'light' ||
       (!document.documentElement.getAttribute('data-theme') && window.matchMedia('(prefers-color-scheme: light)').matches);
+    // Sleek studio: whites & blacks, a red accent, plant greens.
     PAL = {
       light,
-      gold: v('--gold', '#f5b942'),
-      goldBright: v('--gold-bright', '#ffd166'),
-      goldDeep: v('--gold-deep', '#b97e16'),
-      text: v('--text', '#e8e6e1'),
-      bg: v('--bg', '#0b0e14'),
-      // dungeon tones
-      floor: light ? '#e3d7bc' : '#1a2032',
-      floorB: light ? '#d0c096' : '#171c2c',
-      floorC: light ? '#efe6cf' : '#1d2438',
-      blue: light ? '#d3d8cf' : '#18243a',
-      blueB: light ? '#c9d0c8' : '#152033',
-      marbleA: light ? '#efe6d2' : '#222a40',
-      marbleB: light ? '#ddd2b8' : '#1a2133',
-      wood: light ? '#d9b98c' : '#2e2418',
-      woodB: light ? '#cfae80' : '#271e13',
-      goldFloor: light ? '#e7c878' : '#4a3a14',
-      goldFloorB: light ? '#dfbd66' : '#403210',
-      carpet: light ? '#c9a84e' : '#3d3214',
-      carpetEdge: light ? '#9a6b15' : '#f5b94233',
-      wallTop: light ? '#b3a98f' : '#2c3450',
-      wall: light ? '#998f74' : '#222942',
-      wallDark: light ? '#7d7459' : '#171d30',
-      voidc: light ? '#cfc4a6' : '#070a10',
+      // red accent (the lone pop of color) — kept under the gold* names the engine uses
+      gold: '#e5484d', goldBright: '#ff6369', goldDeep: '#b42a30',
+      goldGlow: 'rgba(229,72,77,0.30)',
+      text: light ? '#1c1c1e' : '#f0f0f2',
+      white: light ? '#fbfbf9' : '#e9e9ec',
+      black: light ? '#1c1c1e' : '#0d0d0f',
+      bg: light ? '#f1efe9' : '#0c0c0e',
+      // floor (warm-neutral plank)
+      floor: light ? '#e7e3da' : '#1c1d20',
+      floorB: light ? '#ddd8cd' : '#191a1d',
+      floorLine: light ? '#d2ccbe' : '#141518',
+      // rug
+      rug: light ? '#d8d4ca' : '#202126',
+      rugRed: '#c0353a',
+      // walls
+      wall: light ? '#f4f2ee' : '#161619',
+      wallTop: light ? '#ffffff' : '#202024',
+      wallBase: light ? '#cfcabf' : '#0e0e10',
+      // window view
+      sky: light ? '#bfe3f2' : '#0e1422',
+      skyLow: light ? '#e7f3e9' : '#161d2e',
+      cityGlow: light ? '#d8c9a8' : '#3a4258',
+      // materials
+      metal: light ? '#c7c9cc' : '#3a3c42',
+      metalDark: light ? '#9a9ca1' : '#222428',
+      screen: light ? '#2a2c31' : '#10131a',
+      screenLit: light ? '#cfe6ef' : '#1d2b3a',
+      plant: light ? '#4f9d6b' : '#3d7d56',
+      plantDark: light ? '#3a7a50' : '#2c5f40',
+      pot: light ? '#d8d4cb' : '#2a2b30',
+      wood: light ? '#cbb390' : '#3a3024',
+      voidc: light ? '#d9d6cf' : '#070708',
     };
   }
 
@@ -104,37 +97,24 @@
   let grid = new Uint8Array(MAPW * MAPH);
   function gAt(x, y) { return (x < 0 || y < 0 || x >= MAPW || y >= MAPH) ? T.VOID : grid[y * MAPW + x]; }
   function gSet(x, y, v) { if (x >= 0 && y >= 0 && x < MAPW && y < MAPH) grid[y * MAPW + x] = v; }
-  function isFloorId(id) { return id >= T.STONE && id <= T.HELIPAD; }
+  function isFloorId(id) { return id >= T.FLOOR && id <= T.MAT; }
 
   function hash2(x, y) { let h = (x * 374761393 + y * 668265263) | 0; h = (h ^ (h >> 13)) * 1274126177; return ((h ^ (h >> 16)) >>> 0) / 4294967295; }
 
   function buildMap() {
     grid = new Uint8Array(MAPW * MAPH);
-    const rects = ROOMS.concat(CORRIDORS);
-    for (const r of rects) {
-      if (r.id === 'vault' && false) continue;
-      for (let y = r.y1; y <= r.y2; y++) for (let x = r.x1; x <= r.x2; x++) gSet(x, y, r.floor);
-    }
-    // Foyer gold carpet cross
-    for (let y = 17; y <= 26; y++) { gSet(27, y, T.CARPET); gSet(28, y, T.CARPET); }
-    for (let x = 21; x <= 34; x++) { gSet(x, 21, T.CARPET); gSet(x, 22, T.CARPET); }
-    // Sanctum rune scatter
-    for (let y = 5; y <= 12; y++) for (let x = 23; x <= 32; x++) if (gAt(x, y) === T.BLUESTONE && hash2(x, y) > 0.85) gSet(x, y, T.RUNE);
-    // Special tiles
-    gSet(27, 36, T.DAIS);
-    gSet(45, 24, T.HELIPAD); gSet(46, 24, T.HELIPAD); gSet(45, 25, T.HELIPAD); gSet(46, 25, T.HELIPAD);
-    // Vault passage (2 tiles wide to match the other corridors)
-    if (state.vaultOpen) { gSet(51, 29, T.STONE); gSet(52, 29, T.STONE); gSet(51, 30, T.STONE); gSet(52, 30, T.STONE); }
-    // Walls: any non-floor tile 8-adjacent to floor
-    const wall = [];
-    for (let y = 0; y < MAPH; y++) for (let x = 0; x < MAPW; x++) {
-      if (isFloorId(gAt(x, y))) continue;
-      let adj = false;
-      for (let dy = -1; dy <= 1 && !adj; dy++) for (let dx = -1; dx <= 1; dx++) if (isFloorId(gAt(x + dx, y + dy))) { adj = true; break; }
-      if (adj) wall.push([x, y]);
-    }
-    for (const [x, y] of wall) gSet(x, y, T.WALL);
-    if (!state.vaultOpen) gSet(52, 29, T.CRACKED);
+    // floor
+    for (let y = ROOM.y1; y <= ROOM.y2; y++) for (let x = ROOM.x1; x <= ROOM.x2; x++) gSet(x, y, T.FLOOR);
+    // central area rug (anchors the open floor) + work-nook rug
+    for (let y = 9; y <= 16; y++) for (let x = 15; x <= 27; x++) gSet(x, y, T.RUG);
+    for (let y = RUG.y1; y <= RUG.y2; y++) for (let x = RUG.x1; x <= RUG.x2; x++) gSet(x, y, T.RUG);
+    // wall ring around the interior
+    for (let x = ROOM.x1 - 1; x <= ROOM.x2 + 1; x++) { gSet(x, ROOM.y1 - 1, T.WALL); gSet(x, ROOM.y2 + 1, T.WALL); }
+    for (let y = ROOM.y1 - 1; y <= ROOM.y2 + 1; y++) { gSet(ROOM.x1 - 1, y, T.WALL); gSet(ROOM.x2 + 1, y, T.WALL); }
+    // windows along the top wall
+    for (const [a, b] of WINDOWS) for (let x = a; x <= b; x++) gSet(x, ROOM.y1 - 1, T.WINDOW);
+    // door in the bottom wall + doormat
+    for (const x of DOORX) { gSet(x, ROOM.y2 + 1, T.DOOR); gSet(x, ROOM.y2, T.MAT); }
   }
 
   // ---------------- Tile atlas + world bake ----------------
@@ -142,7 +122,7 @@
   let atlas = {};
   function bakeAtlas() {
     atlas = {};
-    const variants = { [T.STONE]: 3, [T.BLUESTONE]: 2, [T.MARBLE]: 2, [T.WOOD]: 2, [T.GOLDFLOOR]: 2, [T.CARPET]: 1, [T.RUNE]: 1, [T.DAIS]: 1, [T.HELIPAD]: 1, [T.WALL]: 1, [T.CRACKED]: 1, [T.VOID]: 1 };
+    const variants = { [T.FLOOR]: 3, [T.RUG]: 2, [T.MAT]: 1, [T.WALL]: 1, [T.WINDOW]: 1, [T.DOOR]: 1, [T.VOID]: 1 };
     for (const idStr of Object.keys(variants)) {
       const id = +idStr; const n = variants[id]; atlas[id] = [];
       for (let v = 0; v < n; v++) {
@@ -162,51 +142,36 @@
   function drawTile(g, id, v) {
     switch (id) {
       case T.VOID: g.fillStyle = PAL.voidc; g.fillRect(0, 0, TILE, TILE); break;
-      case T.STONE: speckle(g, [PAL.floor, PAL.floorB, PAL.floorC][v % 3], PAL.floorB, PAL.floorC, v + 1); break;
-      case T.BLUESTONE: speckle(g, v ? PAL.blueB : PAL.blue, PAL.blue, PAL.blueB, v + 9); break;
-      case T.MARBLE: g.fillStyle = v ? PAL.marbleA : PAL.marbleB; g.fillRect(0, 0, TILE, TILE); g.fillStyle = 'rgba(0,0,0,0.06)'; g.fillRect(0, TILE - 1, TILE, 1); break;
-      case T.WOOD: {
-        g.fillStyle = v ? PAL.wood : PAL.woodB; g.fillRect(0, 0, TILE, TILE);
-        g.fillStyle = 'rgba(0,0,0,0.14)';
-        for (let y = 3; y < TILE; y += 5) g.fillRect(0, y, TILE, 1);
+      case T.FLOOR: {
+        g.fillStyle = v === 2 ? PAL.floorB : PAL.floor; g.fillRect(0, 0, TILE, TILE);
+        // horizontal plank seams; only an occasional short vertical end-joint
+        g.fillStyle = PAL.floorLine;
+        g.fillRect(0, v === 1 ? 5 : 11, TILE, 1);
+        if (v === 0) g.fillRect(11, 0, 1, 6);
         break;
       }
-      case T.GOLDFLOOR: speckle(g, v ? PAL.goldFloor : PAL.goldFloorB, PAL.goldFloorB, PAL.gold, v + 21); break;
-      case T.CARPET: {
-        g.fillStyle = PAL.carpet; g.fillRect(0, 0, TILE, TILE);
-        g.fillStyle = PAL.carpetEdge; g.fillRect(0, 0, TILE, 1); g.fillRect(0, TILE - 1, TILE, 1);
+      case T.RUG: {
+        g.fillStyle = PAL.rug; g.fillRect(0, 0, TILE, TILE);
+        if (v) { g.fillStyle = PAL.light ? 'rgba(0,0,0,0.04)' : 'rgba(255,255,255,0.03)'; for (let i = 2; i < TILE; i += 4) g.fillRect(0, i, TILE, 1); }
         break;
       }
-      case T.RUNE: {
-        speckle(g, PAL.blue, PAL.blue, PAL.blueB, 77);
-        g.strokeStyle = PAL.light ? 'rgba(154,107,21,0.5)' : 'rgba(245,185,66,0.4)'; g.lineWidth = 1;
-        g.strokeRect(4.5, 4.5, 7, 7); g.beginPath(); g.moveTo(8, 4.5); g.lineTo(8, 11.5); g.stroke();
-        break;
-      }
-      case T.DAIS: {
-        speckle(g, PAL.wood, PAL.wood, PAL.woodB, 88);
-        g.fillStyle = PAL.light ? 'rgba(154,107,21,0.30)' : 'rgba(245,185,66,0.22)';
-        g.beginPath(); g.arc(8, 8, 7, 0, 7); g.fill();
-        break;
-      }
-      case T.HELIPAD: {
-        speckle(g, PAL.floor, PAL.floorB, PAL.floorC, 99);
-        g.strokeStyle = PAL.light ? '#9a6b15' : '#f5b942'; g.lineWidth = 1.5; g.globalAlpha = 0.65;
-        g.beginPath(); g.arc(8, 8, 6, 0, 7); g.stroke(); g.globalAlpha = 1;
+      case T.MAT: {
+        g.fillStyle = PAL.metalDark; g.fillRect(1, 2, TILE - 2, TILE - 4);
+        g.fillStyle = PAL.metal; g.fillRect(2, 3, TILE - 4, TILE - 6);
+        g.fillStyle = PAL.metalDark; for (let i = 4; i < TILE - 3; i += 3) g.fillRect(3, i, TILE - 6, 1);
         break;
       }
       case T.WALL: {
         g.fillStyle = PAL.wall; g.fillRect(0, 0, TILE, TILE);
-        g.fillStyle = PAL.wallTop; g.fillRect(0, 0, TILE, 2);
-        g.fillStyle = PAL.wallDark; g.fillRect(0, TILE - 1, TILE, 1);
-        g.fillStyle = 'rgba(0,0,0,0.12)'; g.fillRect(0, 7, TILE, 1);
+        g.fillStyle = PAL.wallTop; g.fillRect(0, 0, TILE, 2);          // crown highlight
+        g.fillStyle = PAL.wallBase; g.fillRect(0, TILE - 3, TILE, 3);  // baseboard
         break;
       }
-      case T.CRACKED: {
-        drawTile(g, T.WALL, 0);
-        g.strokeStyle = PAL.light ? 'rgba(60,50,30,0.55)' : 'rgba(200,210,235,0.30)'; g.lineWidth = 1;
-        g.beginPath(); g.moveTo(4, 3); g.lineTo(7, 7); g.lineTo(5, 11); g.moveTo(7, 7); g.lineTo(11, 9); g.lineTo(12, 13); g.stroke();
-        g.fillStyle = 'rgba(255,255,255,0.05)'; g.fillRect(0, 2, TILE, TILE - 3);
+      case T.WINDOW: { g.fillStyle = PAL.wall; g.fillRect(0, 0, TILE, TILE); break; } // view overlaid in bakeWorld
+      case T.DOOR: {
+        g.fillStyle = PAL.metalDark; g.fillRect(2, 0, TILE - 4, TILE);
+        g.fillStyle = PAL.metal; g.fillRect(3, 1, TILE - 6, TILE - 2);
+        g.fillStyle = PAL.gold; g.fillRect(TILE - 6, 7, 2, 3); // red handle
         break;
       }
     }
@@ -222,14 +187,39 @@
       const v = set.length > 1 ? Math.floor(hash2(x, y) * set.length) : 0;
       g.drawImage(set[v], x * TILE, y * TILE);
     }
-    // Study bookshelf decor along north wall
-    for (let x = 6; x <= 13; x++) if (x !== 7 && x !== 12) drawShelf(g, x * TILE, 5 * TILE);
+    // central area rug: subtle neutral inset border
+    g.strokeStyle = PAL.light ? 'rgba(0,0,0,0.10)' : 'rgba(255,255,255,0.07)'; g.lineWidth = 2;
+    g.strokeRect(15 * TILE + 4, 9 * TILE + 4, 13 * TILE - 8, 8 * TILE - 8);
+    // work-nook rug: red inset border so it reads as one piece
+    g.strokeStyle = PAL.rugRed; g.lineWidth = 2;
+    g.strokeRect(RUG.x1 * TILE + 3, RUG.y1 * TILE + 3, (RUG.x2 - RUG.x1 + 1) * TILE - 6, (RUG.y2 - RUG.y1 + 1) * TILE - 6);
+    // window views (continuous across each opening)
+    for (const [a, b] of WINDOWS) drawWindowView(g, a * TILE, (ROOM.y1 - 1) * TILE, (b - a + 1) * TILE);
   }
-  function drawShelf(g, px, py) {
-    g.fillStyle = PAL.woodB; g.fillRect(px + 1, py + 1, 14, 13);
-    g.fillStyle = PAL.wood; g.fillRect(px + 2, py + 2, 12, 4); g.fillRect(px + 2, py + 8, 12, 4);
-    const cols = PAL.light ? ['#9a6b15', '#7a5410', '#b3552e'] : ['#f5b942', '#5da9e9', '#ef6461'];
-    for (let i = 0; i < 4; i++) { g.fillStyle = cols[i % 3]; g.fillRect(px + 3 + i * 3, py + 2, 2, 4); g.fillStyle = cols[(i + 1) % 3]; g.fillRect(px + 3 + i * 3, py + 8, 2, 4); }
+  function drawWindowView(g, px, py, w) {
+    const h = TILE;
+    // sky
+    const sky = g.createLinearGradient(0, py, 0, py + h);
+    sky.addColorStop(0, PAL.sky); sky.addColorStop(1, PAL.skyLow);
+    g.fillStyle = sky; g.fillRect(px, py, w, h);
+    if (PAL.light) {
+      // daytime LA: low skyline + sun
+      g.fillStyle = 'rgba(255,240,200,0.8)'; g.beginPath(); g.arc(px + w * 0.78, py + 5, 3, 0, 7); g.fill();
+      g.fillStyle = PAL.cityGlow;
+      for (let i = 0; i < w; i += 7) { const bh = 4 + (hash2(px + i, 3) * 6 | 0); g.fillRect(px + i, py + h - bh, 5, bh); }
+    } else {
+      // night skyline with lit windows
+      g.fillStyle = '#0a0e18';
+      for (let i = 0; i < w; i += 6) { const bh = 5 + (hash2(px + i, 5) * 7 | 0); g.fillRect(px + i, py + h - bh, 5, bh); }
+      g.fillStyle = PAL.gold;
+      for (let i = 0; i < w; i += 3) if (hash2(px + i, 9) > 0.7) g.fillRect(px + i + 1, py + h - 3 - (hash2(px + i, 2) * 6 | 0), 1, 1);
+    }
+    // frame + mullions
+    g.fillStyle = PAL.wallTop;
+    g.fillRect(px, py, w, 2); g.fillRect(px, py + h - 2, w, 2);
+    g.fillStyle = PAL.wallBase;
+    g.fillRect(px + (w / 2 | 0), py, 1, h);
+    g.fillRect(px, py + (h / 2 | 0), w, 1);
   }
 
   // ---------------- Emoji rasters (with tofu fallback) ----------------
@@ -295,56 +285,82 @@
     }
     return frames;
   }
-  let heroRig, sageRig;
+  let heroRig;
   function bakeRigs() {
-    heroRig = makeRig({ body: PAL.light ? '#27365c' : '#1d2740', trim: PAL.gold, pants: PAL.light ? '#4a5a7d' : '#31415f', shoes: '#15181f', skin: '#c98e5a', hair: '#241a10' });
-    sageRig = makeRig({ body: PAL.light ? '#8e8878' : '#565d6e', trim: PAL.gold, pants: PAL.light ? '#8e8878' : '#565d6e', shoes: '#2a2d35', skin: '#d8b48a', hair: '#aab0bb', robe: true, beard: '#cfd4dc' });
+    heroRig = makeRig({ body: PAL.light ? '#34363c' : '#3d4047', trim: PAL.gold, pants: PAL.light ? '#3a3f4a' : '#2a2e36', shoes: '#ededf0', skin: '#c98e5a', hair: '#241a10' });
   }
 
   // ---------------- Entities ----------------
   // kind: drawing recipe. core: counts toward completion. group: achievement group.
+  // decor: non-interactable furniture. IDs/groups are kept from the old build so
+  // the achievement wiring and persistence keep working unchanged.
   const ENTITIES = [
-    { id: 'sign_welcome', x: 28, y: 19, w: 1, h: 1, kind: 'sign', emoji: '', core: true, kicker: 'Signpost', title: 'Welcome, Traveler', body: "You've found the Dungeon of Isaac — Isaac Perez: iOS engineer, founder, Angeleno. Five wings, zero monsters, one suspiciously hireable hero. Walk up to anything glowing and press E. That's the whole tutorial." },
-    { id: 'npc_sage', x: 24, y: 19, w: 1, h: 1, kind: 'sage', emoji: '', core: true, solid: false, kicker: 'NPC', title: 'The Old Sage', body: "I've swept these halls since the Objective-C era. Two tips, traveler: the Arcade's south wall has one brick too many... and if your thumbs still remember the old arcade dance — the one every 90s kid knows by heart — this dungeon answers to it." },
-    { id: 'dungeon_cat', x: 24, y: 25, w: 1, h: 1, kind: 'emoji', emoji: '🐈‍⬛', core: false, solid: false, kicker: 'Cat', title: 'Dungeon Cat', body: 'Mrow. (The cat has audited all five wings and finds the code acceptable. This is the highest rating the cat gives.)' },
-    { id: 'stairs_exit', x: 33, y: 25, w: 1, h: 1, kind: 'stairs', emoji: '', core: false, solid: false, kicker: 'Exit', title: 'Stairs to the Overworld', body: 'Beyond lies the classic site — same lore, fewer pixels. Your achievements climb with you.' },
-    // Quest Arcade
-    { id: 'cab_curbside', x: 42, y: 16, w: 1, h: 2, kind: 'cabinet', emoji: '🚚', accent: '#e8590c', core: true, group: 'project', kicker: 'Main Quest · In Progress', title: 'CurbSide', body: 'A street-food discovery iOS app for finding the taco truck before the line forms. Currently cooking, launching soon. Built in SwiftUI on a Supabase backend.', link: 'https://thecurbside.app', linkLabel: 'Visit thecurbside.app' },
-    { id: 'cab_runsbyip', x: 45, y: 16, w: 1, h: 2, kind: 'cabinet', emoji: '🏀', accent: '#b86cff', core: true, group: 'project', kicker: 'Weekly Raid', title: 'Runs by IP', body: "Weekly pickup basketball in LA with RSVPs and payments built in — no flaky group chats, no 'who's got cash.' Founded, built, and occasionally crossed-over-at by Isaac. SwiftUI, Supabase, Stripe, with waitlists and a team randomizer under the hood.", link: 'https://runsbyip.com', linkLabel: 'Join at runsbyip.com' },
-    { id: 'cab_kangs', x: 48, y: 16, w: 1, h: 2, kind: 'cabinet', emoji: '🍜', accent: '#4aa8ff', core: true, group: 'project', kicker: 'Side Quest', title: "Kang's Kuisine", body: 'Online ordering for a Korean pop-up kitchen: menu drops, pre-orders, instant sellouts. Next.js + Supabase + Stripe, with real-time inventory and an admin dashboard. (The tteokbokki handles marketing.)', link: 'https://kangskuisine.food', linkLabel: 'Order at kangskuisine.food' },
-    { id: 'cab_teamup', x: 51, y: 16, w: 1, h: 2, kind: 'cabinet', emoji: '⚽', accent: '#4ade80', core: true, group: 'project', kicker: 'Live on the App Store', title: 'TeamUp', body: 'Find a pickup game for any sport and join in two taps. Shipped in SwiftUI on Firebase and live on the App Store right now — the one you can download mid-dungeon.', link: 'https://theteamup.app', linkLabel: 'Visit theteamup.app' },
-    { id: 'pad_captured', x: 45, y: 24, w: 2, h: 2, kind: 'drone', emoji: '🚁', core: true, group: 'project', solid: false, kicker: 'The Aerial Mount', title: 'CapturedByIP', body: "Isaac's photography and drone brand: portraits, aerials, and golden-hour LA from angles the freeway will never know. The drone likes you — it'll tag along for the rest of the run.", link: 'https://capturedbyip.com', linkLabel: 'View capturedbyip.com' },
-    { id: 'wall_cracked', x: 52, y: 29, w: 1, h: 1, kind: 'hidden', emoji: '', core: false, kicker: 'Hm?', title: 'A Suspicious Wall', body: "These bricks don't match. You push — and the wall slides aside with a satisfied click." },
-    { id: 'shrine_taco', x: 52, y: 32, w: 1, h: 1, kind: 'taco', emoji: '🌮', core: false, kicker: 'Secret', title: 'The Golden Taco', body: "The hero's one documented weakness, enshrined in gold. You found the secret room — Curiosity stat maxed. (The Sage owes you a sweep of this floor.)" },
-    // Campaign Hall
-    { id: 'statue_tinder', x: 7, y: 20, w: 1, h: 2, kind: 'statue', emoji: '🔥', accent: '#fd5564', core: true, group: 'statue', kicker: 'Chapter II — Current', title: 'Guild of the Flame — Tinder', body: 'iOS Engineer, 2026–present. Building features for one of the world’s most-used dating apps — millions of users, where a dropped frame is a matter of the heart. Focus: launch performance and Xcode tooling.' },
-    { id: 'statue_nextdoor', x: 13, y: 20, w: 1, h: 2, kind: 'statue', emoji: '🏘️', accent: '#8ed500', core: true, group: 'statue', kicker: 'Chapter I — 2021–2025', title: 'Guild of the Neighborhood — Nextdoor', body: 'iOS Engineer, 2021–2025. Four and a half years scaling the iOS app for millions of neighbors — core features in Swift, SwiftUI, TCA & Combine, and the experiments that decided what stayed. Every quest in the Arcade traces back here.' },
-    // Skills Sanctum
-    { id: 'crystal_ios', x: 24, y: 7, w: 1, h: 1, kind: 'crystal', accent: '#4aa8ff', stat: 96, core: true, group: 'crystal', kicker: 'Skill Crystal', title: 'iOS Development — 96', body: 'Forged in Swift, tempered across 5+ years of production iOS. The main weapon, fully upgraded.' },
-    { id: 'crystal_mobile', x: 28, y: 7, w: 1, h: 1, kind: 'crystal', accent: '#2dd4bf', stat: 92, core: true, group: 'crystal', kicker: 'Skill Crystal', title: 'Mobile Apps — 92', body: "Five apps from prototype to App Store and counting. Here, shipping isn't a milestone — it's a habit." },
-    { id: 'crystal_ai', x: 31, y: 7, w: 1, h: 1, kind: 'crystal', accent: '#4ade80', stat: 90, core: true, group: 'crystal', kicker: 'Skill Crystal', title: 'AI Tools — 90', body: 'Fights alongside the machines, not against them. A big part of why this dungeon shipped in one sitting.' },
-    { id: 'crystal_startups', x: 24, y: 10, w: 1, h: 1, kind: 'crystal', accent: '#f5b942', stat: 88, core: true, group: 'crystal', kicker: 'Skill Crystal', title: 'Startups — 88', body: 'Founder-class stat: four products shipped solo. See the gap, build the thing, ship the thing, learn in public. Repeat.' },
-    { id: 'crystal_photo', x: 28, y: 10, w: 1, h: 1, kind: 'crystal', accent: '#b86cff', stat: 85, core: true, group: 'crystal', kicker: 'Skill Crystal', title: 'Photography — 85', body: 'An off-hours specialization that went pro. Exhibit A hangs in the Rookery; Exhibit B flies.' },
-    { id: 'crystal_drones', x: 31, y: 10, w: 1, h: 1, kind: 'crystal', accent: '#5da9e9', stat: 83, core: true, group: 'crystal', kicker: 'Skill Crystal', title: 'Drones — 83', body: 'Licensed aerial mount, steady hands, cinematic instincts. The sky is just another viewfinder.' },
-    // Hero's Study
-    { id: 'tome_about', x: 7, y: 6, w: 1, h: 1, kind: 'emojiBase', emoji: '📚', core: true, group: 'study', kicker: 'Lore', title: 'Tome of Origins', body: 'Isaac builds for real-world community — food trucks, pickup runs, neighborhoods that actually talk to each other. Doctrine: ship fast, learn in public, repeat.' },
-    { id: 'tablet_stats', x: 10, y: 8, w: 1, h: 1, kind: 'emojiBase', emoji: '📜', core: true, group: 'study', kicker: 'Lore', title: 'The Attribute Sheet', body: 'Alignment: Chaotic Builder. Main Weapon: Swift. Mount: DJI Drone. Weakness: Street Tacos. (The scholars confirm all four.)' },
-    { id: 'map_la', x: 12, y: 6, w: 1, h: 1, kind: 'emojiBase', emoji: '🗺️', core: true, group: 'study', kicker: 'Lore', title: 'Map of the Realm — Los Angeles', body: 'Home turf, test market, infinite taco supply. Every quest in this dungeon was playtested on these streets.' },
-    // Rookery
-    { id: 'mailbox_email', x: 24, y: 32, w: 1, h: 1, kind: 'emojiBase', emoji: '✉️', core: true, group: 'contact', kicker: 'Contact', title: 'The Raven Post', body: 'Quests, contracts, collabs, and good ideas: iperez2435@gmail.com. Replies arrive faster than the raven — and the raven is motivated.', link: 'mailto:iperez2435@gmail.com', linkLabel: 'Send a Raven' },
-    { id: 'statue_github', x: 27, y: 32, w: 1, h: 1, kind: 'emojiBase', emoji: '🐙', core: true, group: 'contact', kicker: 'Contact', title: 'The Octocat Shrine', body: 'A thousand green squares and the occasional heroic 2 a.m. commit. The public quest log is open for inspection.', link: 'https://github.com/IsaacAPerez', linkLabel: 'Open GitHub' },
-    { id: 'portal_linkedin', x: 30, y: 32, w: 1, h: 1, kind: 'emojiBase', emoji: '💼', core: true, group: 'contact', kicker: 'Contact', title: 'The Guild Registry', body: 'The official scroll of titles, dates, and endorsements. Recruiters roll with advantage here.', link: 'https://linkedin.com/in/isaacabelperez', linkLabel: 'Open LinkedIn' },
-    { id: 'frame_instagram', x: 33, y: 32, w: 1, h: 1, kind: 'emojiBase', emoji: '📷', core: true, group: 'contact', kicker: 'Contact', title: 'The Scrying Glass', body: "Drone aerials, street food, and golden hour over LA. Visual proof the Photography crystal isn't bluffing.", link: 'https://instagram.com/isaacabelperez', linkLabel: 'Open Instagram' },
-    { id: 'chest_resume', x: 27, y: 36, w: 1, h: 1, kind: 'chest', emoji: '', core: true, group: 'contact', kicker: 'Treasure', title: 'The Sacred Scroll', body: 'You got Resume.pdf — one page, zero fluff, +10 to Hiring Power. The chest restocks itself.', link: 'Resume.pdf', linkLabel: 'Take the Scroll' },
+    // --- The Desk (hub) ---
+    { id: 'desk_main', x: 14, y: 4, w: 11, h: 2, kind: 'furniture', tone: 'desk', decor: true, flat: true },
+    { id: 'chair_main', x: 18, y: 6, w: 3, h: 2, kind: 'chair', decor: true, solid: false },
+    { id: 'sign_welcome', x: 18, y: 4, w: 2, h: 1, kind: 'monitors', core: true, solid: false, kicker: 'Welcome', title: "Isaac's Home Office", body: "Hey — I'm Isaac Perez, iOS engineer & founder in LA. This is my office. Walk around with WASD, press E next to anything that interests you. The monitors, the shelf, the camera gear — it's all real. Make yourself at home." },
+    { id: 'npc_sage', x: 23, y: 12, w: 1, h: 1, kind: 'roomba', core: true, solid: false, kicker: 'The Roomba', title: 'Dusty (the Roomba)', body: "Beep. I keep the place tidy and I know its secrets. Two of them: the mini-fridge in the corner is worth a look... and if your thumbs remember the old arcade cheat — the one every 90s kid knows — this office still answers to it." },
+    { id: 'dungeon_cat', x: 22, y: 16, w: 1, h: 1, kind: 'emoji', emoji: '🐈‍⬛', core: false, solid: false, kicker: 'Office Cat', title: 'Pixel (the Office Cat)', body: 'Mrow. (Pixel has reviewed the codebase from the warm spot on the desk and finds it acceptable. This is the highest rating Pixel gives.)' },
+    { id: 'stairs_exit', x: 19, y: 22, w: 2, h: 1, kind: 'door', core: false, solid: false, kicker: 'The Door', title: 'Out to the Site', body: 'Step out to the classic site — same story, fewer pixels. Anything you unlocked comes with you.' },
+
+    // --- Shipped Apps: phones on a console ---
+    { id: 'console_apps', x: 26, y: 4, w: 9, h: 2, kind: 'furniture', tone: 'console', decor: true, flat: true },
+    { id: 'cab_curbside', x: 27, y: 4, w: 1, h: 1, kind: 'phone', emoji: '🚚', accent: '#e8590c', core: true, group: 'project', kicker: 'Building Now', title: 'CurbSide', body: 'A street-food discovery iOS app for finding the taco truck before the line forms. Currently cooking, launching soon. Built in SwiftUI on a Supabase backend.', link: 'https://thecurbside.app', linkLabel: 'Visit thecurbside.app' },
+    { id: 'cab_runsbyip', x: 29, y: 4, w: 1, h: 1, kind: 'phone', emoji: '🏀', accent: '#b86cff', core: true, group: 'project', kicker: 'Live', title: 'Runs by IP', body: "Weekly pickup basketball in LA with RSVPs and payments built in — no flaky group chats, no 'who's got cash.' Founded, built, and occasionally crossed-over-at by Isaac. SwiftUI, Supabase, Stripe, with waitlists and a team randomizer under the hood.", link: 'https://runsbyip.com', linkLabel: 'Join at runsbyip.com' },
+    { id: 'cab_kangs', x: 31, y: 4, w: 1, h: 1, kind: 'phone', emoji: '🍜', accent: '#4aa8ff', core: true, group: 'project', kicker: 'Live', title: "Kang's Kuisine", body: 'Online ordering for a Korean pop-up kitchen: menu drops, pre-orders, instant sellouts. Next.js + Supabase + Stripe, with real-time inventory and an admin dashboard. (The tteokbokki handles marketing.)', link: 'https://kangskuisine.food', linkLabel: 'Order at kangskuisine.food' },
+    { id: 'cab_teamup', x: 33, y: 4, w: 1, h: 1, kind: 'phone', emoji: '⚽', accent: '#4ade80', core: true, group: 'project', kicker: 'On the App Store', title: 'TeamUp', body: 'Find a pickup game for any sport and join in two taps. Shipped in SwiftUI on Firebase and live on the App Store right now — the one you can download without leaving your seat.', link: 'https://theteamup.app', linkLabel: 'Visit theteamup.app' },
+
+    // --- Camera Corner ---
+    { id: 'gear_shelf', x: 33, y: 9, w: 4, h: 1, kind: 'furniture', tone: 'shelf', decor: true, flat: true },
+    { id: 'pad_captured', x: 34, y: 10, w: 2, h: 2, kind: 'camera', core: true, group: 'project', solid: false, kicker: 'CapturedByIP', title: 'CapturedByIP', body: "My photography and drone brand: portraits, aerials, and golden-hour LA from angles the freeway will never know. Power up the drone and it'll follow you around the office.", link: 'https://capturedbyip.com', linkLabel: 'View capturedbyip.com' },
+
+    // --- Wall of Work: framed roles (left wall) ---
+    { id: 'statue_tinder', x: 2, y: 5, w: 1, h: 1, kind: 'frame', wall: 'left', accent: '#fd5564', core: true, group: 'statue', kicker: 'Now — Tinder', title: 'iOS Engineer · Tinder', body: 'iOS Engineer, 2026–present. Building features for one of the world’s most-used dating apps — millions of users, where a dropped frame is a matter of the heart. Focus: launch performance and Xcode tooling.' },
+    { id: 'statue_nextdoor', x: 2, y: 8, w: 1, h: 1, kind: 'frame', wall: 'left', accent: '#8ed500', core: true, group: 'statue', kicker: '2021–2025 — Nextdoor', title: 'iOS Engineer · Nextdoor', body: 'iOS Engineer, 2021–2025. Four and a half years scaling the iOS app for millions of neighbors — core features in Swift, SwiftUI, TCA & Combine, and the experiments that decided what stayed.' },
+    { id: 'frame_instagram', x: 2, y: 12, w: 1, h: 1, kind: 'frame', wall: 'left', core: true, group: 'contact', kicker: 'Instagram', title: 'On Instagram', body: 'Drone aerials, street food, and golden hour over LA. The visual proof the camera gear earns its shelf space.', link: 'https://instagram.com/isaacabelperez', linkLabel: 'Open Instagram' },
+
+    // --- The Shelf: skills as gadgets on a credenza ---
+    { id: 'credenza_skills', x: 3, y: 16, w: 11, h: 2, kind: 'furniture', tone: 'credenza', decor: true, flat: true },
+    { id: 'crystal_ios', x: 3, y: 16, w: 1, h: 1, kind: 'shelfitem', icon: 'swift', accent: '#e5484d', stat: 96, core: true, group: 'crystal', kicker: 'Skill', title: 'iOS Development — 96', body: 'Forged in Swift, tempered across 5+ years of production iOS. The main weapon, fully upgraded.' },
+    { id: 'crystal_mobile', x: 5, y: 16, w: 1, h: 1, kind: 'shelfitem', icon: 'phone', accent: '#cfd2d6', stat: 92, core: true, group: 'crystal', kicker: 'Skill', title: 'Mobile Apps — 92', body: "Five apps from prototype to App Store and counting. Here, shipping isn't a milestone — it's a habit." },
+    { id: 'crystal_ai', x: 7, y: 16, w: 1, h: 1, kind: 'shelfitem', icon: 'chip', accent: '#cfd2d6', stat: 90, core: true, group: 'crystal', kicker: 'Skill', title: 'AI Tools — 90', body: 'Fights alongside the machines, not against them. A big part of why this whole office got built in a few sittings.' },
+    { id: 'crystal_startups', x: 9, y: 16, w: 1, h: 1, kind: 'shelfitem', icon: 'rocket', accent: '#e5484d', stat: 88, core: true, group: 'crystal', kicker: 'Skill', title: 'Startups — 88', body: 'Founder-class stat: four products shipped solo. See the gap, build the thing, ship the thing, learn in public. Repeat.' },
+    { id: 'crystal_photo', x: 11, y: 16, w: 1, h: 1, kind: 'shelfitem', icon: 'camera', accent: '#cfd2d6', stat: 85, core: true, group: 'crystal', kicker: 'Skill', title: 'Photography — 85', body: 'An off-hours specialization that went pro. The framed prints and the drone on the shelf are the receipts.' },
+    { id: 'crystal_drones', x: 13, y: 16, w: 1, h: 1, kind: 'shelfitem', icon: 'drone', accent: '#cfd2d6', stat: 83, core: true, group: 'crystal', kicker: 'Skill', title: 'Drones — 83', body: 'Licensed pilot, steady hands, cinematic instincts. The sky is just another viewfinder.' },
+
+    // --- Lore: framed prints + bookshelf ---
+    { id: 'map_la', x: 17, y: 2, w: 1, h: 1, kind: 'frame', wall: 'top', core: true, group: 'study', kicker: 'Home Base', title: 'Los Angeles', body: 'Home turf and test market. Street vendors, pickup runs, neighborhoods — every app on the console was playtested on these streets.' },
+    { id: 'bookshelf_lore', x: 35, y: 15, w: 2, h: 4, kind: 'bookshelf', decor: true, flat: true },
+    { id: 'tome_about', x: 35, y: 15, w: 1, h: 1, kind: 'books', core: true, group: 'study', kicker: 'About', title: 'About Isaac', body: 'I build for real-world community — food trucks, pickup runs, neighborhoods that actually talk. Doctrine: ship fast, learn in public, repeat.' },
+    { id: 'tablet_stats', x: 36, y: 6, w: 1, h: 1, kind: 'frame', wall: 'right', core: true, group: 'study', kicker: 'House Rules', title: 'House Rules', body: 'Pinned above the desk: Ship beats perfect. Build in public. Talk to users. Touch grass (and a basketball). Keep one good taco within reach.' },
+
+    // --- Comms: contact console ---
+    { id: 'comms_console', x: 3, y: 19, w: 9, h: 2, kind: 'furniture', tone: 'console', decor: true, flat: true },
+    { id: 'mailbox_email', x: 3, y: 19, w: 1, h: 1, kind: 'deskitem', icon: 'mail', core: true, group: 'contact', kicker: 'Email', title: 'Drop a Line', body: 'Projects, roles, collabs, good ideas: iperez2435@gmail.com. I actually reply.', link: 'mailto:iperez2435@gmail.com', linkLabel: 'Email me' },
+    { id: 'statue_github', x: 5, y: 19, w: 1, h: 1, kind: 'deskitem', icon: 'github', core: true, group: 'contact', kicker: 'GitHub', title: 'On GitHub', body: 'A thousand green squares and the occasional heroic 2 a.m. commit. The public log is open for inspection.', link: 'https://github.com/IsaacAPerez', linkLabel: 'Open GitHub' },
+    { id: 'portal_linkedin', x: 7, y: 19, w: 1, h: 1, kind: 'deskitem', icon: 'linkedin', core: true, group: 'contact', kicker: 'LinkedIn', title: 'On LinkedIn', body: 'The official record of titles, dates, and endorsements. Recruiters, this is your shortcut.', link: 'https://linkedin.com/in/isaacabelperez', linkLabel: 'Open LinkedIn' },
+    { id: 'chest_resume', x: 10, y: 19, w: 1, h: 1, kind: 'printer', core: true, group: 'contact', kicker: 'Résumé', title: 'The Résumé', body: 'The printer hums and hands you a fresh page — one page, zero fluff. Take a copy.', link: 'Resume.pdf', linkLabel: 'Take the résumé' },
+
+    // --- Secret ---
+    { id: 'wall_cracked', x: 35, y: 21, w: 1, h: 1, kind: 'fridge', core: false, kicker: 'Mini-Fridge', title: 'The Mini-Fridge', body: "It hums a little louder than the rest. You open it — and there, on the middle shelf, glowing faintly: one perfect golden taco. Isaac's documented weakness, kept on ice. Curiosity: maxed." },
+
+    // --- Decor / life ---
+    { id: 'plant_1', x: 2, y: 21, w: 1, h: 1, kind: 'plant', decor: true },
+    { id: 'plant_2', x: 24, y: 3, w: 1, h: 1, kind: 'plant', decor: true },
+    { id: 'plant_3', x: 33, y: 21, w: 1, h: 1, kind: 'plant', decor: true, solid: false },
+    { id: 'lamp_floor', x: 33, y: 18, w: 1, h: 1, kind: 'lamp', decor: true },
+    { id: 'coffee_machine', x: 2, y: 3, w: 1, h: 1, kind: 'coffee', decor: true },
+    { id: 'basketball', x: 36, y: 21, w: 1, h: 1, kind: 'ball', decor: true, solid: false },
   ];
   const CORE_TOTAL = ENTITIES.filter(e => e.core).length;
   for (const e of ENTITIES) { e.px = e.x * TILE; e.py = e.y * TILE; if (e.solid === undefined) e.solid = true; }
 
   // ---------------- Player & NPC state ----------------
-  const player = { x: 28.5 * TILE, y: 23.5 * TILE, dir: 'up', moving: false, frame: 0, ft: 0, dist: 0 };
-  const sage = { x: 24 * TILE, y: 19.5 * TILE, tx: 24 * TILE, ty: 19.5 * TILE, t: 0, dir: 'down', frame: 0, taps: [] };
-  const cat = { x: 24 * TILE, y: 25.5 * TILE, tx: 25 * TILE, ty: 25.5 * TILE, t: 1, follow: 0, fx: 0 };
-  const drone = { x: 45.9 * TILE, y: 24.6 * TILE, active: !!state.drone, roll: 0, idleT: 0 };
+  const player = { x: 20 * TILE, y: 13 * TILE, dir: 'up', moving: false, frame: 0, ft: 0, dist: 0 };
+  // 'sage' is the roaming Roomba (kept name to reuse the wander code & glue)
+  const sage = { x: 23 * TILE, y: 12.5 * TILE, tx: 23 * TILE, ty: 12.5 * TILE, t: 0, dir: 'down', frame: 0, taps: [] };
+  const cat = { x: 22 * TILE, y: 16 * TILE, tx: 24 * TILE, ty: 16 * TILE, t: 1, follow: 0, fx: 0 };
+  const drone = { x: 35.5 * TILE, y: 13 * TILE, active: !!state.drone, roll: 0, idleT: 0 };
   let particles = [];
   let tacoRain = [];
   let gameActive = false, playing = false, raf = 0, acc = 0, last = 0, time = 0;
@@ -590,15 +606,12 @@
   function interact(e) {
     ensureAudio();
     hintUsed = true;
-    if (e.id === 'wall_cracked') {
+    if (e.id === 'wall_cracked') { // the mini-fridge secret
+      if (!state.vaultFound) { state.vaultOpen = true; state.vaultFound = true; saveState(); refreshProgress(); sfx('chime'); }
+      else sfx('blip');
       openDialog(e);
-      if (!state.vaultOpen) {
-        state.vaultOpen = true; state.vaultFound = true; saveState();
-        buildMap(); bakeWorld(); refreshProgress(); sfx('chime');
-      }
       return;
     }
-    if (e.id === 'shrine_taco' && !state.vaultFound) { state.vaultFound = true; saveState(); refreshProgress(); }
     if (e.id === 'dungeon_cat') { hearts(cat.x, cat.y - 14); cat.follow = 5 * TILE; sfx('meow'); }
     else if (e.id === 'pad_captured' && !state.drone) { state.drone = true; drone.active = true; drone.roll = REDUCED ? 0 : Math.PI * 2; saveState(); sfx('chime'); }
     else if (e.id === 'chest_resume' && !state.chestOpened) {
@@ -628,15 +641,17 @@
 
   function openDialog(e) {
     dialogOpen = true;
-    const KIND_EMOJI = { sign: '🪧', sage: '🧙', stairs: '🪜', cabinet: e.emoji, crystal: '💎', statue: e.emoji, chest: '🪙', drone: '🚁', taco: '🌮', hidden: '🧱' };
-    dlgEmoji.textContent = e.emoji || KIND_EMOJI[e.kind] || '📜';
+    const ID_EMOJI = { map_la: '🗺️', tablet_stats: '📋', frame_instagram: '📷', tome_about: '📚', wall_cracked: '🌮' };
+    const ICON_EMOJI = { mail: '✉️', github: '🐙', linkedin: '💼', swift: '📱', phone: '📱', chip: '🧠', rocket: '🚀', camera: '📷', drone: '🚁' };
+    const KIND_EMOJI = { monitors: '🖥️', roomba: '🤖', door: '🚪', phone: e.emoji, camera: '📷', frame: '🖼️', books: '📚', printer: '🖨️', fridge: '🧊', shelfitem: '🛠️', deskitem: '✉️', emoji: e.emoji };
+    dlgEmoji.textContent = ID_EMOJI[e.id] || e.emoji || ICON_EMOJI[e.icon] || KIND_EMOJI[e.kind] || '📄';
     dlgKicker.textContent = e.kicker || '';
     dlgTitle.textContent = e.title;
     fullText = e.id === 'npc_sage' ? sageBody() : e.body;
     dlgBody.textContent = '';
     dlgActions.innerHTML = '';
-    // stat bar for crystals
-    if (e.kind === 'crystal') {
+    // stat bar for skill items
+    if (e.stat != null) {
       const wrap = document.createElement('div');
       wrap.style.cssText = 'display:flex;align-items:center;gap:10px;margin-top:4px;width:100%;';
       wrap.innerHTML = `<div class="stat-track" style="flex:1"><div class="stat-fill"></div></div><span class="stat-num">${e.stat}</span>`;
@@ -687,18 +702,22 @@
     else if (!ev.shiftKey && document.activeElement === lastEl) { first.focus(); ev.preventDefault(); }
   }
 
-  // ---------------- Rooms / zone label ----------------
-  function roomAt(tx, ty) {
-    for (const r of ROOMS) if (tx >= r.x1 && tx <= r.x2 && ty >= r.y1 && ty <= r.y2) return r;
-    return null;
+  // ---------------- Zone label ("you are here") ----------------
+  function nearestZone() {
+    let best = 'Home Office', bd = 5.5 * TILE;
+    for (const z of ZONES) {
+      const d = Math.hypot(player.x - z.x * TILE, player.y - z.y * TILE);
+      if (d < bd) { bd = d; best = z.name; }
+    }
+    return best;
   }
   function updateZone() {
-    const r = roomAt(Math.floor(player.x / TILE), Math.floor(player.y / TILE));
-    if (r && r !== currentRoom) {
-      currentRoom = r;
+    const name = nearestZone();
+    if (name !== currentRoom) {
+      currentRoom = name;
       const label = document.getElementById('gameZoneLabel');
       if (label) {
-        label.textContent = r.title;
+        label.textContent = name;
         label.style.transition = 'none';
         label.style.opacity = '0';
         void label.offsetWidth; // flush so the next transition runs
@@ -737,12 +756,12 @@
       if (n >= fullText.length) typing = false;
     }
 
-    // sage wander
+    // roomba wander (roams the open center floor)
     sage.t -= dt;
     if (sage.t <= 0) {
       sage.t = 2 + hash2(time * 13 | 0, 7) * 3;
-      sage.tx = (23 + hash2(time * 7 | 0, 3) * 2.6) * TILE;
-      sage.ty = (19.4 + hash2(time * 11 | 0, 5) * 1.2) * TILE;
+      sage.tx = (16 + hash2(time * 7 | 0, 3) * 12) * TILE;
+      sage.ty = (10 + hash2(time * 11 | 0, 5) * 8) * TILE;
     }
     if (!dialogOpen) {
       const sdx = sage.tx - sage.x, sdy = sage.ty - sage.y;
@@ -763,7 +782,7 @@
       if (d > TILE * 1.2) { cat.x += cdx / d * 60 * dt; cat.y += cdy / d * 60 * dt; }
     } else {
       cat.t -= dt;
-      if (cat.t <= 0) { cat.t = 2.5 + hash2(time * 17 | 0, 2) * 3; cat.tx = (22.5 + hash2(time * 5 | 0, 8) * 3.5) * TILE; cat.ty = (24.4 + hash2(time * 3 | 0, 4) * 1.6) * TILE; }
+      if (cat.t <= 0) { cat.t = 2.5 + hash2(time * 17 | 0, 2) * 3; cat.tx = (17 + hash2(time * 5 | 0, 8) * 11) * TILE; cat.ty = (11 + hash2(time * 3 | 0, 4) * 7) * TILE; }
       const cdx = cat.tx - cat.x, cdy = cat.ty - cat.y;
       if (Math.hypot(cdx, cdy) > 2) { cat.x += cdx * dt * 0.7; cat.y += cdy * dt * 0.7; }
     }
@@ -826,146 +845,228 @@
     ctx.restore();
   }
 
+  // rect helper in tile-pixel units relative to an entity origin (X,Y) at scale S
+  function R(X, Y, S, x, y, w, h, c) { ctx.fillStyle = c; ctx.fillRect(X + x * S, Y + y * S, w * S, h * S); }
+
   function drawEntity(e) {
     const px = e.px, py = e.py;
     const X = sx(px), Y = sy(py);
     const S = SCALE;
-    // desynced by position so a room of crystals shimmers instead of beating in lockstep
+    const WP = e.w * 16, HP = e.h * 16;
+    const red = PAL.gold, white = PAL.white, black = PAL.black, metal = PAL.metal, metalD = PAL.metalDark, screen = PAL.screen;
     const pulse = REDUCED ? 0.5 : (Math.sin(time * Math.PI + (px + py) * 0.05) + 1) / 2;
     switch (e.kind) {
-      case 'sign': {
-        drawShadow(px + 8, py + 14, 11);
-        ctx.fillStyle = '#6b4a2a'; ctx.fillRect(X + 7 * S, Y + 6 * S, 2 * S, 9 * S);
-        ctx.fillStyle = '#8a623c'; ctx.fillRect(X + 2 * S, Y + 1 * S, 12 * S, 7 * S);
-        ctx.strokeStyle = PAL.gold; ctx.lineWidth = S; ctx.strokeRect(X + 2 * S, Y + 1 * S, 12 * S, 7 * S);
-        ctx.fillStyle = PAL.light ? '#3a2c14' : '#f0e2bb';
-        ctx.fillRect(X + 4 * S, Y + 3 * S, 8 * S, S); ctx.fillRect(X + 4 * S, Y + 5 * S, 6 * S, S);
+      case 'furniture': {
+        const tops = { desk: white, console: black, credenza: white, shelf: metal };
+        const bodies = { desk: metalD, console: metalD, credenza: black, shelf: metalD };
+        const top = tops[e.tone] || white, body = bodies[e.tone] || metalD;
+        drawShadow(px + WP / 2, py + HP, WP - 2);
+        R(X, Y, S, 0, HP - 5, WP, 5, body);           // front / legs
+        R(X, Y, S, 0, 0, WP, HP - 4, top);            // surface
+        R(X, Y, S, 0, 0, WP, 2, PAL.light ? 'rgba(255,255,255,0.6)' : 'rgba(255,255,255,0.10)'); // top sheen
+        R(X, Y, S, 0, HP - 6, WP, 1, PAL.light ? 'rgba(0,0,0,0.12)' : 'rgba(0,0,0,0.4)');         // edge
+        return; // decor: no pip
+      }
+      case 'bookshelf': {
+        drawShadow(px + WP / 2, py + HP, WP - 2);
+        R(X, Y, S, 0, 0, WP, HP, black);
+        R(X, Y, S, 1, 1, WP - 2, HP - 2, PAL.light ? '#e7e3da' : '#202126');
+        for (let s = 0; s < e.h; s++) R(X, Y, S, 1, s * 16 + 14, WP - 2, 2, black); // shelves
+        // a few book spines per shelf
+        const cols = [white, red, black, metal];
+        for (let s = 0; s < e.h; s++) for (let i = 0; i < 6; i++) {
+          R(X, Y, S, 2 + i * 2, s * 16 + 3, 2, 11, cols[(s * 6 + i) % 4]);
+        }
+        return;
+      }
+      case 'chair': {
+        drawShadow(px + WP / 2, py + HP - 4, 12);
+        R(X, Y, S, 5, 2, 6, 3, metalD);              // backrest
+        R(X, Y, S, 3, 5, 10, 8, black);              // seat
+        R(X, Y, S, 7, 13, 2, 4, metalD);             // post
+        R(X, Y, S, 3, 16, 12, 2, metalD);            // base
+        return;
+      }
+      case 'plant': {
+        drawShadow(px + 8, py + 15, 9);
+        R(X, Y, S, 5, 11, 6, 5, PAL.pot);            // pot
+        R(X, Y, S, 5, 11, 6, 1, PAL.light ? '#fff' : '#3a3b40');
+        ctx.fillStyle = PAL.plantDark;
+        ctx.beginPath(); ctx.moveTo(X + 8 * S, Y + 12 * S); ctx.lineTo(X + 2 * S, Y + 3 * S); ctx.lineTo(X + 6 * S, Y + 5 * S); ctx.closePath(); ctx.fill();
+        ctx.beginPath(); ctx.moveTo(X + 8 * S, Y + 12 * S); ctx.lineTo(X + 14 * S, Y + 3 * S); ctx.lineTo(X + 10 * S, Y + 5 * S); ctx.closePath(); ctx.fill();
+        ctx.fillStyle = PAL.plant;
+        ctx.beginPath(); ctx.moveTo(X + 8 * S, Y + 12 * S); ctx.lineTo(X + 8 * S, Y - 1 * S); ctx.lineTo(X + 11 * S, Y + 4 * S); ctx.closePath(); ctx.fill();
+        ctx.beginPath(); ctx.moveTo(X + 8 * S, Y + 12 * S); ctx.lineTo(X + 4 * S, Y + 1 * S); ctx.lineTo(X + 7 * S, Y + 4 * S); ctx.closePath(); ctx.fill();
+        return;
+      }
+      case 'lamp': {
+        drawShadow(px + 8, py + 15, 7);
+        R(X, Y, S, 7, 6, 2, 9, metalD);              // pole
+        R(X, Y, S, 5, 14, 6, 2, metalD);             // base
+        R(X, Y, S, 4, 1, 8, 5, PAL.light ? '#fff7e0' : '#3a352a'); // shade
+        R(X, Y, S, 5, 5, 6, 1, PAL.light ? '#ffe7a8' : '#7a6a3a'); // warm underside
+        return;
+      }
+      case 'coffee': {
+        drawShadow(px + 8, py + 15, 8);
+        R(X, Y, S, 3, 3, 10, 12, black);
+        R(X, Y, S, 4, 4, 8, 4, metalD);              // top
+        R(X, Y, S, 6, 9, 4, 4, white);               // cup
+        R(X, Y, S, 6, 8, 4, 1, red);                 // button
+        return;
+      }
+      case 'ball': {
+        drawShadow(px + 8, py + 14, 6);
+        ctx.fillStyle = '#d2691e'; ctx.beginPath(); ctx.arc(X + 8 * S, Y + 9 * S, 5 * S, 0, 7); ctx.fill();
+        ctx.strokeStyle = '#1c1c1e'; ctx.lineWidth = Math.max(1, S * 0.5);
+        ctx.beginPath(); ctx.moveTo(X + 3 * S, Y + 9 * S); ctx.lineTo(X + 13 * S, Y + 9 * S);
+        ctx.moveTo(X + 8 * S, Y + 4 * S); ctx.lineTo(X + 8 * S, Y + 14 * S); ctx.stroke();
+        return;
+      }
+      case 'monitors': {
+        // two slim monitors on the desk; cool screen glow
+        if (!REDUCED) {
+          ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = PAL.light ? 0.10 : 0.30;
+          ctx.fillStyle = PAL.screenLit; ctx.fillRect(X - 4 * S, Y - 2 * S, (WP + 8) * S, 14 * S); ctx.restore();
+        }
+        for (let m = 0; m < 2; m++) {
+          const ox = m * 16 + 1;
+          R(X, Y, S, ox, 0, 14, 10, black);          // bezel
+          R(X, Y, S, ox + 1, 1, 12, 7, screen);      // screen
+          // faint UI: code lines + a red caret
+          R(X, Y, S, ox + 2, 2, 6, 1, 'rgba(255,255,255,0.35)');
+          R(X, Y, S, ox + 2, 4, 8, 1, 'rgba(255,255,255,0.22)');
+          R(X, Y, S, ox + 2, 6, 4, 1, 'rgba(255,255,255,0.22)');
+          R(X, Y, S, ox + 7, 6, 1, 1, red);
+          R(X, Y, S, ox + 6, 10, 2, 2, metalD);      // stand
+        }
         break;
       }
-      case 'sage': drawRig(sageRig, sage.x, sage.y, sage.dir, sage.frame); return;
-      case 'emoji': { // cat
+      case 'roomba': {
+        const rx = sage.x, ry = sage.y, RX = sx(rx), RY = sy(ry);
+        drawShadow(rx, ry + 4, 9);
+        ctx.fillStyle = black; ctx.beginPath(); ctx.arc(RX, RY, 6 * S, 0, 7); ctx.fill();
+        ctx.fillStyle = metalD; ctx.beginPath(); ctx.arc(RX, RY, 6 * S, 0, 7); ctx.lineWidth = S; ctx.stroke();
+        R(RX - 6 * S, RY - 6 * S, S, 5, 4, 2, 2, metal); // top sensor (centered-ish)
+        const blink = REDUCED ? 1 : (Math.sin(time * 4) > 0 ? 1 : 0.3);
+        ctx.globalAlpha = blink; ctx.fillStyle = red; ctx.fillRect(RX - 1 * S, RY - 4 * S, 2 * S, 2 * S); ctx.globalAlpha = 1;
+        return;
+      }
+      case 'emoji': { // office cat
         drawShadow(cat.x, cat.y + 7, 10);
         ctx.drawImage(rasterEmoji(e.emoji, 32), sx(cat.x) - 7 * S, sy(cat.y) - 11 * S, 14 * S, 14 * S);
         return;
       }
-      case 'stairs': {
-        for (let i = 0; i < 4; i++) {
-          ctx.fillStyle = i % 2 ? PAL.gold : PAL.goldDeep;
-          ctx.globalAlpha = 0.55 + pulse * 0.45;
-          ctx.fillRect(X + i * S, Y + (12 - i * 3) * S, (16 - i * 2) * S, 3 * S);
+      case 'phone': {
+        drawShadow(px + 8, py + 14, 7);
+        R(X, Y, S, 6, 13, 4, 2, metalD);             // stand
+        R(X, Y, S, 4, 0, 8, 14, black);              // body
+        R(X, Y, S, 5, 1, 6, 11, screen);             // screen
+        ctx.drawImage(rasterEmoji(e.emoji, 32), X + 5 * S, Y + 2 * S, 6 * S, 6 * S);
+        R(X, Y, S, 6, 10, 4, 1, 'rgba(255,255,255,0.4)'); // home indicator
+        if (e.id === 'cab_teamup') R(X, Y, S, 10, 0, 2, 2, red); // "live" dot
+        break;
+      }
+      case 'camera': {
+        drawShadow(px + WP / 2, py + HP - 2, 12);
+        // tripod legs
+        ctx.strokeStyle = metalD; ctx.lineWidth = Math.max(1, S);
+        ctx.beginPath();
+        ctx.moveTo(X + 16 * S, Y + 16 * S); ctx.lineTo(X + 8 * S, Y + 30 * S);
+        ctx.moveTo(X + 16 * S, Y + 16 * S); ctx.lineTo(X + 24 * S, Y + 30 * S);
+        ctx.moveTo(X + 16 * S, Y + 16 * S); ctx.lineTo(X + 16 * S, Y + 28 * S); ctx.stroke();
+        // body + lens
+        R(X, Y, S, 9, 6, 14, 9, black);
+        R(X, Y, S, 11, 3, 6, 4, black);              // viewfinder hump
+        ctx.fillStyle = metalD; ctx.beginPath(); ctx.arc(X + 16 * S, Y + 11 * S, 4 * S, 0, 7); ctx.fill();
+        ctx.fillStyle = PAL.screenLit; ctx.beginPath(); ctx.arc(X + 16 * S, Y + 11 * S, 2 * S, 0, 7); ctx.fill();
+        const rec = REDUCED ? 1 : (Math.sin(time * 3) > 0 ? 1 : 0.3);
+        ctx.globalAlpha = rec; R(X, Y, S, 20, 7, 1.5, 1.5, red); ctx.globalAlpha = 1;
+        break;
+      }
+      case 'frame': {
+        // wall-mounted picture; nudge toward its wall
+        const off = e.wall === 'left' ? -2 : e.wall === 'right' ? 2 : 0;
+        const oy = e.wall === 'top' ? -2 : 0;
+        R(X, Y, S, 2 + off, 1 + oy, 12, 13, e.accent || metalD);   // frame / mat
+        R(X, Y, S, 3 + off, 2 + oy, 10, 11, PAL.light ? '#f4f1ea' : '#0f1622'); // picture
+        if (e.id === 'map_la') {
+          R(X, Y, S, 4 + off, 4 + oy, 8, 7, PAL.light ? '#dfe9d8' : '#16243a');
+          ctx.fillStyle = red; ctx.beginPath(); ctx.arc(X + (8 + off) * S, Y + (7 + oy) * S, 1.4 * S, 0, 7); ctx.fill();
+        } else if (e.id === 'frame_instagram') {
+          R(X, Y, S, 4 + off, 4 + oy, 8, 4, PAL.plant);
+          R(X, Y, S, 4 + off, 8 + oy, 8, 3, '#d2691e');
+        } else if (e.id === 'tablet_stats') {
+          for (let i = 0; i < 4; i++) R(X, Y, S, 4 + off, 4 + oy + i * 2, 8 - (i % 2 ? 2 : 0), 1, 'rgba(255,255,255,0.5)');
+        } else { // experience: a monogram bar in the accent
+          R(X, Y, S, 4 + off, 5 + oy, 8, 2, e.accent || white);
+          R(X, Y, S, 4 + off, 9 + oy, 5, 1, 'rgba(255,255,255,0.5)');
         }
+        break;
+      }
+      case 'shelfitem': {
+        const a = 0.6 + pulse * 0.4;
+        R(X, Y, S, 4, 12, 8, 2, metalD);             // little base
+        // device icon
+        const ic = e.icon, acc = e.accent || white;
+        if (ic === 'swift' || ic === 'phone') { R(X, Y, S, 5, 1, 6, 11, ic === 'swift' ? red : black); R(X, Y, S, 6, 2, 4, 8, screen); }
+        else if (ic === 'chip') { R(X, Y, S, 4, 3, 8, 8, black); R(X, Y, S, 6, 5, 4, 4, PAL.screenLit); for (let i = 0; i < 4; i++) { R(X, Y, S, 4 + i * 2, 1, 1, 2, metal); R(X, Y, S, 4 + i * 2, 11, 1, 2, metal); } }
+        else if (ic === 'rocket') { ctx.fillStyle = red; ctx.beginPath(); ctx.moveTo(X + 8 * S, Y + 1 * S); ctx.lineTo(X + 11 * S, Y + 9 * S); ctx.lineTo(X + 5 * S, Y + 9 * S); ctx.closePath(); ctx.fill(); R(X, Y, S, 7, 9, 2, 3, white); }
+        else if (ic === 'camera') { R(X, Y, S, 4, 4, 8, 7, black); ctx.fillStyle = PAL.screenLit; ctx.beginPath(); ctx.arc(X + 8 * S, Y + 7 * S, 2 * S, 0, 7); ctx.fill(); }
+        else if (ic === 'drone') { R(X, Y, S, 6, 6, 4, 3, black); for (const dx of [3, 11]) for (const dy of [4, 10]) { ctx.fillStyle = metalD; ctx.beginPath(); ctx.arc(X + dx * S, Y + dy * S, 1.6 * S, 0, 7); ctx.fill(); } }
+        // soft accent glow
+        if (!REDUCED) { ctx.globalAlpha = a * 0.25; ctx.fillStyle = acc; ctx.fillRect(X + 3 * S, Y, 10 * S, 12 * S); ctx.globalAlpha = 1; }
+        break;
+      }
+      case 'books': { // lore on the bookshelf
+        const cols = [red, white, black, metal];
+        for (let i = 0; i < 5; i++) R(X, Y, S, 3 + i * 2, 2 + (i % 2), 2, 12 - (i % 2), cols[i % 4]);
+        break;
+      }
+      case 'deskitem': {
+        R(X, Y, S, 4, 12, 8, 2, metalD);             // base
+        if (e.icon === 'mail') { R(X, Y, S, 4, 4, 8, 7, white); ctx.strokeStyle = red; ctx.lineWidth = Math.max(1, S * 0.6); ctx.beginPath(); ctx.moveTo(X + 4 * S, Y + 4 * S); ctx.lineTo(X + 8 * S, Y + 8 * S); ctx.lineTo(X + 12 * S, Y + 4 * S); ctx.stroke(); }
+        else if (e.icon === 'github') { ctx.fillStyle = black; ctx.beginPath(); ctx.arc(X + 8 * S, Y + 7 * S, 4.5 * S, 0, 7); ctx.fill(); R(X, Y, S, 6, 6, 1.5, 2, white); R(X, Y, S, 9, 6, 1.5, 2, white); R(X, Y, S, 7, 10, 2, 1, white); }
+        else if (e.icon === 'linkedin') { R(X, Y, S, 4, 3, 8, 8, white); ctx.fillStyle = red; ctx.font = `bold ${6 * S}px "JetBrains Mono",monospace`; ctx.textAlign = 'center'; ctx.fillText('in', X + 8 * S, Y + 9 * S); }
+        break;
+      }
+      case 'printer': {
+        drawShadow(px + 8, py + 15, 10);
+        const done = state.chestOpened;
+        R(X, Y, S, 2, 6, 12, 8, black);              // body
+        R(X, Y, S, 3, 7, 10, 2, metalD);             // slot
+        if (done) { R(X, Y, S, 4, 1, 8, 6, white); R(X, Y, S, 5, 3, 6, 1, metalD); R(X, Y, S, 5, 5, 4, 1, metalD); } // ejected page
+        R(X, Y, S, 11, 11, 2, 1, red);               // status light
+        if (done && !REDUCED && hash2(time * 6 | 0, 13) > 0.6) { ctx.globalAlpha = 0.7; R(X, Y, S, 4 + (hash2(time * 6 | 0, 17) * 8 | 0), -1 - (hash2(time * 6 | 0, 5) * 4 | 0), 1, 1, white); ctx.globalAlpha = 1; }
+        break;
+      }
+      case 'door': {
+        // glowing doormat highlight + an "out" hint over the door
+        const a = 0.4 + pulse * 0.5;
+        ctx.globalAlpha = a; ctx.strokeStyle = red; ctx.lineWidth = Math.max(1, S);
+        ctx.strokeRect(X + 2 * S, Y + 2 * S, WP * S - 4 * S, 12 * S);
         ctx.globalAlpha = 1;
-        break;
-      }
-      case 'cabinet': {
-        const acc = e.accent || PAL.gold;
-        drawShadow(px + 8, py + 30, 14);
-        ctx.fillStyle = PAL.light ? '#5a5142' : '#10141f';
-        ctx.fillRect(X + 1 * S, Y + 0, 14 * S, 30 * S);
-        ctx.fillStyle = acc; ctx.fillRect(X + 1 * S, Y, 14 * S, 4 * S);
-        ctx.fillStyle = PAL.light ? '#fffaf0' : '#1c2540';
-        ctx.fillRect(X + 3 * S, Y + 6 * S, 10 * S, 9 * S);
-        if (!REDUCED && ((time * 2 | 0) % 2)) { ctx.fillStyle = 'rgba(255,255,255,0.07)'; ctx.fillRect(X + 3 * S, Y + 6 * S, 10 * S, 2 * S); }
-        ctx.drawImage(rasterEmoji(e.emoji, 32), X + 4 * S, Y + 6.5 * S, 8 * S, 8 * S);
-        ctx.fillStyle = PAL.light ? '#4a4334' : '#0a0d15';
-        ctx.fillRect(X + 2 * S, Y + 17 * S, 12 * S, 4 * S);
-        ctx.fillStyle = acc; ctx.fillRect(X + 4 * S, Y + 18 * S, 2 * S, 2 * S); ctx.fillRect(X + 10 * S, Y + 18 * S, 2 * S, 2 * S);
-        if (e.id === 'cab_teamup') { ctx.fillStyle = PAL.gold; ctx.fillRect(X + 11 * S, Y + 1 * S, 4 * S, 2 * S); }
-        break;
-      }
-      case 'drone': {
-        // helipad drone (pre-pickup) — bobbing
-        if (!state.drone) {
-          const bob = REDUCED ? 0 : Math.sin(time * 2.4) * 2;
-          drawShadow(px + TILE, py + TILE * 1.6, 14);
-          ctx.drawImage(rasterEmoji('🚁', 32), sx(px + 4), sy(py + 2 + bob), 24 * S, 24 * S);
-        }
         return;
       }
-      case 'hidden': return; // cracked wall is baked into the world
-      case 'taco': {
-        if (!state.vaultOpen) return;
-        ctx.fillStyle = PAL.goldDeep; ctx.fillRect(X + 4 * S, Y + 10 * S, 8 * S, 5 * S);
-        ctx.fillStyle = PAL.gold; ctx.fillRect(X + 3 * S, Y + 9 * S, 10 * S, 2 * S);
-        const bob2 = REDUCED ? 0 : Math.sin(time * 2) * 2;
-        ctx.save();
-        ctx.translate(X + 8 * S, Y + (2 + bob2) * S);
-        if (!REDUCED) ctx.rotate(Math.sin(time * 0.8) * 0.25);
-        ctx.drawImage(rasterEmoji('🌮', 32), -9 * S, -7 * S, 18 * S, 18 * S);
-        ctx.restore();
-        if (!REDUCED && hash2(time * 8 | 0, 4) > 0.6) {
-          ctx.fillStyle = PAL.goldBright; ctx.globalAlpha = 0.8;
-          ctx.fillRect(X + (2 + hash2(time * 8 | 0, 9) * 12) * S, Y + hash2(time * 8 | 0, 11) * 8 * S, S, S);
-          ctx.globalAlpha = 1;
-        }
-        break;
-      }
-      case 'statue': {
-        drawShadow(px + 8, py + 30, 13);
-        // banner
-        ctx.fillStyle = e.accent; ctx.globalAlpha = 0.85;
-        ctx.fillRect(X + 3 * S, Y - 8 * S, 10 * S, 7 * S);
-        ctx.globalAlpha = 1;
-        ctx.fillStyle = PAL.gold; ctx.fillRect(X + 3 * S, Y - 9 * S, 10 * S, S);
-        // plinth + figure
-        ctx.fillStyle = PAL.light ? '#b9ae90' : '#39435f';
-        ctx.fillRect(X + 2 * S, Y + 24 * S, 12 * S, 6 * S);
-        ctx.fillStyle = PAL.light ? '#cabf9f' : '#46527a';
-        ctx.fillRect(X + 4 * S, Y + 8 * S, 8 * S, 16 * S);
-        ctx.fillRect(X + 5 * S, Y + 4 * S, 6 * S, 6 * S);
-        ctx.drawImage(rasterEmoji(e.emoji, 32), X + 4 * S, Y - 6.5 * S, 8 * S, 8 * S);
-        break;
-      }
-      case 'crystal': {
+      case 'fridge': {
         drawShadow(px + 8, py + 15, 9);
-        ctx.fillStyle = PAL.light ? '#b9ae90' : '#39435f';
-        ctx.fillRect(X + 4 * S, Y + 10 * S, 8 * S, 5 * S);
-        ctx.fillRect(X + 5 * S, Y + 8 * S, 6 * S, 3 * S);
-        const a = 0.55 + pulse * 0.45;
-        ctx.globalAlpha = a;
-        ctx.fillStyle = e.accent;
-        ctx.beginPath();
-        ctx.moveTo(X + 8 * S, Y - 2 * S);
-        ctx.lineTo(X + 12 * S, Y + 4 * S);
-        ctx.lineTo(X + 8 * S, Y + 10 * S);
-        ctx.lineTo(X + 4 * S, Y + 4 * S);
-        ctx.closePath(); ctx.fill();
-        ctx.globalAlpha = a * 0.5; ctx.fillStyle = '#fff';
-        ctx.fillRect(X + 7 * S, Y + 1 * S, S, 3 * S);
-        ctx.globalAlpha = 1;
-        break;
-      }
-      case 'emojiBase': {
-        drawShadow(px + 8, py + 15, 9);
-        ctx.fillStyle = PAL.light ? '#b9ae90' : '#39435f';
-        ctx.fillRect(X + 3 * S, Y + 11 * S, 10 * S, 4 * S);
-        ctx.drawImage(rasterEmoji(e.emoji, 32), X + 2.5 * S, Y - 1 * S, 11 * S, 11 * S);
-        break;
-      }
-      case 'chest': {
-        drawShadow(px + 8, py + 15, 11);
-        const open = state.chestOpened;
-        ctx.fillStyle = PAL.goldDeep;
-        ctx.fillRect(X + 2 * S, Y + (open ? 6 : 4) * S, 12 * S, 9 * S);
-        ctx.fillStyle = PAL.gold;
-        ctx.fillRect(X + 2 * S, Y + (open ? 2 : 4) * S, 12 * S, 3 * S);
-        ctx.fillStyle = PAL.goldBright;
-        ctx.fillRect(X + 7 * S, Y + (open ? 5 : 7) * S, 2 * S, 3 * S);
-        if (!REDUCED && hash2(time * 6 | 0, 13) > 0.55) {
-          ctx.fillStyle = '#fff'; ctx.globalAlpha = 0.7;
-          ctx.fillRect(X + (3 + hash2(time * 6 | 0, 17) * 10) * S, Y - (1 + hash2(time * 6 | 0, 19) * 5) * S, S, S);
-          ctx.globalAlpha = 1;
+        R(X, Y, S, 3, 1, 10, 14, white);             // body
+        R(X, Y, S, 3, 7, 10, 1, metalD);             // door split
+        R(X, Y, S, 11, 3, 1, 3, red);                // handle (upper)
+        R(X, Y, S, 11, 9, 1, 3, red);                // handle (lower)
+        if (state.vaultFound) { // taco peeking on top after discovery
+          const bob = REDUCED ? 0 : Math.sin(time * 2) * 1;
+          ctx.drawImage(rasterEmoji('🌮', 32), X + 4 * S, Y + (-6 + bob) * S, 8 * S, 8 * S);
         }
         break;
       }
     }
     // visited check pip
     if (e.core && visited.has(e.id)) {
-      const ty = e.kind === 'cabinet' || e.kind === 'statue' ? Y - 12 * S : Y - 6 * S;
-      ctx.fillStyle = PAL.gold;
-      ctx.font = `${7 * S}px ${'"JetBrains Mono",monospace'}`;
+      ctx.fillStyle = red;
+      ctx.font = `${7 * S}px "JetBrains Mono",monospace`;
       ctx.textAlign = 'center';
-      ctx.fillText('✓', X + 8 * S, (e.kind === 'statue' ? Y - 11 * S : ty));
+      ctx.fillText('✓', X + WP / 2 * S, Y - (e.h > 1 ? 4 : 4) * S);
     }
   }
 
@@ -979,30 +1080,26 @@
     const icx = Math.round(camX), icy = Math.round(camY);
     ctx.drawImage(world, icx, icy, viewW, viewH, 0, 0, viewW * SCALE, viewH * SCALE);
 
-    // torch glow + flames
-    for (const [tx, ty] of TORCHES) {
+    // warm light pools from the lamps (cozy at night, faint by day)
+    for (const [tx, ty] of LIGHTS) {
       const X = sx(tx * TILE), Y = sy(ty * TILE);
-      if (X < -60 || Y < -60 || X > cw + 60 || Y > ch + 60) continue;
-      const fl = REDUCED ? 0 : ((time * 6 + tx * 3.7 + ty) | 0) % 2;
-      ctx.fillStyle = '#6b4a2a'; ctx.fillRect(X + 7 * SCALE, Y + 8 * SCALE, 2 * SCALE, 5 * SCALE);
-      ctx.fillStyle = fl ? '#ffb13d' : '#ff8b3d';
-      ctx.fillRect(X + 6 * SCALE, Y + 4 * SCALE, 4 * SCALE, 4 * SCALE);
-      ctx.fillStyle = '#ffe08a';
-      ctx.fillRect(X + 7 * SCALE, Y + (5 + fl) * SCALE, 2 * SCALE, 2 * SCALE);
+      if (X < -80 || Y < -80 || X > cw + 80 || Y > ch + 80) continue;
       ctx.save();
       ctx.globalCompositeOperation = 'lighter';
-      ctx.globalAlpha = (PAL.light ? 0.22 : 0.5) + (fl ? 0.1 : 0);
-      ctx.drawImage(glowSprite(), X - 16 * SCALE, Y - 14 * SCALE, 36 * SCALE, 36 * SCALE);
+      ctx.globalAlpha = PAL.light ? 0.10 : 0.42;
+      ctx.drawImage(glowSprite(), X - 20 * SCALE, Y - 16 * SCALE, 44 * SCALE, 44 * SCALE);
       ctx.restore();
       ctx.globalAlpha = 1;
     }
 
-    // entities y-sorted with player
-    const drawables = ENTITIES.filter(e => e.kind !== 'hidden' && !(e.kind === 'taco' && !state.vaultOpen));
-    const items = drawables.map(e => ({ y: e.py + e.h * TILE, f: () => drawEntity(e) }));
+    // big furniture against the walls draws as a flat layer first, so items resting
+    // on it (monitors, phones, gadgets) and the player always paint on top.
+    for (const e of ENTITIES) if (e.flat) drawEntity(e);
+    // everything else y-sorts with the player
+    const items = ENTITIES.filter(e => !e.flat).map(e => ({ y: e.py + e.h * TILE, f: () => drawEntity(e) }));
     const idleBob = (!player.moving && !REDUCED) ? Math.sin(time * 2.2) * 0.6 : 0;
     items.push({ y: player.y + 10, f: () => drawRig(heroRig, player.x, player.y, player.dir, player.moving ? player.frame : 0, idleBob) });
-    if (drone.active || state.drone) items.push({ y: 1e9, f: drawDrone });
+    items.push({ y: drone.y + 8, f: drawDrone });
     items.sort((a, b) => a.y - b.y);
     for (const it of items) it.f();
 
@@ -1011,7 +1108,7 @@
       const t = interactTarget();
       if (t) {
         const bob = REDUCED ? 0 : Math.sin(time * 5) * 2;
-        const X = sx(t.px + t.w * TILE / 2), Y = sy(t.py) - (t.kind === 'cabinet' || t.kind === 'statue' ? 16 : 10) * SCALE + bob * SCALE / 2;
+        const X = sx(t.px + t.w * TILE / 2), Y = sy(t.py) - (t.h > 1 ? 16 : 8) * SCALE + bob * SCALE / 2;
         // springy pop when it first appears
         const popScale = 1 + (promptPop > 0 ? (promptPop / 0.18) * 0.9 : 0);
         ctx.fillStyle = PAL.gold;
@@ -1029,27 +1126,6 @@
           ctx.fillText(label, X, Y + 10 * SCALE);
         }
       }
-    }
-
-    // door plaques — proximity fade everywhere, plus full-strength signposts in
-    // the Foyer so a new arrival immediately sees where each wing is.
-    ctx.textAlign = 'center';
-    const inFoyer = currentRoom && currentRoom.id === 'foyer';
-    for (const p of PLAQUES) {
-      const d = Math.hypot(player.x - p.x * TILE, player.y - p.y * TILE);
-      const prox = d < 3.5 * TILE ? Math.min(1, (3.5 * TILE - d) / TILE) : 0;
-      const a = Math.max(prox, (inFoyer && p.foyer) ? 0.92 : 0);
-      if (a <= 0.01) continue;
-      ctx.globalAlpha = a;
-      ctx.font = `${5 * SCALE}px "JetBrains Mono",monospace`;
-      const label = (inFoyer && p.foyer && prox < 0.5 && p.arrow) ? p.arrow + ' ' + p.text : p.text;
-      const X = sx(p.x * TILE), Y = sy(p.y * TILE) - a * 3;
-      ctx.fillStyle = 'rgba(0,0,0,0.5)';
-      const w = ctx.measureText(label).width;
-      ctx.fillRect(X - w / 2 - 3 * SCALE, Y - 6 * SCALE, w + 6 * SCALE, 9 * SCALE);
-      ctx.fillStyle = PAL.gold;
-      ctx.fillText(label, X, Y);
-      ctx.globalAlpha = 1;
     }
 
     // particles
@@ -1088,13 +1164,12 @@
     return _glow;
   }
   function drawDrone() {
-    if (!state.drone && !drone.active) return;
     const X = sx(drone.x), Y = sy(drone.y);
-    drawShadow(drone.x, drone.y + 16, 10);
+    drawShadow(drone.x, drone.y + 14, 9);
     ctx.save();
     ctx.translate(X, Y);
     if (drone.roll > 0) ctx.rotate(Math.PI * 2 - drone.roll);
-    const bob = REDUCED ? 0 : Math.sin(time * 3) * 1.5 * SCALE;
+    const bob = (REDUCED || !state.drone) ? 0 : Math.sin(time * 3) * 1.5 * SCALE;
     ctx.drawImage(rasterEmoji('🚁', 32), -8 * SCALE, -8 * SCALE + bob, 16 * SCALE, 16 * SCALE);
     ctx.restore();
   }
@@ -1209,7 +1284,7 @@
     interact: tryInteract,
     inspect(id) { const e = ENTITIES.find(x => x.id === id); if (e) interact(e); },
     get snapshot() {
-      return { playing, gameActive, dialogOpen, x: player.x / TILE, y: player.y / TILE, dir: player.dir, room: currentRoom && currentRoom.id, coreVisited: coreVisited(), coreTotal: CORE_TOTAL, vaultOpen: state.vaultOpen, drone: state.drone };
+      return { playing, gameActive, dialogOpen, x: player.x / TILE, y: player.y / TILE, dir: player.dir, room: currentRoom, coreVisited: coreVisited(), coreTotal: CORE_TOTAL, vaultFound: state.vaultFound, drone: state.drone };
     },
   };
 

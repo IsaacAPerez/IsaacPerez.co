@@ -1,9 +1,17 @@
 /* ============================================================
-   ISAACPEREZ.CO — PLAYABLE GAME OVERLAY
-   Depends on theme variables defined in css/rpg.css
+   ISAACPEREZ.CO — PLAYABLE GAME OVERLAY (home-office theme)
+   Re-skins the shared rpg.css tokens to a sleek white/black/red
+   palette scoped to the game overlay only.
    ============================================================ */
 
 #gameRoot {
+  /* red accent in place of the site's gold, plus neutral panels */
+  --gold: #e5484d; --gold-bright: #ff6369; --gold-deep: #b42a30;
+  --gold-glow: rgba(229, 72, 77, 0.28); --gold-subtle: rgba(229, 72, 77, 0.10);
+  --bg: #0c0c0e; --bg-panel: #161619; --bg-raised: #1f1f23;
+  --border: rgba(255, 255, 255, 0.10); --border-strong: rgba(229, 72, 77, 0.5);
+  --text: #f0f0f2; --text-dim: #b7b7bc; --text-faint: #74747a;
+
   position: fixed;
   inset: 0;
   z-index: 300;
@@ -12,6 +20,24 @@
   touch-action: none;
   overscroll-behavior: contain;
 }
+
+:root[data-theme="light"] #gameRoot {
+  --bg: #f1efe9; --bg-panel: #fbfbf9; --bg-raised: #ffffff;
+  --border: rgba(0, 0, 0, 0.10); --border-strong: rgba(229, 72, 77, 0.5);
+  --text: #1c1c1e; --text-dim: #55555a; --text-faint: #8a8a90;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) #gameRoot {
+    --bg: #f1efe9; --bg-panel: #fbfbf9; --bg-raised: #ffffff;
+    --border: rgba(0, 0, 0, 0.10); --border-strong: rgba(229, 72, 77, 0.5);
+    --text: #1c1c1e; --text-dim: #55555a; --text-faint: #8a8a90;
+  }
+}
+
+/* white text reads better than the site's dark-brown on the red accent */
+#gameRoot .game-start-emblem,
+#gameRoot .game-start-btn,
+#gameRoot .btn-gold { color: #fff; }
 
 #gameRoot.active { display: block; }
 
