@@ -10,13 +10,16 @@
   <meta property="og:title" content="Isaac Perez — Builder & Creator">
   <meta property="og:description" content="iOS Engineer, Founder & Creator. Building apps, media, and local communities.">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="isaac.JPG">
+  <meta property="og:url" content="https://isaacperez.co/">
+  <meta property="og:image" content="https://isaacperez.co/isaac.JPG">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Isaac Perez — Builder & Creator">
   <meta name="twitter:description" content="iOS Engineer, Founder & Creator. Building apps, media, and local communities.">
+  <meta name="twitter:image" content="https://isaacperez.co/isaac.JPG">
 
+  <link rel="canonical" href="https://isaacperez.co/">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="favicon.svg">
   <title>Isaac Perez — Builder & Creator</title>
@@ -725,7 +728,60 @@
                   color var(--duration-normal) var(--ease-default),
                   border-color var(--duration-normal) var(--ease-default);
     }
+
+    /* Honor reduced-motion for the scroll-reveal animations */
+    @media (prefers-reduced-motion: reduce) {
+      [data-animate] {
+        opacity: 1 !important;
+        animation: none !important;
+        transition: none !important;
+      }
+    }
   </style>
+
+  <!-- Without JS the IntersectionObserver never runs, so [data-animate]
+       elements stay at opacity:0. Force them visible for no-JS visitors. -->
+  <noscript>
+    <style>
+      [data-animate] { opacity: 1 !important; animation: none !important; }
+    </style>
+  </noscript>
+
+  <!-- Structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Isaac Perez",
+    "url": "https://isaacperez.co/",
+    "image": "https://isaacperez.co/isaac.JPG",
+    "jobTitle": "iOS Engineer",
+    "email": "mailto:iperez2435@gmail.com",
+    "description": "iOS Engineer, Founder & Creator. Building apps, media, and local communities.",
+    "sameAs": [
+      "https://github.com/IsaacAPerez",
+      "https://linkedin.com/in/isaacabelperez",
+      "https://instagram.com/isaacabelperez",
+      "https://thecurbside.app",
+      "https://theteamup.app",
+      "https://runsbyip.com",
+      "https://capturedbyip.com",
+      "https://www.kangskuisine.food"
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Isaac Perez",
+    "url": "https://isaacperez.co/",
+    "author": {
+      "@type": "Person",
+      "name": "Isaac Perez"
+    }
+  }
+  </script>
 </head>
 <body>
   <!-- ==================== PLAYABLE GAME OVERLAY ==================== -->
@@ -789,8 +845,8 @@
   <nav class="nav">
     <div class="nav-inner">
       <a href="/" class="nav-brand">Isaac Perez</a>
-      <button class="nav-toggle" aria-label="Toggle navigation" onclick="toggleNav()">
-        <span class="nav-toggle-icon"></span>
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-controls="navLinks" aria-expanded="false" onclick="toggleNav()">
+        <span class="nav-toggle-icon" aria-hidden="true"></span>
       </button>
       <ul class="nav-links" id="navLinks">
         <li><a href="#projects" class="nav-link">Projects</a></li>
@@ -800,10 +856,10 @@
         <li><a href="#contact" class="nav-link">Contact</a></li>
         <li>
           <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
-            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <svg aria-hidden="true" class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
             </svg>
-            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <svg aria-hidden="true" class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="12" cy="12" r="5"/>
               <line x1="12" y1="1" x2="12" y2="3"/>
               <line x1="12" y1="21" x2="12" y2="23"/>
@@ -825,7 +881,7 @@
     <section class="hero-section">
       <div class="hero-inner">
         <span class="hero-eyebrow">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
           Builder &middot; Engineer &middot; Creator
         </span>
         <h1 class="hero-name">Isaac Perez</h1>
@@ -854,7 +910,7 @@
           <!-- CurbSide -->
           <article class="project-card" data-animate="fade-in-up" style="--project-accent: #e8590c;">
             <div class="project-icon-wrap">
-              <img src="images/curbside-icon.png" alt="CurbSide">
+              <img src="images/curbside-icon.png" alt="CurbSide" width="1024" height="1024" loading="lazy">
             </div>
             <span class="project-card-status">
               <span class="status-dot building"></span>
@@ -871,14 +927,14 @@
             </div>
             <a href="https://thecurbside.app" class="project-card-link" target="_blank" rel="noopener">
               Visit thecurbside.app
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
             </a>
           </article>
 
           <!-- Kang's Kuisine -->
           <article class="project-card" data-animate="fade-in-up" style="--project-accent: #00459B; animation-delay: 100ms;">
             <div class="project-icon-wrap">
-              <img src="images/kangskuisine-icon.png" alt="Kang's Kuisine">
+              <img src="images/kangskuisine-icon.png" alt="Kang's Kuisine" width="512" height="512" loading="lazy">
             </div>
             <span class="project-card-status">
               <span class="status-dot"></span>
@@ -895,14 +951,14 @@
             </div>
             <a href="https://www.kangskuisine.food" class="project-card-link" target="_blank" rel="noopener">
               Visit kangskuisine.food
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
             </a>
           </article>
 
           <!-- Runs by IP -->
           <article class="project-card" data-animate="fade-in-up" style="--project-accent: #ffffff; animation-delay: 200ms;">
             <div class="project-icon-wrap">
-              <img src="images/runsbyip-icon.png" alt="Runs by IP">
+              <img src="images/runsbyip-icon.png" alt="Runs by IP" width="1024" height="1024" loading="lazy">
             </div>
             <span class="project-card-status">
               <span class="status-dot"></span>
@@ -920,14 +976,14 @@
             </div>
             <a href="https://runsbyip.com" class="project-card-link" target="_blank" rel="noopener">
               Visit runsbyip.com
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
             </a>
           </article>
 
           <!-- TeamUp -->
           <article class="project-card" data-animate="fade-in-up" style="--project-accent: #5A9FD4; animation-delay: 300ms;">
             <div class="project-icon-wrap">
-              <img src="images/teamup-icon-new.png" alt="TeamUp">
+              <img src="images/teamup-icon-new.png" alt="TeamUp" width="1024" height="1024" loading="lazy">
             </div>
             <span class="project-card-status">
               <span class="status-dot"></span>
@@ -944,14 +1000,14 @@
             </div>
             <a href="https://theteamup.app" class="project-card-link" target="_blank" rel="noopener">
               Visit theteamup.app
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
             </a>
           </article>
 
           <!-- CapturedByIP -->
           <article class="project-card" data-animate="fade-in-up" style="--project-accent: #d4a574; animation-delay: 400ms;">
             <div class="project-icon-wrap icon-placeholder" style="background: linear-gradient(135deg, #d4a574 0%, #b8875a 100%);">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
                 <circle cx="12" cy="13" r="4"/>
               </svg>
@@ -971,7 +1027,7 @@
             </div>
             <a href="https://capturedbyip.com" class="project-card-link" target="_blank" rel="noopener">
               Visit capturedbyip.com
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
             </a>
           </article>
         </div>
@@ -991,7 +1047,7 @@
           <!-- Tinder -->
           <div class="experience-item" data-animate="fade-in-up">
             <div class="experience-logo">
-              <img src="tinderLogo.png" alt="Tinder">
+              <img src="tinderLogo.png" alt="Tinder" width="967" height="1134" loading="lazy">
             </div>
             <div class="experience-content">
               <div class="experience-header">
@@ -1018,7 +1074,7 @@
           <!-- Nextdoor -->
           <div class="experience-item" data-animate="fade-in-up">
             <div class="experience-logo">
-              <img src="ndLogo.webp" alt="Nextdoor" style="padding: 2px;">
+              <img src="ndLogo.webp" alt="Nextdoor" width="1800" height="1800" loading="lazy" style="padding: 2px;">
             </div>
             <div class="experience-content">
               <div class="experience-header">
@@ -1052,7 +1108,7 @@
       <div class="container">
         <div class="about-inner">
           <div data-animate="fade-in-up">
-            <img src="isaac.JPG" alt="Isaac Perez" class="about-photo">
+            <img src="isaac.JPG" alt="Isaac Perez" class="about-photo" width="2240" height="2544" loading="lazy">
           </div>
           <div data-animate="fade-in-up" style="animation-delay: 100ms;">
             <span class="section-label">About</span>
@@ -1086,7 +1142,7 @@
         <div class="skills-grid">
           <div class="skill-card" data-animate="fade-in-up">
             <div class="skill-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12" y2="18"/>
               </svg>
             </div>
@@ -1096,7 +1152,7 @@
 
           <div class="skill-card" data-animate="fade-in-up" style="animation-delay: 50ms;">
             <div class="skill-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
               </svg>
             </div>
@@ -1106,7 +1162,7 @@
 
           <div class="skill-card" data-animate="fade-in-up" style="animation-delay: 100ms;">
             <div class="skill-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
               </svg>
             </div>
@@ -1116,7 +1172,7 @@
 
           <div class="skill-card" data-animate="fade-in-up" style="animation-delay: 150ms;">
             <div class="skill-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>
               </svg>
             </div>
@@ -1126,7 +1182,7 @@
 
           <div class="skill-card" data-animate="fade-in-up" style="animation-delay: 200ms;">
             <div class="skill-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
               </svg>
             </div>
@@ -1136,7 +1192,7 @@
 
           <div class="skill-card" data-animate="fade-in-up" style="animation-delay: 250ms;">
             <div class="skill-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M12 2a10 10 0 0 1 10 10c0 5.52-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2z"/><path d="M12 8v4l3 3"/>
               </svg>
             </div>
@@ -1158,25 +1214,25 @@
           </p>
           <div class="contact-links">
             <a href="mailto:iperez2435@gmail.com" class="contact-link">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
               </svg>
               Email
             </a>
             <a href="https://github.com/IsaacAPerez" class="contact-link" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24" fill="currentColor">
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
               </svg>
               GitHub
             </a>
             <a href="https://linkedin.com/in/isaacabelperez" class="contact-link" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24" fill="currentColor">
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
               </svg>
               LinkedIn
             </a>
             <a href="https://instagram.com/isaacabelperez" class="contact-link" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
               </svg>
               Instagram
@@ -1206,13 +1262,17 @@
     // Mobile Navigation Toggle
     function toggleNav() {
       const navLinks = document.getElementById('navLinks');
-      navLinks.classList.toggle('active');
+      const isOpen = navLinks.classList.toggle('active');
+      const toggle = document.querySelector('.nav-toggle');
+      if (toggle) toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
     }
 
     // Close mobile nav when clicking a link
     document.querySelectorAll('.nav-link').forEach(link => {
       link.addEventListener('click', () => {
         document.getElementById('navLinks').classList.remove('active');
+        const toggle = document.querySelector('.nav-toggle');
+        if (toggle) toggle.setAttribute('aria-expanded', 'false');
       });
     });
 

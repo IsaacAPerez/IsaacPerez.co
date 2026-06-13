@@ -223,7 +223,7 @@
     aoBlob(g, 312, 100, 96, 18, ink);  // desk
     aoBlob(g, 488, 96, 80, 16, ink);   // app console
     aoBlob(g, 136, 288, 92, 17, ink);  // credenza
-    aoBlob(g, 104, 336, 76, 16, ink);  // comms console
+    aoBlob(g, 120, 336, 92, 16, ink);  // comms console
     aoBlob(g, 560, 160, 36, 12, ink);  // gear shelf
     aoBlob(g, 576, 304, 22, 34, ink);  // tall bookshelf
     // floor halos under standalones
@@ -323,7 +323,7 @@
     const data = g.getImageData(0, 0, px, px).data;
     let drawn = false;
     for (let i = 3; i < data.length; i += 16) if (data[i] > 8) { drawn = true; break; }
-    if (!drawn) { g.fillStyle = PAL.gold; g.fillRect(px * 0.25, px * 0.25, px * 0.5, px * 0.5); }
+    if (!drawn) { g.fillStyle = PAL.metalDark; g.fillRect(px * 0.25, px * 0.25, px * 0.5, px * 0.5); }
     // Only cache a real glyph — on a cold load the emoji font may not be ready
     // yet, so a later frame re-rasterizes instead of caching gold squares forever.
     if (drawn) emojiCache[key] = c;
@@ -432,10 +432,10 @@
     { id: 'wall_cracked', x: 35, y: 21, w: 1, h: 1, kind: 'fridge', core: false, kicker: 'Mini-Fridge', title: 'The Mini-Fridge', body: "It hums a little louder than the rest. You open it — and there, on the middle shelf, glowing faintly: one perfect golden taco. Isaac's documented weakness, kept on ice. Curiosity: maxed." },
 
     // --- Desk cluster (a real battlestation) ---
-    { id: 'desk_plant', x: 15, y: 5, w: 1, h: 1, kind: 'deskplant', decor: true, solid: false },
-    { id: 'desk_keyboard', x: 17, y: 5, w: 3, h: 1, kind: 'keyboard', decor: true, solid: false },
-    { id: 'desk_mouse', x: 20, y: 5, w: 1, h: 1, kind: 'mouse', decor: true, solid: false },
-    { id: 'desk_mug', x: 22, y: 5, w: 1, h: 1, kind: 'mug', decor: true, solid: false },
+    { id: 'desk_plant', x: 15, y: 5, w: 1, h: 1, kind: 'deskplant', decor: true, solid: false, lift: 3 },
+    { id: 'desk_keyboard', x: 17, y: 5, w: 3, h: 1, kind: 'keyboard', decor: true, solid: false, lift: 3 },
+    { id: 'desk_mouse', x: 20, y: 5, w: 1, h: 1, kind: 'mouse', decor: true, solid: false, lift: 3 },
+    { id: 'desk_mug', x: 22, y: 5, w: 1, h: 1, kind: 'mug', decor: true, solid: false, lift: 3 },
     { id: 'desk_streamdeck', x: 23, y: 4, w: 1, h: 1, kind: 'streamdeck', decor: true, solid: false },
     { id: 'desk_headphones', x: 24, y: 4, w: 1, h: 1, kind: 'headphones', decor: true, solid: false },
 
@@ -446,15 +446,20 @@
     { id: 'lamp_floor', x: 33, y: 18, w: 1, h: 1, kind: 'lamp', decor: true },
     { id: 'coffee_machine', x: 2, y: 3, w: 1, h: 1, kind: 'coffee', decor: true },
     { id: 'espresso_kit', x: 4, y: 3, w: 1, h: 1, kind: 'espresso', decor: true, solid: false },
-    { id: 'nas_tower', x: 36, y: 12, w: 1, h: 2, kind: 'nas', decor: true, solid: true },
+    { id: 'nas_tower', x: 36, y: 12, w: 1, h: 1, kind: 'nas', decor: true, solid: true },
     { id: 'door_sneakers', x: 22, y: 21, w: 1, h: 1, kind: 'sneakers', decor: true, solid: false },
     { id: 'basketball', x: 36, y: 21, w: 1, h: 1, kind: 'ball', decor: true, solid: false },
     { id: 'wall_print', x: 16, y: 2, w: 1, h: 1, kind: 'frame', wall: 'top', decor: true, solid: false },
     // desk mat is flat so it bakes over the desk surface (must come after desk_main)
-    { id: 'desk_mat', x: 16, y: 5, w: 5, h: 1, kind: 'deskmat', decor: true, solid: false, flat: true },
+    { id: 'desk_mat', x: 16, y: 5, w: 5, h: 1, kind: 'deskmat', decor: true, solid: false, flat: true, lift: 3 },
   ];
   const CORE_TOTAL = ENTITIES.filter(e => e.core).length;
   for (const e of ENTITIES) { e.px = e.x * TILE; e.py = e.y * TILE; if (e.solid === undefined) e.solid = true; }
+  // precomputed draw lists (avoid per-frame allocation in render)
+  const flatEnts = ENTITIES.filter(e => e.flat);
+  const sortEnts = ENTITIES.filter(e => !e.flat);
+  const PLAYER_SENT = { _sy: 0 }, DRONE_SENT = { _sy: 0 };
+  const drawList = [...sortEnts, PLAYER_SENT, DRONE_SENT];
 
   // ---------------- Player & NPC state ----------------
   const player = { x: 20 * TILE, y: 13 * TILE, dir: 'up', moving: false, frame: 0, ft: 0, dist: 0 };
@@ -466,7 +471,7 @@
   let tacoRain = [];
   let gameActive = false, playing = false, raf = 0, acc = 0, last = 0, time = 0;
   let hintUsed = false;
-  let camX = 0, camY = 0, SCALE = 3, viewW = 0, viewH = 0, dpr = 1;
+  let camX = 0, camY = 0, SCALE = 3, viewW = 0, viewH = 0, dpr = 1, cvW = 0, cvH = 0;
   let currentRoom = null, zoneFade = 0;
 
   // ---------------- Achievements glue ----------------
@@ -822,10 +827,10 @@
       if (label) {
         label.textContent = name;
         label.style.transition = 'none';
-        label.style.opacity = '0';
+        label.style.opacity = '0'; label.style.transform = 'translateY(-4px)';
         void label.offsetWidth; // flush so the next transition runs
-        label.style.transition = 'opacity 0.4s';
-        label.style.opacity = '1';
+        label.style.transition = 'opacity 0.4s, transform 0.4s';
+        label.style.opacity = '1'; label.style.transform = 'translateY(0)';
       }
     }
   }
@@ -883,11 +888,12 @@
     if (cat.follow > 0) {
       const cdx = player.x - cat.x, cdy = player.y - cat.y, d = Math.hypot(cdx, cdy);
       if (d > TILE * 1.2) { cat.x += cdx / d * 60 * dt; cat.y += cdy / d * 60 * dt; }
+      if (cdx > 1) cat.fx = 1; else if (cdx < -1) cat.fx = -1;
     } else {
       cat.t -= dt;
       if (cat.t <= 0) { cat.t = 2.5 + hash2(time * 17 | 0, 2) * 3; cat.tx = (17 + hash2(time * 5 | 0, 8) * 11) * TILE; cat.ty = (11 + hash2(time * 3 | 0, 4) * 7) * TILE; }
       const cdx = cat.tx - cat.x, cdy = cat.ty - cat.y;
-      if (Math.hypot(cdx, cdy) > 2) { cat.x += cdx * dt * 0.7; cat.y += cdy * dt * 0.7; }
+      if (Math.hypot(cdx, cdy) > 2) { cat.x += cdx * dt * 0.7; cat.y += cdy * dt * 0.7; if (cdx > 1) cat.fx = 1; else if (cdx < -1) cat.fx = -1; }
     }
     const catEnt = ENTITIES.find(e => e.id === 'dungeon_cat');
     catEnt.px = cat.x - 8; catEnt.py = cat.y - 8;
@@ -919,13 +925,14 @@
 
     // interaction target: chirp + glyph pop the moment a new target comes in range
     const tgt = dialogOpen ? null : interactTarget();
+    curTarget = tgt; // render reads this instead of recomputing
     const tgtId = tgt ? tgt.id : null;
     if (tgtId && tgtId !== lastTargetId) { sfx('near'); promptPop = REDUCED ? 0 : 0.18; }
     lastTargetId = tgtId;
     if (promptPop > 0) promptPop = Math.max(0, promptPop - dt);
     if (isTouch) actionBtn.classList.toggle('ready', !!tgt);
   }
-  let lastTargetId = null, promptPop = 0;
+  let lastTargetId = null, promptPop = 0, curTarget = null;
 
   // ---------------- Render ----------------
   function drawShadow(x, y, w) {
@@ -960,9 +967,12 @@
 
   function drawEntity(e) {
     const px = e.px, py = e.py;
-    const X = sx(px), Y = sy(py);
+    const X = sx(px), Y = sy(py) - (e.lift || 0) * SCALE; // lift seats props onto a surface
     const S = SCALE;
     const WP = e.w * 16, HP = e.h * 16;
+    // offscreen cull (generous margin for tripods, glows, the floating prompt/pip)
+    const M = 40 * S;
+    if (X + (WP + 8) * S < -M || Y + (HP + 24) * S < -M || X > cvW + M || Y - 24 * S > cvH + M) return;
     const red = PAL.gold, white = PAL.white, black = PAL.black, metal = PAL.metal, metalD = PAL.metalDark, screen = PAL.screen;
     const pulse = REDUCED ? 0.5 : (Math.sin(time * Math.PI + (px + py) * 0.05) + 1) / 2;
     switch (e.kind) {
@@ -1037,15 +1047,16 @@
         R(X, Y, S, 4, 11, 8, 1, PAL.light ? '#fff' : '#3a3b40');
         R(X, Y, S, 5, 11.5, 6, 1.5, PAL.soil);
         R(X, Y, S, 5, 15, 6, 1, 'rgba(0,0,0,0.25)');
+        const sway = REDUCED ? 0 : Math.sin(time * 1.25 + px * 0.05); // sub-1px breeze on foliage only
         if (e.id === 'plant_3') { // snake plant — stiff blades
           for (let i = 0; i < 5; i++) {
-            const bx = 4 + i * 1.6, lean = (i - 2) * 0.6, hgt = 9 + (i % 2) * 2;
+            const bx = 4 + i * 1.6 + sway * 0.4 * (i - 2), hgt = 9 + (i % 2) * 2;
             ctx.fillStyle = PAL.plant; ctx.fillRect(X + (bx) * S, Y + (12 - hgt) * S, 1.4 * S, hgt * S);
             ctx.fillStyle = PAL.plantDark; ctx.fillRect(X + (bx + 0.5) * S, Y + (12 - hgt) * S, 0.4 * S, hgt * S);
             ctx.fillStyle = PAL.plantMid; ctx.fillRect(X + (bx) * S, Y + (12 - hgt) * S, 0.3 * S, hgt * S);
           }
         } else { // monstera — leafy fans
-          const leaf = (tx, ty, col) => { ctx.fillStyle = col; ctx.beginPath(); ctx.moveTo(X + 8 * S, Y + 12 * S); ctx.lineTo(X + tx * S, Y + ty * S); ctx.lineTo(X + (tx + 2.5) * S, Y + (ty + 2.5) * S); ctx.closePath(); ctx.fill(); };
+          const leaf = (tx, ty, col) => { ctx.fillStyle = col; ctx.beginPath(); ctx.moveTo(X + 8 * S, Y + 12 * S); ctx.lineTo(X + (tx + sway * 0.6) * S, Y + ty * S); ctx.lineTo(X + (tx + 2.5 + sway * 0.6) * S, Y + (ty + 2.5) * S); ctx.closePath(); ctx.fill(); };
           leaf(2, 3, PAL.plantDark); leaf(14, 3, PAL.plantDark);
           leaf(4, 1, PAL.plant); leaf(12, 1, PAL.plant); leaf(8, -2, PAL.plant);
           R(X, Y, S, 6, 2, 1, 3, PAL.plantMid); // rim light
@@ -1077,14 +1088,9 @@
         return;
       }
       case 'monitors': {
-        // directional cool wash onto desk + floor
-        if (!REDUCED) {
-          ctx.save(); ctx.globalCompositeOperation = 'lighter';
-          const wash = ctx.createLinearGradient(0, Y - 2 * S, 0, Y + 18 * S);
-          const wa = PAL.light ? 0.16 : 0.40;
-          wash.addColorStop(0, hexA(PAL.spillCool, wa)); wash.addColorStop(1, hexA(PAL.spillCool, 0));
-          ctx.fillStyle = wash; ctx.fillRect(X - 6 * S, Y - 3 * S, (WP + 12) * S, 20 * S); ctx.restore();
-        }
+        // directional cool wash onto desk + floor (cached strip; static, so reduced-motion keeps it)
+        ctx.save(); ctx.globalCompositeOperation = 'lighter';
+        ctx.drawImage(monitorWash(), X - 6 * S, Y - 3 * S, (WP + 12) * S, 20 * S); ctx.restore();
         // monitor arm
         R(X, Y, S, 12, 11, 8, 3, black); R(X, Y, S, 15, 4, 2, 8, metalD); R(X, Y, S, 15, 4, 1, 8, metal);
         // asymmetric dual: main (landscape) + side (portrait)
@@ -1094,7 +1100,7 @@
         const codeCols = ['rgba(120,200,255,0.65)', 'rgba(255,255,255,0.30)', 'rgba(120,255,170,0.55)', 'rgba(255,255,255,0.28)', 'rgba(255,200,120,0.5)'];
         const cw5 = [5, 7, 3, 6, 4];
         for (let i = 0; i < 5; i++) R(X, Y, S, 4, 1 + i * 1.4, cw5[i], 1, codeCols[i]);
-        const car = REDUCED ? 1 : (Math.sin(time * 4) > 0 ? 1 : 0.15);
+        const car = REDUCED ? 1 : 0.2 + 0.8 * (0.5 + 0.5 * Math.sin(time * 3.5));
         ctx.globalAlpha = car; R(X, Y, S, 10, 6, 1, 1, red); ctx.globalAlpha = 1;
         R(X, Y, S, 2, 7, 13, 1, metalD); // chin
         // side — terminal + tiny chart
@@ -1120,13 +1126,15 @@
         disc(4, PAL.light ? '#26282e' : '#1a1c20');         // top plate
         disc(2, metalD);                                    // lidar puck
         ctx.fillStyle = 'rgba(255,255,255,0.5)'; ctx.beginPath(); ctx.arc(RX - 0.6 * S, RY - 0.6 * S, 1 * S, Math.PI, Math.PI * 1.6); ctx.fill();
-        const blink = REDUCED ? 1 : (Math.sin(time * 4) > 0 ? 1 : 0.3);
+        const blink = REDUCED ? 1 : 0.4 + 0.6 * (0.5 + 0.5 * Math.sin(time * 3));
         ctx.globalAlpha = blink; ctx.strokeStyle = red; ctx.lineWidth = Math.max(1, S); ctx.beginPath(); ctx.arc(RX, RY, 3 * S, 0.2, 1.2); ctx.stroke(); ctx.globalAlpha = 1;
         return;
       }
-      case 'emoji': { // office cat
+      case 'emoji': { // office cat (mirror when walking right)
         drawShadow(cat.x, cat.y + 7, 10);
-        ctx.drawImage(rasterEmoji(e.emoji, 32), sx(cat.x) - 7 * S, sy(cat.y) - 11 * S, 14 * S, 14 * S);
+        const cX = sx(cat.x), cimg = rasterEmoji(e.emoji, 32);
+        if (cat.fx > 0) { ctx.save(); ctx.translate(cX, 0); ctx.scale(-1, 1); ctx.drawImage(cimg, -7 * S, sy(cat.y) - 11 * S, 14 * S, 14 * S); ctx.restore(); }
+        else ctx.drawImage(cimg, cX - 7 * S, sy(cat.y) - 11 * S, 14 * S, 14 * S);
         return;
       }
       case 'phone': {
@@ -1284,14 +1292,23 @@
         ctx.fillStyle = PAL.light ? '#3a2418' : '#241712'; ctx.beginPath(); ctx.arc(X + 8 * S, Y + 8 * S, 3 * S, 0, 7); ctx.fill();
         ctx.fillStyle = 'rgba(180,120,70,0.5)'; ctx.beginPath(); ctx.arc(X + 7 * S, Y + 7 * S, 1 * S, 0, 7); ctx.fill();
         R(X, Y, S, 12, 7, 2, 3, black); R(X, Y, S, 4, 7, 1, 1, red);
-        if (!REDUCED) { const s0 = Math.sin(time * 2); ctx.globalAlpha = 0.12; ctx.fillStyle = '#fff'; R(X, Y, S, 7, -2 + s0, 1, 2); R(X, Y, S, 9, -3 - s0, 1, 2); ctx.globalAlpha = 1; }
+        if (!REDUCED) { // two wisps rise + fade out of phase
+          ctx.fillStyle = '#fff';
+          for (let w0 = 0; w0 < 2; w0++) {
+            const p = (time * 0.9 + w0 * 0.5) % 1;
+            ctx.globalAlpha = 0.16 * (1 - p) * Math.min(1, p * 4);
+            R(X, Y, S, 7 + w0 * 2 + Math.sin(time * 2.3 + w0 * 6) * 0.5, 2 - p * 5, 1, 2);
+          }
+          ctx.globalAlpha = 1;
+        }
         return;
       }
       case 'deskplant': {
         drawShadow(px + 8, py + 13, 6);
         R(X, Y, S, 5, 9, 6, 5, white); R(X, Y, S, 5, 9, 6, 1, 'rgba(255,255,255,0.5)'); R(X, Y, S, 5, 13, 6, 1, 'rgba(0,0,0,0.18)');
         R(X, Y, S, 6, 9, 4, 1.5, PAL.soil);
-        ctx.fillStyle = PAL.plant; for (const an of [0, 1, 2, 3, 4, 5]) { const a2 = an * Math.PI / 3; ctx.beginPath(); ctx.ellipse(X + (8 + Math.cos(a2) * 2) * S, Y + (7 + Math.sin(a2) * 2) * S, 1.4 * S, 2.2 * S, a2, 0, 7); ctx.fill(); }
+        const dpsw = REDUCED ? 0 : Math.sin(time * 1.4) * 0.04;
+        ctx.fillStyle = PAL.plant; for (const an of [0, 1, 2, 3, 4, 5]) { const a2 = an * Math.PI / 3 + dpsw; ctx.beginPath(); ctx.ellipse(X + (8 + Math.cos(a2) * 2) * S, Y + (7 + Math.sin(a2) * 2) * S, 1.4 * S, 2.2 * S, a2, 0, 7); ctx.fill(); }
         ctx.fillStyle = PAL.plantDark; ctx.beginPath(); ctx.arc(X + 8 * S, Y + 7 * S, 1.3 * S, 0, 7); ctx.fill();
         return;
       }
@@ -1348,12 +1365,12 @@
       ctx.fillStyle = red;
       ctx.font = `${7 * S}px "JetBrains Mono",monospace`;
       ctx.textAlign = 'center';
-      ctx.fillText('✓', X + WP / 2 * S, Y - (e.h > 1 ? 4 : 4) * S);
+      ctx.fillText('✓', X + WP / 2 * S, Y - (e.h > 1 ? e.h * 16 - 12 : 4) * S);
     }
   }
 
   function render() {
-    const cw = canvas.width / dpr, ch = canvas.height / dpr;
+    const cw = cvW = canvas.width / dpr, ch = cvH = canvas.height / dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.imageSmoothingEnabled = false;
     ctx.fillStyle = PAL.voidc;
@@ -1381,18 +1398,21 @@
 
     // big furniture against the walls draws as a flat layer first, so items resting
     // on it (monitors, phones, gadgets) and the player always paint on top.
-    for (const e of ENTITIES) if (e.flat) drawEntity(e);
-    // everything else y-sorts with the player
-    const items = ENTITIES.filter(e => !e.flat).map(e => ({ y: e.py + e.h * TILE, f: () => drawEntity(e) }));
+    for (const e of flatEnts) drawEntity(e);
+    // everything else y-sorts with the player; persistent list keyed in place (no per-frame alloc)
     const idleBob = (!player.moving && !REDUCED) ? Math.sin(time * 2.2) * 0.6 : 0;
-    items.push({ y: player.y + 10, f: () => drawRig(heroRig, player.x, player.y, player.dir, player.moving ? player.frame : 0, idleBob) });
-    items.push({ y: drone.y + 8, f: drawDrone });
-    items.sort((a, b) => a.y - b.y);
-    for (const it of items) it.f();
+    for (const e of sortEnts) e._sy = e.py + e.h * TILE;
+    PLAYER_SENT._sy = player.y + 10; DRONE_SENT._sy = drone.y + 8;
+    drawList.sort((a, b) => a._sy - b._sy);
+    for (const e of drawList) {
+      if (e === PLAYER_SENT) drawRig(heroRig, player.x, player.y, player.dir, player.moving ? player.frame : 0, idleBob);
+      else if (e === DRONE_SENT) drawDrone();
+      else drawEntity(e);
+    }
 
-    // prompt '!' above nearest target
+    // prompt '!' above nearest target (computed once in update)
     if (!dialogOpen) {
-      const t = interactTarget();
+      const t = curTarget;
       if (t) {
         const bob = REDUCED ? 0 : Math.sin(time * 5) * 2;
         const X = sx(t.px + t.w * TILE / 2), Y = sy(t.py) - (t.h > 1 ? 16 : 8) * SCALE + bob * SCALE / 2;
@@ -1453,6 +1473,17 @@
     gr.addColorStop(1, PAL.light ? 'rgba(20,16,10,0.16)' : 'rgba(0,0,0,0.40)');
     g.fillStyle = gr; g.fillRect(0, 0, w, h);
     return _vig;
+  }
+  let _mw = null;
+  function monitorWash() {
+    if (_mw) return _mw;
+    _mw = mk(44, 20);
+    const g = _mw.getContext('2d');
+    const grad = g.createLinearGradient(0, 1, 0, 17);
+    const wa = PAL.light ? 0.16 : 0.40;
+    grad.addColorStop(0, hexA(PAL.spillCool, wa)); grad.addColorStop(1, hexA(PAL.spillCool, 0));
+    g.fillStyle = grad; g.fillRect(0, 0, 44, 20);
+    return _mw;
   }
   let _glowW = null;
   function glowSpriteWarm() {
@@ -1521,7 +1552,7 @@
   window.addEventListener('resize', resize);
   if (window.visualViewport) window.visualViewport.addEventListener('resize', resize);
 
-  function rebuildArt() { readPalette(); bakeAtlas(); bakeRigs(); bakeWorld(); _vig = null; }
+  function rebuildArt() { readPalette(); bakeAtlas(); bakeRigs(); bakeWorld(); _vig = null; _mw = null; }
   new MutationObserver((muts) => {
     for (const m of muts) if (m.attributeName === 'data-theme') { rebuildArt(); if (playing) render(); }
   }).observe(document.documentElement, { attributes: true });
