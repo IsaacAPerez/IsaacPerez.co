@@ -310,7 +310,7 @@ section[id], main[id] { scroll-margin-top: 64px; }
 .exp-logo img { display: block; object-fit: contain; }
 /* per-logo sizing: each source frames its mark differently */
 .exp-logo.l-tinder img { width: 30px; height: 30px; }      /* tall flame — size by its own box, centered */
-.exp-logo.l-nd img { width: 56px; height: 56px; transform: scale(1.7); } /* house sits in big margins — scale up, tile clips */
+.exp-logo.l-nd img { width: 56px; height: 56px; transform: scale(1.32); } /* house sits in big margins — scale up, tile clips */
 .exp-co { font-size: clamp(1.5rem, 3.5vw, 2.2rem); font-weight: 700; letter-spacing: -0.02em; }
 .exp-role { font-size: 1rem; color: var(--accent); margin-top: 4px; }
 .exp-date { font-size: 14px; color: var(--text-3); font-variant-numeric: tabular-nums; white-space: nowrap; }
