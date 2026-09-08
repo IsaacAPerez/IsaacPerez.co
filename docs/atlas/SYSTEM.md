@@ -2,13 +2,13 @@
 
 _**This file is the living source of truth for the shape of isaacperez.co.** The interactive atlas is built from the same data._
 
-_Question status: **2 open · 11 resolved**._
+_Question status: **3 open · 11 resolved**._
 
 ## One paragraph
 
 IsaacPerez.co is Isaac's personal brand site: eight public URLs of hand-written static
 HTML with no package.json, no bundler, no tests and no CI. The landing page carries the work,
-experience and contact sections; two pages under /photo/ are the CapturedByIP photo-and-video
+experience and contact sections; /photo/pricing/ is the photo-and-film
 practice, folded in from its own domain in August 2026; /shootsort/ is the download page for the
 macOS card organizer; and four legal-style pages serve two iOS apps — /roommate/{privacy,terms,support}
 for Quarters and /souvenir/privacy/ for Souvenir. The one piece of real engineering is
@@ -27,7 +27,8 @@ whole pipeline — the only config in the tree is vercel.json, a response-header
 | Asset paths | `index.html` uses relative paths (`css/site.css`); every nested page — and `404.html`, which is served for a bad URL at any depth — uses absolute paths (`/css/design-system.css`). | — |
 | Motion | Every animation branches on a `REDUCED` flag (`site.js:7`, `game.js:19`) or a `prefers-reduced-motion` media query. | — |
 | Legal URLs | `/roommate/privacy/` and `/roommate/terms/` are permanent — App Store metadata points at them; the app renamed RoommateApp → Crib → Quarters, the path did not. `/roommate/support/` and `/souvenir/privacy/` joined them on 2026-09-02. | — |
-| Photo brand | capturedbyip.com folded into `/photo/` and `/photo/pricing/` (commit 9ab8851, 2026-08-08); the CBIP theme was dropped and both pages rebuilt on this site's own tokens. | — |
+| Photo brand | capturedbyip.com folded into `/photo/` and `/photo/pricing/` (commit 9ab8851, 2026-08-08); the CBIP theme was dropped and both pages rebuilt on this site's own tokens. On 2026-09-07 the CapturedByIP name retired into FIRSTUNIT, the company Isaac founded: `/photo/` became a 301 to `firstunit.io/fu-0001` (vercel.json `redirects`), `/photo/pricing/` stayed as a FIRSTUNIT practice page with the frozen wordmark on a band at its base. | — |
+| FIRSTUNIT | The landing page presents FIRSTUNIT as the company behind the products: a `#firstunit` section between Work and the camera section (inline-SVG wordmark on a solid band, never live type), a `FU—00NN` code link and the fixed line `A FIRSTUNIT PRODUCT` on every product card. This site stays personal and links out to firstunit.io. | — |
 | Commits | Conventional Commits enforced by the fleet `commit-msg` hook — `core.hooksPath` points at `~/Coding/platform/scripts/hooks`, shared with the other 11 fleet repos. | — |
 
 ## Cost model
@@ -38,7 +39,7 @@ whole pipeline — the only config in the tree is vercel.json, a response-header
 2. **What the page pulls in** — Style, pictures and type — three kinds of thing the landing page asks for once it arrives. _(adds C, I, E)_
 3. **Making it feel alive** — Two small scripts and three keys in your own browser are the entire client-side runtime. _(adds M, T, S)_
 4. **Step inside the office** — The one piece of real engineering: a walkable pixel studio where the furniture is the portfolio. _(adds G, A)_
-5. **The photo brand moves in** — capturedbyip.com stopped being its own site and became two pages here. _(adds P, R, O)_
+5. **The photo brand moves in, then moves on** — capturedbyip.com became two pages here, and a month later the name retired into FIRSTUNIT. _(adds P, R, O)_
 6. **A page per product** — Every work card should end somewhere. ShootSort was the one that did not. _(adds D)_
 7. **The pages that cannot move** — Four legal documents two App Store listings point at, and the one gate every change has to pass. _(adds Q, H)_
 8. **The road not taken** — One stylesheet in the repo belongs to a version of this site that never shipped. _(adds X)_
@@ -52,9 +53,9 @@ whole pipeline — the only config in the tree is vercel.json, a response-header
 
 **In one line.** The front door at isaacperez.co — who Isaac is, what he has built, and how to reach him.
 
-**What it does.** One long scrolling page: hero, a one-line statement, seven work cards, the photo-and-video section, a skills marquee, two jobs, an about block with the real photo, and a contact row. A button in the footer opens the playable office over the top of it.
+**What it does.** One long scrolling page: hero, a one-line statement, seven work cards (six of them carrying a FIRSTUNIT project code and the `A FIRSTUNIT PRODUCT` line), the FIRSTUNIT company section with the wordmark on a band, the photo-and-film section, a skills marquee, two jobs, an about block with the real photo, and a contact row. A button in the footer opens the playable office over the top of it.
 
-**How it's built.** `index.html`, 427 lines, hand-written. Sections are `<section class="sec-pad" id="...">` anchored to the nav (`#work`, `#experience`, `#about`, `#contact`). It links `css/site.css` and `css/game.css` relatively, then loads `js/site.js` and `js/game.js` with `defer`. Two scripts are inlined in the page itself: the theme pre-paint IIFE in `<head>` and the achievement engine before the closing body tag. **Everything is one file** — there is no template, include, or partial.
+**How it's built.** `index.html`, 427 lines, hand-written. Sections are `<section class="sec-pad" id="...">` anchored to the nav (`#work`, `#firstunit`, `#experience`, `#about`, `#contact`). It links `css/site.css` and `css/game.css` relatively, then loads `js/site.js` and `js/game.js` with `defer`. Two scripts are inlined in the page itself: the theme pre-paint IIFE in `<head>` and the achievement engine before the closing body tag. **Everything is one file** — there is no template, include, or partial.
 
 **Steps in execution.**
 
@@ -68,21 +69,23 @@ whole pipeline — the only config in the tree is vercel.json, a response-header
 
 - **Q-L1** Every landing-page visit downloads and boots `js/game.js` (94 KB) plus `css/game.css`, and `rebuildArt()` bakes the whole room to offscreen canvases at init — even for a visitor who never opens the office. Worth deferring the bake to `openOverlay()`?
 
-#### P · Photo & video page
+#### P · /photo/ redirect
 
-**In one line.** The CapturedByIP page — Isaac's photo and drone practice, moved here from its own domain.
+**In one line.** Where the CapturedByIP page used to be — now a 301 to the photo and film practice at firstunit.io/fu-0001.
 
-**What it does.** A hero with three stats, three service cards that all funnel to pricing, five YouTube showreels tagged Sports / Real Estate / Lifestyle / Promo / Drone, a three-step "how I work" block, and a contact call to action.
+**What it does.** No page. A visitor who lands on /photo/ (from the retired capturedbyip.com, an old link, or a search result) is sent to the FIRSTUNIT record for the practice. The five showreels and the ProfessionalService JSON-LD went with the page on 2026-09-07; the pricing page kept its own OfferCatalog with FIRSTUNIT as the provider.
 
-**How it's built.** `photo/index.html`, served at `/photo/`. Absolute asset paths: `/css/site.css` then `/css/photo.css`, and `/js/site.js` for the shared motion. It is the only page carrying structured data — a `ProfessionalService` JSON-LD block with three `makesOffer` services. Content came from capturedbyip.com in commit `9ab8851`; the old CBIP theme and its forked design system were dropped on the way in.
+**How it's built.** Two entries in the `redirects` array of `vercel.json` — `/photo` and `/photo/`, both `permanent: true`, both to `https://firstunit.io/fu-0001`. `photo/index.html` is deleted, `/photo/` is out of `sitemap.xml`, and every in-tree link that pointed at it (nav, footer, 404, the office's camera exhibit) points at the firstunit.io record instead. **Vercel evaluates redirects before the filesystem**, so the rule would win even if the file came back.
 
 **Steps in execution.**
 
-1. **Serve** — Vercel returns photo/index.html for the extensionless /photo/ URL.
-2. **Theme** — Same inline pre-paint IIFE as every other page reads localStorage["theme"].
-3. **Style** — site.css supplies the tokens; photo.css adds .ph-hero, .ph-grid, .ph-work and the pricing-card classes.
-4. **Embed** — Five youtube-nocookie iframes load lazily inside .ph-work-item.
-5. **Hand off** — All three service cards and the See pricing button in the hero point at /photo/pricing/; the other hero button is the in-page #work anchor.
+1. **Request** — GET /photo/ (or /photo) reaches Vercel.
+2. **Redirect** — The vercel.json rule answers 308/301 with Location: https://firstunit.io/fu-0001.
+3. **Land** — firstunit.io serves the FU—0001 project page — the practice, the films, the work.
+
+**Questions.**
+
+- **Q-P1** capturedbyip.com still 301s to `isaacperez.co/photo/` (the other repo's vercel.json), which now 301s again to firstunit.io. Two hops is fine for a browser, but should the CapturedByIP stub be repointed straight at `firstunit.io/fu-0001`?
 
 #### R · Pricing page
 
@@ -90,7 +93,7 @@ whole pipeline — the only config in the tree is vercel.json, a response-header
 
 **What it does.** Sports Coverage from $300 (flagged "Most booked"), Real Estate Content from $250, Lifestyle & Brand from $400, Drone-Only from $200 — each with an includes list, and every one but Drone-Only with priced add-ons — then an always-included section, a common add-ons table, and a three-step booking explainer.
 
-**How it's built.** `photo/pricing/index.html`. Prices live in the HTML and, since 2026-09-02, in the page's own `OfferCatalog` JSON-LD, which must be edited with them: the merge commit deliberately collapsed the old two-source setup (markup plus a `PRICING_CONFIG` object) down to **markup alone**, values unchanged. Styling is `/css/site.css` + `/css/photo.css` (`.ph-price`, `.ph-addon`); the only script is `/js/site.js`.
+**How it's built.** `photo/pricing/index.html`. Prices live in the HTML and, since 2026-09-02, in the page's own `OfferCatalog` JSON-LD, which must be edited with them: the merge commit deliberately collapsed the old two-source setup (markup plus a `PRICING_CONFIG` object) down to **markup alone**, values unchanged. Styling is `/css/site.css` + `/css/photo.css` (`.ph-price`, `.ph-addon`); the only script is `/js/site.js`. Since 2026-09-07 the page is framed as a FIRSTUNIT practice — hero eyebrow, JSON-LD provider — and ends on the frozen FIRSTUNIT wordmark (inline SVG on a solid `.fu-band`) linking to `firstunit.io/fu-0001`; that band is the page's one attribution.
 
 **Steps in execution.**
 
@@ -101,7 +104,7 @@ whole pipeline — the only config in the tree is vercel.json, a response-header
 
 **Questions.**
 
-- ~~**Q-R1** The pricing page ships no JSON-LD while `/photo/` does — four priced packages are invisible to search as `Offer`/`PriceSpecification`. Intentional, or an oversight from the merge?~~ ✓ An oversight, now closed. The page carries an `OfferCatalog` with four `Offer` entries, each with a `PriceSpecification` `minPrice` (the cards say "From", so minPrice rather than price), hung off the existing service by `"provider": { "@id": ".../photo/#business" }` so the two blocks describe one business. Prices live in the markup AND in the block — keep them in step (2026-09-02).
+- ~~**Q-R1** The pricing page ships no JSON-LD while `/photo/` does — four priced packages are invisible to search as `Offer`/`PriceSpecification`. Intentional, or an oversight from the merge?~~ ✓ An oversight, now closed. The page carries an `OfferCatalog` with four `Offer` entries, each with a `PriceSpecification` `minPrice` (the cards say "From", so minPrice rather than price), hung off the existing service by `"provider": { "@id": ".../photo/#business" }` so the two blocks describe one business. Prices live in the markup AND in the block — keep them in step (2026-09-02). Since 2026-09-07 the provider is an inline `Organization` named FIRSTUNIT, because the `/photo/` page that declared the ProfessionalService is gone.
 
 #### D · ShootSort page
 
@@ -330,11 +333,11 @@ whole pipeline — the only config in the tree is vercel.json, a response-header
 
 #### O · Discovery surface
 
-**In one line.** How search engines and link previews see the site — eight URLs, eight canonicals, two rich cards.
+**In one line.** How search engines and link previews see the site — seven URLs, seven canonicals, two rich cards.
 
 **What it does.** A sitemap listing every public URL, a fully-open robots file, a canonical link on every page, Open Graph and Twitter cards for the shareable pages, and one structured-data block describing the photo practice.
 
-**How it's built.** `sitemap.xml` holds eight `<loc>` entries: `/` (1.0), `/photo/` (0.8), `/photo/pricing/` (0.7), `/shootsort/` (0.6), `/souvenir/privacy/`, `/roommate/privacy/`, `/roommate/terms/` and `/roommate/support/` (0.3). `404.html` is deliberately absent and carries `robots: noindex`. `robots.txt` is `Allow: /` plus the sitemap pointer. Every page carries a `<link rel="canonical">` to its exact `https://isaacperez.co/` production URL; `index.html` and both `/photo/` pages add `og:*` and `twitter:*` tags pointing at `isaac.JPG`. The JSON-LD is the `ProfessionalService` block on `/photo/` plus the `OfferCatalog` on `/photo/pricing/` that hangs off it by `@id`. The standing rule: **sitemap and canonical move in the same commit** as any page add or remove.
+**How it's built.** `sitemap.xml` holds seven `<loc>` entries (eight until `/photo/` became a redirect on 2026-09-07): `/` (1.0), `/photo/pricing/` (0.7), `/shootsort/` (0.6), `/souvenir/privacy/`, `/roommate/privacy/`, `/roommate/terms/` and `/roommate/support/` (0.3). `404.html` is deliberately absent and carries `robots: noindex`. `robots.txt` is `Allow: /` plus the sitemap pointer. Every page carries a `<link rel="canonical">` to its exact `https://isaacperez.co/` production URL; `index.html` and `/photo/pricing/` add `og:*` and `twitter:*` tags pointing at `isaac.JPG`. The JSON-LD is the `OfferCatalog` on `/photo/pricing/`, whose provider is an inline FIRSTUNIT `Organization`. The standing rule: **sitemap and canonical move in the same commit** as any page add or remove.
 
 **Steps in execution.**
 
@@ -411,7 +414,8 @@ Payload shapes are what the design implies, not measured traffic.
 Reference by ID. ✓ resolved (with date) · otherwise open.
 
 - **Q-L1** (L) Every landing-page visit downloads and boots `js/game.js` (94 KB) plus `css/game.css`, and `rebuildArt()` bakes the whole room to offscreen canvases at init — even for a visitor who never opens the office. Worth deferring the bake to `openOverlay()`?
-- ~~**Q-R1**~~ (R) ✓ An oversight, now closed. The page carries an `OfferCatalog` with four `Offer` entries, each with a `PriceSpecification` `minPrice` (the cards say "From", so minPrice rather than price), hung off the existing service by `"provider": { "@id": ".../photo/#business" }` so the two blocks describe one business. Prices live in the markup AND in the block — keep them in step (2026-09-02).
+- **Q-P1** (P) capturedbyip.com still 301s to `isaacperez.co/photo/` (the other repo's vercel.json), which now 301s again to firstunit.io. Two hops is fine for a browser, but should the CapturedByIP stub be repointed straight at `firstunit.io/fu-0001`?
+- ~~**Q-R1**~~ (R) ✓ An oversight, now closed. The page carries an `OfferCatalog` with four `Offer` entries, each with a `PriceSpecification` `minPrice` (the cards say "From", so minPrice rather than price), hung off the existing service by `"provider": { "@id": ".../photo/#business" }` so the two blocks describe one business. Prices live in the markup AND in the block — keep them in step (2026-09-02). Since 2026-09-07 the provider is an inline `Organization` named FIRSTUNIT, because the `/photo/` page that declared the ProfessionalService is gone.
 - **Q-D1** (D) The page claims Apple silicon + macOS 14 and a notarized build, taken from `dist/appcast.xml` and the README. Nothing re-checks that when ShootSort ships a release — should the requirements line be generated, or is a page that only changes when the app's floor changes fine as prose?
 - ~~**Q-Q1**~~ (Q) ✓ No. App Store metadata and external systems point at the existing URLs; CLAUDE.md marks the path permanent and allows only copy renames — and a rename must match `\bCrib\b` case-sensitively, a precaution the rename commit 85c58c1 records because a case-insensitive replace would mangle the word "describes" in the privacy policy (2026-08-24).
 - ~~**Q-G1**~~ (G) ✓ Neither — the badges now render _inside_ the office. `openAchievements()` fills the existing `#gameDialog` with all nine badges, locked and unlocked, headed "N / 8 unlocked"; the visitor never leaves the room. The badge table comes from `window.__ipAch`, published by the achievement engine in index.html, with a fallback copy in game.js. No landing-page section was added — that would have grown an unmeasured surface (2026-09-02).
@@ -451,14 +455,14 @@ IsaacPerez.co/
   css/
     site.css            landing-page theme + tokens (:root / [data-theme])
     game.css            the office overlay chrome (its own tokens)
-    photo.css           /photo/ and /photo/pricing/ only
+    photo.css           /photo/pricing/ only
     design-system.css   /roommate/ legal pages only
     rpg.css             abandoned redesign — zero references
   js/
     site.js             reveal, parallax, nav, theme toggle, anchor scroll
     game.js             "Isaac's Studio" canvas game (50 entities, 23 exhibits)
   photo/
-    index.html          CapturedByIP work + 5 YouTube embeds + JSON-LD
+    (index.html gone — /photo/ is a 301 to firstunit.io/fu-0001 in vercel.json)
     pricing/index.html  four packages, add-ons, booking + Offer JSON-LD
   shootsort/index.html  the macOS card organizer — download + how it files
   roommate/

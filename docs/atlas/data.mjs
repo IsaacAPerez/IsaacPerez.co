@@ -13,7 +13,7 @@ export const META = {
   intro: `_**This file is the living source of truth for the shape of isaacperez.co.** The interactive atlas is built from the same data._`,
   onePara: `IsaacPerez.co is Isaac's personal brand site: eight public URLs of hand-written static
 HTML with no package.json, no bundler, no tests and no CI. The landing page carries the work,
-experience and contact sections; two pages under /photo/ are the CapturedByIP photo-and-video
+experience and contact sections; /photo/pricing/ is the photo-and-film
 practice, folded in from its own domain in August 2026; /shootsort/ is the download page for the
 macOS card organizer; and four legal-style pages serve two iOS apps — /roommate/{privacy,terms,support}
 for Quarters and /souvenir/privacy/ for Souvenir. The one piece of real engineering is
@@ -43,14 +43,14 @@ index.html, the theme system, the image and document assets, and the discovery s
   css/
     site.css            landing-page theme + tokens (:root / [data-theme])
     game.css            the office overlay chrome (its own tokens)
-    photo.css           /photo/ and /photo/pricing/ only
+    photo.css           /photo/pricing/ only
     design-system.css   /roommate/ legal pages only
     rpg.css             abandoned redesign — zero references
   js/
     site.js             reveal, parallax, nav, theme toggle, anchor scroll
     game.js             "Isaac's Studio" canvas game (50 entities, 23 exhibits)
   photo/
-    index.html          CapturedByIP work + 5 YouTube embeds + JSON-LD
+    (index.html gone — /photo/ is a 301 to firstunit.io/fu-0001 in vercel.json)
     pricing/index.html  four packages, add-ons, booking + Offer JSON-LD
   shootsort/index.html  the macOS card organizer — download + how it files
   roommate/
@@ -73,7 +73,8 @@ export const DECISIONS = [
   { axis: 'Asset paths', decision: '`index.html` uses relative paths (`css/site.css`); every nested page — and `404.html`, which is served for a bad URL at any depth — uses absolute paths (`/css/design-system.css`).', adr: '—' },
   { axis: 'Motion', decision: 'Every animation branches on a `REDUCED` flag (`site.js:7`, `game.js:19`) or a `prefers-reduced-motion` media query.', adr: '—' },
   { axis: 'Legal URLs', decision: '`/roommate/privacy/` and `/roommate/terms/` are permanent — App Store metadata points at them; the app renamed RoommateApp → Crib → Quarters, the path did not. `/roommate/support/` and `/souvenir/privacy/` joined them on 2026-09-02.', adr: '—' },
-  { axis: 'Photo brand', decision: 'capturedbyip.com folded into `/photo/` and `/photo/pricing/` (commit 9ab8851, 2026-08-08); the CBIP theme was dropped and both pages rebuilt on this site\'s own tokens.', adr: '—' },
+  { axis: 'Photo brand', decision: 'capturedbyip.com folded into `/photo/` and `/photo/pricing/` (commit 9ab8851, 2026-08-08); the CBIP theme was dropped and both pages rebuilt on this site\'s own tokens. On 2026-09-07 the CapturedByIP name retired into FIRSTUNIT, the company Isaac founded: `/photo/` became a 301 to `firstunit.io/fu-0001` (vercel.json `redirects`), `/photo/pricing/` stayed as a FIRSTUNIT practice page with the frozen wordmark on a band at its base.', adr: '—' },
+  { axis: 'FIRSTUNIT', decision: 'The landing page presents FIRSTUNIT as the company behind the products: a `#firstunit` section between Work and the camera section (inline-SVG wordmark on a solid band, never live type), a `FU—00NN` code link and the fixed line `A FIRSTUNIT PRODUCT` on every product card. This site stays personal and links out to firstunit.io.', adr: '—' },
   { axis: 'Commits', decision: 'Conventional Commits enforced by the fleet `commit-msg` hook — `core.hooksPath` points at `~/Coding/platform/scripts/hooks`, shared with the other 11 fleet repos.', adr: '—' },
 ];
 
@@ -91,8 +92,8 @@ export const NODES = [
     id: 'L', code: 'L', name: 'Landing page', short: 'LANDING PAGE', group: 'pages',
     gx: 0.5, gy: 8, w: 2.5, d: 2.5, h: 40, kind: 'screen',
     one: 'The front door at isaacperez.co — who Isaac is, what he has built, and how to reach him.',
-    what: 'One long scrolling page: hero, a one-line statement, seven work cards, the photo-and-video section, a skills marquee, two jobs, an about block with the real photo, and a contact row. A button in the footer opens the playable office over the top of it.',
-    how: '<code>index.html</code>, 427 lines, hand-written. Sections are <code>&lt;section class="sec-pad" id="..."&gt;</code> anchored to the nav (<code>#work</code>, <code>#experience</code>, <code>#about</code>, <code>#contact</code>). It links <code>css/site.css</code> and <code>css/game.css</code> relatively, then loads <code>js/site.js</code> and <code>js/game.js</code> with <code>defer</code>. Two scripts are inlined in the page itself: the theme pre-paint IIFE in <code>&lt;head&gt;</code> and the achievement engine before the closing body tag. <mark>Everything is one file</mark> — there is no template, include, or partial.',
+    what: 'One long scrolling page: hero, a one-line statement, seven work cards (six of them carrying a FIRSTUNIT project code and the `A FIRSTUNIT PRODUCT` line), the FIRSTUNIT company section with the wordmark on a band, the photo-and-film section, a skills marquee, two jobs, an about block with the real photo, and a contact row. A button in the footer opens the playable office over the top of it.',
+    how: '<code>index.html</code>, 427 lines, hand-written. Sections are <code>&lt;section class="sec-pad" id="..."&gt;</code> anchored to the nav (<code>#work</code>, <code>#firstunit</code>, <code>#experience</code>, <code>#about</code>, <code>#contact</code>). It links <code>css/site.css</code> and <code>css/game.css</code> relatively, then loads <code>js/site.js</code> and <code>js/game.js</code> with <code>defer</code>. Two scripts are inlined in the page itself: the theme pre-paint IIFE in <code>&lt;head&gt;</code> and the achievement engine before the closing body tag. <mark>Everything is one file</mark> — there is no template, include, or partial.',
     steps: [
       ['Pre-paint theme', 'The inline head IIFE reads localStorage["theme"] and stamps data-theme on the root html element before any stylesheet parses, so there is no flash.'],
       ['Paint', 'site.css and game.css load; the hero renders; the office overlay sits hidden behind #gameRoot.'],
@@ -105,26 +106,26 @@ export const NODES = [
     ],
   },
   {
-    id: 'P', code: 'P', name: 'Photo & video page', short: 'PHOTO & VIDEO', group: 'pages',
-    gx: 0.5, gy: 11, w: 2.5, d: 2, h: 38, kind: 'screen',
-    one: 'The CapturedByIP page — Isaac\'s photo and drone practice, moved here from its own domain.',
-    what: 'A hero with three stats, three service cards that all funnel to pricing, five YouTube showreels tagged Sports / Real Estate / Lifestyle / Promo / Drone, a three-step "how I work" block, and a contact call to action.',
-    how: '<code>photo/index.html</code>, served at <code>/photo/</code>. Absolute asset paths: <code>/css/site.css</code> then <code>/css/photo.css</code>, and <code>/js/site.js</code> for the shared motion. It is the only page carrying structured data — a <code>ProfessionalService</code> JSON-LD block with three <code>makesOffer</code> services. Content came from capturedbyip.com in commit <code>9ab8851</code>; the old CBIP theme and its forked design system were dropped on the way in.',
+    id: 'P', code: 'P', name: '/photo/ redirect', short: 'PHOTO → FU—0001', group: 'pages',
+    gx: 0.5, gy: 11, w: 2.5, d: 2, h: 16, kind: 'box',
+    one: 'Where the CapturedByIP page used to be — now a 301 to the photo and film practice at firstunit.io/fu-0001.',
+    what: 'No page. A visitor who lands on /photo/ (from the retired capturedbyip.com, an old link, or a search result) is sent to the FIRSTUNIT record for the practice. The five showreels and the ProfessionalService JSON-LD went with the page on 2026-09-07; the pricing page kept its own OfferCatalog with FIRSTUNIT as the provider.',
+    how: 'Two entries in the <code>redirects</code> array of <code>vercel.json</code> — <code>/photo</code> and <code>/photo/</code>, both <code>permanent: true</code>, both to <code>https://firstunit.io/fu-0001</code>. <code>photo/index.html</code> is deleted, <code>/photo/</code> is out of <code>sitemap.xml</code>, and every in-tree link that pointed at it (nav, footer, 404, the office\'s camera exhibit) points at the firstunit.io record instead. <mark>Vercel evaluates redirects before the filesystem</mark>, so the rule would win even if the file came back.',
     steps: [
-      ['Serve', 'Vercel returns photo/index.html for the extensionless /photo/ URL.'],
-      ['Theme', 'Same inline pre-paint IIFE as every other page reads localStorage["theme"].'],
-      ['Style', 'site.css supplies the tokens; photo.css adds .ph-hero, .ph-grid, .ph-work and the pricing-card classes.'],
-      ['Embed', 'Five youtube-nocookie iframes load lazily inside .ph-work-item.'],
-      ['Hand off', 'All three service cards and the See pricing button in the hero point at /photo/pricing/; the other hero button is the in-page #work anchor.'],
+      ['Request', 'GET /photo/ (or /photo) reaches Vercel.'],
+      ['Redirect', 'The vercel.json rule answers 308/301 with Location: https://firstunit.io/fu-0001.'],
+      ['Land', 'firstunit.io serves the FU—0001 project page — the practice, the films, the work.'],
     ],
-    cond: [],
+    cond: [
+      { q: 'capturedbyip.com still 301s to <code>isaacperez.co/photo/</code> (the other repo\'s vercel.json), which now 301s again to firstunit.io. Two hops is fine for a browser, but should the CapturedByIP stub be repointed straight at <code>firstunit.io/fu-0001</code>?' },
+    ],
   },
   {
     id: 'R', code: 'R', name: 'Pricing page', short: 'PRICING', group: 'pages',
     gx: 3.5, gy: 11, w: 2.5, d: 2, h: 36, kind: 'screen',
     one: 'What a shoot costs — four packages, written straight into the markup.',
     what: 'Sports Coverage from $300 (flagged "Most booked"), Real Estate Content from $250, Lifestyle & Brand from $400, Drone-Only from $200 — each with an includes list, and every one but Drone-Only with priced add-ons — then an always-included section, a common add-ons table, and a three-step booking explainer.',
-    how: '<code>photo/pricing/index.html</code>. Prices live in the HTML and, since 2026-09-02, in the page\'s own <code>OfferCatalog</code> JSON-LD, which must be edited with them: the merge commit deliberately collapsed the old two-source setup (markup plus a <code>PRICING_CONFIG</code> object) down to <mark>markup alone</mark>, values unchanged. Styling is <code>/css/site.css</code> + <code>/css/photo.css</code> (<code>.ph-price</code>, <code>.ph-addon</code>); the only script is <code>/js/site.js</code>.',
+    how: '<code>photo/pricing/index.html</code>. Prices live in the HTML and, since 2026-09-02, in the page\'s own <code>OfferCatalog</code> JSON-LD, which must be edited with them: the merge commit deliberately collapsed the old two-source setup (markup plus a <code>PRICING_CONFIG</code> object) down to <mark>markup alone</mark>, values unchanged. Styling is <code>/css/site.css</code> + <code>/css/photo.css</code> (<code>.ph-price</code>, <code>.ph-addon</code>); the only script is <code>/js/site.js</code>. Since 2026-09-07 the page is framed as a FIRSTUNIT practice — hero eyebrow, JSON-LD provider — and ends on the frozen FIRSTUNIT wordmark (inline SVG on a solid <code>.fu-band</code>) linking to <code>firstunit.io/fu-0001</code>; that band is the page\'s one attribution.',
     steps: [
       ['Serve', 'Vercel returns photo/pricing/index.html at /photo/pricing/.'],
       ['Render packages', 'Four <article class="ph-price"> cards in .ph-price-grid, the first flagged .ph-price--featured.'],
@@ -132,7 +133,7 @@ export const NODES = [
       ['Close', 'The three .ph-step cards in #booking and the contact block send the visitor back to /#contact.'],
     ],
     cond: [
-      { q: 'The pricing page ships no JSON-LD while <code>/photo/</code> does — four priced packages are invisible to search as <code>Offer</code>/<code>PriceSpecification</code>. Intentional, or an oversight from the merge?', r: 'An oversight, now closed. The page carries an <code>OfferCatalog</code> with four <code>Offer</code> entries, each with a <code>PriceSpecification</code> <code>minPrice</code> (the cards say "From", so minPrice rather than price), hung off the existing service by <code>"provider": { "@id": ".../photo/#business" }</code> so the two blocks describe one business. Prices live in the markup AND in the block — keep them in step (2026-09-02).' },
+      { q: 'The pricing page ships no JSON-LD while <code>/photo/</code> does — four priced packages are invisible to search as <code>Offer</code>/<code>PriceSpecification</code>. Intentional, or an oversight from the merge?', r: 'An oversight, now closed. The page carries an <code>OfferCatalog</code> with four <code>Offer</code> entries, each with a <code>PriceSpecification</code> <code>minPrice</code> (the cards say "From", so minPrice rather than price), hung off the existing service by <code>"provider": { "@id": ".../photo/#business" }</code> so the two blocks describe one business. Prices live in the markup AND in the block — keep them in step (2026-09-02). Since 2026-09-07 the provider is an inline <code>Organization</code> named FIRSTUNIT, because the <code>/photo/</code> page that declared the ProfessionalService is gone.' },
     ],
   },
   {
@@ -337,9 +338,9 @@ export const NODES = [
   {
     id: 'O', code: 'O', name: 'Discovery surface', short: 'DISCOVERY', group: 'ship',
     gx: 14, gy: 4, w: 2.5, d: 2, h: 34, kind: 'box',
-    one: 'How search engines and link previews see the site — eight URLs, eight canonicals, two rich cards.',
+    one: 'How search engines and link previews see the site — seven URLs, seven canonicals, two rich cards.',
     what: 'A sitemap listing every public URL, a fully-open robots file, a canonical link on every page, Open Graph and Twitter cards for the shareable pages, and one structured-data block describing the photo practice.',
-    how: '<code>sitemap.xml</code> holds eight <code>&lt;loc&gt;</code> entries: <code>/</code> (1.0), <code>/photo/</code> (0.8), <code>/photo/pricing/</code> (0.7), <code>/shootsort/</code> (0.6), <code>/souvenir/privacy/</code>, <code>/roommate/privacy/</code>, <code>/roommate/terms/</code> and <code>/roommate/support/</code> (0.3). <code>404.html</code> is deliberately absent and carries <code>robots: noindex</code>. <code>robots.txt</code> is <code>Allow: /</code> plus the sitemap pointer. Every page carries a <code>&lt;link rel="canonical"&gt;</code> to its exact <code>https://isaacperez.co/</code> production URL; <code>index.html</code> and both <code>/photo/</code> pages add <code>og:*</code> and <code>twitter:*</code> tags pointing at <code>isaac.JPG</code>. The JSON-LD is the <code>ProfessionalService</code> block on <code>/photo/</code> plus the <code>OfferCatalog</code> on <code>/photo/pricing/</code> that hangs off it by <code>@id</code>. The standing rule: <mark>sitemap and canonical move in the same commit</mark> as any page add or remove.',
+    how: '<code>sitemap.xml</code> holds seven <code>&lt;loc&gt;</code> entries (eight until <code>/photo/</code> became a redirect on 2026-09-07): <code>/</code> (1.0), <code>/photo/pricing/</code> (0.7), <code>/shootsort/</code> (0.6), <code>/souvenir/privacy/</code>, <code>/roommate/privacy/</code>, <code>/roommate/terms/</code> and <code>/roommate/support/</code> (0.3). <code>404.html</code> is deliberately absent and carries <code>robots: noindex</code>. <code>robots.txt</code> is <code>Allow: /</code> plus the sitemap pointer. Every page carries a <code>&lt;link rel="canonical"&gt;</code> to its exact <code>https://isaacperez.co/</code> production URL; <code>index.html</code> and <code>/photo/pricing/</code> add <code>og:*</code> and <code>twitter:*</code> tags pointing at <code>isaac.JPG</code>. The JSON-LD is the <code>OfferCatalog</code> on <code>/photo/pricing/</code>, whose provider is an inline FIRSTUNIT <code>Organization</code>. The standing rule: <mark>sitemap and canonical move in the same commit</mark> as any page add or remove.',
     steps: [
       ['Add a page', 'New page lands at <path>/index.html with an absolute-path stylesheet link.'],
       ['Canonicalize', 'It gets a canonical link tag pointing at its exact production URL.'],
@@ -448,14 +449,14 @@ export const CH = [
     ],
   },
   {
-    id: 'photo', title: 'The photo brand moves in', reveal: ['P', 'R', 'O'],
-    lede: `capturedbyip.com stopped being its own site and became two pages here.`,
-    story: `<p>In August 2026 the CapturedByIP marketing site was folded into <code>/photo/</code> and <code>/photo/pricing/</code>, rebuilt on this site's own tokens, with prices collapsed to <mark>markup as the single source</mark> and the <code>ProfessionalService</code> JSON-LD retargeted at the new URL.</p><p>Adding public pages is also the one bookkeeping ritual here: canonical link, sitemap entry, same commit.</p>`,
+    id: 'photo', title: 'The photo brand moves in, then moves on', reveal: ['P', 'R', 'O'],
+    lede: `capturedbyip.com became two pages here, and a month later the name retired into FIRSTUNIT.`,
+    story: `<p>In August 2026 the CapturedByIP marketing site was folded into <code>/photo/</code> and <code>/photo/pricing/</code>, rebuilt on this site's own tokens, with prices collapsed to <mark>markup as the single source</mark>.</p><p>On 2026-09-07 the CapturedByIP name retired. FIRSTUNIT — the company Isaac founded — is the maker behind the products and the home of the photo and film practice (<code>FU—0001</code>). <code>/photo/</code> became a 301 to <code>firstunit.io/fu-0001</code>, the pricing page stayed as a FIRSTUNIT practice page, and the landing page gained a <code>#firstunit</code> section plus a code and the <code>A FIRSTUNIT PRODUCT</code> line on every product card. Removing a public page is the same bookkeeping ritual as adding one: sitemap, links, same commit.</p>`,
     flow: [
-      ['V', 'P', '200 /photo/', { url: '/photo/' }],
-      ['P', 'E', 'youtube-nocookie', { embeds: 5, loading: 'lazy' }],
-      ['P', 'R', 'See pricing →', { href: '/photo/pricing/' }],
-      ['P', 'O', 'canonical + JSON-LD', { type: 'ProfessionalService', offers: 3 }],
+      ['V', 'P', '301 /photo/', { to: 'https://firstunit.io/fu-0001' }],
+      ['V', 'R', '200 /photo/pricing/', { url: '/photo/pricing/' }],
+      ['R', 'O', 'canonical + OfferCatalog', { provider: 'FIRSTUNIT', offers: 4 }],
+      ['L', 'O', 'sitemap loses /photo/', { locs: 7 }],
     ],
   },
   {
