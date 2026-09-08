@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="description" content="Photo & video pricing — simple, transparent packages for sports, real estate, and lifestyle work in Los Angeles. Starting at $200.">
+  <meta name="description" content="Photo & film pricing — simple, transparent packages for sports, real estate, and lifestyle work in Los Angeles. Starting at $200.">
   <meta name="author" content="Isaac Perez">
   <meta name="keywords" content="photography pricing, videography pricing, sports photography cost, real estate photography rates, drone photography prices, Los Angeles photographer">
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Photo & Video Pricing — Isaac Perez">
+  <meta property="og:title" content="Photo & Film Pricing — Isaac Perez">
   <meta property="og:description" content="Simple, transparent pricing — built around the project, not the clock.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://isaacperez.co/photo/pricing/">
@@ -16,14 +16,14 @@
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Photo & Video Pricing — Isaac Perez">
+  <meta name="twitter:title" content="Photo & Film Pricing — Isaac Perez">
   <meta name="twitter:description" content="Simple, transparent pricing — built around the project, not the clock.">
   <meta name="twitter:image" content="https://isaacperez.co/isaac.JPG">
 
   <link rel="canonical" href="https://isaacperez.co/photo/pricing/">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/favicon.svg">
-  <title>Photo &amp; Video Pricing — Isaac Perez</title>
+  <title>Photo &amp; Film Pricing — Isaac Perez</title>
 
   <!-- Prevent flash of wrong theme -->
   <script>
@@ -40,17 +40,24 @@
   <link rel="stylesheet" href="/css/site.css">
   <link rel="stylesheet" href="/css/photo.css">
 
-  <!-- Structured Data: the four packages priced on this page, as Offers on the
-       ProfessionalService declared at /photo/#business. Prices mirror the cards
-       below — keep the two in step. -->
+  <!-- Structured Data: the four packages priced on this page, as Offers from
+       FIRSTUNIT (the photo & film practice is FU—0001 at firstunit.io). Prices
+       mirror the cards below — keep the two in step. -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "OfferCatalog",
     "@id": "https://isaacperez.co/photo/pricing/#catalog",
-    "name": "CapturedByIP photo & video packages",
+    "name": "Photo & film packages — a FIRSTUNIT practice",
     "url": "https://isaacperez.co/photo/pricing/",
-    "provider": { "@id": "https://isaacperez.co/photo/#business" },
+    "provider": {
+      "@type": "Organization",
+      "@id": "https://firstunit.io/#organization",
+      "name": "FIRSTUNIT",
+      "url": "https://firstunit.io",
+      "founder": { "@type": "Person", "name": "Isaac Perez", "url": "https://isaacperez.co/" },
+      "areaServed": { "@type": "City", "name": "Los Angeles" }
+    },
     "itemListElement": [
       {
         "@type": "Offer",
@@ -99,7 +106,7 @@
       <a href="/" class="nav-brand">Isaac Perez</a>
       <ul class="nav-links">
         <li><a href="/#work">Work</a></li>
-        <li><a href="/photo/" class="here">Photo</a></li>
+        <li><a href="/#firstunit">FIRSTUNIT</a></li>
         <li><a href="/#experience">Experience</a></li>
         <li><a href="/#about">About</a></li>
         <li><a href="/#contact" class="nav-cta">Contact</a></li>
@@ -118,7 +125,7 @@
     <header class="hero ph-hero">
       <div class="hero-bg"><span class="b1"></span><span class="b2"></span></div>
       <div class="hero-inner" id="heroInner">
-        <p class="hero-eyebrow" data-reveal>Pricing &amp; Packages</p>
+        <p class="hero-eyebrow" data-reveal>Photo &amp; Film · A FIRSTUNIT practice</p>
         <h1 class="hero-title" id="heroTitle"><span class="w">Built around</span> <span class="w">the project.</span></h1>
         <p class="hero-sub" data-reveal style="--d:520ms">
           Every project is different. These packages are starting points —
@@ -126,7 +133,7 @@
         </p>
         <div class="hero-actions" data-reveal style="--d:640ms">
           <a href="/#contact" class="btn btn-pill">Request a quote</a>
-          <a href="/photo/#work" class="btn btn-text">See the work <span class="arrow">→</span></a>
+          <a href="https://firstunit.io/fu-0001" target="_blank" rel="noopener" class="btn btn-text">See the work <span class="arrow">→</span></a>
         </div>
       </div>
     </header>
@@ -325,8 +332,16 @@
       <p data-reveal style="--d:120ms">Have something in mind? I'd love to hear about it.</p>
       <div class="hero-actions" data-reveal style="--d:220ms">
         <a href="/#contact" class="btn btn-pill">Request a quote</a>
-        <a href="/photo/#work" class="btn btn-text">See the work <span class="arrow">→</span></a>
+        <a href="https://firstunit.io/fu-0001" target="_blank" rel="noopener" class="btn btn-text">See the work <span class="arrow">→</span></a>
       </div>
+    </section>
+
+    <!-- ==================== FIRSTUNIT ==================== -->
+    <!-- The maker's band at the base: the frozen wordmark on a solid band, one attribution per surface. -->
+    <section class="fu-foot wrap" id="firstunit" aria-label="FIRSTUNIT">
+      <a class="fu-band" href="https://firstunit.io/fu-0001" target="_blank" rel="noopener" title="Photo &amp; Film — FU—0001 on firstunit.io">
+        <svg class="fu-wordmark" role="img" aria-label="FIRSTUNIT" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 11901.32 1000" fill="currentColor"><!-- FIRSTUNIT interim wordmark — the frozen file from IsaacAPerez/firstunit-brand assets/wordmark/. Never re-set as live type. --><path transform="translate(0.00,1000) scale(0.740741,-0.740741)" d="M0 0V1350H1005V1104H333V812H875V576H333V0Z"/><path transform="translate(1082.22,1000) scale(0.740741,-0.740741)" d="M0 0V1350H333V0Z"/><path transform="translate(1596.30,1000) scale(0.740741,-0.740741)" d="M0 0V1350H581Q779 1350 895 1256Q1011 1162 1011 992Q1011 878 951 794Q892 710 790 673L1053 0H700L488 613H333V0ZM333 838H539Q604 838 641 876Q678 913 678 981Q678 1048 641 1085Q604 1122 539 1122H333Z"/><path transform="translate(2803.70,1000) scale(0.740741,-0.740741)" d="M485 -18Q339 -18 232 25Q125 68 63 158Q1 248 -3 384L328 407Q332 350 355 314Q378 278 419 260Q460 242 512 242Q567 242 604 256Q641 271 660 296Q679 322 679 356Q679 401 641 428Q603 456 495 483L397 507Q291 533 210 574Q129 615 82 685Q35 755 35 862Q35 963 87 1041Q140 1120 235 1163Q330 1207 462 1207Q593 1207 690 1162Q787 1118 843 1035Q899 953 907 836L582 815Q580 866 561 900Q542 935 508 952Q475 970 430 970Q373 970 340 945Q307 921 307 881Q307 848 331 828Q356 808 431 789L558 758Q725 718 811 636Q897 555 897 415Q897 296 843 197Q789 98 693 40Q597 -18 485 -18Z"/><path transform="translate(3873.70,1000) scale(0.740741,-0.740741)" d="M287 0V1104H0V1350H907V1104H620V0Z"/><path transform="translate(4998.74,1000) scale(0.740741,-0.740741)" d="M519 -19Q380 -19 271 34Q163 88 102 199Q42 311 42 481V1350H375V481Q375 356 411 296Q447 236 519 236Q591 236 627 296Q663 356 663 481V1350H996V481Q996 311 935 199Q875 88 767 34Q659 -19 519 -19Z"/><path transform="translate(6186.34,1000) scale(0.740741,-0.740741)" d="M0 0V1350H310L742 517V1350H1067V0H761L325 833V0Z"/><path transform="translate(7481.62,1000) scale(0.740741,-0.740741)" d="M0 0V1350H333V0Z"/><path transform="translate(7995.70,1000) scale(0.740741,-0.740741)" d="M287 0V1104H0V1350H907V1104H620V0Z"/></svg>
+      </a>
     </section>
   </main>
 
@@ -335,7 +350,7 @@
     <small>© 2026 Isaac Perez</small>
     <div class="foot-links">
       <a href="/">Home</a>
-      <a href="/photo/">Photo</a>
+      <a href="https://firstunit.io/fu-0001" target="_blank" rel="noopener">The work</a>
       <a href="/#contact">Contact</a>
     </div>
   </footer>

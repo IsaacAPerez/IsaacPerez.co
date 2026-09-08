@@ -190,6 +190,13 @@ a.ph-card:hover::before { opacity: 0.12; }
 .sec-head.center { text-align: center; max-width: 620px; margin-left: auto; margin-right: auto; }
 .sec-head .sec-sub { font-size: 1.05rem; color: var(--text-2); margin-top: 14px; line-height: 1.55; }
 
+/* ============ FIRSTUNIT BAND AT THE BASE ============
+   .fu-band / .fu-wordmark come from site.css; this only spaces the band
+   off the contact block and the footer. */
+.fu-foot { padding-bottom: 48px; }
+.fu-foot .fu-band { transition: opacity 0.2s; }
+.fu-foot .fu-band:hover { opacity: 0.88; }
+
 /* ============ RESPONSIVE ============ */
 @media (max-width: 900px) {
   .ph-grid { grid-template-columns: 1fr; }
