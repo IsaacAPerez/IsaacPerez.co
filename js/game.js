@@ -399,7 +399,7 @@
 
     // --- Camera Corner ---
     { id: 'gear_shelf', x: 33, y: 9, w: 4, h: 1, kind: 'furniture', tone: 'shelf', decor: true, flat: true },
-    { id: 'pad_captured', x: 34, y: 10, w: 2, h: 2, kind: 'camera', core: true, group: 'project', solid: false, kicker: 'CapturedByIP', title: 'CapturedByIP', body: "My photography and drone brand: portraits, aerials, and golden-hour LA from angles the freeway will never know. Power up the drone and it'll follow you around the office.", link: '/photo/', linkLabel: 'View the photo & video work' },
+    { id: 'pad_captured', x: 34, y: 10, w: 2, h: 2, kind: 'camera', core: true, group: 'project', solid: false, kicker: 'FIRSTUNIT · FU—0001', title: 'Photo & Film', body: "The photo and film practice, now under FIRSTUNIT: portraits, aerials, and golden-hour LA from angles the freeway will never know. Power up the drone and it'll follow you around the office.", link: 'https://firstunit.io/fu-0001', linkLabel: 'View the work on firstunit.io' },
 
     // --- Wall of Work: framed roles (left wall) ---
     { id: 'statue_tinder', x: 2, y: 5, w: 1, h: 1, kind: 'frame', wall: 'left', accent: '#fd5564', core: true, group: 'statue', kicker: 'Now — Tinder', title: 'iOS Engineer · Tinder', body: 'iOS Engineer, 2026–present. Building features for one of the world’s most-used dating apps — millions of users, where a dropped frame is a matter of the heart. Focus: launch performance and Xcode tooling.' },
