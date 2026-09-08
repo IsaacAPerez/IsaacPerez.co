@@ -295,10 +295,35 @@ section[id], main[id] { scroll-margin-top: 64px; }
 }
 .work-card:hover .work-visual .app-icon { transform: scale(1.06) rotate(-1.5deg); }
 .work-visual .glyph { font-size: 64px; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2)); }
+/* project code + attribution: the same 12px as .work-tag / .work-status.
+   The code is a link to the project's firstunit.io record; the attribution
+   line is a credit, never a heading. */
+.work-tags a.work-tag { transition: color 0.2s, border-color 0.2s; }
+.work-tags a.work-tag:hover { color: var(--text); border-color: var(--line); }
+.work-code { font-family: 'JetBrains Mono', 'SF Mono', monospace; font-variant-numeric: tabular-nums; letter-spacing: 0.04em; }
+.work-attrib { font-size: 12px; letter-spacing: 0.08em; color: var(--text-3); margin-top: 22px; }
 @media (max-width: 820px) {
   .work-card { grid-template-columns: 1fr; padding: 32px; gap: 28px; }
   .work-visual { order: -1; }
 }
+
+/* ============ FIRSTUNIT ============
+   The company Isaac founded. The wordmark is an inline SVG (fill: currentColor)
+   on a solid band: zero radius, no shadow, tokens only so it flips with the theme
+   (ink band in light mode, bone band in dark). No new motion — the section
+   rides the existing [data-reveal], which is already gated on reduced motion. */
+.fu-band {
+  display: flex; align-items: center; justify-content: center;
+  padding: 36px 20px;
+  background: var(--accent); color: var(--bg);
+  border-radius: 0; box-shadow: none;
+}
+.fu-wordmark { display: block; width: 100%; max-width: 380px; height: auto; }
+.fu-body { display: grid; grid-template-columns: 1.1fr 1fr; gap: 40px; align-items: start; margin-top: 40px; }
+.fu-lede { font-size: clamp(1.1rem, 1.8vw, 1.35rem); color: var(--text-2); line-height: 1.6; max-width: 46ch; }
+.fu-aside { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
+.fu-descriptor { font-size: 15px; color: var(--text-3); }
+@media (max-width: 820px) { .fu-body { grid-template-columns: 1fr; gap: 24px; margin-top: 32px; } }
 
 /* ============ EXPERIENCE ============ */
 .exp-list { max-width: 820px; }
