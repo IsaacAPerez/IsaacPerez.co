@@ -3,26 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="description" content="Isaac Perez — iOS Engineer, Founder & Creator. Building apps, media, and local communities.">
+  <meta name="description" content="Isaac Perez — iOS engineer and founder based in Los Angeles. A little about me, my experience, and my company.">
   <meta name="author" content="Isaac Perez">
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="Isaac Perez — Builder & Creator">
-  <meta property="og:description" content="iOS Engineer, Founder & Creator. Building apps, media, and local communities.">
+  <meta property="og:title" content="Isaac Perez — iOS engineer &amp; founder">
+  <meta property="og:description" content="A little about me, my experience, and my company. Based in Los Angeles.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://isaacperez.co/">
   <meta property="og:image" content="https://isaacperez.co/isaac.JPG">
-
-  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Isaac Perez — Builder & Creator">
-  <meta name="twitter:description" content="iOS Engineer, Founder & Creator. Building apps, media, and local communities.">
+  <meta name="twitter:title" content="Isaac Perez — iOS engineer &amp; founder">
+  <meta name="twitter:description" content="A little about me, my experience, and my company. Based in Los Angeles.">
   <meta name="twitter:image" content="https://isaacperez.co/isaac.JPG">
-
   <link rel="canonical" href="https://isaacperez.co/">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="favicon.svg">
-  <title>Isaac Perez — Builder & Creator</title>
+  <title>Isaac Perez — iOS engineer &amp; founder</title>
 
   <!-- Prevent flash of wrong theme -->
   <script>
@@ -32,426 +27,90 @@
     })();
   </script>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="css/site.css">
-  <link rel="stylesheet" href="css/game.css">
+  <link rel="stylesheet" href="css/personal.css">
 </head>
-<body>
-  <!-- ==================== PLAYABLE GAME OVERLAY ==================== -->
-  <div id="gameRoot" aria-label="Interactive home-office">
-    <canvas id="gameCanvas" tabindex="0"></canvas>
+<body id="top">
+  <a class="skip-link" href="#about">Skip to content</a>
+  <header class="site-header page-width">
+    <a class="personal-name" href="#top">Isaac Perez</a>
+    <nav aria-label="Main navigation">
+      <a href="#about">Me</a>
+      <a href="#experience">Experience</a>
+      <a href="#firstunit">My company</a>
+    </nav>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch color theme" hidden>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M21 12.79A9 9 0 0 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg>
+    </button>
+  </header>
 
-    <div class="game-progress" id="gameProgress" hidden>
-      <div class="game-progress-fill" id="gameProgressFill"></div>
-      <span class="game-progress-star" id="gameProgressStar" hidden>★</span>
-    </div>
-
-    <div class="game-hud" hidden id="gameHud">
-      <span class="game-zone-label" id="gameZoneLabel">Home Office</span>
-      <div class="game-hud-right">
-        <button class="game-hud-btn" id="gameMuteBtn" title="Toggle sound">🔊</button>
-        <button class="game-hud-btn" id="gameAchBtn" title="Achievements">🏆 <span id="gameAchCount">0/8</span></button>
-        <button class="game-hud-btn" id="gameExitBtn">✕ <span class="game-hud-label">Back to Site</span></button>
+  <main class="page-width">
+    <section class="intro" id="about" aria-labelledby="intro-heading">
+      <div class="intro-heading">
+        <p class="eyebrow">iOS engineer &amp; founder</p>
+        <h1 id="intro-heading">Isaac<br>Perez<span class="name-period">.</span></h1>
       </div>
-    </div>
-
-    <div class="game-start" id="gameStart">
-      <div class="game-start-emblem">IP</div>
-      <h1 class="game-start-title" id="gameStartTitle">Isaac's Home Office</h1>
-      <p class="game-start-sub" id="gameStartSub">
-        Step into my studio — check out the desk setup, the camera gear, the shelf.
-        Everything's real. Or head back to the site.
-      </p>
-      <button class="game-start-btn" id="gameStartBtn">▶ Step Inside</button>
-      <button class="game-start-skip" id="gameSkipBtn">Back to the site</button>
-      <a class="game-start-resume" id="gameResumeLink" href="/#experience">Recruiter? Skip to the experience →</a>
-      <div class="game-start-controls" id="gameStartControls">
-        <span><b>WASD</b>move</span>
-        <span><b>E</b>interact</span>
-        <span><b>ESC</b>menu</span>
-      </div>
-    </div>
-
-    <div class="game-dialog" id="gameDialog" role="dialog" aria-modal="false" aria-labelledby="gameDialogTitle">
-      <div class="game-dialog-head">
-        <span class="game-dialog-emoji" id="gameDialogEmoji">📄</span>
-        <div>
-          <div class="game-dialog-kicker" id="gameDialogKicker"></div>
-          <div class="game-dialog-title" id="gameDialogTitle">Hello</div>
-        </div>
-        <button class="game-dialog-close" id="gameDialogClose"><b>E</b>close</button>
-      </div>
-      <div class="game-dialog-body" id="gameDialogBody"></div>
-      <div class="game-dialog-actions" id="gameDialogActions"></div>
-    </div>
-
-    <div class="touch-controls">
-      <div class="joystick" id="gameJoystick"><div class="joystick-stick" id="gameJoystickStick"></div></div>
-      <button class="action-btn" id="gameActionBtn">E</button>
-    </div>
-  </div>
-
-  <div class="toast-stack" id="toastStack" aria-live="polite"></div>
-
-  <!-- ==================== NAV ==================== -->
-  <nav class="nav" id="nav">
-    <div class="nav-inner">
-      <a href="#top" class="nav-brand">Isaac Perez</a>
-      <ul class="nav-links">
-        <li><a href="#work">Work</a></li>
-        <li><a href="#firstunit">FIRSTUNIT</a></li>
-        <li><a href="#experience">Experience</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#contact" class="nav-cta">Contact</a></li>
-        <li>
-          <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
-            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4.5"/><line x1="12" y1="1.5" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22.5"/><line x1="3.5" y1="3.5" x2="5.3" y2="5.3"/><line x1="18.7" y1="18.7" x2="20.5" y2="20.5"/><line x1="1.5" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22.5" y2="12"/><line x1="3.5" y1="20.5" x2="5.3" y2="18.7"/><line x1="18.7" y1="5.3" x2="20.5" y2="3.5"/></svg>
-          </button>
-        </li>
-      </ul>
-    </div>
-  </nav>
-
-  <main id="top">
-    <!-- ==================== HERO ==================== -->
-    <header class="hero">
-      <div class="hero-bg"><span class="b1"></span><span class="b2"></span></div>
-      <div class="hero-inner" id="heroInner">
-        <p class="hero-eyebrow" data-reveal>iOS Engineer · Founder · Creator</p>
-        <h1 class="hero-title" id="heroTitle"><span class="w">Isaac</span> <span class="w">Perez</span></h1>
-        <p class="hero-sub" data-reveal style="--d:520ms">
-          I build apps, media, and local communities — turning ideas into
-          products people use every day.
-        </p>
-        <div class="hero-actions" data-reveal style="--d:640ms">
-          <a href="#work" class="btn btn-pill">View Work</a>
-          <a href="#contact" class="btn btn-text">Get in touch <span class="arrow">→</span></a>
-        </div>
-      </div>
-      <div class="scroll-cue">
-        Scroll
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-      </div>
-    </header>
-
-    <!-- ==================== STATEMENT ==================== -->
-    <section class="statement wrap" id="statement">
-      <p id="statementText">
-        I design and ship iOS apps and the brands around them — from food
-        trucks to pickup basketball — <span class="muted">obsessing over the details
-        that make people come back.</span>
-      </p>
-    </section>
-
-    <!-- ==================== WORK ==================== -->
-    <section class="sec-pad" id="work">
-      <div class="wrap">
-        <div class="sec-head" data-reveal>
-          <p class="eyebrow">Selected Work</p>
-          <h2 class="sec-title">Things I've built.</h2>
-        </div>
-
-        <div class="work-list">
-          <!-- CurbSide -->
-          <article class="work-card" data-reveal style="--wc:#e8590c">
-            <div class="work-info">
-              <span class="work-status"><span class="dot"></span>Live on the App Store</span>
-              <h3 class="work-name">CurbSide</h3>
-              <p class="work-desc">Discover local street vendors, food trucks, and pop-ups near you in real time — built for the communities that make cities feel alive.</p>
-              <div class="work-tags"><span class="work-tag">iOS</span><span class="work-tag">SwiftUI</span><span class="work-tag">Supabase</span><a class="work-tag work-code" href="https://firstunit.io/fu-0004" target="_blank" rel="noopener" title="FU—0004 on firstunit.io">FU—0004</a></div>
-              <div class="card-actions">
-                <a href="https://apps.apple.com/us/app/curbside-local-finds/id6758033227" target="_blank" rel="noopener" class="btn btn-pill">App Store</a>
-                <a href="https://thecurbside.app" target="_blank" rel="noopener" class="btn btn-text">Visit thecurbside.app <span class="arrow">→</span></a>
-              </div>
-              <p class="work-attrib">A FIRSTUNIT PRODUCT</p>
-            </div>
-            <div class="work-visual"><img class="app-icon" src="images/curbside-icon.png" alt="CurbSide app icon" loading="lazy"></div>
-          </article>
-
-          <!-- Runs by IP -->
-          <article class="work-card" data-reveal style="--wc:#7c5cff">
-            <div class="work-info">
-              <span class="work-status"><span class="dot"></span>Live</span>
-              <h3 class="work-name">Runs by IP</h3>
-              <p class="work-desc">Organize pickup basketball in LA — RSVP, pay, and show up. Real-time rosters, waitlists, and a team randomizer, on web and iOS.</p>
-              <div class="work-tags"><span class="work-tag">iOS</span><span class="work-tag">SwiftUI</span><span class="work-tag">Supabase</span><span class="work-tag">Stripe</span><a class="work-tag work-code" href="https://firstunit.io/fu-0006" target="_blank" rel="noopener" title="FU—0006 on firstunit.io">FU—0006</a></div>
-              <div class="card-actions">
-                <a href="https://apps.apple.com/us/app/runsbyip/id6761027495" target="_blank" rel="noopener" class="btn btn-pill">App Store</a>
-                <a href="https://runsbyip.com" target="_blank" rel="noopener" class="btn btn-text">Visit runsbyip.com <span class="arrow">→</span></a>
-              </div>
-              <p class="work-attrib">A FIRSTUNIT PRODUCT</p>
-            </div>
-            <div class="work-visual"><img class="app-icon" src="images/runsbyip-icon.png" alt="Runs by IP app icon" loading="lazy"></div>
-          </article>
-
-          <!-- Kang's Kuisine -->
-          <article class="work-card" data-reveal style="--wc:#1e88e5">
-            <div class="work-info">
-              <span class="work-status"><span class="dot"></span>Live</span>
-              <h3 class="work-name">Kang's Kuisine</h3>
-              <p class="work-desc">An ordering platform for a Korean-inspired pop-up kitchen in LA — real-time inventory, Stripe payments, and an admin dashboard.</p>
-              <div class="work-tags"><span class="work-tag">Next.js</span><span class="work-tag">Supabase</span><span class="work-tag">Stripe</span><a class="work-tag work-code" href="https://firstunit.io/fu-0003" target="_blank" rel="noopener" title="FU—0003 on firstunit.io">FU—0003</a></div>
-              <a href="https://www.kangskuisine.com" target="_blank" rel="noopener" class="btn btn-text">Visit kangskuisine.com <span class="arrow">→</span></a>
-              <p class="work-attrib">A FIRSTUNIT PRODUCT</p>
-            </div>
-            <div class="work-visual"><img class="app-icon" src="images/kangskuisine-icon.png" alt="Kang's Kuisine icon" loading="lazy"></div>
-          </article>
-
-          <!-- Quarters -->
-          <article class="work-card" data-reveal style="--wc:#c2703a">
-            <div class="work-info">
-              <span class="work-status"><span class="dot"></span>Live on the App Store</span>
-              <h3 class="work-name">Quarters</h3>
-              <p class="work-desc">Run a household without the group chat — chore rotations with photo proof, bills and settle-up, and realtime chat for everyone under one roof.</p>
-              <div class="work-tags"><span class="work-tag">iOS</span><span class="work-tag">SwiftUI</span><span class="work-tag">Supabase</span><a class="work-tag work-code" href="https://firstunit.io/fu-0008" target="_blank" rel="noopener" title="FU—0008 on firstunit.io">FU—0008</a></div>
-              <div class="card-actions">
-                <a href="https://apps.apple.com/us/app/quarters-chores-bills-chat/id6766434811" target="_blank" rel="noopener" class="btn btn-pill">App Store</a>
-                <a href="https://thequarters.app" target="_blank" rel="noopener" class="btn btn-text">Visit thequarters.app <span class="arrow">→</span></a>
-              </div>
-              <p class="work-attrib">A FIRSTUNIT PRODUCT</p>
-            </div>
-            <div class="work-visual"><img class="app-icon" src="images/quarters-icon.png" alt="Quarters app icon" loading="lazy"></div>
-          </article>
-
-          <!-- ShootSort -->
-          <article class="work-card" data-reveal style="--wc:#5c6ac4">
-            <div class="work-info">
-              <span class="work-status"><span class="dot"></span>In use</span>
-              <h3 class="work-name">ShootSort</h3>
-              <p class="work-desc">A macOS app that files a shoot the moment the card mounts — verified copies sorted by year, camera, and month, so nothing is ever moved or lost on the source.</p>
-              <div class="work-tags"><span class="work-tag">macOS</span><span class="work-tag">Swift</span><span class="work-tag">SwiftUI</span><a class="work-tag work-code" href="https://firstunit.io/fu-0012" target="_blank" rel="noopener" title="FU—0012 on firstunit.io">FU—0012</a></div>
-              <div class="card-actions">
-                <a href="/shootsort/" class="btn btn-pill">See ShootSort</a>
-                <a href="https://github.com/IsaacAPerez/ShootSort-releases/releases/latest/download/ShootSort.zip" class="btn btn-text">Download for macOS <span class="arrow">→</span></a>
-              </div>
-              <p class="work-attrib">A FIRSTUNIT PRODUCT</p>
-            </div>
-            <div class="work-visual"><span class="glyph">🗂️</span></div>
-          </article>
-
-          <!-- TeamUp -->
-          <article class="work-card" data-reveal style="--wc:#34c759">
-            <div class="work-info">
-              <span class="work-status"><span class="dot"></span>Live on the App Store</span>
-              <h3 class="work-name">TeamUp</h3>
-              <p class="work-desc">Find pickup games for any sport and join in two taps. Coordinate teams and build sports communities — shipped and live on the App Store.</p>
-              <div class="work-tags"><span class="work-tag">iOS</span><span class="work-tag">SwiftUI</span><span class="work-tag">Supabase</span><a class="work-tag work-code" href="https://firstunit.io/fu-0005" target="_blank" rel="noopener" title="FU—0005 on firstunit.io">FU—0005</a></div>
-              <div class="card-actions">
-                <a href="https://apps.apple.com/us/app/teamup-find-your-game/id1528119357" target="_blank" rel="noopener" class="btn btn-pill">App Store</a>
-                <a href="https://theteamup.app" target="_blank" rel="noopener" class="btn btn-text">Visit theteamup.app <span class="arrow">→</span></a>
-              </div>
-              <p class="work-attrib">A FIRSTUNIT PRODUCT</p>
-            </div>
-            <div class="work-visual"><img class="app-icon" src="images/teamup-icon-new.png" alt="TeamUp app icon" loading="lazy"></div>
-          </article>
-
-          <!-- Bandits Film Room -->
-          <article class="work-card" data-reveal style="--wc:#fdb927">
-            <div class="work-info">
-              <span class="work-status"><span class="dot"></span>Passion project</span>
-              <h3 class="work-name">Bandits Film Room</h3>
-              <p class="work-desc">Game film and stats for my rec-league team — box scores, season leaders, playoff runs, and an MVP vote the group chat argues about all week.</p>
-              <div class="work-tags"><span class="work-tag">Next.js</span><span class="work-tag">Supabase</span><span class="work-tag">Basketball</span></div>
-              <a href="https://bandits-tracker.vercel.app" target="_blank" rel="noopener" class="btn btn-text">Visit the film room <span class="arrow">→</span></a>
-            </div>
-            <div class="work-visual"><span class="glyph">🏀</span></div>
-          </article>
-
-        </div>
+      <figure class="portrait">
+        <img src="isaac.JPG" alt="Isaac Perez smiling outdoors" width="1056" height="1200" fetchpriority="high">
+        <figcaption><span>Based in Los Angeles</span><span aria-hidden="true">↗</span></figcaption>
+      </figure>
+      <div class="intro-copy">
+        <p>I’m Isaac, an iOS engineer and founder based in Los Angeles. I care about thoughtful software, good people, and making things that last.</p>
+        <a class="text-link" href="#experience">A little about my experience <span aria-hidden="true">↓</span></a>
       </div>
     </section>
 
-    <!-- ==================== FIRSTUNIT ==================== -->
-    <section class="sec-pad" id="firstunit">
-      <div class="wrap">
-        <div class="sec-head" data-reveal>
-          <p class="eyebrow">Company</p>
-          <h2 class="sec-title">The company I founded.</h2>
-        </div>
-        <!-- The wordmark is the frozen file from firstunit-brand, inlined — never live type.
-             It sits on a solid band: zero radius, no shadow, theme tokens so it holds in both modes. -->
-        <div class="fu-band" data-reveal>
-          <svg class="fu-wordmark" role="img" aria-label="FIRSTUNIT" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 11901.32 1000" fill="currentColor"><!-- FIRSTUNIT interim wordmark — the frozen file from IsaacAPerez/firstunit-brand assets/wordmark/. Never re-set as live type. --><path transform="translate(0.00,1000) scale(0.740741,-0.740741)" d="M0 0V1350H1005V1104H333V812H875V576H333V0Z"/><path transform="translate(1082.22,1000) scale(0.740741,-0.740741)" d="M0 0V1350H333V0Z"/><path transform="translate(1596.30,1000) scale(0.740741,-0.740741)" d="M0 0V1350H581Q779 1350 895 1256Q1011 1162 1011 992Q1011 878 951 794Q892 710 790 673L1053 0H700L488 613H333V0ZM333 838H539Q604 838 641 876Q678 913 678 981Q678 1048 641 1085Q604 1122 539 1122H333Z"/><path transform="translate(2803.70,1000) scale(0.740741,-0.740741)" d="M485 -18Q339 -18 232 25Q125 68 63 158Q1 248 -3 384L328 407Q332 350 355 314Q378 278 419 260Q460 242 512 242Q567 242 604 256Q641 271 660 296Q679 322 679 356Q679 401 641 428Q603 456 495 483L397 507Q291 533 210 574Q129 615 82 685Q35 755 35 862Q35 963 87 1041Q140 1120 235 1163Q330 1207 462 1207Q593 1207 690 1162Q787 1118 843 1035Q899 953 907 836L582 815Q580 866 561 900Q542 935 508 952Q475 970 430 970Q373 970 340 945Q307 921 307 881Q307 848 331 828Q356 808 431 789L558 758Q725 718 811 636Q897 555 897 415Q897 296 843 197Q789 98 693 40Q597 -18 485 -18Z"/><path transform="translate(3873.70,1000) scale(0.740741,-0.740741)" d="M287 0V1104H0V1350H907V1104H620V0Z"/><path transform="translate(4998.74,1000) scale(0.740741,-0.740741)" d="M519 -19Q380 -19 271 34Q163 88 102 199Q42 311 42 481V1350H375V481Q375 356 411 296Q447 236 519 236Q591 236 627 296Q663 356 663 481V1350H996V481Q996 311 935 199Q875 88 767 34Q659 -19 519 -19Z"/><path transform="translate(6186.34,1000) scale(0.740741,-0.740741)" d="M0 0V1350H310L742 517V1350H1067V0H761L325 833V0Z"/><path transform="translate(7481.62,1000) scale(0.740741,-0.740741)" d="M0 0V1350H333V0Z"/><path transform="translate(7995.70,1000) scale(0.740741,-0.740741)" d="M287 0V1104H0V1350H907V1104H620V0Z"/></svg>
-        </div>
-        <div class="fu-body" data-reveal style="--d:120ms">
-          <p class="fu-lede">FIRSTUNIT is an independent creative and technology company — film, photography, software, apps and products. The apps above and the camera work below are made there; every project carries a permanent code that resolves on firstunit.io.</p>
-          <div class="fu-aside">
-            <p class="fu-descriptor">Ideas Made</p>
-            <a href="https://firstunit.io" target="_blank" rel="noopener" class="btn btn-text">Visit firstunit.io <span class="arrow">→</span></a>
+    <section class="experience" id="experience" aria-labelledby="experience-heading">
+      <span class="legacy-anchor" id="work" aria-hidden="true"></span>
+      <div class="section-heading">
+        <p class="eyebrow">01 / Experience</p>
+        <h2 id="experience-heading">Where I’ve been.</h2>
+      </div>
+      <div class="experience-list">
+        <article class="experience-row">
+          <p class="experience-date">2026 — Present</p>
+          <div class="experience-role">
+            <h3>Tinder</h3>
+            <p>iOS Engineer</p>
           </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== PHOTO & FILM ==================== -->
-    <section class="sec-pad" id="photo">
-      <div class="wrap">
-        <div class="sec-head" data-reveal>
-          <p class="eyebrow">Photo &amp; Film</p>
-          <h2 class="sec-title">Behind the camera.</h2>
-        </div>
-
-        <article class="work-card" data-reveal style="--wc:#b8875a">
-          <div class="work-info">
-            <span class="work-status"><span class="dot"></span>Taking bookings</span>
-            <h3 class="work-name">Photography &amp; Film</h3>
-            <p class="work-desc">Photo and film for sports, spaces, and stories — game-day coverage, listings, drone work, and brand content around Los Angeles. The practice lives at FIRSTUNIT now.</p>
-            <div class="work-tags"><span class="work-tag">Sports</span><span class="work-tag">Real Estate</span><span class="work-tag">Drone</span><span class="work-tag">Lifestyle</span><a class="work-tag work-code" href="https://firstunit.io/fu-0001" target="_blank" rel="noopener" title="FU—0001 on firstunit.io">FU—0001</a></div>
-            <div class="card-actions">
-              <a href="https://firstunit.io/fu-0001" target="_blank" rel="noopener" class="btn btn-pill">View the work</a>
-              <a href="/photo/pricing/" class="btn btn-text">See pricing <span class="arrow">→</span></a>
-            </div>
-            <p class="work-attrib">A FIRSTUNIT practice</p>
+          <p class="experience-copy">Working on iOS launch performance, platform tooling, and the details that make a large app feel effortless.</p>
+        </article>
+        <article class="experience-row">
+          <p class="experience-date">2021 — 2025</p>
+          <div class="experience-role">
+            <h3>Nextdoor</h3>
+            <p>iOS Engineer</p>
           </div>
-          <div class="work-visual"><span class="glyph">📷</span></div>
+          <p class="experience-copy">Four and a half years building for the neighborhood network, from core iOS features to experiments in Swift, SwiftUI, TCA, and Combine.</p>
         </article>
       </div>
     </section>
 
-    <!-- ==================== MARQUEE ==================== -->
-    <div class="marquee" aria-hidden="true">
-      <div class="marquee-track" id="marquee">
-        <span>Swift</span><span>SwiftUI</span><span>iOS</span><span>Startups</span><span>Supabase</span><span>Photography</span><span>Drones</span><span>AI Tools</span>
-        <span>Swift</span><span>SwiftUI</span><span>iOS</span><span>Startups</span><span>Supabase</span><span>Photography</span><span>Drones</span><span>AI Tools</span>
+    <section class="company" id="firstunit" aria-labelledby="company-heading">
+      <div class="company-topline">
+        <p class="eyebrow">02 / My company</p>
+        <span class="company-role">Founder</span>
       </div>
-    </div>
-
-    <!-- ==================== EXPERIENCE ==================== -->
-    <section class="sec-pad" id="experience">
-      <div class="wrap">
-        <div class="sec-head" data-reveal>
-          <p class="eyebrow">Experience</p>
-          <h2 class="sec-title">Where I've worked.</h2>
+      <svg class="company-wordmark" role="img" aria-label="First Unit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 11901.29 1000" fill="currentColor"><!-- FIRSTUNIT interim wordmark. Anybody wdth 150 / wght 800, tracking -38. Cut once from the base; C (cap height) = 1000 units. Replaced in place by the drawn mark. --><path transform="translate(-80.86,1000) scale(0.740741,-0.740741)" d="M109.1630859375 0H609.1552734375V442.150390625H1528.234375V740.05029296875H609.1552734375V1029.2548828125H1626.17578125V1350H109.1630859375Z"/><path transform="translate(1159.14,1000) scale(0.740741,-0.740741)" d="M231.03759765625 0H725.7578125V1350H231.03759765625Z"/><path transform="translate(1833.21,1000) scale(0.740741,-0.740741)" d="M141.21337890625 0H641.20556640625V452.93701171875H1325.3642578125Q1612.5107421875 452.93701171875 1779.594482421875 560.874267578125Q1946.67822265625 668.8115234375 1946.67822265625 901.58984375Q1946.67822265625 1136.12548828125 1788.381103515625 1243.062744140625Q1630.083984375 1350 1360.5107421875 1350H141.21337890625ZM1425.807373046875 0H1991.548583984375L1377.389404296875 635.15478515625H867.882568359375ZM641.20556640625 754.3515625V1029.2548828125H1217.9248046875Q1337.3974609375 1029.2548828125 1391.92041015625 996.095947265625Q1446.443359375 962.93701171875 1446.443359375 891.0458984375Q1446.443359375 821.15478515625 1392.92041015625 787.753173828125Q1339.3974609375 754.3515625 1217.9248046875 754.3515625Z"/><path transform="translate(3336.18,1000) scale(0.740741,-0.740741)" d="M1071.48974609375 -6Q1496.69482421875 -6 1755.050537109375 98.966552734375Q2013.40625 203.93310546875 2013.40625 453.25537109375Q2013.40625 634.82861328125 1837.674072265625 711.765869140625Q1661.94189453125 788.703125 1216.07568359375 824.28466796875Q959.45654296875 845.322265625 765.879150390625 866.510498046875Q572.3017578125 887.69873046875 572.3017578125 937.53125Q572.3017578125 985.36376953125 709.31005859375 1015.18798828125Q846.318359375 1045.01220703125 1047.1298828125 1045.01220703125Q1227.58154296875 1045.01220703125 1370.37646484375 1003.24658203125Q1513.17138671875 961.48095703125 1513.17138671875 878.18408203125H2013.40625Q2013.40625 1129.15478515625 1746.477294921875 1246.577392578125Q1479.54833984375 1364 1054.1591796875 1364Q631.439453125 1364 365.811767578125 1259.246826171875Q100.18408203125 1154.49365234375 100.18408203125 916.443359375Q100.18408203125 726.08349609375 283.460205078125 643.146240234375Q466.736328125 560.208984375 878.72802734375 530.14208984375Q1151.6484375 506.983154296875 1341.196533203125 489.2196044921875Q1530.74462890625 471.4560546875 1530.74462890625 414.59423828125Q1530.74462890625 364.03369140625 1393.857666015625 338.5107421875Q1256.970703125 312.98779296875 1065.339111328125 312.98779296875Q872.9794921875 312.98779296875 734.94189453125 356.845458984375Q596.904296875 400.703125 596.904296875 484H98.4267578125Q98.4267578125 226.5439453125 360.083740234375 110.27197265625Q621.74072265625 -6 1071.48974609375 -6Z"/><path transform="translate(4882.10,1000) scale(0.740741,-0.740741)" d="M803.47265625 0H1303.46484375V1029.2548828125H1979.908203125V1350H124.78662109375V1029.2548828125H803.47265625Z"/><path transform="translate(6388.03,1000) scale(0.740741,-0.740741)" d="M1108.71142578125 -6Q1585.908203125 -6 1831.176025390625 149.907958984375Q2076.44384765625 305.81591796875 2076.44384765625 673.50634765625V1349.75732421875H1576.45166015625V715.8662109375Q1576.45166015625 501.54833984375 1466.953857421875 408.146728515625Q1357.4560546875 314.7451171875 1108.71142578125 314.7451171875Q859.966796875 314.7451171875 750.468994140625 409.025390625Q640.97119140625 503.3056640625 640.97119140625 715.8662109375V1349.75732421875H140.97900390625V673.50634765625Q140.97900390625 305.81591796875 386.246826171875 149.907958984375Q631.5146484375 -6 1108.71142578125 -6Z"/><path transform="translate(7997.66,1000) scale(0.740741,-0.740741)" d="M141.21337890625 0H641.20556640625V1006.1669921875H644.962890625L1464.4599609375 0H2250.35205078125V1350H1750.35986328125V377.22216796875H1749.481201171875L948.193359375 1350H141.21337890625Z"/><path transform="translate(9760.62,1000) scale(0.740741,-0.740741)" d="M231.03759765625 0H725.7578125V1350H231.03759765625Z"/><path transform="translate(10434.69,1000) scale(0.740741,-0.740741)" d="M803.47265625 0H1303.46484375V1029.2548828125H1979.908203125V1350H124.78662109375V1029.2548828125H803.47265625Z"/></svg>
+      <div class="company-content">
+        <h2 id="company-heading">The company<br>I founded.</h2>
+        <div>
+          <p>First Unit is my independent creative and technology company. It’s where you’ll find the work I’m making and what comes next.</p>
+          <a class="company-link" href="https://firstunit.io" target="_blank" rel="noopener noreferrer">Explore First Unit <span aria-hidden="true">↗</span></a>
         </div>
-        <div class="exp-list">
-          <div class="exp-item" data-reveal>
-            <div class="exp-logo l-tinder"><img src="tinderLogo.png" alt="Tinder" loading="lazy"></div>
-            <div>
-              <div class="exp-co">Tinder</div>
-              <div class="exp-role">iOS Engineer</div>
-            </div>
-            <div class="exp-date">2026 — Present</div>
-            <p class="exp-desc">Building features for one of the world's most-used dating apps — millions of users, where a dropped frame is a matter of the heart. Focused on launch performance and iOS tooling.</p>
-            <div class="exp-tags work-tags"><span class="work-tag">Swift</span><span class="work-tag">iOS Platform</span><span class="work-tag">CI/CD</span><span class="work-tag">Launch Performance</span></div>
-          </div>
-          <div class="exp-item" data-reveal style="--d:120ms">
-            <div class="exp-logo l-nd"><img src="ndLogo.webp" alt="Nextdoor" loading="lazy"></div>
-            <div>
-              <div class="exp-co">Nextdoor</div>
-              <div class="exp-role">iOS Engineer</div>
-            </div>
-            <div class="exp-date">2021 — 2025</div>
-            <p class="exp-desc">Four and a half years scaling the iOS app for the neighborhood network connecting millions of neighbors — core features in Swift, SwiftUI, TCA &amp; Combine, and the experiments that decided what stayed.</p>
-            <div class="exp-tags work-tags"><span class="work-tag">SwiftUI</span><span class="work-tag">TCA</span><span class="work-tag">Combine</span><span class="work-tag">Experimentation</span></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== ABOUT ==================== -->
-    <section class="sec-pad" id="about">
-      <div class="wrap">
-        <div class="about-grid">
-          <div class="about-photo-wrap" data-reveal>
-            <img class="about-photo" id="aboutPhoto" src="isaac.JPG" alt="Isaac Perez" loading="lazy">
-          </div>
-          <div class="about-text" data-reveal style="--d:120ms">
-            <p class="eyebrow">About</p>
-            <p>I'm an iOS engineer and founder based in <strong>Los Angeles</strong>, building products that connect people to their local communities — a street vendor around the corner, a pickup game across town.</p>
-            <p>I founded <a href="#firstunit"><strong>FIRSTUNIT</strong></a>, an independent creative and technology company, and it’s where my photo and film practice lives now. I care about the intersection of technology, media, and the real world — and about shipping fast and learning from the people who use what I make.</p>
-            <dl class="about-attrs">
-              <div class="about-attr"><dt>Based in</dt><dd>Los Angeles</dd></div>
-              <div class="about-attr"><dt>Focus</dt><dd>iOS &amp; 0→1 products</dd></div>
-              <div class="about-attr"><dt>Main tool</dt><dd>Swift</dd></div>
-              <div class="about-attr"><dt>Off-hours</dt><dd>Drones &amp; hoops</dd></div>
-            </dl>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== CONTACT ==================== -->
-    <section class="contact wrap" id="contact">
-      <h2 data-reveal>Let's build<br>something.</h2>
-      <p data-reveal style="--d:120ms">Have a project in mind, want to collaborate, or just want to say hey? Reach out.</p>
-      <div class="contact-links" data-reveal style="--d:220ms">
-        <a href="mailto:iperez2435@gmail.com" class="chip">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
-          Email
-        </a>
-        <a href="https://github.com/IsaacAPerez" target="_blank" rel="noopener" class="chip">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.39.6.11.82-.26.82-.58v-2.23c-3.34.73-4.04-1.42-4.04-1.42-.55-1.39-1.33-1.76-1.33-1.76-1.09-.74.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.11-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.65 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-          GitHub
-        </a>
-        <a href="https://linkedin.com/in/isaacabelperez" target="_blank" rel="noopener" class="chip">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.8 0 0 .78 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.73V1.73C24 .78 23.2 0 22.22 0z"/></svg>
-          LinkedIn
-        </a>
-        <a href="https://www.instagram.com/isaacabelperez" target="_blank" rel="noopener" class="chip">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.5" y="2.5" width="19" height="19" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
-          Instagram
-        </a>
-        <a href="#experience" class="chip">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 3v5h5"/><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
-          Experience
-        </a>
       </div>
     </section>
   </main>
 
-  <!-- ==================== FOOTER ==================== -->
-  <footer class="foot wrap">
-    <small>© 2026 Isaac Perez</small>
-    <div class="foot-links">
-      <button class="office-link" id="playGameBtn">🎮 Explore my office <span class="arrow">→</span></button>
-      <a href="https://github.com/IsaacAPerez" target="_blank" rel="noopener">GitHub</a>
-      <a href="https://firstunit.io" target="_blank" rel="noopener">FIRSTUNIT</a>
-      <a href="https://firstunit.io/fu-0001" target="_blank" rel="noopener">Photo &amp; Film</a>
-    </div>
+  <footer class="site-footer page-width" id="contact">
+    <p>Isaac Perez <span aria-hidden="true">·</span> Los Angeles</p>
+    <nav aria-label="Contact and social links">
+      <a href="mailto:iperez2435@gmail.com">Email</a>
+      <a href="https://github.com/IsaacAPerez" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="https://linkedin.com/in/isaacabelperez" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <a href="https://www.instagram.com/isaacabelperez" target="_blank" rel="noopener noreferrer">Instagram</a>
+    </nav>
   </footer>
-
-  <!-- Achievement engine (drives the in-game toasts + HUD counter) -->
-  <script>
-    (function () {
-      var KEY = 'ip-achievements';
-      var A = {
-        adventurer: ['🚪', 'Stepped Inside'], quests: ['📱', 'App Browser'],
-        historian: ['💼', 'Career Read'], lorekeeper: ['📚', 'Lore Keeper'],
-        statcheck: ['🛠️', 'Stat Checker'], shifter: ['🌗', 'Day / Night Shifter'],
-        raven: ['✉️', 'Reached Out'], completionist: ['👑', 'Whole Office Toured'],
-        konami: ['🕹️', 'Cheat Code Entered']
-      };
-      // Published so the game's 🏆 panel (js/game.js openAchievements) can render
-      // the same badge table instead of scrolling to a section that never existed.
-      window.__ipAch = A;
-      var unlocked = new Set();
-      try { unlocked = new Set(JSON.parse(localStorage.getItem(KEY) || '[]')); } catch (e) {}
-      window.unlock = function (id) {
-        if (unlocked.has(id) || !A[id]) return;
-        unlocked.add(id);
-        try { localStorage.setItem(KEY, JSON.stringify([...unlocked])); } catch (e) {}
-        var stack = document.getElementById('toastStack'); if (!stack) return;
-        var t = document.createElement('div'); t.className = 'toast';
-        t.innerHTML = '<span class="toast-emoji">' + A[id][0] + '</span><div>' +
-          '<div class="toast-label">🏆 Achievement Unlocked</div>' +
-          '<div class="toast-name">' + A[id][1] + '</div></div>';
-        stack.appendChild(t); setTimeout(function () { t.remove(); }, 4600);
-      };
-      var tt = document.getElementById('themeToggle');
-      if (tt) tt.addEventListener('click', function () { window.unlock('shifter'); });
-      var K = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
-      var ki = 0;
-      window.addEventListener('keydown', function (e) {
-        ki = (e.key === K[ki]) ? ki + 1 : (e.key === K[0] ? 1 : 0);
-        if (ki === K.length) { ki = 0; window.unlock('konami'); }
-      });
-    })();
-  </script>
-  <script src="js/site.js" defer></script>
-  <script src="js/game.js" defer></script>
+  <script src="js/personal.js" defer></script>
 </body>
 </html>
