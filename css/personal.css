@@ -1,0 +1,84 @@
+/* Personal site, version C: an anchored introduction and a reading column.
+   Uses the existing personal palette. Company identity stays in #firstunit. */
+.personal-split { --rail-width: 360px; }
+.personal-split .split-layout { display: grid; grid-template-columns: var(--rail-width) minmax(0, 1fr); max-width: 1480px; margin: 0 auto; }
+.personal-split .personal-rail { position: sticky; top: 0; align-self: start; height: 100svh; min-height: 780px; padding: 32px 42px 32px 38px; display: flex; flex-direction: column; border-right: 1px solid var(--line-soft); }
+.personal-split .rail-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 48px; }
+.personal-split .personal-home { font-size: 23px; font-weight: 650; letter-spacing: -0.075em; }
+.personal-split .personal-theme { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid var(--line-soft); border-radius: 50%; background: transparent; color: var(--text); cursor: pointer; }
+.personal-split .personal-theme[hidden] { display: none; }
+.personal-split .personal-theme svg { width: 19px; height: 19px; }
+.personal-split .personal-theme:hover { background: var(--bg-alt); }
+.personal-split .personal-location { font-size: 12px; color: var(--text-2); margin-bottom: 18px; }
+.personal-split h1 { font-size: clamp(58px, 5.8vw, 82px); line-height: .94; letter-spacing: -.075em; font-weight: 600; margin: 0 0 17px; }
+.personal-split .name-period { color: var(--text-3); }
+.personal-split .personal-role { font-size: 15px; color: var(--text-2); margin-bottom: 26px; }
+.personal-split .personal-portrait { width: 132px; height: 160px; object-fit: cover; object-position: 50% 37%; border-radius: 6px; display: block; margin-bottom: 22px; }
+.personal-split .personal-bio { font-size: 14px; line-height: 1.7; color: var(--text-2); max-width: 29ch; }
+.personal-split .personal-nav { display: flex; flex-direction: column; gap: 2px; margin-top: auto; padding-top: 24px; }
+.personal-split .personal-nav a { display: flex; align-items: center; min-height: 38px; font-size: 13px; gap: 22px; color: var(--text-2); }
+.personal-split .personal-nav span { font-size: 11px; color: var(--text-3); font-variant-numeric: tabular-nums; }
+.personal-split .personal-nav a:hover { color: var(--text); }
+.personal-split .personal-content { padding: 78px clamp(40px, 6vw, 94px) 36px; min-width: 0; }
+.personal-split section { scroll-margin-top: 32px; }
+.personal-split .section-kicker { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--text-2); margin-bottom: 23px; }
+.personal-split h2 { font-size: clamp(40px, 4.4vw, 64px); line-height: 1.03; letter-spacing: -.055em; font-weight: 500; }
+.personal-split .career-list { margin-top: 46px; }
+.personal-split .career-entry { border-top: 1px solid var(--line); padding: 28px 0 32px; }
+.personal-split .career-top { display: flex; align-items: center; justify-content: space-between; gap: 15px; }
+.personal-split .career-employer { display: flex; align-items: center; gap: 14px; }
+.personal-split .employer-symbol { width: 44px; height: 44px; border-radius: 12px; background: #fff; border: 1px solid var(--line-soft); display: grid; place-items: center; overflow: hidden; }
+.personal-split .employer-symbol img { object-fit: contain; }
+.personal-split .nextdoor img { transform: scale(1.22); }
+.personal-split h3 { font-size: 20px; letter-spacing: -.025em; font-weight: 600; }
+.personal-split .career-employer p { font-size: 13px; color: var(--text-2); margin-top: 1px; }
+.personal-split .career-date { color: var(--text-2); font-size: 12px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.personal-split .career-description { font-size: 15px; line-height: 1.75; max-width: 52ch; color: var(--text-2); margin: 20px 0 0 58px; }
+.personal-split .company-section { padding-top: 76px; }
+.personal-split .company-panel { margin-top: 38px; border: 1px solid var(--line); border-radius: 2px; }
+.personal-split .company-mark { display: grid; place-items: center; min-height: 132px; background: var(--text); color: var(--bg); padding: 30px 34px; }
+.personal-split .company-wordmark { display: block; width: min(100%, 320px); height: auto; fill: currentColor; }
+.personal-split .company-panel > p { padding: 28px 30px 24px; font-size: 16px; line-height: 1.75; color: var(--text-2); }
+.personal-split .company-link { margin: 0 30px 28px; border-bottom: 1px solid var(--text); padding: 8px 0 10px; display: flex; align-items: center; justify-content: space-between; font-size: 17px; font-weight: 500; min-height: 44px; }
+.personal-split .company-link span { font-size: 22px; }
+.personal-split .company-link:hover { opacity: .7; }
+.personal-split .personal-footer { margin-top: 76px; border-top: 1px solid var(--line-soft); padding-top: 25px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; }
+.personal-split .personal-email { font-size: 14px; display: inline-flex; align-items: center; gap: 7px; min-height: 44px; }
+.personal-split .footer-links { display: flex; gap: 18px; flex-wrap: wrap; }
+.personal-split .footer-links a { color: var(--text-2); font-size: 12px; display: inline-flex; align-items: center; min-height: 44px; }
+.personal-split .footer-links a:hover { color: var(--text); }
+.personal-split .personal-footer > p { width: 100%; color: var(--text-2); font-size: 11px; }
+.personal-split :focus-visible { outline: 2px solid var(--text); outline-offset: 5px; border-radius: 2px; }
+.personal-split .skip-link { position: fixed; z-index: 200; top: 10px; left: 10px; background: var(--text); color: var(--bg); padding: 12px 18px; transform: translateY(-160%); }
+.personal-split .skip-link:focus { transform: translateY(0); }
+.personal-split .legacy-anchor { display: block; scroll-margin-top: 32px; }
+@media (min-width: 1000px) and (max-height: 800px) { .personal-split .personal-rail { position: static; height: auto; min-height: 100svh; } .personal-split .personal-nav { margin-top: 25px; } }
+@media (max-width: 1100px) { .personal-split { --rail-width: 310px; } .personal-split .personal-rail { padding-left: 28px; padding-right: 28px; } .personal-split .personal-content { padding-left: 36px; padding-right: 36px; } .personal-split .career-top { align-items: start; flex-direction: column; gap: 12px; } .personal-split .career-date { margin-left: 58px; } }
+@media (max-width: 760px) {
+ .personal-split .split-layout { display: block; }
+ .personal-split .personal-rail { position: static; height: auto; min-height: 0; padding: 20px 26px 30px; border-right: 0; border-bottom: 1px solid var(--line-soft); }
+ .personal-split .rail-top { margin-bottom: 42px; }
+ .personal-split .personal-intro { position: relative; padding-right: 0; }
+ .personal-split .personal-location { margin-bottom: 18px; }
+ .personal-split h1 { font-size: clamp(62px, 15vw, 86px); }
+ .personal-split .personal-role { margin-bottom: 28px; }
+ .personal-split .personal-portrait { width: 110px; height: 138px; position: absolute; top: 38px; right: 0; }
+ .personal-split .personal-bio { max-width: 42ch; font-size: 15px; margin-top: 30px; }
+ .personal-split .personal-nav { flex-direction: row; gap: 21px; padding-top: 25px; margin-top: 0; }
+ .personal-split .personal-nav a { min-height: 44px; gap: 6px; font-size: 12px; }
+ .personal-split .personal-nav span { font-size: 10px; }
+ .personal-split .personal-content { padding: 46px 26px 26px; }
+ .personal-split h2 { font-size: 43px; }
+ .personal-split .career-list { margin-top: 32px; }
+ .personal-split .career-description { margin-left: 0; font-size: 15px; }
+ .personal-split .career-top { flex-direction: row; align-items: center; }
+ .personal-split .career-date { margin-left: 0; font-size: 11px; }
+ .personal-split .company-section { padding-top: 45px; }
+ .personal-split .company-panel { margin-top: 30px; }
+ .personal-split .company-panel > p { padding: 22px 22px 18px; font-size: 15px; }
+ .personal-split .company-link { margin: 0 22px 22px; font-size: 16px; }
+ .personal-split .company-mark { min-height: 110px; padding: 28px; }
+ .personal-split .personal-footer { margin-top: 46px; gap: 8px; }
+}
+@media (max-width: 360px) { .personal-split .personal-portrait { width: 90px; height: 116px; top: 43px; } .personal-split h1 { font-size: 60px; } .personal-split .personal-nav { gap: 13px; } .personal-split .career-top { flex-direction: column; align-items: start; } .personal-split .career-date { margin-left: 58px; } }
+@media (prefers-reduced-motion: reduce) { .personal-split, .personal-split *, .personal-split *::before, .personal-split *::after { scroll-behavior: auto; transition: none; animation: none; } }
