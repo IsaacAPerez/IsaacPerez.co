@@ -84,6 +84,10 @@ h1 { font-size: clamp(78px, 10.5vw, 136px); font-weight: 550; line-height: .89; 
 h2 { font-size: clamp(32px, 3.45vw, 44px); font-weight: 500; line-height: 1.09; letter-spacing: -.055em; }
 .experience-row { display: grid; grid-template-columns: 1.03fr 1.52fr 2fr; gap: 32px; padding-block: 34px; border-top: 1px solid var(--line-soft); }
 .experience-date { padding-top: 5px; font-size: 13px; color: var(--text-2); }
+.experience-role { display: flex; align-items: center; gap: 14px; }
+.employer-icon { display: grid; place-items: center; flex: 0 0 44px; width: 44px; height: 44px; overflow: hidden; border: 1px solid var(--line-soft); border-radius: 12px; background: #ffffff; }
+.employer-icon img { display: block; object-fit: contain; }
+.employer-icon-nextdoor img { transform: scale(1.22); }
 .experience-role h3 { font-size: 29px; font-weight: 500; line-height: 1.2; letter-spacing: -.045em; }
 .experience-role p { margin-top: 6px; color: var(--text-2); font-size: 14px; }
 .experience-copy { padding-top: 2px; font-size: 16px; line-height: 1.6; color: var(--text-2); }
@@ -113,7 +117,7 @@ h2 { font-size: clamp(32px, 3.45vw, 44px); font-weight: 500; line-height: 1.09; 
   .intro-copy p { font-size: 18px; }
   .text-link { margin-top: 17px; gap: 16px; font-size: 12px; }
   .experience { padding-bottom: 66px; }
-  .experience-row { grid-template-columns: 1fr 1.2fr 1.7fr; gap: 24px; }
+  .experience-row { grid-template-columns: .8fr 1.4fr 1.7fr; gap: 24px; }
   .experience-copy { font-size: 14px; }
   .company { padding-inline: 34px; }
   .company-content { gap: 32px; }
@@ -138,7 +142,9 @@ h2 { font-size: clamp(32px, 3.45vw, 44px); font-weight: 500; line-height: 1.09; 
   .section-heading { display: block; margin-bottom: 28px; }
   .section-heading .eyebrow { margin-bottom: 20px; }
   .experience-row { grid-template-columns: 1fr auto; row-gap: 18px; column-gap: 12px; padding-block: 25px; }
-  .experience-role { grid-row: 1; grid-column: 1; }
+  .experience-role { grid-row: 1; grid-column: 1; gap: 10px; }
+  .employer-icon { flex-basis: 40px; width: 40px; height: 40px; border-radius: 10px; }
+  .employer-icon-nextdoor img { width: 40px; height: 40px; }
   .experience-date { grid-row: 1; grid-column: 2; padding-top: 5px; font-size: 11px; }
   .experience-role h3 { font-size: 27px; }
   .experience-copy { grid-column: 1 / -1; font-size: 15px; }
