@@ -1,6 +1,10 @@
 # IsaacPerez.co — operating manual
 
-Personal brand site at https://isaacperez.co: one hand-written landing page (`index.html`, ~430 lines) with a canvas mini-game overlay ("Isaac's Studio", `js/game.js`, ~1.7k lines), the CapturedByIP photo practice at `/photo/` + `/photo/pricing/` (its own domain folded in 2026-08-08, capturedbyip.com 301s here), a product page at `/shootsort/`, and App-Store-facing pages for two iOS apps: `/roommate/{privacy,terms,support}` (Quarters) and `/souvenir/privacy/` (Souvenir). Plus a root `404.html` (Vercel serves it automatically). Pure static — vanilla HTML/CSS/JS, no package.json, no build, no tests, no CI; the only config is `vercel.json`, a response-headers block (CSP + nosniff + frame/referrer/permissions), no build command. Hosted on Vercel (project `isaacperez`, id `prj_sSFEIZN5xWUB25tlxb7MxXUADcmZ`, team `team_kglkY3kYg639waIJAEOnAyuQ`, root `.`), auto-deploying `main` from GitHub `IsaacAPerez/IsaacPerez.co`.
+Personal site at https://isaacperez.co: one hand-written homepage organized **Me → Experience → My company**, followed by a quiet personal contact footer. The original `isaac.JPG` portrait stays in Me. FIRSTUNIT branding appears only in the company section, with one company destination, `https://firstunit.io`. The homepage has no apps catalogue, photography portfolio, pricing promotion, office game, achievements or skills marquee.
+
+Seven public pages remain in the sitemap: the homepage, `/photo/pricing/`, `/shootsort/`, `/roommate/{privacy,terms,support}/` (Quarters), and `/souvenir/privacy/` (Souvenir). Pricing and ShootSort remain functional for existing visitors but are not promoted on the homepage. `/photo` and `/photo/` are permanent Vercel redirects to `https://firstunit.io/fu-0001` (currently HTTP 308); there is no `photo/index.html`. The retired capturedbyip.com domain redirects directly to that destination (HTTP 301, verified 2026-09-11). `404.html` handles unknown URLs.
+
+Pure static — vanilla HTML/CSS/JS, no package.json, application build, tests or CI. `vercel.json` contains the photo redirects and response headers (CSP + nosniff + frame/referrer/permissions), with no build command. Hosted on Vercel (project `isaacperez`, id `prj_sSFEIZN5xWUB25tlxb7MxXUADcmZ`, team `team_kglkY3kYg639waIJAEOnAyuQ`, root `.`), auto-deploying `main` from GitHub `IsaacAPerez/IsaacPerez.co`.
 Prime directive: the repo tree IS the site and a push to main IS a production deploy — keep it vanilla, and preview before you ship anything user-visible.
 
 ## Commands
@@ -15,15 +19,15 @@ Prime directive: the repo tree IS the site and a push to main IS a production de
 ## Conventions
 - Conventional Commits ENFORCED by the fleet hook: this repo's `core.hooksPath` → `/Users/isaacperez/Coding/platform/scripts/hooks`. `commit-msg` rejects anything not matching `type(scope): subject`. all but the most recent commit(s) predate the 2026-06-25 hook — do NOT imitate the old "Updated UI" log style. (added)
 - Fleet hooks awareness: `post-commit` logs every commit to the CodeByIP dashboard feed (`~/Coding/CodeByIP/Backend/luka-log.py`, best-effort); `pre-commit` (Swift lint) no-ops here. No action needed for either. (added)
-- Vanilla JS only: one IIFE per file with `'use strict'`. `js/site.js` is ES5-style (`var`); `js/game.js` uses `const`/`let`. Match the file you're in.
-- Theme: `data-theme` on `<html>`, persisted to `localStorage['theme']`, applied by an inline pre-paint script in `index.html` head (~lines 27-33). `js/game.js` reads it (falls back to `prefers-color-scheme`) and re-bakes the offscreen room on toggle.
+- Vanilla JS only: one IIFE per file with `'use strict'`. `js/personal.js` owns homepage behavior; `js/site.js` remains the shared utility-page behavior. Match the file you're in. Retained `js/game.js` is dormant and is not loaded by the homepage.
+- Theme: `data-theme` on `<html>`, persisted to `localStorage['theme']`, applied by an inline pre-paint script in each page's `<head>`. `js/personal.js` handles the homepage toggle; `js/site.js` handles utility-page toggles. Homepage toggles do not initialize game art or award achievements.
 - Mobbin is the design source of truth: before designing or redesigning any page or section, pull 2–3 real examples via the Mobbin MCP (`search_screens` for whole pages, `search_sections` for hero/pricing/footer-type sections; tool names may carry a server prefix — load via ToolSearch if deferred) with `platform: "web"`, `mode: "deep"` for nuanced queries, naming a top app to filter. Study the returned screenshot images — layout, hierarchy, spacing — not the metadata. Adapt the pattern, don't copy: colors/type stay on this site's own `css/site.css` theme (both `data-theme` modes). When presenting design directions to Isaac, cite each referenced screen as a markdown link to its `mobbin_url`.
-- `prefers-reduced-motion`: both JS files compute a `REDUCED` flag (site.js:7, game.js:19) and branch on it everywhere. All new motion must too.
-- Asset paths: `index.html` (root) uses RELATIVE (`css/site.css`); EVERY page in a subdirectory — `/photo/`, `/photo/pricing/`, `/shootsort/`, `/roommate/*/`, `/souvenir/*/` — uses ABSOLUTE (`/css/...`, `/js/...`, `/favicon.svg`). `404.html` sits at the root but is served for a bad URL at ANY depth, so it uses absolute paths too. Match the page being edited.
-- CSS roles: `css/site.css` = landing page, and the shared base for `/photo/*` and `/shootsort/`; `css/photo.css` = the two `/photo/` pages only (206 lines: hero stats, service/pricing cards, the showreel grid); `css/game.css` = game overlay; `css/design-system.css` = ONLY the legal-style pages (`/roommate/{privacy,terms,support}`, `/souvenir/privacy/`); `css/rpg.css` = dead legacy, zero references.
+- `prefers-reduced-motion`: gate any homepage motion in `js/personal.js` and `css/personal.css` on the user's preference. Shared `js/site.js` and dormant `js/game.js` retain their existing `REDUCED` handling.
+- Asset paths: `index.html` (root) uses RELATIVE (`css/site.css`); EVERY page in a subdirectory — `/photo/pricing/`, `/shootsort/`, `/roommate/*/`, `/souvenir/*/` — uses ABSOLUTE (`/css/...`, `/js/...`, `/favicon.svg`). `404.html` sits at the root but is served for a bad URL at ANY depth, so it uses absolute paths too. Match the page being edited.
+- CSS roles: `css/personal.css` = homepage only. `css/site.css` retains the shared utility-page styling and may supply the homepage's base tokens; keep it unchanged when implementing a homepage variation. `css/photo.css` = `/photo/pricing/` only; `css/design-system.css` = only the four legal-style pages. `css/game.css` is retained with `js/game.js` but is not loaded by the homepage. `css/rpg.css` remains dead legacy, zero references.
 - A one-off page (`/shootsort/`, `404.html`) carries its handful of extra rules in a page-scoped `<style>` block rather than widening a shared stylesheet's role. The legal-style pages do the same.
 - Content that has a canonical source in ANOTHER repo is rendered here, not authored here: `/souvenir/privacy/` is a rendering of `~/Coding/Souvenir/docs/privacy.md`. Edit the source, then re-render. `/roommate/support/` deliberately summarises and links to `thequarters.app/support` (the App Store support URL, generated from `~/Coding/RoommateApp/legal/SUPPORT.md`) instead of forking that FAQ.
-- `localStorage`: writes, and all access in `js/site.js` / `js/game.js` / the achievements script in `index.html`, are wrapped in try/catch (Safari private mode). The inline pre-paint theme scripts in each page's `<head>` call `getItem` bare — leave them as-is. Keys in use: `theme`, `ip-achievements`, the game-state key.
+- `localStorage`: runtime reads and writes in `js/personal.js` and `js/site.js` are wrapped in try/catch (Safari private mode). The inline pre-paint theme scripts in each page's `<head>` call `getItem` bare — leave them as-is. `theme` is the active preference; any old `ip-achievements` or `ip-game-state` values are dormant and should not be cleared as homepage cleanup.
 - Every public page carries a canonical `<link>` to its exact `https://isaacperez.co/...` URL; `sitemap.xml` is updated in the same commit as any page add/remove.
 - Images are optimized IN PLACE before committing, same filename: icons ≤ ~105KB, photos ≤ ~200KB (the existing `images/` files define the budget). (added)
 - `.gitignore` is one line (`.vercel`). Zero secrets, no `.env`, no API calls anywhere — the fleet's 1Password setup has nothing to wire up here; keep it that way.
@@ -37,18 +41,22 @@ Prime directive: the repo tree IS the site and a push to main IS a production de
 - **"Tidying" the inline theme script into site.js.** The pre-paint IIFE in `index.html` head exists to prevent FOUC. Rule: it stays inline, in `<head>`, before the stylesheets — never externalize or defer it.
 - **Adding tooling to "fix" the missing build/CI.** No package.json, no `.github/`, no runner for this repo — by design; Vercel git integration is the entire pipeline. Rule: never add package.json, bundlers, frameworks, node_modules, or workflows.
 - **Imitating the git log's commit style.** Almost all history predates the commit-msg hook and would be rejected today. Rule: write `fix(game): ...` / `feat(site): ...` regardless of what `git log` shows; no `--no-verify`.
-- **New animation that ignores reduced motion.** Both files gate every effect on `REDUCED` (a11y pass cd35293). Rule: branch any new animation on the existing `REDUCED` flag or a `prefers-reduced-motion` media query in CSS.
+- **New animation that ignores reduced motion.** Rule: branch any new animation on the motion preference or a `prefers-reduced-motion` media query in CSS.
 
 ## Quality bar
-Landing-page edit (`index.html` / `css/site.css` / `js/site.js`):
+Landing-page edit (`index.html` / `css/personal.css` / `js/personal.js`):
 - Renders via `python3 -m http.server 8000` with zero console errors.
+- Me → Experience → My company stays the content order; the original portrait remains in Me and personal contact stays in the footer.
+- FIRSTUNIT branding stays inside the company section, with one company destination (`https://firstunit.io`); no apps catalogue, photo/pricing promotion, office UI, achievement engine or skills marquee.
+- `css/game.css`, `js/game.js` and `js/site.js` are not homepage dependencies. Shared utility-page assets, all seven sitemap routes and the photo redirects remain functional.
+- Preserve compatibility for existing utility-page links to homepage anchors when simplifying navigation.
 - Inline theme pre-paint script still present verbatim in `<head>`.
 - Every new/changed `src`/`href` matches on-disk case exactly (grep-vs-ls check passes).
 - New motion branches on `REDUCED` or a reduced-motion media query.
 - No new external dependencies beyond the existing Google Fonts `<link>`s.
 - Commit passes the hook without `--no-verify`.
 
-Game change (`js/game.js` / `css/game.css`):
+Retained game assets (`js/game.js` / `css/game.css`), only if Isaac later requests work on the game:
 - File still one IIFE with `'use strict'` at top.
 - Served statically: canvas paints, HUD toggles, no console errors.
 - All localStorage reads/writes wrapped in try/catch (pattern at game.js:46-50).
@@ -75,7 +83,7 @@ STOP and ask Isaac (show a local preview URL/screenshot and the exact diff when 
 - Anything user-visible on the landing page (hero copy, sections, styling, redesigns) — push is instant prod with no staging; get an OK before `git push`.
 - `/roommate/privacy/`, `/roommate/terms/` and `/souvenir/privacy/`: App Store-facing legal pages (Quarters, Souvenir). Never change legal substance, move, or delete; copy edits beyond typos need sign-off. The `/roommate/` path is permanent despite the app being renamed (RoommateApp → Crib → Quarters) — never "fix" it. The app name in the page copy was updated Crib → Quarters on 2026-08-10; when doing that kind of rename, match `\bCrib\b` case-sensitively — a case-insensitive replace corrupts the word "des**crib**es" in the privacy policy.
 - Renaming/moving ANY public URL (`grep '<loc>' sitemap.xml`) — external systems point at them; if approved, update sitemap + canonicals in the same commit.
-- `Resume.pdf` and `isaac.JPG` are Isaac's real resume/photo — replace only on explicit request. `Resume.pdf` is the August-2020 student résumé and is currently UNLINKED for that reason (the start-screen link, the contact chip and the game's `chest_resume` all point at `#experience`); re-link the three when Isaac supplies a current PDF.
+- `Resume.pdf` and `isaac.JPG` are Isaac's real resume/photo — replace only on explicit request. `Resume.pdf` is the August-2020 student résumé and remains UNLINKED. Do not restore a résumé link until Isaac supplies a current PDF. The homepage's Me section uses the original `isaac.JPG`.
 - Vercel project/domain/DNS settings, `vercel link`, or any manual `vercel --prod` — prefer git push; ask first. `vercel.json` counts: a header change (especially the CSP) can break every page at once, so change it only with a local header-replaying server test across all pages.
 - Adding build tooling, frameworks, npm deps, analytics, or any third-party script — architecture change.
 - Deleting anything from `images/` or root assets: grep index.html + roommate pages for references first; if referenced or ambiguous, ask.
