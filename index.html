@@ -46,15 +46,17 @@
 
   <main class="page-width">
     <section class="intro" id="about" aria-labelledby="intro-heading">
-      <div class="intro-heading">
+      <div class="intro-heading" data-reveal>
         <p class="eyebrow">iOS engineer &amp; founder</p>
         <h1 id="intro-heading">Isaac<br>Perez<span class="name-period">.</span></h1>
       </div>
-      <figure class="portrait">
-        <img src="isaac.JPG" alt="Isaac Perez smiling outdoors" width="1056" height="1200" fetchpriority="high">
+      <figure class="portrait" data-reveal data-reveal-delay="100">
+        <div class="portrait-frame">
+          <img src="isaac.JPG" alt="Isaac Perez smiling outdoors" width="1056" height="1200" fetchpriority="high">
+        </div>
         <figcaption><span>Based in Los Angeles</span><span aria-hidden="true">↗</span></figcaption>
       </figure>
-      <div class="intro-copy">
+      <div class="intro-copy" data-reveal data-reveal-delay="160">
         <p>I’m Isaac, an iOS engineer and founder based in Los Angeles. I care about thoughtful software, good people, and making things that last.</p>
         <a class="text-link" href="#experience">A little about my experience <span aria-hidden="true">↓</span></a>
       </div>
@@ -62,12 +64,12 @@
 
     <section class="experience" id="experience" aria-labelledby="experience-heading">
       <span class="legacy-anchor" id="work" aria-hidden="true"></span>
-      <div class="section-heading">
+      <div class="section-heading" data-reveal>
         <p class="eyebrow">01 / Experience</p>
         <h2 id="experience-heading">Where I’ve been.</h2>
       </div>
       <div class="experience-list">
-        <article class="experience-row">
+        <article class="experience-row" data-reveal>
           <p class="experience-date">2026 — Present</p>
           <div class="experience-role">
             <span class="employer-icon employer-icon-tinder"><img src="tinderLogo.png" alt="" width="24" height="28"></span>
@@ -78,7 +80,7 @@
           </div>
           <p class="experience-copy">Working on iOS launch performance, platform tooling, and the details that make a large app feel effortless.</p>
         </article>
-        <article class="experience-row">
+        <article class="experience-row" data-reveal data-reveal-delay="80">
           <p class="experience-date">2021 — 2025</p>
           <div class="experience-role">
             <span class="employer-icon employer-icon-nextdoor"><img src="ndLogo.webp" alt="" width="44" height="44"></span>
@@ -92,7 +94,7 @@
       </div>
     </section>
 
-    <section class="company" id="firstunit" aria-labelledby="company-heading">
+    <section class="company" id="firstunit" aria-labelledby="company-heading" data-reveal>
       <div class="company-topline">
         <p class="eyebrow">02 / My company</p>
         <span class="company-role">Founder</span>
@@ -108,7 +110,7 @@
     </section>
   </main>
 
-  <footer class="site-footer page-width" id="contact">
+  <footer class="site-footer page-width" id="contact" data-reveal>
     <p>Isaac Perez <span aria-hidden="true">·</span> Los Angeles</p>
     <nav aria-label="Contact and social links">
       <a href="mailto:iperez2435@gmail.com">Email</a>

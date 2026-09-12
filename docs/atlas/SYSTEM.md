@@ -28,7 +28,7 @@ IsaacPerez.co is Isaac's personal site: seven public pages of hand-written stati
 
 1. **A personal page and a static host** — Me → Experience → My company, served as hand-written HTML. _(adds L, V)_
 2. **Homepage assets** — A dedicated stylesheet, the original portrait and existing font integration. _(adds C, I, E)_
-3. **A small, separate runtime** — Homepage interactions use personal.js; the theme is the active saved preference. _(adds M, T, S)_
+3. **A small, separate runtime** — Editorial uses native scroll reveals and CSS hover motion; theme remains the active saved preference. _(adds M, T, S)_
 4. **The office is dormant** — The source assets remain; the homepage no longer initializes or exposes the game. _(adds G, A)_
 5. **Retained photo URLs** — The old photo route redirects; pricing stays available without homepage promotion. _(adds P, R, O)_
 6. **The retained download page** — ShootSort remains reachable at its existing URL. _(adds D)_
@@ -140,16 +140,18 @@ IsaacPerez.co is Isaac's personal site: seven public pages of hand-written stati
 
 **In one line.** Homepage behavior is separate from the unchanged utility-page motion script.
 
-**What it does.** js/personal.js serves the new personal homepage. js/site.js remains available to pricing, ShootSort and other existing utility surfaces that already use it. Changing the homepage does not change their reveals, theme toggle or navigation behavior.
+**What it does.** Editorial adds one-time scroll reveals, a clipped portrait hover zoom, timed link underlines and arrow movements, and theme transitions. The homepage behavior stays independent of js/site.js, which remains unchanged for pricing, ShootSort and other existing utility surfaces.
 
-**How it's built.** Both scripts stay vanilla IIFEs. `js/personal.js` owns the homepage theme toggle and small UI updates. Navigation uses native HTML anchors and CSS; the homepage does not load `js/site.js`. The retained shared script uses IntersectionObserver for reveals, requestAnimationFrame for scroll effects, and its existing `REDUCED` flag. Any new personal-page motion must also respect `prefers-reduced-motion`.
+**How it's built.** Both scripts stay vanilla IIFEs. `js/personal.js` handles the theme and uses IntersectionObserver to trigger one-time native Web Animations on `[data-reveal]` elements. Baseline content stays visible: supported motion briefly fades and translates it on entry, while missing APIs or reduced motion leave it fully readable. Live `prefers-reduced-motion` changes cancel active reveals; focus and hash navigation reveal their targets immediately. Anchors use native scrolling, with smooth behavior disabled under reduced motion. The homepage loads no `js/site.js` or external animation dependency; the retained shared utility script is unchanged.
 
 **Steps in execution.**
 
-1. **Homepage** — Load js/personal.js with defer.
-2. **Utility pages** — Continue loading js/site.js where already referenced.
-3. **Respect preferences** — Guard runtime storage access and reduce or disable motion when requested.
-4. **Keep navigation useful** — Native anchors retain #about, #experience, #work, #firstunit and #contact without adding removed content sections.
+1. **Baseline** — Keep content visible without JavaScript or animation support.
+2. **Scroll entry** — IntersectionObserver starts each eligible Web Animation once and then unobserves it.
+3. **Hover** — CSS clips portrait zoom within its rounded mask and animates links, arrows and theme changes when motion is allowed.
+4. **Respect preferences** — Respond to live reduced-motion changes and cancel active reveals.
+5. **Keep navigation immediate** — Focus and hash navigation reveal their destinations immediately while native anchors retain #about, #experience, #work, #firstunit and #contact.
+6. **Utility pages** — Keep js/site.js and its behavior unchanged.
 
 #### T · Theme switch
 
@@ -226,7 +228,7 @@ IsaacPerez.co is Isaac's personal site: seven public pages of hand-written stati
 
 **What it does.** The personal homepage has css/personal.css. Pricing, ShootSort, the custom 404 and legal pages retain their existing stylesheet ownership. Game and RPG sheets remain on disk without homepage references.
 
-**How it's built.** `css/personal.css` owns the homepage layout and components; `css/site.css` may provide base tokens but remains unchanged for utility pages. Pricing adds `css/photo.css`. The four legal-style pages use `css/design-system.css`. ShootSort and 404 keep their scoped style blocks. `css/game.css` and `css/rpg.css` are not loaded by the homepage.
+**How it's built.** `css/personal.css` owns the homepage layout and components, including the portrait’s 28px rounded mask and fine-pointer hover zoom, timed underlines, arrow movements and theme transitions. CSS motion is gated by `prefers-reduced-motion`; native smooth scrolling becomes immediate scrolling when reduction is requested. `css/site.css` remains unchanged for utility pages. Pricing adds `css/photo.css`. The four legal-style pages use `css/design-system.css`. ShootSort and 404 keep their scoped style blocks. `css/game.css` and `css/rpg.css` are not loaded by the homepage.
 
 **Steps in execution.**
 
@@ -239,7 +241,7 @@ IsaacPerez.co is Isaac's personal site: seven public pages of hand-written stati
 
 **In one line.** The original portrait stays prominent; existing images and the unlinked résumé stay on disk.
 
-**What it does.** Me uses Isaac’s original isaac.JPG. Employer logos and favicon remain available. Product icons are retained even though the apps catalogue is removed. Resume.pdf remains unlinked because it is the old résumé.
+**What it does.** Me uses Isaac’s original isaac.JPG inside a 28px rounded frame that clips its fine-pointer hover zoom. Employer logos and favicon remain available. Product icons are retained even though the apps catalogue is removed. Resume.pdf remains unlinked because it is the old résumé.
 
 **How it's built.** Assets are committed directly, with no transformation pipeline. The exact case of `isaac.JPG` matters on Vercel. Homepage references are relative; utility references are absolute. The original image also supplies existing share metadata. Asset optimization stays in place under the same filename, and removing a homepage reference does not authorize deleting the underlying asset.
 
@@ -418,7 +420,7 @@ IsaacPerez.co/
     game.css            retained office chrome; not loaded by the homepage
     rpg.css             abandoned redesign; no references
   js/
-    personal.js         homepage theme and small UI updates
+    personal.js         homepage theme and accessible one-time scroll reveals
     site.js             retained utility-page motion and theme behavior
     game.js             retained office implementation; not loaded by the homepage
   photo/
