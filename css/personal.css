@@ -94,7 +94,7 @@ h2 { font-size: clamp(32px, 3.45vw, 44px); font-weight: 500; line-height: 1.09; 
 .employer-icon { display: grid; place-items: center; flex: 0 0 44px; width: 44px; height: 44px; overflow: hidden; border: 1px solid var(--line-soft); border-radius: 12px; background: #ffffff; }
 .employer-icon img { display: block; object-fit: contain; }
 .employer-icon-nextdoor img { transform: scale(1.22); }
-.employer-icon-berkeley img { width: 36px; height: 36px; }
+.employer-icon-berkeley img { width: 32px; height: 32px; }
 .experience-role h3 { font-size: 29px; font-weight: 500; line-height: 1.2; letter-spacing: -.045em; }
 .experience-role p { margin-top: 6px; color: var(--text-2); font-size: 14px; }
 .experience-copy { padding-top: 2px; font-size: 16px; line-height: 1.6; color: var(--text-2); }
