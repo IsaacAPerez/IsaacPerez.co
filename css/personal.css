@@ -94,6 +94,8 @@ h2 { font-size: clamp(32px, 3.45vw, 44px); font-weight: 500; line-height: 1.09; 
 .employer-icon { display: grid; place-items: center; flex: 0 0 44px; width: 44px; height: 44px; overflow: hidden; border: 1px solid var(--line-soft); border-radius: 12px; background: #ffffff; }
 .employer-icon img { display: block; object-fit: contain; }
 .employer-icon-nextdoor img { transform: scale(1.22); }
+.employer-icon-berkeley { color: #fdb515; background: #002676; border-color: #002676; }
+.employer-icon-berkeley svg { display: block; width: 28px; height: 28px; }
 .experience-role h3 { font-size: 29px; font-weight: 500; line-height: 1.2; letter-spacing: -.045em; }
 .experience-role p { margin-top: 6px; color: var(--text-2); font-size: 14px; }
 .experience-copy { padding-top: 2px; font-size: 16px; line-height: 1.6; color: var(--text-2); }
@@ -170,6 +172,11 @@ h2 { font-size: clamp(32px, 3.45vw, 44px); font-weight: 500; line-height: 1.09; 
   .company { padding-inline: 34px; }
   .company-content { gap: 32px; }
   .site-footer { align-items: flex-start; flex-direction: column; gap: 4px; padding-block: 30px; }
+}
+
+@media (min-width: 601px) and (max-width: 720px) {
+  .experience-row { grid-template-columns: 110px 1fr; row-gap: 18px; }
+  .experience-copy { grid-column: 2; }
 }
 
 @media (max-width: 600px) {

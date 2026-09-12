@@ -44,7 +44,7 @@ IsaacPerez.co is Isaac's personal site: seven public pages of hand-written stati
 
 **In one line.** The personal front door: who Isaac is, his engineering experience, and the company he founded.
 
-**What it does.** Three sections in order: Me, with the original portrait and personal introduction; Experience, with Tinder and Nextdoor; My company, with the only FIRSTUNIT branding and one link to firstunit.io. A quiet footer holds personal contact links. The former product catalogue, photo promotion, game, achievements and skills marquee are absent.
+**What it does.** Three sections in order: Me, with the original portrait and personal introduction; Experience, with Tinder, Nextdoor, and UC Berkeley (EECS); My company, with the only FIRSTUNIT branding and one link to firstunit.io. A quiet footer holds personal contact links. The former product catalogue, photo promotion, game, achievements and skills marquee are absent.
 
 **How it's built.** `index.html` is hand-written HTML with relative asset paths. It loads homepage-only `css/personal.css` and `js/personal.js`; `css/site.css` may supply shared base tokens. The theme pre-paint IIFE remains inline before the stylesheets. `js/site.js`, `js/game.js` and `css/game.css` are not homepage dependencies. Native homepage anchors retain `#about` for Me, `#experience` and the legacy `#work` target for Experience, `#firstunit` for My company, and `#contact` for the footer.
 
@@ -52,7 +52,7 @@ IsaacPerez.co is Isaac's personal site: seven public pages of hand-written stati
 
 1. **Pre-paint theme** — The inline head IIFE applies the saved theme before stylesheet parsing.
 2. **Me** — Render the personal introduction and original isaac.JPG portrait.
-3. **Experience** — Show Tinder and Nextdoor in the second section.
+3. **Experience** — Show Tinder, Nextdoor, and UC Berkeley (EECS) in the second section.
 4. **My company** — Present FIRSTUNIT only here and link to https://firstunit.io.
 5. **Contact** — Close with quiet personal links rather than a service-booking funnel.
 
