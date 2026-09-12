@@ -241,14 +241,14 @@ IsaacPerez.co is Isaac's personal site: seven public pages of hand-written stati
 
 **In one line.** The original portrait stays prominent; existing images and the unlinked résumé stay on disk.
 
-**What it does.** Me uses Isaac’s original isaac.JPG inside a 28px rounded frame that clips its fine-pointer hover zoom. Employer logos and favicon remain available. Product icons are retained even though the apps catalogue is removed. Resume.pdf remains unlinked because it is the old résumé.
+**What it does.** Me uses Isaac’s original isaac.JPG inside a 28px rounded frame that clips its fine-pointer hover zoom. Tinder and Nextdoor employer logos, the Berkeley seal, and the favicon remain available. Product icons are retained even though the apps catalogue is removed. Resume.pdf remains unlinked because it is the old résumé.
 
 **How it's built.** Assets are committed directly, with no transformation pipeline. The exact case of `isaac.JPG` matters on Vercel. Homepage references are relative; utility references are absolute. The original image also supplies existing share metadata. Asset optimization stays in place under the same filename, and removing a homepage reference does not authorize deleting the underlying asset.
 
 **Steps in execution.**
 
 1. **Reference** — Use the original isaac.JPG in Me.
-2. **Retain** — Keep existing app icons, employer marks and unlinked Resume.pdf.
+2. **Retain** — Keep existing app icons, employer marks, berkeley-seal.png and unlinked Resume.pdf.
 3. **Verify case** — Check every changed src/href against the on-disk filename.
 
 #### E · External services and links
@@ -438,6 +438,7 @@ IsaacPerez.co/
   isaac.JPG             original portrait, used in Me and share metadata
   Resume.pdf            old résumé, retained and unlinked
   favicon.svg  ndLogo.webp  tinderLogo.png
+  berkeley-seal.png     Berkeley seal, 250×250 PNG
   sitemap.xml  robots.txt  vercel.json  AGENTS.md
   .vercel/              gitignored Vercel linkage
   docs/atlas/           data.mjs → atlas.html + SYSTEM.md
