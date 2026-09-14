@@ -257,7 +257,7 @@ IsaacPerez.co is Isaac's personal site: seven public pages of hand-written stati
 
 **What it does.** Existing font links remain available on marketing-style pages, while legal pages use system fonts. The personal homepage has one company destination inside My company and ordinary personal contact links. No YouTube player or third-party script is embedded in the homepage.
 
-**How it's built.** The current font allowlist remains `fonts.googleapis.com` for styles and `fonts.gstatic.com` for font files. `vercel.json` still permits `www.youtube-nocookie.com` frames from the earlier photo page, but that page is gone and there is no active homepage player. Visiting FIRSTUNIT navigates to another site; it is not an embedded runtime dependency.
+**How it's built.** The current font allowlist remains `fonts.googleapis.com` for styles and `fonts.gstatic.com` for font files. The `www.youtube-nocookie.com` `frame-src` grant left over from the earlier photo page is removed; nothing on the site frames anything, so `default-src 'self'` is the fallback. `script-src` carries no `'unsafe-inline'` — it allowlists the sha256 hashes of the two pre-paint theme IIFEs and the pricing JSON-LD block, so an injected inline script is refused. Visiting FIRSTUNIT navigates to another site; it is not an embedded runtime dependency.
 
 **Steps in execution.**
 
@@ -403,7 +403,7 @@ Reference by ID. ✓ resolved (with date) · otherwise open.
 
 ## What the platform gives vs what we own
 
-**Platform gives:** Vercel provides git integration on <code>main</code>, TLS, CDN delivery, directory-style URLs and a custom 404 without an application build. <code>vercel.json</code> carries response headers and permanent redirects for <code>/photo</code> and <code>/photo/</code>. GitHub stores the source; the fleet platform supplies Conventional Commit and activity-feed hooks. Google Fonts supplies the existing font families. There is no application backend, analytics integration or GitHub Actions workflow in this repository. Machine-level monitoring is managed outside this repo; its configuration is not part of the website runtime.
+**Platform gives:** Vercel provides git integration on <code>main</code>, TLS, CDN delivery, directory-style URLs and a custom 404 without an application build. <code>vercel.json</code> carries response headers — including the HSTS and CORS values that would otherwise be Vercel platform defaults — and permanent redirects for <code>/photo</code> and <code>/photo/</code>. GitHub stores the source; the fleet platform supplies Conventional Commit and activity-feed hooks. Google Fonts supplies the existing font families. There is no application backend, analytics integration or GitHub Actions workflow in this repository. Machine-level monitoring is managed outside this repo; its configuration is not part of the website runtime.
 
 **We own:** The personal homepage, retained pricing and download pages, four legal-style pages, custom 404, page-specific styles and scripts, inline theme pre-paint, image/document assets, redirect configuration and discovery metadata. We also retain dormant game assets and the unlinked RPG stylesheet without making them homepage dependencies.
 
