@@ -1,0 +1,14 @@
+# Files that live in the repo but must NOT be uploaded to the deployment.
+# The repo tree IS the site, so anything here would otherwise be served —
+# and fetchable — at https://isaacperez.co/<path>.
+
+# Repo-only docs. The operating manual and the generated atlas name the Vercel
+# project/team, the local machine layout and the fleet CI wiring; none of that
+# is part of the website.
+AGENTS.md
+CLAUDE.md
+docs/
+
+# The August-2020 student résumé. AGENTS.md keeps it in the repo and unlinked;
+# it carries a personal phone number, so it must not sit at a guessable URL.
+Resume.pdf

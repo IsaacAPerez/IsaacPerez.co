@@ -293,7 +293,7 @@ IsaacPerez.co is Isaac's personal site: seven public pages of hand-written stati
 
 **What it does.** There is no build. Vercel clones the repo, serves the files as they are, gives each directory an extensionless URL, and terminates TLS on the apex domain. Pushing to main is publishing.
 
-**How it's built.** Vercel project `isaacperez`, id `prj_sSFEIZN5xWUB25tlxb7MxXUADcmZ`, team `team_kglkY3kYg639waIJAEOnAyuQ`, root `.`, serves GitHub `IsaacAPerez/IsaacPerez.co`. `vercel.json` has response headers and two permanent photo redirects, with no build command or rewrites. The custom `404.html` handles unknown URLs. Git push to main publishes production; the three design branches are review alternatives until a version is approved.
+**How it's built.** Vercel project `isaacperez`, root `.`, serves GitHub `IsaacAPerez/IsaacPerez.co`; the project and team ids live in the Vercel dashboard and are deliberately not recorded in this public repo. `vercel.json` has response headers and two permanent photo redirects, with no build command or rewrites. `.vercelignore` withholds the repo-only files — `AGENTS.md`, `CLAUDE.md`, `docs/` and the unlinked `Resume.pdf` — from the upload, so they exist in the repository but not at a URL. The custom `404.html` handles unknown URLs. Git push to main publishes production; the three design branches are review alternatives until a version is approved.
 
 **Steps in execution.**
 
@@ -403,7 +403,7 @@ Reference by ID. ✓ resolved (with date) · otherwise open.
 
 ## What the platform gives vs what we own
 
-**Platform gives:** Vercel provides git integration on <code>main</code>, TLS, CDN delivery, directory-style URLs and a custom 404 without an application build. <code>vercel.json</code> carries response headers — including the HSTS and CORS values that would otherwise be Vercel platform defaults — and permanent redirects for <code>/photo</code> and <code>/photo/</code>. GitHub stores the source; the fleet platform supplies Conventional Commit and activity-feed hooks. Google Fonts supplies the existing font families. There is no application backend, analytics integration or GitHub Actions workflow in this repository. Machine-level monitoring is managed outside this repo; its configuration is not part of the website runtime.
+**Platform gives:** Vercel provides git integration on <code>main</code>, TLS, CDN delivery, directory-style URLs and a custom 404 without an application build. <code>vercel.json</code> carries response headers — including the HSTS and CORS values that would otherwise be Vercel platform defaults — and permanent redirects for <code>/photo</code> and <code>/photo/</code>. <code>.vercelignore</code> decides which tracked files are uploaded at all. GitHub stores the source; the fleet platform supplies Conventional Commit and activity-feed hooks. Google Fonts supplies the existing font families. There is no application backend, analytics integration or GitHub Actions workflow in this repository. Machine-level monitoring is managed outside this repo; its configuration is not part of the website runtime.
 
 **We own:** The personal homepage, retained pricing and download pages, four legal-style pages, custom 404, page-specific styles and scripts, inline theme pre-paint, image/document assets, redirect configuration and discovery metadata. We also retain dormant game assets and the unlinked RPG stylesheet without making them homepage dependencies.
 
@@ -436,12 +436,14 @@ IsaacPerez.co/
   404.html              custom not-found page
   images/               retained product icons
   isaac.JPG             original portrait, used in Me and share metadata
-  Resume.pdf            old résumé, retained and unlinked
+  Resume.pdf            old résumé, retained, unlinked and not deployed
   favicon.svg  ndLogo.webp  tinderLogo.png
   berkeley-seal.png     Berkeley seal, 250×250 PNG
-  sitemap.xml  robots.txt  vercel.json  AGENTS.md
+  sitemap.xml  robots.txt  vercel.json
+  .vercelignore         repo-only files withheld from the deployment
+  AGENTS.md             operating manual; repo-only, not served
   .vercel/              gitignored Vercel linkage
-  docs/atlas/           data.mjs → atlas.html + SYSTEM.md
+  docs/atlas/           data.mjs → atlas.html + SYSTEM.md; repo-only, not served
 ```
 
 ## How this file is maintained

@@ -4,7 +4,7 @@ Personal site at https://isaacperez.co: one hand-written homepage organized **Me
 
 Seven public pages remain in the sitemap: the homepage, `/photo/pricing/`, `/shootsort/`, `/roommate/{privacy,terms,support}/` (Quarters), and `/souvenir/privacy/` (Souvenir). Pricing and ShootSort remain functional for existing visitors but are not promoted on the homepage. `/photo` and `/photo/` are permanent Vercel redirects to `https://firstunit.io/fu-0001` (currently HTTP 308); there is no `photo/index.html`. The retired capturedbyip.com domain redirects directly to that destination (HTTP 301, verified 2026-09-11). `404.html` handles unknown URLs.
 
-Pure static — vanilla HTML/CSS/JS, no package.json, application build, tests or CI. `vercel.json` contains the photo redirects and response headers (hash-based CSP + HSTS + nosniff + frame/referrer/permissions/CORS), with no build command. Hosted on Vercel (project `isaacperez`, id `prj_sSFEIZN5xWUB25tlxb7MxXUADcmZ`, team `team_kglkY3kYg639waIJAEOnAyuQ`, root `.`), auto-deploying `main` from GitHub `IsaacAPerez/IsaacPerez.co`.
+Pure static — vanilla HTML/CSS/JS, no package.json, application build, tests or CI. `vercel.json` contains the photo redirects and response headers (hash-based CSP + HSTS + nosniff + frame/referrer/permissions/CORS), with no build command. `.vercelignore` keeps the repo-only files out of the deployment. Hosted on Vercel (project `isaacperez`, root `.`), auto-deploying `main` from GitHub `IsaacAPerez/IsaacPerez.co`. The project and team ids are in the Vercel dashboard — this is a public repo, so don't record them here.
 Prime directive: the repo tree IS the site and a push to main IS a production deploy — keep it vanilla, and preview before you ship anything user-visible.
 
 ## Commands
@@ -32,6 +32,7 @@ Prime directive: the repo tree IS the site and a push to main IS a production de
 - Every public page carries a canonical `<link>` to its exact `https://isaacperez.co/...` URL; `sitemap.xml` is updated in the same commit as any page add/remove.
 - Images are optimized IN PLACE before committing, same filename: icons ≤ ~105KB, photos ≤ ~200KB (the existing `images/` files define the budget). (added)
 - `.gitignore` is one line (`.vercel`). Zero secrets, no `.env`, no API calls anywhere — the fleet's 1Password setup has nothing to wire up here; keep it that way.
+- `.vercelignore` is the line between "in the repo" and "on the internet". The repo tree IS the site, so every tracked file is served at `https://isaacperez.co/<path>` unless it is listed there: `AGENTS.md`, `CLAUDE.md`, `docs/` and `Resume.pdf` are repo-only. Add any new doc, note or unpublished asset to it in the same commit that adds the file, and never assume "nothing links it" makes a path private — `/AGENTS.md` and `/Resume.pdf` are exactly what a directory scanner guesses. (added)
 - Fleet roster: this site is `slug: isaac-perez-co` in `~/Coding/platform/scripts/products.json` — roster edits happen THERE, never in this repo.
 
 ## Mistakes you will make here
