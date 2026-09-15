@@ -65,7 +65,16 @@
         if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
-    revealEls.forEach(function (el) { io.observe(el); });
+    revealEls.forEach(function (el) {
+      /* Anything that starts above the viewport has already been scrolled
+         past, so show it outright. Whether this file runs before or after the
+         browser restores a scroll position is a race: lose it and everything
+         above the restored position stays blank until the visitor scrolls back
+         up through it. At the top of the page nothing qualifies, so a normal
+         load still animates the first screen in. */
+      if (el.getBoundingClientRect().top < 0) el.classList.add('in');
+      else io.observe(el);
+    });
   }
 
   /* ---------- Hero title word stagger ---------- */
@@ -111,6 +120,17 @@
   var hero = document.querySelector('.hero');
   var lastY = window.scrollY, navHidden = false, ticking = false;
 
+  /* The nav hides on scroll-down, but only once the visitor has really
+     scrolled. The browser's scroll restoration on a reload or a Back arrives as
+     several scroll events nobody made, and each one after the first reads as a
+     scroll down, so without this the bar is already off-screen on arrival.
+     lastY keeps tracking through them, so the first real gesture is measured
+     from where the page actually is. */
+  var userScrolled = false;
+  ['wheel', 'touchmove', 'keydown', 'mousedown'].forEach(function (evt) {
+    window.addEventListener(evt, function () { userScrolled = true; }, { passive: true, once: true });
+  });
+
   function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
 
   function frame() {
@@ -121,7 +141,7 @@
     // nav: solid after scroll, hide on scroll-down past hero, show on scroll-up
     if (nav) {
       nav.classList.toggle('scrolled', y > 8);
-      if (!REDUCED) {
+      if (!REDUCED && userScrolled) {
         var goingDown = y > lastY;
         if (goingDown && y > 240 && !navHidden) { nav.classList.add('hide'); navHidden = true; closeMenu(); }
         else if ((!goingDown || y < 120) && navHidden) { nav.classList.remove('hide'); navHidden = false; }
@@ -159,6 +179,15 @@
   function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(frame); } }
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll, { passive: true });
+  /* A Back served from the bfcache restores the DOM exactly as it was left,
+     nav.hide and a stale lastY included, so the bar would still be off-screen
+     on arrival with no scroll event coming to correct it. */
+  window.addEventListener('pageshow', function (e) {
+    if (!e.persisted) return;
+    lastY = window.scrollY;
+    navHidden = false;
+    if (nav) nav.classList.remove('hide');
+  });
   frame();
 
   /* ---------- Smooth anchor scroll (offset for fixed nav) ---------- */
