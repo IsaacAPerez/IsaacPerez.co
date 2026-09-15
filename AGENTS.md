@@ -56,7 +56,7 @@ Landing-page edit (`index.html` / `css/personal.css` / `js/personal.js`):
 - Inline theme pre-paint script still present verbatim in `<head>`.
 - Every new/changed `src`/`href` matches on-disk case exactly (grep-vs-ls check passes).
 - New motion branches on `REDUCED` or a reduced-motion media query.
-- No new external dependencies beyond the existing Google Fonts `<link>`s.
+- No new external dependencies. The site has none: the webfonts are self-hosted under `/fonts/` and declared in `css/site.css`, and the CSP grants neither Google host. Adding a `<link>` to a third-party stylesheet re-introduces a render-blocking dependency that a blackholing network turns into a permanently blank page.
 - Commit passes the hook without `--no-verify`.
 
 Retained game assets (`js/game.js` / `css/game.css`), only if Isaac later requests work on the game:
