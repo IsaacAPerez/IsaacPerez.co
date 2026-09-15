@@ -10,13 +10,29 @@
   /* ---------- Theme toggle ---------- */
   var themeBtn = document.getElementById('themeToggle');
   if (themeBtn) {
+    var systemDark = window.matchMedia('(prefers-color-scheme: dark)');
+    /* Same result as the old inline expression: with no data-theme set the
+       next theme is the opposite of what the system is showing. */
+    var isDark = function () {
+      var selected = root.getAttribute('data-theme');
+      return selected === 'dark' || (selected !== 'light' && systemDark.matches);
+    };
+    /* The icon swaps, but nothing said so: the label read "Toggle theme"
+       identically before and after, so a screen reader was never told which
+       theme is now active. js/personal.js:18-21 does exactly this. */
+    var updateThemeBtn = function () {
+      var label = isDark() ? 'Switch to light theme' : 'Switch to dark theme';
+      themeBtn.setAttribute('aria-label', label);
+      themeBtn.setAttribute('title', label);
+    };
+    updateThemeBtn();
     themeBtn.addEventListener('click', function () {
-      var cur = root.getAttribute('data-theme');
-      var sysDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      var next = cur === 'dark' ? 'light' : cur === 'light' ? 'dark' : (sysDark ? 'light' : 'dark');
-      root.setAttribute('data-theme', next);
-      try { localStorage.setItem('theme', next); } catch (e) {}
+      root.setAttribute('data-theme', isDark() ? 'light' : 'dark');
+      try { localStorage.setItem('theme', root.getAttribute('data-theme')); } catch (e) {}
+      updateThemeBtn();
     });
+    if (systemDark.addEventListener) systemDark.addEventListener('change', updateThemeBtn);
+    else if (systemDark.addListener) systemDark.addListener(updateThemeBtn);
   }
 
   /* ---------- Mobile menu ---------- */
