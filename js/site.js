@@ -19,6 +19,42 @@
     });
   }
 
+  /* ---------- Mobile menu ---------- */
+  /* Below 640px the four section links collapse into a panel under the bar.
+     closeMenu stays a no-op when the markup has no toggle, so the scroll
+     handler below can call it unconditionally. */
+  var closeMenu = function () {};
+  var navToggle = document.getElementById('navToggle');
+  var navLinks = document.getElementById('navLinks');
+  var navBar = document.getElementById('nav');
+  if (navToggle && navLinks && navBar) {
+    var setMenu = function (open) {
+      navBar.classList.toggle('menu-open', open);
+      navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      navToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    };
+    closeMenu = function () {
+      if (navToggle.getAttribute('aria-expanded') === 'true') setMenu(false);
+    };
+    navToggle.addEventListener('click', function () {
+      setMenu(navToggle.getAttribute('aria-expanded') !== 'true');
+    });
+    navLinks.addEventListener('click', function (e) {
+      if (e.target.closest('a')) setMenu(false);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && navToggle.getAttribute('aria-expanded') === 'true') {
+        setMenu(false);
+        navToggle.focus();
+      }
+    });
+    /* Past the breakpoint the button is gone, so an open panel would strand
+       .menu-open on a bar that can no longer close it. */
+    window.addEventListener('resize', function () {
+      if (window.innerWidth > 640) closeMenu();
+    });
+  }
+
   /* ---------- Reveal on scroll ---------- */
   var revealEls = [].slice.call(document.querySelectorAll('[data-reveal]'));
   if (REDUCED) {
@@ -87,7 +123,7 @@
       nav.classList.toggle('scrolled', y > 8);
       if (!REDUCED) {
         var goingDown = y > lastY;
-        if (goingDown && y > 240 && !navHidden) { nav.classList.add('hide'); navHidden = true; }
+        if (goingDown && y > 240 && !navHidden) { nav.classList.add('hide'); navHidden = true; closeMenu(); }
         else if ((!goingDown || y < 120) && navHidden) { nav.classList.remove('hide'); navHidden = false; }
       }
     }

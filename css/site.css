@@ -138,17 +138,17 @@ a { color: inherit; text-decoration: none; }
 }
 .nav-brand { font-size: 17px; font-weight: 600; letter-spacing: -0.02em; }
 .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
-.nav-links a {
+.nav-links a, .nav-cta {
   font-size: 13px; color: var(--text-2);
   transition: color 0.2s;
   position: relative;
 }
-.nav-links a::after {
+.nav-links a::after, .nav-cta::after {
   content: ''; position: absolute; left: 0; bottom: -4px; height: 1px; width: 0;
   background: var(--text); transition: width 0.3s var(--ease);
 }
-.nav-links a:hover { color: var(--text); }
-.nav-links a:hover::after { width: 100%; }
+.nav-links a:hover, .nav-cta:hover { color: var(--text); }
+.nav-links a:hover::after, .nav-cta:hover::after { width: 100%; }
 /* current page/section marker — the nav is identical on every page,
    so this is the only thing that differs between them */
 .nav-links a.here { color: var(--text); }
@@ -169,7 +169,57 @@ a { color: inherit; text-decoration: none; }
 :root[data-theme="light"] .icon-sun { display: none; }
 :root[data-theme="light"] .icon-moon { display: block; }
 
-@media (max-width: 640px) { .nav-links a:not(.nav-cta) { display: none; } }
+/* Right-hand cluster: the links, the theme button and the menu button share
+   one 28px flex row, which is how the theme button sat inside .nav-links
+   before it moved out to stay reachable when the links collapse. */
+.nav-end { display: flex; align-items: center; gap: 28px; }
+
+/* ---- Mobile menu ---- */
+.nav-toggle {
+  display: none;
+  width: 34px; height: 34px;
+  place-items: center;
+  border: none; background: transparent; color: var(--text-2);
+  cursor: pointer; border-radius: 50%;
+  transition: color 0.2s, background 0.2s;
+}
+.nav-toggle:hover { color: var(--text); background: var(--bg-alt); }
+.nav-toggle-bars { position: relative; }
+.nav-toggle-bars, .nav-toggle-bars::before, .nav-toggle-bars::after {
+  display: block; width: 18px; height: 1.5px;
+  background: currentColor; border-radius: 1px;
+  transition: transform 0.3s var(--ease), opacity 0.2s;
+}
+.nav-toggle-bars::before, .nav-toggle-bars::after { content: ''; position: absolute; }
+.nav-toggle-bars::before { transform: translateY(-6px); }
+.nav-toggle-bars::after { transform: translateY(6px); }
+.nav-toggle[aria-expanded="true"] .nav-toggle-bars { background: transparent; }
+.nav-toggle[aria-expanded="true"] .nav-toggle-bars::before { transform: rotate(45deg); }
+.nav-toggle[aria-expanded="true"] .nav-toggle-bars::after { transform: rotate(-45deg); }
+
+@media (max-width: 640px) {
+  .nav-toggle { display: grid; }
+  .nav-end { gap: 12px; }
+  /* Four of the five links used to be display:none here with nothing to open
+     them, so /#firstunit, /#experience and /#about had no route on a phone.
+     They now live in a panel under the bar -- closed, they stay out of the
+     tab order; the Contact CTA keeps its place in the bar. */
+  .nav-links {
+    display: none;
+    position: fixed;
+    top: 52px; left: 0; right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 4px 24px 16px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line-soft);
+    box-shadow: var(--shadow);
+  }
+  .nav.menu-open .nav-links { display: flex; }
+  .nav-links a { display: block; padding: 14px 0; font-size: 15px; }
+  .nav-links a::after { display: none; }
+}
 
 /* ============ BUTTONS ============ */
 .btn {
