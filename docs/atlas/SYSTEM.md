@@ -253,15 +253,15 @@ IsaacPerez.co is Isaac's personal site: seven public pages of hand-written stati
 
 #### E · External services and links
 
-**In one line.** Existing Google Fonts requests and ordinary outbound links; no embedded photo portfolio.
+**In one line.** No third party at all any more: the one webfont is served from this origin, and the only outbound links are ordinary ones.
 
-**What it does.** Existing font links remain available on marketing-style pages, while legal pages use system fonts. The personal homepage has one company destination inside My company and ordinary personal contact links. No YouTube player or third-party script is embedded in the homepage.
+**What it does.** Nothing on the site fetches anything off-origin. Inter is self-hosted for the pages that need a webfont; the homepage and the legal pages use installed system faces, and so do the code blocks on /shootsort/ and 404.html. The personal homepage has one company destination inside My company and ordinary personal contact links. No YouTube player or third-party script is embedded anywhere.
 
-**How it's built.** The current font allowlist remains `fonts.googleapis.com` for styles and `fonts.gstatic.com` for font files. The `www.youtube-nocookie.com` `frame-src` grant left over from the earlier photo page is removed; nothing on the site frames anything, so `default-src 'self'` is the fallback. `script-src` carries no `'unsafe-inline'` — it allowlists the sha256 hashes of the two pre-paint theme IIFEs and the pricing JSON-LD block, so an injected inline script is refused. Visiting FIRSTUNIT navigates to another site; it is not an embedded runtime dependency.
+**How it's built.** The CSP grants neither Google font host: `font-src 'self'`, and `/fonts/inter-latin*.woff2` is declared by `css/site.css`, because a render-blocking `<link>` to `fonts.googleapis.com` meant a network that blackholes Google produced no first paint at all. JetBrains Mono was dropped with it — 31KB to set four ASCII lines — so there is no code face. The `www.youtube-nocookie.com` `frame-src` grant left over from the earlier photo page is removed; nothing on the site frames anything, so `default-src 'self'` is the fallback. `script-src` carries no `'unsafe-inline'` — it allowlists the sha256 hashes of the two pre-paint theme IIFEs and the pricing JSON-LD block, so an injected inline script is refused. Visiting FIRSTUNIT navigates to another site; it is not an embedded runtime dependency.
 
 **Steps in execution.**
 
-1. **Load fonts** — Use the existing Google Fonts integration where already referenced.
+1. **Load fonts** — Serve Inter from /fonts/ on this origin, or use an installed face.
 2. **Visit company** — The company section links to https://firstunit.io.
 3. **Contact Isaac** — Footer links open the chosen personal contact destination.
 4. **Keep scope** — Do not add analytics, tag managers, external scripts or portfolio embeds.
