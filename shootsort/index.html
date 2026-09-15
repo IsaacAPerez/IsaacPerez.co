@@ -73,7 +73,10 @@
       background: var(--card, transparent);
     }
     .ss-promise .glyph { font-size: 30px; line-height: 1; flex-shrink: 0; }
-    .ss-promise h3 { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
+    /* h2, not h3: the promise card is a top-level section of this page and the
+       size here is typography, not outline level. As an h3 after the h1 it
+       implied a level-2 section that does not exist. */
+    .ss-promise h2 { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
     .ss-promise p { color: var(--text-2); line-height: 1.6; }
 
     .ss-tree {
@@ -156,7 +159,7 @@
         <div class="ss-promise" data-reveal>
           <span class="glyph" aria-hidden="true">🔒</span>
           <div>
-            <h3>It never touches the card.</h3>
+            <h2>It never touches the card.</h2>
             <p>
               ShootSort only ever reads the source. It does not delete, rename, move,
               or rewrite a single file on the card — every ingest is a copy, verified
