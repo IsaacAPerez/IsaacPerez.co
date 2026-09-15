@@ -84,7 +84,9 @@
       padding: 24px 26px;
       border: 1px solid var(--line-soft);
       border-radius: 18px;
-      font-family: 'JetBrains Mono', 'SF Mono', monospace;
+      /* Installed faces only: the tree is four lines of ASCII, and the
+         webfont that used to set it was 31KB -- 2.75x the rest of this page. */
+      font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
       font-size: 13px;
       line-height: 1.9;
       color: var(--text-2);

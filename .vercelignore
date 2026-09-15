@@ -26,3 +26,10 @@ css/rpg.css
 # deployed HTML, CSS or JS (the employer marks and the portrait live at the root
 # and are still used), so they are repo-only too.
 images/
+
+# The code face. No deployed page sets type in it any more (/shootsort/'s folder
+# tree and 404.html's label use installed monospace), but docs/og/cards.html --
+# repo-only, and the source the three share cards are shot from -- still
+# @font-faces it so a re-shoot reproduces the committed og-shootsort.png. Repo
+# copy stays; nothing on the site requests it, so it must not be fetchable.
+fonts/jetbrains-mono-latin.woff2
