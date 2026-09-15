@@ -108,30 +108,8 @@
      watchdog un-hides the page. */
   root.classList.add('site-ready');
 
-  /* ---------- Statement: wrap words for scroll fill ---------- */
-  var stWords = [];
-  var stEl = document.getElementById('statementText');
-  if (stEl) {
-    (function wrap(node) {
-      var kids = [].slice.call(node.childNodes);
-      kids.forEach(function (n) {
-        if (n.nodeType === 3) { // text
-          var parts = n.textContent.split(/(\s+)/);
-          var frag = document.createDocumentFragment();
-          parts.forEach(function (p) {
-            if (/^\s+$/.test(p) || p === '') { frag.appendChild(document.createTextNode(p)); }
-            else { var s = document.createElement('span'); s.className = 'word'; s.textContent = p; frag.appendChild(s); stWords.push(s); }
-          });
-          node.replaceChild(frag, n);
-        } else if (n.nodeType === 1) { wrap(n); }
-      });
-    })(stEl);
-    if (REDUCED) stWords.forEach(function (w) { w.style.opacity = 1; });
-  }
-
   /* ---------- Scroll-linked effects (rAF) ---------- */
   var heroInner = document.getElementById('heroInner');
-  var aboutPhoto = document.getElementById('aboutPhoto');
   var nav = document.getElementById('nav');
   var hero = document.querySelector('.hero');
   var lastY = window.scrollY, navHidden = false, ticking = false;
@@ -152,7 +130,6 @@
   function frame() {
     ticking = false;
     var y = window.scrollY;
-    var vh = window.innerHeight;
 
     // nav: solid after scroll, hide on scroll-down past hero, show on scroll-up
     if (nav) {
@@ -171,23 +148,6 @@
         heroInner.style.transform = 'translateY(' + (hp * -60) + 'px) scale(' + (1 - hp * 0.06) + ')';
         heroInner.style.opacity = String(1 - hp * 1.1);
         heroInner.style.filter = hp > 0.02 ? 'blur(' + (hp * 6) + 'px)' : 'none';
-      }
-      // about photo subtle parallax
-      if (aboutPhoto) {
-        var r = aboutPhoto.getBoundingClientRect();
-        if (r.bottom > 0 && r.top < vh) {
-          var ap = (r.top + r.height / 2 - vh / 2) / vh; // -0.5..0.5-ish
-          aboutPhoto.style.transform = 'scale(1.08) translateY(' + clamp(ap * -22, -22, 22) + 'px)';
-        }
-      }
-      // statement word fill
-      if (stWords.length && stEl) {
-        var sr = stEl.getBoundingClientRect();
-        var p = clamp((vh * 0.82 - sr.top) / (sr.height + vh * 0.35), 0, 1);
-        var lit = p * stWords.length;
-        for (var i = 0; i < stWords.length; i++) {
-          stWords[i].style.opacity = String(clamp(lit - i, 0.16, 1));
-        }
       }
     }
     lastY = y;

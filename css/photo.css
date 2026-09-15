@@ -10,7 +10,6 @@
 /* ============ SUBPAGE HERO ============
    Same recipe as .hero on the landing page, shorter — a subpage
    shouldn't eat a full viewport before the content starts. */
-/* extra bottom padding keeps the stat row clear of .scroll-cue */
 .ph-hero { min-height: 68svh; padding-top: 120px; padding-bottom: 96px; }
 .ph-hero .hero-title { font-size: clamp(2.6rem, 8vw, 5.4rem); }
 .ph-hero .hero-sub { max-width: 640px; }
@@ -31,8 +30,7 @@
 }
 
 /* ============ CARDS ============
-   Mirrors the .work-card recipe from site.css (card fill, 28px
-   radius, hairline border, --wc radial tint, hover lift). */
+   Card fill, 28px radius, hairline border, --wc radial tint, hover lift. */
 .ph-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
 .ph-card {
   position: relative; overflow: hidden;
@@ -165,7 +163,8 @@ a.ph-card:hover::before { opacity: 0.12; }
 .btn-outline:active { transform: scale(0.98); }
 
 /* ============ HAIRLINE GRID (always included) ============
-   Same construction as .about-attrs on the landing page. */
+   Cells on a --line-soft container with a 1px gap; the container shows through
+   as the hairlines. The same construction as .ss-grid on /shootsort/. */
 .ph-hair {
   display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px;
   background: var(--line-soft); border-radius: 16px; overflow: hidden;
