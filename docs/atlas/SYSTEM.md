@@ -6,7 +6,7 @@ _Question status: **1 open · 11 resolved**._
 
 ## One paragraph
 
-IsaacPerez.co is Isaac's personal site: seven public pages of hand-written static HTML with no package.json, bundler, application build, tests or CI. The homepage follows Me → Experience → My company, with the original portrait in Me and a quiet personal contact footer. FIRSTUNIT branding appears only in the company section, linking to firstunit.io. Homepage styling and behavior live in css/personal.css and js/personal.js. The shared utility-page assets remain intact: /photo/pricing/ and /shootsort/ stay available but unpromoted, and four legal-style pages serve Quarters and Souvenir. /photo and /photo/ redirect to the existing FIRSTUNIT Studios destination. The old game files and app icons remain in the repository but the homepage no longer loads the game or exposes its achievement UI. A push to main is a production deploy through Vercel's git integration.
+IsaacPerez.co is Isaac's personal site: seven public pages of hand-written static HTML with no package.json, bundler, application build, tests or CI. The homepage follows Me → Experience → My company, with the original portrait in Me and a quiet personal contact footer. FIRSTUNIT branding appears only in the company section, linking to firstunit.io. Homepage styling and behavior live in css/personal.css and js/personal.js. The shared utility-page assets remain intact: /photo/pricing/ and /shootsort/ stay available but unpromoted, and four legal-style pages serve Quarters and Souvenir. /photo and /photo/ redirect to the existing FIRSTUNIT Studios destination. The old game files and app icons remain in the repository but are withheld from the deployment by .vercelignore, and the homepage no longer loads the game or exposes its achievement UI. A push to main is a production deploy through Vercel's git integration.
 
 ## Decisions locked
 
@@ -15,7 +15,7 @@ IsaacPerez.co is Isaac's personal site: seven public pages of hand-written stati
 | Runtime | Vanilla HTML/CSS/JS, one IIFE per script. No framework, package.json, bundler, node_modules or application build. The repository tree is the site. | — |
 | Homepage | Me → Experience → My company, then a quiet personal contact footer. Retain the original portrait. No apps catalogue, photography portfolio, pricing promotion, office game, achievements or skills marquee. | User direction · 2026-09-11 |
 | FIRSTUNIT | Company branding appears only in the homepage company section, with one company destination: https://firstunit.io. Personal identity, employer experience and contact remain independent of the company brand. | User direction · 2026-09-11 |
-| Asset ownership | css/personal.css and js/personal.js own homepage behavior and styling. css/site.css may supply base tokens but remains unchanged with js/site.js for utility pages. Game files and app icons are retained without homepage promotion; css/rpg.css remains unlinked. | User direction · 2026-09-11 |
+| Asset ownership | css/personal.css and js/personal.js own homepage behavior and styling. css/site.css may supply base tokens but remains unchanged with js/site.js for utility pages. Game files and app icons are retained without homepage promotion and withheld from the deployment; css/rpg.css remains unlinked. | User direction · 2026-09-11 |
 | Hosting | Vercel git integration publishes main with no build step. vercel.json retains the response headers and permanent /photo redirects; production publication requires the approved preview. | — |
 | Theme and motion | Keep the inline pre-paint theme script and localStorage theme preference. Guard runtime storage access and honor prefers-reduced-motion. The homepage no longer awards badges or bakes game art. | — |
 | Asset paths | Root homepage asset paths are relative. Nested pages and 404.html use absolute paths. All references must match filename case exactly. | — |
@@ -82,15 +82,15 @@ IsaacPerez.co is Isaac's personal site: seven public pages of hand-written stati
 
 **In one line.** A retained pricing utility page, available by URL but unpromoted on the personal homepage.
 
-**What it does.** Four existing packages and their add-ons, booking explanation, and quote links remain intact. Removing their homepage promotion does not remove or change the offers.
+**What it does.** Four existing packages and their add-ons, booking explanation, and quote CTAs remain intact. Removing their homepage promotion does not remove or change the offers.
 
-**How it's built.** `photo/pricing/index.html` continues to load `/css/site.css`, `/css/photo.css` and `/js/site.js`. Its four visible prices and `OfferCatalog` JSON-LD must remain in step. Existing FIRSTUNIT practice copy and wordmark remain on this retained utility page; the homepage company-only branding rule does not silently authorize changing this page. Quote links still return to `/#contact`.
+**How it's built.** `photo/pricing/index.html` continues to load `/css/site.css`, `/css/photo.css` and `/js/site.js`. Its four visible prices and `OfferCatalog` JSON-LD must remain in step. Existing FIRSTUNIT practice copy and wordmark remain on this retained utility page; the homepage company-only branding rule does not silently authorize changing this page. Every quote CTA mails `hello@firstunit.io` — the enquiries address FIRSTUNIT publishes for the practice this page prices — with the package in the subject; the nav and footer still link back to the homepage sections.
 
 **Steps in execution.**
 
 1. **Serve** — A direct or indexed visit receives /photo/pricing/index.html.
 2. **Read** — The four packages and existing add-ons render with the shared utility styles.
-3. **Contact** — Quote links return to the personal contact footer at /#contact.
+3. **Quote** — Each CTA opens a mail to hello@firstunit.io with its own package in the subject.
 
 **Questions.**
 
@@ -191,13 +191,13 @@ IsaacPerez.co is Isaac's personal site: seven public pages of hand-written stati
 
 **In one line.** The previous canvas office implementation remains on disk but has no homepage entry point.
 
-**What it does.** js/game.js and css/game.css are retained assets. The personal homepage does not load them, render their canvas or controls, expose the #office experience, or initialize their art and animation loop.
+**What it does.** js/game.js and css/game.css are retained assets that .vercelignore keeps out of the deployment, so neither is fetchable. The personal homepage does not load them, render their canvas or controls, expose the #office experience, or initialize their art and animation loop.
 
 **How it's built.** The existing game IIFE contains its tile map, entities, canvas renderer, audio and browser-state helpers. Its former homepage markup and inline achievement engine have been removed from the active surface. The retained JavaScript and stylesheet alone are not a standalone game page. Restoring an office experience would require an explicit future scope decision.
 
 **Steps in execution.**
 
-1. **Retain** — Keep js/game.js and css/game.css unchanged on disk.
+1. **Retain** — Keep js/game.js and css/game.css unchanged on disk, and listed in .vercelignore.
 2. **Exclude** — Do not reference either asset from index.html.
 3. **Stay dormant** — No canvas, game initialization, audio, animation loop or game-state writes run on homepage visits.
 
@@ -293,7 +293,7 @@ IsaacPerez.co is Isaac's personal site: seven public pages of hand-written stati
 
 **What it does.** There is no build. Vercel clones the repo, serves the files as they are, gives each directory an extensionless URL, and terminates TLS on the apex domain. Pushing to main is publishing.
 
-**How it's built.** Vercel project `isaacperez`, root `.`, serves GitHub `IsaacAPerez/IsaacPerez.co`; the project and team ids live in the Vercel dashboard and are deliberately not recorded in this public repo. `vercel.json` has response headers and two permanent photo redirects, with no build command or rewrites. `.vercelignore` withholds the repo-only files — `AGENTS.md`, `CLAUDE.md`, `docs/` and the unlinked `Resume.pdf` — from the upload, so they exist in the repository but not at a URL. The custom `404.html` handles unknown URLs. Git push to main publishes production; the three design branches are review alternatives until a version is approved.
+**How it's built.** Vercel project `isaacperez`, root `.`, serves GitHub `IsaacAPerez/IsaacPerez.co`; the project and team ids live in the Vercel dashboard and are deliberately not recorded in this public repo. `vercel.json` has response headers and two permanent photo redirects, with no build command or rewrites. `.vercelignore` withholds the repo-only files — `AGENTS.md`, `CLAUDE.md`, `docs/`, the unlinked `Resume.pdf`, the retired game bundle (`js/game.js`, `css/game.css`, `css/rpg.css`) and the unreferenced `images/` icons — from the upload, so they exist in the repository but not at a URL. The custom `404.html` handles unknown URLs. Git push to main publishes production; the three design branches are review alternatives until a version is approved.
 
 **Steps in execution.**
 
@@ -370,7 +370,7 @@ Payload shapes are what the design implies, not measured traffic.
 | 2 | V → R | 200 pricing page | `{"preserved":true,"homepagePromotion":false}` |
 | 3 | R → C | utility styles | `{"links":["/css/site.css","/css/photo.css"]}` |
 | 4 | R → M | utility script | `{"src":"/js/site.js"}` |
-| 5 | R → L | personal contact | `{"href":"/#contact"}` |
+| 5 | R → L | homepage sections | `{"nav":["/#about","/#experience","/#firstunit"],"contact":"/#contact"}` |
 
 ### Publishing an approved change
 
@@ -417,12 +417,12 @@ IsaacPerez.co/
     site.css            shared utility-page styling and base tokens
     photo.css           /photo/pricing/ only
     design-system.css   four legal-style pages only
-    game.css            retained office chrome; not loaded by the homepage
-    rpg.css             abandoned redesign; no references
+    game.css            retained office chrome; not loaded, not deployed
+    rpg.css             abandoned redesign; no references, not deployed
   js/
     personal.js         homepage theme and accessible one-time scroll reveals
     site.js             retained utility-page motion and theme behavior
-    game.js             retained office implementation; not loaded by the homepage
+    game.js             retained office implementation; not loaded, not deployed
   photo/
     (no index.html; /photo and /photo/ return 308 via vercel.json)
     pricing/index.html  retained pricing and OfferCatalog; unpromoted on homepage
@@ -434,7 +434,7 @@ IsaacPerez.co/
   souvenir/
     privacy/index.html  rendered from Souvenir/docs/privacy.md
   404.html              custom not-found page
-  images/               retained product icons
+  images/               retained product icons; unreferenced, not deployed
   isaac.JPG             original portrait, used in Me and share metadata
   Resume.pdf            old résumé, retained, unlinked and not deployed
   favicon.svg  ndLogo.webp  tinderLogo.png
