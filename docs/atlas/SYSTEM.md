@@ -121,12 +121,12 @@ IsaacPerez.co is Isaac's personal site: seven public pages of hand-written stati
 
 **What it does.** Four plain documents. For Quarters: a privacy page (last updated May 4 2026) naming exactly what the app collects (Sign in with Apple identifier, chore-proof photos, chat messages, push tokens) and where it lives (Supabase Postgres and storage in AWS us-west-1), a terms page covering households, owners, bills and termination, and a support page. For Souvenir: a privacy page that accounts, field by field, for the one photograph per place that leaves the device when a book is pressed.
 
-**How it's built.** `roommate/{privacy,terms,support}/index.html` and `souvenir/privacy/index.html`. They are the only pages on `/css/design-system.css` — a different token set (`--color-accent: #0071e3`, `--space-*`) from the rest of the site — plus a page-local `<style>` block for `.legal-container` (Souvenir's extends it with table, `<pre>` and `h3` rules). Absolute asset paths, canonical links to their exact URLs, no JS beyond the theme pre-paint IIFE. **The path is permanent**: the app renamed RoommateApp → Crib → Quarters and `/roommate/` stayed. Two of the four are renderings, not originals: `/souvenir/privacy/` comes from `~/Coding/Souvenir/docs/privacy.md`, and `/roommate/support/` deliberately summarises and links to `thequarters.app/support` (the URL App Store Connect actually declares) rather than forking that FAQ.
+**How it's built.** `roommate/{privacy,terms,support}/index.html` and `souvenir/privacy/index.html`. They are the only pages on `/css/legal.css` — the tokens, reset and base type of the fleet design system, without the 76% of it (buttons, cards, navs, heroes, device frames, utilities) these pages never render — a different token set (`--color-accent: #0071e3`, `--space-*`) from the rest of the site — plus a page-local `<style>` block for `.legal-container` (Souvenir's extends it with table, `<pre>` and `h3` rules). Absolute asset paths, canonical links to their exact URLs, no JS beyond the theme pre-paint IIFE. **The path is permanent**: the app renamed RoommateApp → Crib → Quarters and `/roommate/` stayed. Two of the four are renderings, not originals: `/souvenir/privacy/` comes from `~/Coding/Souvenir/docs/privacy.md`, and `/roommate/support/` deliberately summarises and links to `thequarters.app/support` (the URL App Store Connect actually declares) rather than forking that FAQ.
 
 **Steps in execution.**
 
 1. **Serve** — Vercel returns the directory index for /roommate/privacy/, /roommate/terms/, /roommate/support/ or /souvenir/privacy/.
-2. **Style** — design-system.css provides the tokens; a page-local style block lays out the legal container.
+2. **Style** — legal.css provides the tokens; a page-local style block lays out the legal container.
 3. **Read** — Static prose — collection, use, storage, choices, children, changes, contact.
 4. **Exit** — One footer link back to isaacperez.co.
 
@@ -228,13 +228,13 @@ IsaacPerez.co is Isaac's personal site: seven public pages of hand-written stati
 
 **What it does.** The personal homepage has css/personal.css. Pricing, ShootSort, the custom 404 and legal pages retain their existing stylesheet ownership. Game and RPG sheets remain on disk without homepage references.
 
-**How it's built.** `css/personal.css` owns the homepage layout and components, including the portrait’s 28px rounded mask and fine-pointer hover zoom, timed underlines, arrow movements and theme transitions. CSS motion is gated by `prefers-reduced-motion`; native smooth scrolling becomes immediate scrolling when reduction is requested. `css/site.css` remains unchanged for utility pages. Pricing adds `css/photo.css`. The four legal-style pages use `css/design-system.css`. ShootSort and 404 keep their scoped style blocks. `css/game.css` and `css/rpg.css` are not loaded by the homepage.
+**How it's built.** `css/personal.css` owns the homepage layout and components, including the portrait’s 28px rounded mask and fine-pointer hover zoom, timed underlines, arrow movements and theme transitions. CSS motion is gated by `prefers-reduced-motion`; native smooth scrolling becomes immediate scrolling when reduction is requested. `css/site.css` remains unchanged for utility pages. Pricing adds `css/photo.css`. The four legal-style pages use `css/legal.css`, the token subset of the fleet design system. ShootSort and 404 keep their scoped style blocks. `css/game.css` and `css/rpg.css` are not loaded by the homepage.
 
 **Steps in execution.**
 
 1. **Homepage** — Use css/personal.css for the selected personal-page variation.
 2. **Utility pages** — Keep site.css and page-specific additions unchanged.
-3. **Legal pages** — Keep the separate design-system.css token system.
+3. **Legal pages** — Keep the separate legal.css token system.
 4. **Dormant assets** — Retain game.css and rpg.css without links from the homepage.
 
 #### I · Images & documents
@@ -416,7 +416,8 @@ IsaacPerez.co/
     personal.css        homepage only; may use site.css base tokens
     site.css            shared utility-page styling and base tokens
     photo.css           /photo/pricing/ only
-    design-system.css   four legal-style pages only
+    legal.css           four legal-style pages: the design system's tokens, none of its components
+    design-system.css   fleet design system, byte-identical to 3 sibling repos; unlinked here, not deployed
     game.css            retained office chrome; not loaded, not deployed
     rpg.css             abandoned redesign; no references, not deployed
   js/
@@ -435,10 +436,11 @@ IsaacPerez.co/
     privacy/index.html  rendered from Souvenir/docs/privacy.md
   404.html              custom not-found page
   images/               retained product icons; unreferenced, not deployed
-  isaac.JPG             original portrait, used in Me and share metadata
+  isaac.JPG  isaac.avif  original portrait; AVIF is what a browser takes, JPEG is the fallback and the JSON-LD image
+  fonts/                self-hosted Inter; JetBrains Mono is repo-only, for docs/og/cards.html
   Resume.pdf            old résumé, retained, unlinked and not deployed
   favicon.svg  ndLogo.webp  tinderLogo.png
-  berkeley-seal.png     Berkeley seal, 250×250 PNG
+  berkeley-seal.png     Berkeley seal, 96×96 PNG (3× its 32px render box)
   sitemap.xml  robots.txt  vercel.json
   .vercelignore         repo-only files withheld from the deployment
   AGENTS.md             operating manual; repo-only, not served
