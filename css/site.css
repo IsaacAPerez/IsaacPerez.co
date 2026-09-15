@@ -454,3 +454,62 @@ section[id], main[id] { scroll-margin-top: 64px; }
   .statement .word { opacity: 1 !important; }
   .hero-bg { display: none; }
 }
+
+/* ============ PRINT ============
+   Saving the page as a PDF is how a client forwards a quote, so paper has to
+   carry the content, not the motion layer's starting state. Without this every
+   [data-reveal] block prints at opacity 0 and the PDF contains no package and
+   no price at all. css/design-system.css:1311 does the same for the legal
+   pages. */
+@media print {
+  /* Print the light palette whichever theme the screen was in. The selectors
+     mirror the three theme blocks above so these win on equal specificity. */
+  :root,
+  :root[data-theme="dark"],
+  :root:not([data-theme="light"]) {
+    --bg: #ffffff;
+    --bg-alt: #ffffff;
+    --card: #ffffff;
+    --text: #000000;
+    --text-2: #333333;
+    --text-3: #555555;
+    --line: #999999;
+    --line-soft: #cccccc;
+    --accent: #000000;
+    --accent-hover: #000000;
+    --shadow: none;
+    --shadow-lg: none;
+    --nav-bg: transparent;
+  }
+
+  /* No motion on paper: a transition still in flight when the print media
+     switches would otherwise be captured half-faded. */
+  *, *::before, *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  /* Reveal and word-stagger start states are screen motion; on paper they are
+     just missing content. .hero-inner carries the parallax that js/site.js
+     writes as inline style, so a page printed after scrolling keeps its hero. */
+  [data-reveal],
+  .hero-title .w,
+  .hero-inner {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+
+  /* Fixed chrome stamps itself on every sheet; the rest is decoration. */
+  .nav { display: none !important; }
+  .hero-bg,
+  .scroll-cue { display: none !important; }
+
+  /* A filled pill is ink-on-background, and browsers drop backgrounds when
+     printing, which would leave its label white on white. */
+  .btn-pill {
+    background: transparent !important;
+    color: var(--text) !important;
+    border: 1px solid var(--text);
+  }
+}
