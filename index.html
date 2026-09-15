@@ -104,7 +104,15 @@
       </div>
       <figure class="portrait" data-reveal data-reveal-delay="100">
         <div class="portrait-frame">
-          <img src="isaac.JPG" alt="Isaac Perez smiling outdoors" width="1056" height="1200" fetchpriority="high">
+          <!-- AVIF first, JPEG second: the portrait is this page's LCP element and
+               its single biggest asset. Same pixels, 68KB against 131KB. isaac.JPG
+               stays the <img> src because it is also the Person image in the JSON-LD
+               above and the only thing a browser without AVIF (Safari 15 and older)
+               can read. Re-export BOTH from the same source if the photo changes. -->
+          <picture>
+            <source type="image/avif" srcset="isaac.avif">
+            <img src="isaac.JPG" alt="Isaac Perez smiling outdoors" width="1056" height="1200" fetchpriority="high">
+          </picture>
         </div>
         <!-- No ↗ here: this caption is not a link, and ↗ is this site's external-link
              marker everywhere else it appears (the FIRSTUNIT link below, the band caption
