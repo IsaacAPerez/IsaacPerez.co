@@ -50,7 +50,12 @@
   --card: #ffffff;
   --text: #1d1d1f;
   --text-2: #6e6e73;
-  --text-3: #86868b;
+  /* The quiet grey is used at 11-14px for footer nav, section eyebrows, the
+     ShootSort install note and every price card's kicker -- never large text,
+     so 4.5:1 applies. #86868b was 3.51:1 on --bg and 3.62:1 on --card. At this
+     size nothing lighter than this clears AA on a near-white ground, so in
+     light mode tertiary sits close to --text-2 on purpose. */
+  --text-3: #727278;
   --line: #d2d2d7;
   --line-soft: #e8e8ed;
   --accent: #1d1d1f;
@@ -70,7 +75,7 @@
   --card: #161617;
   --text: #f5f5f7;
   --text-2: #a1a1a6;
-  --text-3: #6e6e73;
+  --text-3: #8e8e93; /* #6e6e73 was 4.14:1 on --bg and 3.57:1 on --card */
   --line: #2a2a2c;
   --line-soft: #1c1c1e;
   --accent: #f5f5f7;
@@ -83,7 +88,7 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --bg: #000000; --bg-alt: #0a0a0a; --card: #161617;
-    --text: #f5f5f7; --text-2: #a1a1a6; --text-3: #6e6e73;
+    --text: #f5f5f7; --text-2: #a1a1a6; --text-3: #8e8e93;
     --line: #2a2a2c; --line-soft: #1c1c1e;
     --accent: #f5f5f7; --accent-hover: #ffffff;
     --shadow: 0 4px 24px rgba(0, 0, 0, 0.4); --shadow-lg: 0 30px 80px rgba(0, 0, 0, 0.6);
