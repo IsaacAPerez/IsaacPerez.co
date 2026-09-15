@@ -1,38 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Every public URL, in the trailing-slash form the canonicals and vercel.json's
+  "trailingSlash": true both use.
+
+  <lastmod> is the date that page's RENDERED content last changed — not the
+  date of the last commit that touched the file. A head-only edit (og tags, a
+  theme-color, an icon href) leaves the date alone, which is why the three
+  legal pages below still read August and early September. Google ignores a
+  lastmod it finds unreliable, so a date that moves on every deploy is worth
+  less than no date at all. Update the one page you changed, in the same commit.
+
+  No <changefreq> and no <priority>: Google has said it ignores both, and a
+  field nobody reads is a field that quietly goes stale.
+-->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://isaacperez.co/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>1.0</priority>
+    <lastmod>2026-09-14</lastmod>
   </url>
   <url>
     <loc>https://isaacperez.co/photo/pricing/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <lastmod>2026-09-14</lastmod>
   </url>
   <url>
     <loc>https://isaacperez.co/shootsort/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <lastmod>2026-09-14</lastmod>
   </url>
   <url>
     <loc>https://isaacperez.co/souvenir/privacy/</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <lastmod>2026-09-02</lastmod>
   </url>
   <url>
     <loc>https://isaacperez.co/roommate/privacy/</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <lastmod>2026-08-10</lastmod>
   </url>
   <url>
     <loc>https://isaacperez.co/roommate/terms/</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <lastmod>2026-08-10</lastmod>
   </url>
   <url>
     <loc>https://isaacperez.co/roommate/support/</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <lastmod>2026-09-14</lastmod>
   </url>
 </urlset>
