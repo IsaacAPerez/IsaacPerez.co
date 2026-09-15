@@ -42,6 +42,11 @@
     heroTitle.classList.add('go');
   }
 
+  /* Everything the .js hiding depends on is now wired. Tells the watchdog in
+     each page's head to leave .js in place; if this file never gets here the
+     watchdog un-hides the page. */
+  root.classList.add('site-ready');
+
   /* ---------- Statement: wrap words for scroll fill ---------- */
   var stWords = [];
   var stEl = document.getElementById('statementText');

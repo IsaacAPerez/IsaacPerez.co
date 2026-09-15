@@ -28,9 +28,18 @@
   <!-- Prevent flash of wrong theme -->
   <script>
     (function () {
+      var root = document.documentElement;
+      /* css/site.css hides [data-reveal] only under .js, so the content is
+         visible unless the motion layer is really running. Set before first
+         paint so there is no flash, then dropped again if js/site.js has not
+         reported in -- which covers it being blocked, 404ing, or hanging. */
+      root.classList.add('js');
+      setTimeout(function () {
+        if (!root.classList.contains('site-ready')) root.classList.remove('js');
+      }, 2000);
       try {
         var t = localStorage.getItem('theme');
-        if (t) document.documentElement.setAttribute('data-theme', t);
+        if (t) root.setAttribute('data-theme', t);
       } catch (e) { /* Theme still works when storage is unavailable. */ }
     })();
   </script>

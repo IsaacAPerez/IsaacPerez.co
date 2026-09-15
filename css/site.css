@@ -150,14 +150,17 @@ a { color: inherit; text-decoration: none; }
 .card-actions { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
 
 /* ============ REVEAL MOTION ============ */
-[data-reveal] {
+/* Scoped to .js, which the pre-paint head IIFE sets: content is visible by
+   default and the animation is opt-in, so a site.js that never arrives leaves
+   a readable page instead of a blank one. js/personal.js makes the same call. */
+.js [data-reveal] {
   opacity: 0;
   transform: translateY(28px);
   filter: blur(6px);
   transition: opacity 0.9s var(--ease), transform 0.9s var(--ease), filter 0.9s var(--ease);
   transition-delay: var(--d, 0ms);
 }
-[data-reveal].in { opacity: 1; transform: none; filter: none; }
+.js [data-reveal].in { opacity: 1; transform: none; filter: none; }
 
 /* ============ HERO ============ */
 .hero {
@@ -210,7 +213,8 @@ a { color: inherit; text-decoration: none; }
 .scroll-cue svg { width: 16px; height: 16px; }
 
 /* word-stagger title */
-.hero-title .w { display: inline-block; opacity: 0; transform: translateY(40px); filter: blur(8px); }
+.hero-title .w { display: inline-block; }
+.js .hero-title .w { opacity: 0; transform: translateY(40px); filter: blur(8px); }
 .hero-title.go .w { animation: wordIn 1s var(--ease) forwards; }
 @keyframes wordIn { to { opacity: 1; transform: none; filter: none; } }
 
