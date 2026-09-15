@@ -1,5 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "trailingSlash": true,
   "redirects": [
     { "source": "/photo", "destination": "https://firstunit.io/fu-0001", "permanent": true },
     { "source": "/photo/", "destination": "https://firstunit.io/fu-0001", "permanent": true }
