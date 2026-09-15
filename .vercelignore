@@ -40,3 +40,7 @@ fonts/jetbrains-mono-latin.woff2
 # css/legal.css and none of its components. Relink it (and delete this line in
 # the same commit) if a page here ever needs .btn/.card/.nav.
 css/design-system.css
+
+# The pre-commit guard. It reads the repo (asset case, .vercelignore, sitemap,
+# CSP hashes, the pricing figures) and is not part of the website.
+tools/
