@@ -12,3 +12,17 @@ docs/
 # The August-2020 student résumé. AGENTS.md keeps it in the repo and unlinked;
 # it carries a personal phone number, so it must not sit at a guessable URL.
 Resume.pdf
+
+# The retired office game. AGENTS.md keeps js/game.js and css/game.css on disk
+# for a possible revival and forbids touching css/rpg.css at all, but nothing
+# deployed has loaded any of them since the office was removed — and game.js
+# still carries the 0–100 numeric self-ratings and the "Licensed pilot" line the
+# homepage stopped showing, so it must not stay fetchable.
+js/game.js
+css/game.css
+css/rpg.css
+
+# The product app icons from the retired apps catalogue. Zero references in any
+# deployed HTML, CSS or JS (the employer marks and the portrait live at the root
+# and are still used), so they are repo-only too.
+images/
