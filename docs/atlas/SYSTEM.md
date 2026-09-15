@@ -121,12 +121,12 @@ IsaacPerez.co is Isaac's personal site: seven public pages of hand-written stati
 
 **What it does.** Four plain documents. For Quarters: a privacy page (last updated May 4 2026) naming exactly what the app collects (Sign in with Apple identifier, chore-proof photos, chat messages, push tokens) and where it lives (Supabase Postgres and storage in AWS us-west-1), a terms page covering households, owners, bills and termination, and a support page. For Souvenir: a privacy page that accounts, field by field, for the one photograph per place that leaves the device when a book is pressed.
 
-**How it's built.** `roommate/{privacy,terms,support}/index.html` and `souvenir/privacy/index.html`. They are the only pages on `/css/legal.css` — the tokens, reset and base type of the fleet design system, without the 76% of it (buttons, cards, navs, heroes, device frames, utilities) these pages never render — a different token set (`--color-accent: #0071e3`, `--space-*`) from the rest of the site — plus a page-local `<style>` block for `.legal-container` (Souvenir's extends it with table, `<pre>` and `h3` rules). Absolute asset paths, canonical links to their exact URLs, no JS beyond the theme pre-paint IIFE. **The path is permanent**: the app renamed RoommateApp → Crib → Quarters and `/roommate/` stayed. Two of the four are renderings, not originals: `/souvenir/privacy/` comes from `~/Coding/Souvenir/docs/privacy.md`, and `/roommate/support/` deliberately summarises and links to `thequarters.app/support` (the URL App Store Connect actually declares) rather than forking that FAQ.
+**How it's built.** `roommate/{privacy,terms,support}/index.html` and `souvenir/privacy/index.html`. They are the only pages on `/css/legal.css` — the tokens, reset and base type of the fleet design system, without the 76% of it (buttons, cards, navs, heroes, device frames, utilities) these pages never render — a different token set (`--color-accent: #0071e3`, `--space-*`) from the rest of the site — plus the `.legal-*` layout itself, which moved into that file once it turned out all four pages carried the same 106 lines inline. Only Souvenir keeps a page-local `<style>` block, for the table, `<pre>`, `hr`, `code` and `h3` rules it alone needs. Absolute asset paths, canonical links to their exact URLs, no JS beyond the theme pre-paint IIFE. **The path is permanent**: the app renamed RoommateApp → Crib → Quarters and `/roommate/` stayed. Two of the four are renderings, not originals: `/souvenir/privacy/` comes from `~/Coding/Souvenir/docs/privacy.md`, and `/roommate/support/` deliberately summarises and links to `thequarters.app/support` (the URL App Store Connect actually declares) rather than forking that FAQ.
 
 **Steps in execution.**
 
 1. **Serve** — Vercel returns the directory index for /roommate/privacy/, /roommate/terms/, /roommate/support/ or /souvenir/privacy/.
-2. **Style** — legal.css provides the tokens; a page-local style block lays out the legal container.
+2. **Style** — legal.css provides the tokens and the shared .legal-* layout; only Souvenir adds a page-local block.
 3. **Read** — Static prose — collection, use, storage, choices, children, changes, contact.
 4. **Exit** — One footer link back to isaacperez.co.
 
@@ -257,7 +257,7 @@ IsaacPerez.co is Isaac's personal site: seven public pages of hand-written stati
 
 **What it does.** Nothing on the site fetches anything off-origin. Inter is self-hosted for the pages that need a webfont; the homepage and the legal pages use installed system faces, and so do the code blocks on /shootsort/ and 404.html. The personal homepage has one company destination inside My company and ordinary personal contact links. No YouTube player or third-party script is embedded anywhere.
 
-**How it's built.** The CSP grants neither Google font host: `font-src 'self'`, and `/fonts/inter-latin*.woff2` is declared by `css/site.css`, because a render-blocking `<link>` to `fonts.googleapis.com` meant a network that blackholes Google produced no first paint at all. JetBrains Mono was dropped with it — 31KB to set four ASCII lines — so there is no code face. The `www.youtube-nocookie.com` `frame-src` grant left over from the earlier photo page is removed; nothing on the site frames anything, so `default-src 'self'` is the fallback. `script-src` carries no `'unsafe-inline'` — it allowlists the sha256 hashes of the two pre-paint theme IIFEs and the pricing JSON-LD block, so an injected inline script is refused. Visiting FIRSTUNIT navigates to another site; it is not an embedded runtime dependency.
+**How it's built.** The CSP grants neither Google font host: `font-src 'self'`, and `/fonts/inter-latin*.woff2` is declared by `css/site.css`, because a render-blocking `<link>` to `fonts.googleapis.com` meant a network that blackholes Google produced no first paint at all. JetBrains Mono was dropped with it — 31KB to set four ASCII lines — so there is no code face. The `www.youtube-nocookie.com` `frame-src` grant left over from the earlier photo page is removed; nothing on the site frames anything, so `default-src 'self'` is the fallback. `script-src` carries no `'unsafe-inline'` — it allowlists five sha256 hashes: the three pre-paint theme IIFE variants and the two JSON-LD blocks (the homepage Person graph and the pricing OfferCatalog), so an injected inline script is refused. `tools/check-site.sh` fails a commit whose inline scripts and hashes have drifted apart. Visiting FIRSTUNIT navigates to another site; it is not an embedded runtime dependency.
 
 **Steps in execution.**
 
@@ -403,7 +403,7 @@ Reference by ID. ✓ resolved (with date) · otherwise open.
 
 ## What the platform gives vs what we own
 
-**Platform gives:** Vercel provides git integration on <code>main</code>, TLS, CDN delivery, directory-style URLs and a custom 404 without an application build. <code>vercel.json</code> carries response headers — including the HSTS and CORS values that would otherwise be Vercel platform defaults — and permanent redirects for <code>/photo</code> and <code>/photo/</code>. <code>.vercelignore</code> decides which tracked files are uploaded at all. GitHub stores the source; the fleet platform supplies Conventional Commit and activity-feed hooks. Google Fonts supplies the existing font families. There is no application backend, analytics integration or GitHub Actions workflow in this repository. Machine-level monitoring is managed outside this repo; its configuration is not part of the website runtime.
+**Platform gives:** Vercel provides git integration on <code>main</code>, TLS, CDN delivery, directory-style URLs and a custom 404 without an application build. <code>vercel.json</code> carries response headers — including the HSTS and CORS values that would otherwise be Vercel platform defaults — and permanent redirects for <code>/photo</code> and <code>/photo/</code>. <code>.vercelignore</code> decides which tracked files are uploaded at all. GitHub stores the source; the fleet platform supplies Conventional Commit and activity-feed hooks. No third party serves anything at runtime: the one webfont, Inter, is self-hosted from <code>/fonts/</code>. There is no application backend, analytics integration or GitHub Actions workflow in this repository. Machine-level monitoring is managed outside this repo; its configuration is not part of the website runtime.
 
 **We own:** The personal homepage, retained pricing and download pages, four legal-style pages, custom 404, page-specific styles and scripts, inline theme pre-paint, image/document assets, redirect configuration and discovery metadata. We also retain dormant game assets and the unlinked RPG stylesheet without making them homepage dependencies.
 
@@ -416,7 +416,7 @@ IsaacPerez.co/
     personal.css        homepage only; may use site.css base tokens
     site.css            shared utility-page styling and base tokens
     photo.css           /photo/pricing/ only
-    legal.css           four legal-style pages: the design system's tokens, none of its components
+    legal.css           four legal-style pages: the design system's tokens, none of its components, plus the .legal-* layout all four shared inline
     design-system.css   fleet design system, byte-identical to 3 sibling repos; unlinked here, not deployed
     game.css            retained office chrome; not loaded, not deployed
     rpg.css             abandoned redesign; no references, not deployed
@@ -442,6 +442,7 @@ IsaacPerez.co/
   favicon.svg  ndLogo.webp  tinderLogo.png
   berkeley-seal.png     Berkeley seal, 96×96 PNG (3× its 32px render box)
   sitemap.xml  robots.txt  vercel.json
+  tools/check-site.sh   pre-commit guard: asset case, .vercelignore, sitemap, CSP hashes, prices; repo-only
   .vercelignore         repo-only files withheld from the deployment
   AGENTS.md             operating manual; repo-only, not served
   .vercel/              gitignored Vercel linkage
