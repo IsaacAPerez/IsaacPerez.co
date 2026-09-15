@@ -111,15 +111,20 @@
       margin-bottom: var(--space-2);
     }
 
+    /* Underlined rather than coloured only. The accent is 1.07:1 against the
+       body grey it sits in, and the only other affordance was a transparent
+       bottom border that appeared on :hover -- which a phone never has, so on
+       touch the link never looked like one at all. */
     .legal-content a {
       color: var(--color-accent);
-      text-decoration: none;
-      border-bottom: 1px solid transparent;
-      transition: border-color 0.15s ease;
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 0.15em;
+      transition: text-decoration-thickness 0.15s ease;
     }
 
     .legal-content a:hover {
-      border-bottom-color: var(--color-accent);
+      text-decoration-thickness: 2px;
     }
 
     .legal-content strong {
