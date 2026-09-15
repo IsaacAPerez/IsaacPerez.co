@@ -197,10 +197,18 @@ a.ph-card:hover::before { opacity: 0.12; }
 
 /* ============ FIRSTUNIT BAND AT THE BASE ============
    .fu-band / .fu-wordmark come from site.css; this only spaces the band
-   off the contact block and the footer. */
+   off the contact block and the footer, and captions it. */
 .fu-foot { padding-bottom: 48px; }
-.fu-foot .fu-band { transition: opacity 0.2s; }
-.fu-foot .fu-band:hover { opacity: 0.88; }
+.fu-foot .fu-link { display: block; transition: opacity 0.2s; }
+.fu-foot .fu-link:hover { opacity: 0.88; }
+/* The band keeps the brand's clear space -- nothing enters it -- so the line
+   that says where the band goes sits under it. */
+.fu-band-cap {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding-top: 14px; font-size: 13px; color: var(--text-3);
+}
+.fu-band-cap .arrow { transition: transform 0.3s var(--ease); }
+.fu-foot .fu-link:hover .arrow { transform: translate(3px, -3px); }
 
 /* ============ RESPONSIVE ============ */
 @media (max-width: 900px) {
