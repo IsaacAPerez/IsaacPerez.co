@@ -162,9 +162,14 @@ a { color: inherit; text-decoration: none; }
   font-size: 13px; color: var(--text-2);
   transition: color 0.2s;
   position: relative;
+  /* 13px of type is a 16px tall hit area. The padding takes it to 44px, the
+     size css/personal.css:57 already gives the homepage nav; the bar is 52px
+     and the links are centred in it, so nothing moves. The underline below is
+     offset by the same amount so it still sits 4px under the word. */
+  padding: 14px 0;
 }
 .nav-links a::after, .nav-cta::after {
-  content: ''; position: absolute; left: 0; bottom: -4px; height: 1px; width: 0;
+  content: ''; position: absolute; left: 0; bottom: 10px; height: 1px; width: 0;
   background: var(--text); transition: width 0.3s var(--ease);
 }
 .nav-links a:hover, .nav-cta:hover { color: var(--text); }
@@ -254,7 +259,9 @@ a { color: inherit; text-decoration: none; }
 }
 .btn-pill:hover { background: var(--accent-hover); transform: scale(1.04); }
 .btn-pill:active { transform: scale(0.98); }
-.btn-text { color: var(--accent); }
+/* Padded to 44px so it is not a 24px-tall strip beside the 48px pill it sits
+   next to; .hero-actions centres them, so the row height is unchanged. */
+.btn-text { color: var(--accent); padding: 10px 0; }
 .btn-text .arrow { transition: transform 0.3s var(--ease); }
 .btn-text:hover .arrow { transform: translateX(4px); }
 /* a card carrying more than one call to action */
@@ -504,12 +511,16 @@ section[id], main[id] { scroll-margin-top: 64px; }
 /* ============ FOOTER ============ */
 .foot {
   border-top: 1px solid var(--line-soft);
-  padding: 40px 0;
+  /* 28px, not 40px: the links below now carry 12px of their own vertical
+     padding, so the band keeps the height it had. */
+  padding: 28px 0;
   display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
 }
 .foot small { color: var(--text-3); font-size: 13px; }
 .foot-links { display: flex; gap: 22px; }
-.foot-links a, .office-link { font-size: 13px; color: var(--text-3); transition: color 0.2s; }
+/* Same reason as the nav links: 13px of type is a 20px tall tap target in the
+   one place a phone visitor goes to leave the page. */
+.foot-links a, .office-link { font-size: 13px; color: var(--text-3); transition: color 0.2s; padding: 12px 0; }
 .foot-links a:hover, .office-link:hover { color: var(--text); }
 .office-link { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; background: none; border: none; font-family: inherit; }
 .office-link .arrow { transition: transform 0.3s var(--ease); }
