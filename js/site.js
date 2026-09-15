@@ -174,18 +174,11 @@
   });
   frame();
 
-  /* ---------- Smooth anchor scroll (offset for fixed nav) ---------- */
-  /* The skip link is excluded: this handler calls preventDefault, which stops
-     the browser performing the fragment navigation that moves focus to
-     <main tabindex="-1">. Scrolling alone would leave focus on <body> and the
-     next Tab back at the top of the nav -- exactly what the link exists to
-     skip. html { scroll-behavior: smooth } keeps the native jump smooth. */
-  document.querySelectorAll('a[href^="#"]:not(.skip-link)').forEach(function (a) {
-    a.addEventListener('click', function (e) {
-      var id = a.getAttribute('href');
-      if (id === '#' || id === '#top') { e.preventDefault(); window.scrollTo({ top: 0, behavior: REDUCED ? 'auto' : 'smooth' }); return; }
-      var t = document.querySelector(id);
-      if (t) { e.preventDefault(); var top = t.getBoundingClientRect().top + window.scrollY - 56; window.scrollTo({ top: top, behavior: REDUCED ? 'auto' : 'smooth' }); }
-    });
-  });
+  /* No in-page anchor handler: the only pages that load this file link out to
+     the homepage (/#about and friends, which the browser navigates) and their
+     one same-document link is the skip link, which must NOT be intercepted --
+     preventDefault stops the fragment navigation that moves focus to
+     <main tabindex="-1">. Any anchor added here lands correctly on CSS alone:
+     html { scroll-behavior: smooth } and section[id], main[id]
+     { scroll-margin-top: 64px } in css/site.css. */
 })();
