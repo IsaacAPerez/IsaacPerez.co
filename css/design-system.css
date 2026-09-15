@@ -9,6 +9,11 @@
    ============================================================ */
 
 :root {
+  /* Scrollbars, the overscroll rubber-band and the pre-paint canvas follow this
+     rather than --color-surface; without it the four legal pages render light
+     browser chrome around a dark page. css/personal.css:3 does the same. */
+  color-scheme: light;
+
   /* -------------------- Colors -------------------- */
   
   /* Neutral Palette */
@@ -187,6 +192,8 @@
 /* System preference dark mode */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
     /* Surface Colors */
     --color-surface: var(--color-gray-900);
     --color-surface-elevated: #2d2d2d;
@@ -220,6 +227,8 @@
 
 /* Manual dark mode toggle */
 :root[data-theme="dark"] {
+  color-scheme: dark;
+
   /* Surface Colors */
   --color-surface: var(--color-gray-900);
   --color-surface-elevated: #2d2d2d;
