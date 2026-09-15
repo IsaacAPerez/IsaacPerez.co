@@ -107,6 +107,12 @@ body {
 
 a { color: inherit; text-decoration: none; }
 
+/* The nav's theme and menu buttons ship hidden and are un-hidden by
+   js/site.js, so neither is drawn unless it can actually work. Both set their
+   own display, which beats the UA sheet's [hidden] rule; this restores it.
+   css/personal.css:46 carries the same line for the homepage button. */
+button[hidden] { display: none; }
+
 /* ============ FOCUS ============
    This sheet declared no focus style at all, so all three pages it serves fell
    back to Chrome's 1px #005FCC ring -- near-invisible on a black page and

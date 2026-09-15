@@ -26,6 +26,11 @@
       themeBtn.setAttribute('title', label);
     };
     updateThemeBtn();
+    /* The markup ships this button hidden: it can only do anything once this
+       file is running, and /shootsort/ and /photo/pricing/ used to paint a live
+       looking theme control whether or not js/site.js arrived. js/personal.js:25
+       un-hides the homepage's button the same way. */
+    themeBtn.hidden = false;
     themeBtn.addEventListener('click', function () {
       root.setAttribute('data-theme', isDark() ? 'light' : 'dark');
       try { localStorage.setItem('theme', root.getAttribute('data-theme')); } catch (e) {}
@@ -44,6 +49,9 @@
   var navLinks = document.getElementById('navLinks');
   var navBar = document.getElementById('nav');
   if (navToggle && navLinks && navBar) {
+    /* Hidden in the markup for the same reason as the theme button: under 640px
+       the bar drew a hamburger even when nothing could open the panel. */
+    navToggle.hidden = false;
     var setMenu = function (open) {
       navBar.classList.toggle('menu-open', open);
       navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
