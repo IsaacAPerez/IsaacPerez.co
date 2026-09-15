@@ -207,7 +207,12 @@
   frame();
 
   /* ---------- Smooth anchor scroll (offset for fixed nav) ---------- */
-  document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+  /* The skip link is excluded: this handler calls preventDefault, which stops
+     the browser performing the fragment navigation that moves focus to
+     <main tabindex="-1">. Scrolling alone would leave focus on <body> and the
+     next Tab back at the top of the nav -- exactly what the link exists to
+     skip. html { scroll-behavior: smooth } keeps the native jump smooth. */
+  document.querySelectorAll('a[href^="#"]:not(.skip-link)').forEach(function (a) {
     a.addEventListener('click', function (e) {
       var id = a.getAttribute('href');
       if (id === '#' || id === '#top') { e.preventDefault(); window.scrollTo({ top: 0, behavior: REDUCED ? 'auto' : 'smooth' }); return; }
