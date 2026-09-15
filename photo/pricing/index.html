@@ -116,7 +116,12 @@
 <body>
   <a class="skip-link" href="#top">Skip to content</a>
 
-  <!-- ==================== NAV ==================== -->
+  <!-- ==================== NAV ====================
+       SHARED BLOCK: byte-identical to the nav in /shootsort/. This site has no
+       build step and so no partial to render it from -- this note is the
+       only thing holding the two copies together, so edit both in the same
+       commit. The links mirror the homepage's own sections and order
+       (AGENTS.md); adding a label the homepage does not use breaks that. -->
   <header>
     <nav class="nav" id="nav" aria-label="Main navigation">
       <div class="nav-inner">
@@ -373,7 +378,10 @@
     </section>
   </main>
 
-  <!-- ==================== FOOTER ==================== -->
+  <!-- ==================== FOOTER ====================
+       SHARED SHAPE with /shootsort/: Home and Contact are the same on both and
+       move together. Only the middle link differs, on purpose -- each page
+       offers the destination that follows from it. -->
   <footer class="foot wrap">
     <small>© 2026 Isaac Perez</small>
     <div class="foot-links">
