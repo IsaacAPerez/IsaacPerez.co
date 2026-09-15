@@ -33,3 +33,10 @@ images/
 # @font-faces it so a re-shoot reproduces the committed og-shootsort.png. Repo
 # copy stays; nothing on the site requests it, so it must not be fetchable.
 fonts/jetbrains-mono-latin.woff2
+
+# The fleet design system. It is byte-identical to the copies in CapturedByIP,
+# TeamUp/web and CurbSide/web, so it stays here unedited -- but no page on this
+# site links it any more: the four legal pages use its tokens through
+# css/legal.css and none of its components. Relink it (and delete this line in
+# the same commit) if a page here ever needs .btn/.card/.nav.
+css/design-system.css
