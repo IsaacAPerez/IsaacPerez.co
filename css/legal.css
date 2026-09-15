@@ -343,3 +343,126 @@ h1, h2, h3, h4, h5, h6 {
     text-decoration: underline;
   }
 }
+
+/* ============================================================
+   LEGAL PAGES
+   ============================================================
+   /roommate/{privacy,terms,support}/ and /souvenir/privacy/ are the only pages
+   that load this file, and every one of them carried this exact block inline:
+   106 byte-identical lines in four files, with souvenir/privacy a strict
+   superset. Those URLs are declared in App Store Connect and can never move, so
+   they outlive every other page here -- the link-underline contrast fix on this
+   branch had to be typed into four files by hand, and the fourth copy was
+   already 50 lines longer than the other three. It lives here once now. Souvenir keeps the rules only it
+   needs (h3, hr, code, .legal-pre, .legal-table*) in its own <style>, because
+   three pages should not download rules for a table they do not have.
+
+   The `body` rule below deliberately re-states the base one above it: these
+   pages set their line-height to 1.6 for long-form reading, and this section is
+   last in the file exactly as the inline block was last in the document. */
+
+body {
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+}
+
+.legal-container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--space-12) var(--space-6) var(--space-16);
+}
+
+.legal-header {
+  margin-bottom: var(--space-12);
+  padding-bottom: var(--space-8);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.legal-eyebrow {
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--color-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: var(--space-2);
+}
+
+.legal-title {
+  font-size: var(--text-3xl);
+  font-weight: var(--font-bold);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--space-3);
+  letter-spacing: -0.02em;
+}
+
+.legal-meta {
+  font-size: var(--text-sm);
+  color: var(--color-text-tertiary);
+}
+
+.legal-content h2 {
+  font-size: var(--text-xl);
+  font-weight: var(--font-semibold);
+  color: var(--color-text-primary);
+  margin: var(--space-10) 0 var(--space-3);
+  letter-spacing: -0.01em;
+}
+
+.legal-content h2:first-child { margin-top: 0; }
+
+.legal-content p,
+.legal-content li {
+  font-size: var(--text-base);
+  color: var(--color-text-secondary);
+}
+
+.legal-content p {
+  margin: 0 0 var(--space-4);
+}
+
+.legal-content ul {
+  margin: 0 0 var(--space-4);
+  padding-left: var(--space-6);
+}
+
+.legal-content li {
+  margin-bottom: var(--space-2);
+}
+
+/* Underlined rather than coloured only. The accent is 1.07:1 against the
+   body grey it sits in, and the only other affordance was a transparent
+   bottom border that appeared on :hover -- which a phone never has, so on
+   touch the link never looked like one at all. */
+.legal-content a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.15em;
+  transition: text-decoration-thickness 0.15s ease;
+}
+
+.legal-content a:hover {
+  text-decoration-thickness: 2px;
+}
+
+.legal-content strong {
+  color: var(--color-text-primary);
+  font-weight: var(--font-semibold);
+}
+
+.legal-footer {
+  margin-top: var(--space-12);
+  padding-top: var(--space-8);
+  border-top: 1px solid var(--color-border);
+  font-size: var(--text-sm);
+  color: var(--color-text-tertiary);
+}
+
+.legal-footer a {
+  color: var(--color-text-secondary);
+  text-decoration: none;
+}
+
+.legal-footer a:hover { color: var(--color-accent); }
