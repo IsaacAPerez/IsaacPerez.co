@@ -157,7 +157,12 @@ a.ph-card:hover::before { opacity: 0.12; }
   background: transparent; color: var(--text);
   border: 1px solid var(--line);
 }
-.btn-outline:hover { border-color: var(--text); transform: scale(1.02); }
+.btn-outline:hover { border-color: var(--text); transform: scale(1.04); }
+/* The same press the filled .btn-pill gets at css/site.css. Three of the four
+   "Request quote" buttons are this variant, and without it a tap on the Real
+   Estate, Lifestyle or Drone package registered nothing while the Sports one
+   visibly depressed -- so it got tapped twice. */
+.btn-outline:active { transform: scale(0.98); }
 
 /* ============ HAIRLINE GRID (always included) ============
    Same construction as .about-attrs on the landing page. */
@@ -203,6 +208,13 @@ a.ph-card:hover::before { opacity: 0.12; }
   .ph-price-grid { grid-template-columns: 1fr; }
   .ph-work-item, .ph-work-item:nth-child(1), .ph-work-item:nth-child(2) { grid-column: span 3; }
   .ph-hair { grid-template-columns: repeat(2, 1fr); }
+  /* Five cells in a two-column grid leaves the sixth track empty, and the
+     hairlines are the container's background showing through a 1px gap -- so
+     that empty track painted as a solid --line-soft block beside "Usage
+     rights" on every viewport under 900px. A cell that would sit alone on the
+     last row spans the full width instead, which also survives the list
+     growing to six. */
+  .ph-hair-cell:last-child:nth-child(odd) { grid-column: 1 / -1; }
   .ph-steps { grid-template-columns: 1fr; }
 }
 @media (max-width: 620px) {
