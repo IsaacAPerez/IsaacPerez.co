@@ -7,6 +7,14 @@
   ],
   "headers": [
     {
+      "source": "/(.*).(avif|jpg|JPG|jpeg|png|webp|svg|ico|woff2)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800, stale-while-revalidate=2592000" }]
+    },
+    {
+      "source": "/(.*).(css|js)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=3600" }]
+    },
+    {
       "source": "/docs/(.*)",
       "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }]
     },
