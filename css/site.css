@@ -183,10 +183,6 @@ button[hidden] { display: none; }
 }
 .nav-links a:hover, .nav-cta:hover { color: var(--text); }
 .nav-links a:hover::after, .nav-cta:hover::after { width: 100%; }
-/* current page/section marker — the nav is identical on every page,
-   so this is the only thing that differs between them */
-.nav-links a.here { color: var(--text); }
-.nav-links a.here::after { width: 100%; }
 .theme-btn {
   width: 34px; height: 34px;
   display: grid; place-items: center;
