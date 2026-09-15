@@ -4,36 +4,20 @@
    no new palette, no new type scale. Light & dark. Vanilla.
    ============================================================ */
 
-/* nav + its .here current-page marker live in site.css — the nav is
-   identical on every page and must stay that way */
+/* the nav lives in site.css — it is identical on every page that loads it
+   and must stay that way */
 
 /* ============ SUBPAGE HERO ============
    Same recipe as .hero on the landing page, shorter — a subpage
    shouldn't eat a full viewport before the content starts. */
-/* extra bottom padding keeps the stat row clear of .scroll-cue */
 .ph-hero { min-height: 68svh; padding-top: 120px; padding-bottom: 96px; }
 .ph-hero .hero-title { font-size: clamp(2.6rem, 8vw, 5.4rem); }
 .ph-hero .hero-sub { max-width: 640px; }
 
-/* ============ HAIRLINE STAT ROW ============ */
-.ph-stats {
-  display: flex; flex-wrap: wrap; justify-content: center;
-  gap: 14px 40px; margin-top: 44px;
-}
-.ph-stat { text-align: center; }
-.ph-stat b {
-  display: block; font-size: clamp(1.4rem, 3vw, 2rem);
-  font-weight: 700; letter-spacing: -0.03em;
-}
-.ph-stat span {
-  font-size: 12px; color: var(--text-3);
-  text-transform: uppercase; letter-spacing: 0.08em;
-}
-
 /* ============ CARDS ============
-   Mirrors the .work-card recipe from site.css (card fill, 28px
-   radius, hairline border, --wc radial tint, hover lift). */
-.ph-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+   Card fill, 28px radius, hairline border, --wc radial tint. Only the four
+   pricing cards use it; the icon, heading and link-card hover variants went
+   with the apps grid and the video wall this page stopped rendering. */
 .ph-card {
   position: relative; overflow: hidden;
   display: flex; flex-direction: column;
@@ -42,53 +26,14 @@
   background: var(--card);
   border: 1px solid var(--line-soft);
   box-shadow: var(--shadow);
-  transition: transform 0.5s var(--ease), box-shadow 0.5s var(--ease);
 }
 .ph-card::before {
   content: ''; position: absolute; inset: 0; pointer-events: none;
   background: radial-gradient(120% 120% at 80% 0%, var(--wc, var(--accent)) 0%, transparent 45%);
   opacity: 0.06;
-  transition: opacity 0.5s var(--ease);
 }
-a.ph-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
-a.ph-card:hover::before { opacity: 0.12; }
 .ph-card > * { position: relative; }
-.ph-card-icon {
-  width: 44px; height: 44px; border-radius: 14px;
-  display: grid; place-items: center; margin-bottom: 20px;
-  background: var(--bg-alt); border: 1px solid var(--line-soft);
-  color: var(--wc, var(--accent));
-}
-.ph-card-icon svg { width: 21px; height: 21px; }
-.ph-card h3 {
-  font-size: 1.5rem; font-weight: 700;
-  letter-spacing: -0.02em; margin-bottom: 12px;
-}
 .ph-card p { font-size: 1rem; color: var(--text-2); line-height: 1.55; }
-.ph-card .btn-text { margin-top: 22px; font-size: 15px; }
-
-/* ============ WORK GRID ============ */
-.ph-work {
-  display: grid; grid-template-columns: repeat(6, 1fr); gap: 20px;
-}
-.ph-work-item {
-  position: relative; grid-column: span 2;
-  border-radius: 20px; overflow: hidden;
-  background: var(--bg-alt); border: 1px solid var(--line-soft);
-}
-/* first two run wider — the reel and the property tour carry the section */
-.ph-work-item:nth-child(1), .ph-work-item:nth-child(2) { grid-column: span 3; }
-.ph-work-item iframe {
-  display: block; width: 100%; aspect-ratio: 16 / 9; border: 0;
-}
-.ph-work-tag {
-  position: absolute; top: 12px; left: 12px; z-index: 1;
-  font-size: 11px; font-weight: 600; letter-spacing: 0.06em;
-  text-transform: uppercase;
-  padding: 5px 11px; border-radius: 980px;
-  background: rgba(0, 0, 0, 0.62); color: #fff;
-  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-}
 
 /* ============ PRICING CARDS ============ */
 .ph-price-grid {
@@ -157,10 +102,16 @@ a.ph-card:hover::before { opacity: 0.12; }
   background: transparent; color: var(--text);
   border: 1px solid var(--line);
 }
-.btn-outline:hover { border-color: var(--text); transform: scale(1.02); }
+.btn-outline:hover { border-color: var(--text); transform: scale(1.04); }
+/* The same press the filled .btn-pill gets at css/site.css. Three of the four
+   "Request quote" buttons are this variant, and without it a tap on the Real
+   Estate, Lifestyle or Drone package registered nothing while the Sports one
+   visibly depressed -- so it got tapped twice. */
+.btn-outline:active { transform: scale(0.98); }
 
 /* ============ HAIRLINE GRID (always included) ============
-   Same construction as .about-attrs on the landing page. */
+   Cells on a --line-soft container with a 1px gap; the container shows through
+   as the hairlines. The same construction as .ss-grid on /shootsort/. */
 .ph-hair {
   display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px;
   background: var(--line-soft); border-radius: 16px; overflow: hidden;
@@ -192,22 +143,34 @@ a.ph-card:hover::before { opacity: 0.12; }
 
 /* ============ FIRSTUNIT BAND AT THE BASE ============
    .fu-band / .fu-wordmark come from site.css; this only spaces the band
-   off the contact block and the footer. */
+   off the contact block and the footer, and captions it. */
 .fu-foot { padding-bottom: 48px; }
-.fu-foot .fu-band { transition: opacity 0.2s; }
-.fu-foot .fu-band:hover { opacity: 0.88; }
+.fu-foot .fu-link { display: block; transition: opacity 0.2s; }
+.fu-foot .fu-link:hover { opacity: 0.88; }
+/* The band keeps the brand's clear space -- nothing enters it -- so the line
+   that says where the band goes sits under it. */
+.fu-band-cap {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding-top: 14px; font-size: 13px; color: var(--text-3);
+}
+.fu-band-cap .arrow { transition: transform 0.3s var(--ease); }
+.fu-foot .fu-link:hover .arrow { transform: translate(3px, -3px); }
 
 /* ============ RESPONSIVE ============ */
 @media (max-width: 900px) {
-  .ph-grid { grid-template-columns: 1fr; }
   .ph-price-grid { grid-template-columns: 1fr; }
-  .ph-work-item, .ph-work-item:nth-child(1), .ph-work-item:nth-child(2) { grid-column: span 3; }
   .ph-hair { grid-template-columns: repeat(2, 1fr); }
+  /* Five cells in a two-column grid leaves the sixth track empty, and the
+     hairlines are the container's background showing through a 1px gap -- so
+     that empty track painted as a solid --line-soft block beside "Usage
+     rights" on every viewport under 900px. A cell that would sit alone on the
+     last row spans the full width instead, which also survives the list
+     growing to six. */
+  .ph-hair-cell:last-child:nth-child(odd) { grid-column: 1 / -1; }
   .ph-steps { grid-template-columns: 1fr; }
 }
 @media (max-width: 620px) {
   .ph-hero { min-height: 56svh; padding-top: 100px; }
-  .ph-work-item, .ph-work-item:nth-child(1), .ph-work-item:nth-child(2) { grid-column: span 6; }
   .ph-card { padding: 28px 24px; }
   .ph-price-top, .ph-price-body, .ph-addons, .ph-price-foot { padding-left: 24px; padding-right: 24px; }
 }

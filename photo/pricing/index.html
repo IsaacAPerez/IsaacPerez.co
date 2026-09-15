@@ -3,46 +3,64 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fbfbfd">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000">
   <meta name="description" content="Photo & film pricing — simple, transparent packages for sports, real estate, and lifestyle work in Los Angeles. Starting at $200.">
   <meta name="author" content="Isaac Perez">
-  <meta name="keywords" content="photography pricing, videography pricing, sports photography cost, real estate photography rates, drone photography prices, Los Angeles photographer">
 
   <!-- Open Graph -->
   <meta property="og:title" content="Photo & Film Pricing — Isaac Perez">
   <meta property="og:description" content="Simple, transparent pricing — built around the project, not the clock.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://isaacperez.co/photo/pricing/">
-  <meta property="og:image" content="https://isaacperez.co/isaac.JPG">
+  <meta property="og:image" content="https://isaacperez.co/og-photo-pricing.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Photo & film pricing, beside the four packages: Sports Coverage, Real Estate Content, Lifestyle & Brand, Drone-Only Coverage.">
+  <meta property="og:site_name" content="Isaac Perez">
+  <meta property="og:locale" content="en_US">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Photo & Film Pricing — Isaac Perez">
   <meta name="twitter:description" content="Simple, transparent pricing — built around the project, not the clock.">
-  <meta name="twitter:image" content="https://isaacperez.co/isaac.JPG">
+  <meta name="twitter:image" content="https://isaacperez.co/og-photo-pricing.png">
+  <meta name="twitter:image:alt" content="Photo & film pricing, beside the four packages: Sports Coverage, Real Estate Content, Lifestyle & Brand, Drone-Only Coverage.">
 
   <link rel="canonical" href="https://isaacperez.co/photo/pricing/">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="/favicon.svg">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <title>Photo &amp; Film Pricing — Isaac Perez</title>
 
   <!-- Prevent flash of wrong theme -->
   <script>
     (function () {
-      var t = localStorage.getItem('theme');
-      if (t) document.documentElement.setAttribute('data-theme', t);
+      var root = document.documentElement;
+      /* css/site.css hides [data-reveal] only under .js, so the content is
+         visible unless the motion layer is really running. Set before first
+         paint so there is no flash, then dropped again if js/site.js has not
+         reported in -- which covers it being blocked, 404ing, or hanging. */
+      root.classList.add('js');
+      setTimeout(function () {
+        if (!root.classList.contains('site-ready')) root.classList.remove('js');
+      }, 2000);
+      try {
+        var t = localStorage.getItem('theme');
+        if (t) root.setAttribute('data-theme', t);
+      } catch (e) { /* Theme still works when storage is unavailable. */ }
     })();
   </script>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="/css/site.css">
   <link rel="stylesheet" href="/css/photo.css">
 
   <!-- Structured Data: the four packages priced on this page, as Offers from
-       FIRSTUNIT (the photo & film practice is FU—0001 at firstunit.io). Prices
-       mirror the cards below — keep the two in step. -->
+       FIRSTUNIT (the photo & film practice is FU—0001 at firstunit.io). Each
+       price is quoted three times — here, on the card below, and (the lowest
+       one) in the meta description at the top of this file. tools/check-site.sh
+       pairs the Offers to the cards by package name and fails if any of the
+       three disagrees, so a rate change no longer relies on remembering this
+       comment. -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -100,40 +118,51 @@
   </script>
 </head>
 <body>
-  <!-- ==================== NAV ==================== -->
-  <nav class="nav" id="nav">
-    <div class="nav-inner">
-      <a href="/" class="nav-brand">Isaac Perez</a>
-      <ul class="nav-links">
-        <li><a href="/#work">Work</a></li>
-        <li><a href="/#firstunit">FIRSTUNIT</a></li>
-        <li><a href="/#experience">Experience</a></li>
-        <li><a href="/#about">About</a></li>
-        <li><a href="/#contact" class="nav-cta">Contact</a></li>
-        <li>
-          <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
+  <a class="skip-link" href="#top">Skip to content</a>
+
+  <!-- ==================== NAV ====================
+       SHARED BLOCK: byte-identical to the nav in /shootsort/. This site has no
+       build step and so no partial to render it from -- this note is the
+       only thing holding the two copies together, so edit both in the same
+       commit. The links mirror the homepage's own sections and order
+       (AGENTS.md); adding a label the homepage does not use breaks that. -->
+  <header>
+    <nav class="nav" id="nav" aria-label="Main navigation">
+      <div class="nav-inner">
+        <a href="/" class="nav-brand">Isaac Perez</a>
+        <div class="nav-end">
+          <ul class="nav-links" id="navLinks">
+            <li><a href="/#about">Me</a></li>
+            <li><a href="/#experience">Experience</a></li>
+            <li><a href="/#firstunit">FIRSTUNIT</a></li>
+          </ul>
+          <a href="/#contact" class="nav-cta">Contact</a>
+          <button class="theme-btn" id="themeToggle" type="button" aria-label="Toggle theme" hidden>
             <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
             <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4.5"/><line x1="12" y1="1.5" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22.5"/><line x1="3.5" y1="3.5" x2="5.3" y2="5.3"/><line x1="18.7" y1="18.7" x2="20.5" y2="20.5"/><line x1="1.5" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22.5" y2="12"/><line x1="3.5" y1="20.5" x2="5.3" y2="18.7"/><line x1="18.7" y1="5.3" x2="20.5" y2="3.5"/></svg>
           </button>
-        </li>
-      </ul>
-    </div>
-  </nav>
+          <button class="nav-toggle" id="navToggle" type="button" aria-controls="navLinks" aria-expanded="false" aria-label="Open menu" hidden>
+            <span class="nav-toggle-bars" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+    </nav>
+  </header>
 
-  <main id="top">
+  <main id="top" tabindex="-1">
     <!-- ==================== HERO ==================== -->
     <header class="hero ph-hero">
       <div class="hero-bg"><span class="b1"></span><span class="b2"></span></div>
       <div class="hero-inner" id="heroInner">
         <p class="hero-eyebrow" data-reveal>Photo &amp; Film · A FIRSTUNIT practice</p>
-        <h1 class="hero-title" id="heroTitle"><span class="w">Built around</span> <span class="w">the project.</span></h1>
+        <h1 class="hero-title" id="heroTitle"><span class="w">Photo &amp; film</span> <span class="w">pricing,</span> <span class="w">built around</span> <span class="w">the project.</span></h1>
         <p class="hero-sub" data-reveal style="--d:520ms">
           Every project is different. These packages are starting points —
           we'll tailor the scope to fit exactly what you need.
         </p>
         <div class="hero-actions" data-reveal style="--d:640ms">
-          <a href="/#contact" class="btn btn-pill">Request a quote</a>
-          <a href="https://firstunit.io/fu-0001" target="_blank" rel="noopener" class="btn btn-text">See the work <span class="arrow">→</span></a>
+          <a href="mailto:hello@firstunit.io?subject=Quote%20request%3A%20Photo%20%26%20Film" class="btn btn-pill">Request a quote</a>
+          <a href="https://firstunit.io/fu-0001" target="_blank" rel="noopener" class="btn btn-text">See the work <span class="arrow" aria-hidden="true">→</span></a>
         </div>
       </div>
     </header>
@@ -167,7 +196,7 @@
             </div>
             <div class="ph-price-foot">
               <p class="ph-note">Team, individual, and tournament-friendly. Fast turnaround available.</p>
-              <a href="/#contact" class="btn btn-pill btn-block">Request quote</a>
+              <a href="mailto:hello@firstunit.io?subject=Quote%20request%3A%20Sports%20Coverage" class="btn btn-pill btn-block" aria-label="Request quote for Sports Coverage">Request quote</a>
             </div>
           </article>
 
@@ -193,7 +222,7 @@
             </div>
             <div class="ph-price-foot">
               <p class="ph-note">Optimized for listings and marketing. Reliable turnaround for agents.</p>
-              <a href="/#contact" class="btn btn-outline btn-block">Request quote</a>
+              <a href="mailto:hello@firstunit.io?subject=Quote%20request%3A%20Real%20Estate%20Content" class="btn btn-outline btn-block" aria-label="Request quote for Real Estate Content">Request quote</a>
             </div>
           </article>
 
@@ -219,7 +248,7 @@
             </div>
             <div class="ph-price-foot">
               <p class="ph-note">Creators, athletes, small brands, personal projects.</p>
-              <a href="/#contact" class="btn btn-outline btn-block">Request quote</a>
+              <a href="mailto:hello@firstunit.io?subject=Quote%20request%3A%20Lifestyle%20%26%20Brand" class="btn btn-outline btn-block" aria-label="Request quote for Lifestyle &amp; Brand">Request quote</a>
             </div>
           </article>
 
@@ -239,7 +268,7 @@
             </div>
             <div class="ph-price-foot">
               <p class="ph-note">FAA-compliant operation. Weather and airspace dependent.</p>
-              <a href="/#contact" class="btn btn-outline btn-block">Request quote</a>
+              <a href="mailto:hello@firstunit.io?subject=Quote%20request%3A%20Drone-Only%20Coverage" class="btn btn-outline btn-block" aria-label="Request quote for Drone-Only Coverage">Request quote</a>
             </div>
           </article>
 
@@ -331,21 +360,32 @@
       <h2 data-reveal>Let's talk about<br>your project.</h2>
       <p data-reveal style="--d:120ms">Have something in mind? I'd love to hear about it.</p>
       <div class="hero-actions" data-reveal style="--d:220ms">
-        <a href="/#contact" class="btn btn-pill">Request a quote</a>
-        <a href="https://firstunit.io/fu-0001" target="_blank" rel="noopener" class="btn btn-text">See the work <span class="arrow">→</span></a>
+        <a href="mailto:hello@firstunit.io?subject=Quote%20request%3A%20Photo%20%26%20Film" class="btn btn-pill">Request a quote</a>
+        <a href="https://firstunit.io/fu-0001" target="_blank" rel="noopener" class="btn btn-text">See the work <span class="arrow" aria-hidden="true">→</span></a>
       </div>
     </section>
 
     <!-- ==================== FIRSTUNIT ==================== -->
     <!-- The maker's band at the base: the frozen wordmark on a solid band, one attribution per surface. -->
     <section class="fu-foot wrap" id="firstunit" aria-label="FIRSTUNIT">
-      <a class="fu-band" href="https://firstunit.io/fu-0001" target="_blank" rel="noopener" title="Photo &amp; Film — FU—0001 on firstunit.io">
-        <svg class="fu-wordmark" role="img" aria-label="FIRSTUNIT" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 11901.32 1000" fill="currentColor"><!-- FIRSTUNIT interim wordmark — the frozen file from IsaacAPerez/firstunit-brand assets/wordmark/. Never re-set as live type. --><path transform="translate(0.00,1000) scale(0.740741,-0.740741)" d="M0 0V1350H1005V1104H333V812H875V576H333V0Z"/><path transform="translate(1082.22,1000) scale(0.740741,-0.740741)" d="M0 0V1350H333V0Z"/><path transform="translate(1596.30,1000) scale(0.740741,-0.740741)" d="M0 0V1350H581Q779 1350 895 1256Q1011 1162 1011 992Q1011 878 951 794Q892 710 790 673L1053 0H700L488 613H333V0ZM333 838H539Q604 838 641 876Q678 913 678 981Q678 1048 641 1085Q604 1122 539 1122H333Z"/><path transform="translate(2803.70,1000) scale(0.740741,-0.740741)" d="M485 -18Q339 -18 232 25Q125 68 63 158Q1 248 -3 384L328 407Q332 350 355 314Q378 278 419 260Q460 242 512 242Q567 242 604 256Q641 271 660 296Q679 322 679 356Q679 401 641 428Q603 456 495 483L397 507Q291 533 210 574Q129 615 82 685Q35 755 35 862Q35 963 87 1041Q140 1120 235 1163Q330 1207 462 1207Q593 1207 690 1162Q787 1118 843 1035Q899 953 907 836L582 815Q580 866 561 900Q542 935 508 952Q475 970 430 970Q373 970 340 945Q307 921 307 881Q307 848 331 828Q356 808 431 789L558 758Q725 718 811 636Q897 555 897 415Q897 296 843 197Q789 98 693 40Q597 -18 485 -18Z"/><path transform="translate(3873.70,1000) scale(0.740741,-0.740741)" d="M287 0V1104H0V1350H907V1104H620V0Z"/><path transform="translate(4998.74,1000) scale(0.740741,-0.740741)" d="M519 -19Q380 -19 271 34Q163 88 102 199Q42 311 42 481V1350H375V481Q375 356 411 296Q447 236 519 236Q591 236 627 296Q663 356 663 481V1350H996V481Q996 311 935 199Q875 88 767 34Q659 -19 519 -19Z"/><path transform="translate(6186.34,1000) scale(0.740741,-0.740741)" d="M0 0V1350H310L742 517V1350H1067V0H761L325 833V0Z"/><path transform="translate(7481.62,1000) scale(0.740741,-0.740741)" d="M0 0V1350H333V0Z"/><path transform="translate(7995.70,1000) scale(0.740741,-0.740741)" d="M287 0V1104H0V1350H907V1104H620V0Z"/></svg>
+      <!-- The band is a 1072x104 link whose only destination hint used to be a
+           title attribute, which does not exist on touch: on a phone it was a
+           full-width logo plate that silently navigated off-site. The caption
+           below it is the same sentence, visible, with the arrow this site uses
+           for external links everywhere else. -->
+      <a class="fu-link" href="https://firstunit.io/fu-0001" target="_blank" rel="noopener">
+        <span class="fu-band">
+        <svg class="fu-wordmark" role="img" aria-label="FIRSTUNIT" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 11901.29 1000" fill="currentColor"><!-- The canonical cut, byte-identical to firstunit-brand assets/wordmark/fu-0001-wordmark-interim.svg and to index.html's .company-wordmark. The drawing that used to sit here was a different, lighter, wider-tracked mark whose S fell below cap height, so the two pages showed two different logos for the same company. If the brand repo re-cuts the mark, copy it into both places together. --><!-- FIRSTUNIT interim wordmark. Anybody wdth 150 / wght 800, tracking -38. Cut once from the base; C (cap height) = 1000 units. Replaced in place by the drawn mark. --><path transform="translate(-80.86,1000) scale(0.740741,-0.740741)" d="M109.1630859375 0H609.1552734375V442.150390625H1528.234375V740.05029296875H609.1552734375V1029.2548828125H1626.17578125V1350H109.1630859375Z"/><path transform="translate(1159.14,1000) scale(0.740741,-0.740741)" d="M231.03759765625 0H725.7578125V1350H231.03759765625Z"/><path transform="translate(1833.21,1000) scale(0.740741,-0.740741)" d="M141.21337890625 0H641.20556640625V452.93701171875H1325.3642578125Q1612.5107421875 452.93701171875 1779.594482421875 560.874267578125Q1946.67822265625 668.8115234375 1946.67822265625 901.58984375Q1946.67822265625 1136.12548828125 1788.381103515625 1243.062744140625Q1630.083984375 1350 1360.5107421875 1350H141.21337890625ZM1425.807373046875 0H1991.548583984375L1377.389404296875 635.15478515625H867.882568359375ZM641.20556640625 754.3515625V1029.2548828125H1217.9248046875Q1337.3974609375 1029.2548828125 1391.92041015625 996.095947265625Q1446.443359375 962.93701171875 1446.443359375 891.0458984375Q1446.443359375 821.15478515625 1392.92041015625 787.753173828125Q1339.3974609375 754.3515625 1217.9248046875 754.3515625Z"/><path transform="translate(3336.18,1000) scale(0.740741,-0.740741)" d="M1071.48974609375 -6Q1496.69482421875 -6 1755.050537109375 98.966552734375Q2013.40625 203.93310546875 2013.40625 453.25537109375Q2013.40625 634.82861328125 1837.674072265625 711.765869140625Q1661.94189453125 788.703125 1216.07568359375 824.28466796875Q959.45654296875 845.322265625 765.879150390625 866.510498046875Q572.3017578125 887.69873046875 572.3017578125 937.53125Q572.3017578125 985.36376953125 709.31005859375 1015.18798828125Q846.318359375 1045.01220703125 1047.1298828125 1045.01220703125Q1227.58154296875 1045.01220703125 1370.37646484375 1003.24658203125Q1513.17138671875 961.48095703125 1513.17138671875 878.18408203125H2013.40625Q2013.40625 1129.15478515625 1746.477294921875 1246.577392578125Q1479.54833984375 1364 1054.1591796875 1364Q631.439453125 1364 365.811767578125 1259.246826171875Q100.18408203125 1154.49365234375 100.18408203125 916.443359375Q100.18408203125 726.08349609375 283.460205078125 643.146240234375Q466.736328125 560.208984375 878.72802734375 530.14208984375Q1151.6484375 506.983154296875 1341.196533203125 489.2196044921875Q1530.74462890625 471.4560546875 1530.74462890625 414.59423828125Q1530.74462890625 364.03369140625 1393.857666015625 338.5107421875Q1256.970703125 312.98779296875 1065.339111328125 312.98779296875Q872.9794921875 312.98779296875 734.94189453125 356.845458984375Q596.904296875 400.703125 596.904296875 484H98.4267578125Q98.4267578125 226.5439453125 360.083740234375 110.27197265625Q621.74072265625 -6 1071.48974609375 -6Z"/><path transform="translate(4882.10,1000) scale(0.740741,-0.740741)" d="M803.47265625 0H1303.46484375V1029.2548828125H1979.908203125V1350H124.78662109375V1029.2548828125H803.47265625Z"/><path transform="translate(6388.03,1000) scale(0.740741,-0.740741)" d="M1108.71142578125 -6Q1585.908203125 -6 1831.176025390625 149.907958984375Q2076.44384765625 305.81591796875 2076.44384765625 673.50634765625V1349.75732421875H1576.45166015625V715.8662109375Q1576.45166015625 501.54833984375 1466.953857421875 408.146728515625Q1357.4560546875 314.7451171875 1108.71142578125 314.7451171875Q859.966796875 314.7451171875 750.468994140625 409.025390625Q640.97119140625 503.3056640625 640.97119140625 715.8662109375V1349.75732421875H140.97900390625V673.50634765625Q140.97900390625 305.81591796875 386.246826171875 149.907958984375Q631.5146484375 -6 1108.71142578125 -6Z"/><path transform="translate(7997.66,1000) scale(0.740741,-0.740741)" d="M141.21337890625 0H641.20556640625V1006.1669921875H644.962890625L1464.4599609375 0H2250.35205078125V1350H1750.35986328125V377.22216796875H1749.481201171875L948.193359375 1350H141.21337890625Z"/><path transform="translate(9760.62,1000) scale(0.740741,-0.740741)" d="M231.03759765625 0H725.7578125V1350H231.03759765625Z"/><path transform="translate(10434.69,1000) scale(0.740741,-0.740741)" d="M803.47265625 0H1303.46484375V1029.2548828125H1979.908203125V1350H124.78662109375V1029.2548828125H803.47265625Z"/></svg>
+        </span>
+        <span class="fu-band-cap">Photo &amp; Film — FU—0001 on firstunit.io <span class="arrow" aria-hidden="true">↗</span></span>
       </a>
     </section>
   </main>
 
-  <!-- ==================== FOOTER ==================== -->
+  <!-- ==================== FOOTER ====================
+       SHARED SHAPE with /shootsort/: Home and Contact are the same on both and
+       move together. Only the middle link differs, on purpose -- each page
+       offers the destination that follows from it. -->
   <footer class="foot wrap">
     <small>© 2026 Isaac Perez</small>
     <div class="foot-links">

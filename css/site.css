@@ -3,13 +3,48 @@
    Monochrome + one restrained accent. Light & dark. Vanilla.
    ============================================================ */
 
+/* ============ WEBFONTS (self-hosted) ============
+   Inter backs --font on non-Apple platforms: the Google variable build, copied
+   into /fonts/ so no third party can hold up the page -- a <link rel=stylesheet>
+   to fonts.googleapis.com is render-blocking, and a host that blackholes rather
+   than refuses meant no first paint at all. unicode-range keeps latin-ext lazy.
+   No code face is declared: /shootsort/'s folder tree and 404.html's error
+   label ask for installed monospace, because JetBrains Mono cost 31KB to set
+   four lines of ASCII and one nine-character label. Space Grotesk is not
+   declared either -- only the undeployed css/game.css and css/rpg.css ask. */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url(/fonts/inter-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url(/fonts/inter-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
 :root {
+  /* The scrollbars, the overscroll rubber-band and the pre-paint canvas are the
+     browser's, not ours, and they follow this, not --bg. Without it these pages
+     paint light chrome around a black page. css/personal.css:3 already does it. */
+  color-scheme: light;
   --bg: #fbfbfd;
   --bg-alt: #f5f5f7;
   --card: #ffffff;
   --text: #1d1d1f;
   --text-2: #6e6e73;
-  --text-3: #86868b;
+  /* The quiet grey is used at 11-14px for footer nav, section eyebrows, the
+     ShootSort install note and every price card's kicker -- never large text,
+     so 4.5:1 applies. #86868b was 3.51:1 on --bg and 3.62:1 on --card. At this
+     size nothing lighter than this clears AA on a near-white ground, so in
+     light mode tertiary sits close to --text-2 on purpose. */
+  --text-3: #727278;
   --line: #d2d2d7;
   --line-soft: #e8e8ed;
   --accent: #1d1d1f;
@@ -24,12 +59,13 @@
 }
 
 :root[data-theme="dark"] {
+  color-scheme: dark;
   --bg: #000000;
   --bg-alt: #0a0a0a;
   --card: #161617;
   --text: #f5f5f7;
   --text-2: #a1a1a6;
-  --text-3: #6e6e73;
+  --text-3: #8e8e93; /* #6e6e73 was 4.14:1 on --bg and 3.57:1 on --card */
   --line: #2a2a2c;
   --line-soft: #1c1c1e;
   --accent: #f5f5f7;
@@ -41,8 +77,9 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
+    color-scheme: dark;
     --bg: #000000; --bg-alt: #0a0a0a; --card: #161617;
-    --text: #f5f5f7; --text-2: #a1a1a6; --text-3: #6e6e73;
+    --text: #f5f5f7; --text-2: #a1a1a6; --text-3: #8e8e93;
     --line: #2a2a2c; --line-soft: #1c1c1e;
     --accent: #f5f5f7; --accent-hover: #ffffff;
     --shadow: 0 4px 24px rgba(0, 0, 0, 0.4); --shadow-lg: 0 30px 80px rgba(0, 0, 0, 0.6);
@@ -70,7 +107,40 @@ body {
 
 a { color: inherit; text-decoration: none; }
 
+/* The nav's theme and menu buttons ship hidden and are un-hidden by
+   js/site.js, so neither is drawn unless it can actually work. Both set their
+   own display, which beats the UA sheet's [hidden] rule; this restores it.
+   css/personal.css:46 carries the same line for the homepage button. */
+button[hidden] { display: none; }
+
+/* ============ FOCUS ============
+   This sheet declared no focus style at all, so all three pages it serves fell
+   back to Chrome's 1px #005FCC ring -- near-invisible on a black page and
+   nothing like the homepage's, which css/personal.css:48 draws deliberately.
+   --text rather than currentColor because .btn-pill and .fu-band invert
+   (color: var(--bg)), and a ring in their currentColor would be painted in the
+   page background colour. The two rules under it give a keyboard the underline
+   and the arrow nudge that :hover gives a mouse. */
+:focus-visible { outline: 2px solid var(--text); outline-offset: 4px; }
+.nav-links a:focus-visible::after, .nav-cta:focus-visible::after { width: 100%; }
+.btn-text:focus-visible .arrow { transform: translateX(4px); }
+
 .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+/* ============ SKIP LINK ============
+   The same control css/personal.css:51 gives the homepage, ported here for
+   /shootsort/ and /photo/pricing/, where six nav stops stood between arrival
+   and the download button. Above the fixed nav's z-index, not personal.css's
+   10, because this nav is fixed at 100. */
+.skip-link {
+  position: fixed;
+  top: 12px; left: 12px;
+  z-index: 300;
+  padding: 12px 20px;
+  color: var(--bg); background: var(--text);
+  transform: translateY(-160%);
+}
+.skip-link:focus { transform: translateY(0); }
 
 /* ============ NAV ============ */
 .nav {
@@ -97,21 +167,22 @@ a { color: inherit; text-decoration: none; }
 }
 .nav-brand { font-size: 17px; font-weight: 600; letter-spacing: -0.02em; }
 .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
-.nav-links a {
+.nav-links a, .nav-cta {
   font-size: 13px; color: var(--text-2);
   transition: color 0.2s;
   position: relative;
+  /* 13px of type is a 16px tall hit area. The padding takes it to 44px, the
+     size css/personal.css:57 already gives the homepage nav; the bar is 52px
+     and the links are centred in it, so nothing moves. The underline below is
+     offset by the same amount so it still sits 4px under the word. */
+  padding: 14px 0;
 }
-.nav-links a::after {
-  content: ''; position: absolute; left: 0; bottom: -4px; height: 1px; width: 0;
+.nav-links a::after, .nav-cta::after {
+  content: ''; position: absolute; left: 0; bottom: 10px; height: 1px; width: 0;
   background: var(--text); transition: width 0.3s var(--ease);
 }
-.nav-links a:hover { color: var(--text); }
-.nav-links a:hover::after { width: 100%; }
-/* current page/section marker — the nav is identical on every page,
-   so this is the only thing that differs between them */
-.nav-links a.here { color: var(--text); }
-.nav-links a.here::after { width: 100%; }
+.nav-links a:hover, .nav-cta:hover { color: var(--text); }
+.nav-links a:hover::after, .nav-cta:hover::after { width: 100%; }
 .theme-btn {
   width: 34px; height: 34px;
   display: grid; place-items: center;
@@ -128,14 +199,67 @@ a { color: inherit; text-decoration: none; }
 :root[data-theme="light"] .icon-sun { display: none; }
 :root[data-theme="light"] .icon-moon { display: block; }
 
-@media (max-width: 640px) { .nav-links a:not(.nav-cta) { display: none; } }
+/* Right-hand cluster: the links, the theme button and the menu button share
+   one 28px flex row, which is how the theme button sat inside .nav-links
+   before it moved out to stay reachable when the links collapse. */
+.nav-end { display: flex; align-items: center; gap: 28px; }
+
+/* ---- Mobile menu ---- */
+.nav-toggle {
+  display: none;
+  width: 34px; height: 34px;
+  place-items: center;
+  border: none; background: transparent; color: var(--text-2);
+  cursor: pointer; border-radius: 50%;
+  transition: color 0.2s, background 0.2s;
+}
+.nav-toggle:hover { color: var(--text); background: var(--bg-alt); }
+.nav-toggle-bars { position: relative; }
+.nav-toggle-bars, .nav-toggle-bars::before, .nav-toggle-bars::after {
+  display: block; width: 18px; height: 1.5px;
+  background: currentColor; border-radius: 1px;
+  transition: transform 0.3s var(--ease), opacity 0.2s;
+}
+.nav-toggle-bars::before, .nav-toggle-bars::after { content: ''; position: absolute; }
+.nav-toggle-bars::before { transform: translateY(-6px); }
+.nav-toggle-bars::after { transform: translateY(6px); }
+.nav-toggle[aria-expanded="true"] .nav-toggle-bars { background: transparent; }
+.nav-toggle[aria-expanded="true"] .nav-toggle-bars::before { transform: rotate(45deg); }
+.nav-toggle[aria-expanded="true"] .nav-toggle-bars::after { transform: rotate(-45deg); }
+
+@media (max-width: 640px) {
+  .nav-toggle { display: grid; }
+  .nav-end { gap: 12px; }
+  /* Four of the five links used to be display:none here with nothing to open
+     them, so /#firstunit, /#experience and /#about had no route on a phone.
+     They now live in a panel under the bar -- closed, they stay out of the
+     tab order; the Contact CTA keeps its place in the bar. */
+  .nav-links {
+    display: none;
+    position: fixed;
+    top: 52px; left: 0; right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 4px 24px 16px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line-soft);
+    box-shadow: var(--shadow);
+  }
+  .nav.menu-open .nav-links { display: flex; }
+  .nav-links a { display: block; padding: 14px 0; font-size: 15px; }
+  .nav-links a::after { display: none; }
+}
 
 /* ============ BUTTONS ============ */
 .btn {
   display: inline-flex; align-items: center; gap: 8px;
   font-size: 16px; font-weight: 400;
   cursor: pointer; border: none;
-  transition: transform 0.3s var(--ease), background 0.2s, color 0.2s, opacity 0.2s;
+  /* border-color is in the list because .btn-outline (css/photo.css) changes it
+     on hover; without it the border snapped instantly while the button was
+     still mid-scale, which read as a rendering glitch. */
+  transition: transform 0.3s var(--ease), background 0.2s, color 0.2s, opacity 0.2s, border-color 0.2s;
 }
 .btn-pill {
   padding: 12px 24px; border-radius: 980px;
@@ -143,21 +267,23 @@ a { color: inherit; text-decoration: none; }
 }
 .btn-pill:hover { background: var(--accent-hover); transform: scale(1.04); }
 .btn-pill:active { transform: scale(0.98); }
-.btn-text { color: var(--accent); }
+/* Padded to 44px so it is not a 24px-tall strip beside the 48px pill it sits
+   next to; .hero-actions centres them, so the row height is unchanged. */
+.btn-text { color: var(--accent); padding: 10px 0; }
 .btn-text .arrow { transition: transform 0.3s var(--ease); }
 .btn-text:hover .arrow { transform: translateX(4px); }
-/* a card carrying more than one call to action */
-.card-actions { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
-
 /* ============ REVEAL MOTION ============ */
-[data-reveal] {
+/* Scoped to .js, which the pre-paint head IIFE sets: content is visible by
+   default and the animation is opt-in, so a site.js that never arrives leaves
+   a readable page instead of a blank one. js/personal.js makes the same call. */
+.js [data-reveal] {
   opacity: 0;
   transform: translateY(28px);
   filter: blur(6px);
   transition: opacity 0.9s var(--ease), transform 0.9s var(--ease), filter 0.9s var(--ease);
   transition-delay: var(--d, 0ms);
 }
-[data-reveal].in { opacity: 1; transform: none; filter: none; }
+.js [data-reveal].in { opacity: 1; transform: none; filter: none; }
 
 /* ============ HERO ============ */
 .hero {
@@ -200,17 +326,9 @@ a { color: inherit; text-decoration: none; }
   max-width: 620px; margin: 0 auto 36px;
 }
 .hero-actions { display: flex; gap: 18px; justify-content: center; align-items: center; flex-wrap: wrap; }
-.scroll-cue {
-  position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
-  color: var(--text-3); font-size: 12px; letter-spacing: 0.1em;
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-  animation: bob 2.4s var(--ease-soft) infinite;
-}
-@keyframes bob { 0%, 100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, 6px); } }
-.scroll-cue svg { width: 16px; height: 16px; }
-
 /* word-stagger title */
-.hero-title .w { display: inline-block; opacity: 0; transform: translateY(40px); filter: blur(8px); }
+.hero-title .w { display: inline-block; }
+.js .hero-title .w { opacity: 0; transform: translateY(40px); filter: blur(8px); }
 .hero-title.go .w { animation: wordIn 1s var(--ease) forwards; }
 @keyframes wordIn { to { opacity: 1; transform: none; filter: none; } }
 
@@ -226,85 +344,13 @@ section[id], main[id] { scroll-margin-top: 64px; }
 .sec-title {
   font-size: clamp(2rem, 5vw, 3.4rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1.05;
 }
-.sec-title.center { text-align: center; }
 
-/* ============ STATEMENT ============ */
-.statement { padding: clamp(100px, 20vh, 240px) 0; }
-.statement p {
-  font-size: clamp(1.9rem, 6vw, 4.4rem);
-  font-weight: 600; letter-spacing: -0.03em; line-height: 1.12;
-  max-width: 16ch;
-}
-.statement .muted { color: var(--text-3); }
-.statement .word {
-  display: inline-block;
-  opacity: 0.16;
-  transition: opacity 0.4s var(--ease-soft);
-}
-
-/* ============ WORK ============ */
-.work-list { display: flex; flex-direction: column; gap: 28px; }
-.work-card {
-  position: relative;
-  display: grid;
-  grid-template-columns: 1.1fr 1fr;
-  gap: 40px;
-  align-items: center;
-  padding: 48px;
-  border-radius: 28px;
-  background: var(--card);
-  box-shadow: var(--shadow);
-  border: 1px solid var(--line-soft);
-  overflow: hidden;
-  transition: transform 0.5s var(--ease), box-shadow 0.5s var(--ease);
-}
-.work-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
-.work-card::before {
-  content: ''; position: absolute; inset: 0;
-  background: radial-gradient(120% 120% at 80% 0%, var(--wc, var(--accent)) 0%, transparent 45%);
-  opacity: 0.06; pointer-events: none;
-  transition: opacity 0.5s var(--ease);
-}
-.work-card:hover::before { opacity: 0.12; }
-.work-status {
-  display: inline-flex; align-items: center; gap: 7px;
-  font-size: 12px; color: var(--text-3); margin-bottom: 14px;
-}
-.work-status .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--wc, var(--accent)); }
-.work-name { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700; letter-spacing: -0.03em; margin-bottom: 14px; }
-.work-desc { font-size: 1.05rem; color: var(--text-2); line-height: 1.55; margin-bottom: 22px; max-width: 46ch; }
-.work-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 26px; }
+/* ============ TAG PILL ============
+   All that survives of the old homepage's .work-card: /photo/pricing/ uses the
+   pill for its "What's not included by default" row. */
 .work-tag {
   font-size: 12px; padding: 5px 12px; border-radius: 980px;
   background: var(--bg-alt); color: var(--text-2); border: 1px solid var(--line-soft);
-}
-.work-visual {
-  aspect-ratio: 4 / 3; border-radius: 20px; overflow: hidden;
-  background: var(--bg-alt);
-  display: grid; place-items: center;
-}
-.work-visual {
-  background:
-    radial-gradient(120% 120% at 30% 20%, color-mix(in srgb, var(--wc, var(--accent)) 22%, var(--bg-alt)) 0%, var(--bg-alt) 70%);
-}
-.work-visual .app-icon {
-  width: 44%; max-width: 152px; aspect-ratio: 1; height: auto;
-  border-radius: 23%; object-fit: cover;
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22), 0 2px 6px rgba(0, 0, 0, 0.12);
-  transition: transform 0.7s var(--ease);
-}
-.work-card:hover .work-visual .app-icon { transform: scale(1.06) rotate(-1.5deg); }
-.work-visual .glyph { font-size: 64px; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2)); }
-/* project code + attribution: the same 12px as .work-tag / .work-status.
-   The code is a link to the project's firstunit.io record; the attribution
-   line is a credit, never a heading. */
-.work-tags a.work-tag { transition: color 0.2s, border-color 0.2s; }
-.work-tags a.work-tag:hover { color: var(--text); border-color: var(--line); }
-.work-code { font-family: 'JetBrains Mono', 'SF Mono', monospace; font-variant-numeric: tabular-nums; letter-spacing: 0.04em; }
-.work-attrib { font-size: 12px; letter-spacing: 0.08em; color: var(--text-3); margin-top: 22px; }
-@media (max-width: 820px) {
-  .work-card { grid-template-columns: 1fr; padding: 32px; gap: 28px; }
-  .work-visual { order: -1; }
 }
 
 /* ============ FIRSTUNIT ============
@@ -319,86 +365,24 @@ section[id], main[id] { scroll-margin-top: 64px; }
   border-radius: 0; box-shadow: none;
 }
 .fu-wordmark { display: block; width: 100%; max-width: 380px; height: auto; }
-.fu-body { display: grid; grid-template-columns: 1.1fr 1fr; gap: 40px; align-items: start; margin-top: 40px; }
-.fu-lede { font-size: clamp(1.1rem, 1.8vw, 1.35rem); color: var(--text-2); line-height: 1.6; max-width: 46ch; }
-.fu-aside { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
-.fu-descriptor { font-size: 15px; color: var(--text-3); }
-@media (max-width: 820px) { .fu-body { grid-template-columns: 1fr; gap: 24px; margin-top: 32px; } }
-
-/* ============ EXPERIENCE ============ */
-.exp-list { max-width: 820px; }
-.exp-item {
-  display: grid; grid-template-columns: auto 1fr auto; gap: 10px 22px;
-  padding: 36px 0; border-top: 1px solid var(--line);
-  align-items: center;
-}
-.exp-item:last-child { border-bottom: 1px solid var(--line); }
-.exp-logo {
-  width: 58px; height: 58px; border-radius: 16px; overflow: hidden;
-  background: #fff; display: grid; place-items: center;
-  box-shadow: var(--shadow); border: 1px solid var(--line-soft);
-}
-.exp-logo img { display: block; object-fit: contain; }
-/* per-logo sizing: each source frames its mark differently */
-.exp-logo.l-tinder img { width: 30px; height: 30px; }      /* tall flame — size by its own box, centered */
-.exp-logo.l-nd img { width: 56px; height: 56px; transform: scale(1.32); } /* house sits in big margins — scale up, tile clips */
-.exp-co { font-size: clamp(1.5rem, 3.5vw, 2.2rem); font-weight: 700; letter-spacing: -0.02em; }
-.exp-role { font-size: 1rem; color: var(--accent); margin-top: 4px; }
-.exp-date { font-size: 14px; color: var(--text-3); font-variant-numeric: tabular-nums; white-space: nowrap; }
-.exp-desc { grid-column: 1 / -1; color: var(--text-2); font-size: 1rem; line-height: 1.6; max-width: 58ch; margin-top: 4px; }
-.exp-tags { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
-
-/* ============ MARQUEE ============ */
-.marquee {
-  border-top: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft);
-  padding: 28px 0; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
-}
-.marquee-track { display: flex; gap: 0; width: max-content; animation: marquee 30s linear infinite; }
-.marquee-track span { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 600; letter-spacing: -0.02em; color: var(--text-3); padding: 0 28px; }
-.marquee-track span::after { content: '·'; margin-left: 56px; color: var(--accent); }
-@keyframes marquee { to { transform: translateX(-50%); } }
-
-/* ============ ABOUT ============ */
-.about-grid { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 56px; align-items: center; }
-.about-photo-wrap { border-radius: 28px; overflow: hidden; box-shadow: var(--shadow-lg); }
-.about-photo { width: 100%; aspect-ratio: 4/5; object-fit: cover; display: block; will-change: transform; }
-.about-text p { font-size: clamp(1.1rem, 1.8vw, 1.35rem); color: var(--text-2); line-height: 1.6; margin-bottom: 20px; }
-.about-text p strong { color: var(--text); font-weight: 600; }
-.about-attrs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; margin-top: 30px; background: var(--line-soft); border-radius: 16px; overflow: hidden; }
-.about-attr { background: var(--bg); padding: 16px 18px; }
-.about-attr dt { font-size: 12px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.06em; }
-.about-attr dd { font-size: 1rem; font-weight: 600; margin-top: 4px; }
-@media (max-width: 820px) { .about-grid { grid-template-columns: 1fr; gap: 32px; } .about-photo-wrap { max-width: 360px; } }
-
 /* ============ CONTACT ============ */
 .contact { text-align: center; padding: clamp(100px, 18vh, 220px) 0; }
 .contact h2 { font-size: clamp(2.4rem, 7vw, 5rem); font-weight: 700; letter-spacing: -0.04em; line-height: 1.02; margin-bottom: 24px; }
 .contact p { font-size: clamp(1.1rem, 2vw, 1.4rem); color: var(--text-2); max-width: 520px; margin: 0 auto 40px; }
-.contact-links { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
-.chip {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 11px 20px; border-radius: 980px;
-  background: var(--bg-alt); border: 1px solid var(--line-soft);
-  font-size: 15px; color: var(--text);
-  transition: transform 0.3s var(--ease), background 0.2s, border-color 0.2s;
-}
-.chip:hover { transform: translateY(-3px); border-color: var(--line); background: var(--card); }
-.chip svg { width: 17px; height: 17px; }
-
 /* ============ FOOTER ============ */
 .foot {
   border-top: 1px solid var(--line-soft);
-  padding: 40px 0;
+  /* 28px, not 40px: the links below now carry 12px of their own vertical
+     padding, so the band keeps the height it had. */
+  padding: 28px 0;
   display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
 }
 .foot small { color: var(--text-3); font-size: 13px; }
 .foot-links { display: flex; gap: 22px; }
-.foot-links a, .office-link { font-size: 13px; color: var(--text-3); transition: color 0.2s; }
-.foot-links a:hover, .office-link:hover { color: var(--text); }
-.office-link { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; background: none; border: none; font-family: inherit; }
-.office-link .arrow { transition: transform 0.3s var(--ease); }
-.office-link:hover .arrow { transform: translateX(3px); }
+/* Same reason as the nav links: 13px of type is a 20px tall tap target in the
+   one place a phone visitor goes to leave the page. */
+.foot-links a { font-size: 13px; color: var(--text-3); transition: color 0.2s; padding: 12px 0; }
+.foot-links a:hover { color: var(--text); }
 
 /* ============ REDUCED MOTION ============ */
 @media (prefers-reduced-motion: reduce) {
@@ -406,6 +390,63 @@ section[id], main[id] { scroll-margin-top: 64px; }
   *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
   [data-reveal] { opacity: 1 !important; transform: none !important; filter: none !important; }
   .hero-title .w { opacity: 1 !important; transform: none !important; filter: none !important; }
-  .statement .word { opacity: 1 !important; }
   .hero-bg { display: none; }
+}
+
+/* ============ PRINT ============
+   Saving the page as a PDF is how a client forwards a quote, so paper has to
+   carry the content, not the motion layer's starting state. Without this every
+   [data-reveal] block prints at opacity 0 and the PDF contains no package and
+   no price at all. css/design-system.css:1311 does the same for the legal
+   pages. */
+@media print {
+  /* Print the light palette whichever theme the screen was in. The selectors
+     mirror the three theme blocks above so these win on equal specificity. */
+  :root,
+  :root[data-theme="dark"],
+  :root:not([data-theme="light"]) {
+    --bg: #ffffff;
+    --bg-alt: #ffffff;
+    --card: #ffffff;
+    --text: #000000;
+    --text-2: #333333;
+    --text-3: #555555;
+    --line: #999999;
+    --line-soft: #cccccc;
+    --accent: #000000;
+    --accent-hover: #000000;
+    --shadow: none;
+    --shadow-lg: none;
+    --nav-bg: transparent;
+  }
+
+  /* No motion on paper: a transition still in flight when the print media
+     switches would otherwise be captured half-faded. */
+  *, *::before, *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  /* Reveal and word-stagger start states are screen motion; on paper they are
+     just missing content. .hero-inner carries the parallax that js/site.js
+     writes as inline style, so a page printed after scrolling keeps its hero. */
+  [data-reveal],
+  .hero-title .w,
+  .hero-inner {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+
+  /* Fixed chrome stamps itself on every sheet; the rest is decoration. */
+  .nav { display: none !important; }
+  .hero-bg { display: none !important; }
+
+  /* A filled pill is ink-on-background, and browsers drop backgrounds when
+     printing, which would leave its label white on white. */
+  .btn-pill {
+    background: transparent !important;
+    color: var(--text) !important;
+    border: 1px solid var(--text);
+  }
 }

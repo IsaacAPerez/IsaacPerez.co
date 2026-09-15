@@ -3,129 +3,48 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1d1d1f">
   <meta name="description" content="Privacy Policy for the Souvenir iOS app — what leaves the device, and what does not.">
   <meta name="author" content="Isaac Perez">
   <meta name="robots" content="index, follow">
 
+  <!-- Open Graph. These pages are reached deep-linked from an App Store
+       listing or in-app Settings, never via the homepage, so the share
+       bubble is the whole first impression. Values mirror the title,
+       description and canonical above -- keep the four in step. -->
+  <meta property="og:title" content="Privacy Policy — Souvenir">
+  <meta property="og:description" content="Privacy Policy for the Souvenir iOS app — what leaves the device, and what does not.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://isaacperez.co/souvenir/privacy/">
+  <meta property="og:site_name" content="Isaac Perez">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary">
+
   <link rel="canonical" href="https://isaacperez.co/souvenir/privacy/">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="/favicon.svg">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
   <title>Privacy Policy — Souvenir</title>
 
   <script>
     (function() {
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme) {
-        document.documentElement.setAttribute('data-theme', savedTheme);
-      }
+      try {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+          document.documentElement.setAttribute('data-theme', savedTheme);
+        }
+      } catch (error) { /* Theme still works when storage is unavailable. */ }
     })();
   </script>
 
-  <link rel="stylesheet" href="/css/design-system.css">
+  <link rel="stylesheet" href="/css/legal.css">
 
+  <!-- Page-scoped: the shared .legal-* rules live in /css/legal.css; these are
+       the ones only this page needs -- it is the one legal page rendered from a
+       Markdown source (the Souvenir repo's docs/privacy.md) with sub-headings, a
+       rule, inline code, a pre block and a table. -->
   <style>
-    body {
-      background: var(--color-surface);
-      color: var(--color-text-primary);
-      font-family: var(--font-sans);
-      line-height: 1.6;
-    }
-
-    .legal-container {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: var(--space-12) var(--space-6) var(--space-16);
-    }
-
-    .legal-header {
-      margin-bottom: var(--space-12);
-      padding-bottom: var(--space-8);
-      border-bottom: 1px solid var(--color-border);
-    }
-
-    .legal-eyebrow {
-      font-size: var(--text-sm);
-      font-weight: var(--font-semibold);
-      color: var(--color-accent);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: var(--space-2);
-    }
-
-    .legal-title {
-      font-size: var(--text-3xl);
-      font-weight: var(--font-bold);
-      color: var(--color-text-primary);
-      margin: 0 0 var(--space-3);
-      letter-spacing: -0.02em;
-    }
-
-    .legal-meta {
-      font-size: var(--text-sm);
-      color: var(--color-text-tertiary);
-    }
-
-    .legal-content h2 {
-      font-size: var(--text-xl);
-      font-weight: var(--font-semibold);
-      color: var(--color-text-primary);
-      margin: var(--space-10) 0 var(--space-3);
-      letter-spacing: -0.01em;
-    }
-
-    .legal-content h2:first-child { margin-top: 0; }
-
-    .legal-content p,
-    .legal-content li {
-      font-size: var(--text-base);
-      color: var(--color-text-secondary);
-    }
-
-    .legal-content p {
-      margin: 0 0 var(--space-4);
-    }
-
-    .legal-content ul {
-      margin: 0 0 var(--space-4);
-      padding-left: var(--space-6);
-    }
-
-    .legal-content li {
-      margin-bottom: var(--space-2);
-    }
-
-    .legal-content a {
-      color: var(--color-accent);
-      text-decoration: none;
-      border-bottom: 1px solid transparent;
-      transition: border-color 0.15s ease;
-    }
-
-    .legal-content a:hover {
-      border-bottom-color: var(--color-accent);
-    }
-
-    .legal-content strong {
-      color: var(--color-text-primary);
-      font-weight: var(--font-semibold);
-    }
-
-    .legal-footer {
-      margin-top: var(--space-12);
-      padding-top: var(--space-8);
-      border-top: 1px solid var(--color-border);
-      font-size: var(--text-sm);
-      color: var(--color-text-tertiary);
-    }
-
-    .legal-footer a {
-      color: var(--color-text-secondary);
-      text-decoration: none;
-    }
-
-    .legal-footer a:hover { color: var(--color-accent); }
-
     .legal-content h3 {
       font-size: var(--text-lg);
       font-weight: var(--font-semibold);
@@ -200,9 +119,9 @@
       <h2>What leaves, exactly</h2>
       <h3>1. When you press a book — one photograph per place</h3>
       <p>Per place spread, one request to <code>POST https://viqxskzgvvchrvhbbwia.supabase.co/functions/v1/generate-poster</code> over HTTPS, carrying:</p>
-      <div class="legal-table-wrap">
-      <table class="legal-table">
-        <thead><tr><th>field</th><th>what it is</th></tr></thead>
+      <div class="legal-table-wrap" tabindex="0" role="region" aria-label="Fields in each generate-poster request">
+      <table class="legal-table" aria-label="Fields in each generate-poster request">
+        <thead><tr><th scope="col">field</th><th scope="col">what it is</th></tr></thead>
         <tbody>
           <tr><td><code>imageBase64</code></td><td>the place's representative photograph, re-encoded as a PNG and downscaled to at most 1536 px on its long edge</td></tr>
           <tr><td><code>facts.place</code></td><td>the place's name as the book prints it, e.g. <code>PORTO VENERE</code></td></tr>
@@ -246,7 +165,7 @@
       </ul>
       <hr>
       <h2>Where a photograph actually goes</h2>
-      <pre class="legal-pre">your phone ──https──▶ generate-poster            ──https──▶ OpenAI
+      <pre class="legal-pre" tabindex="0" role="region" aria-label="Where a photograph goes: from your phone over HTTPS to the generate-poster Supabase Edge Function (project viqxskzgvvchrvhbbwia, us-west-1), and from there over HTTPS to OpenAI /v1/images/edits, model gpt-image-2. The function writes one ledger row — device id, spread number, status, token counts, cost — and no image and no place name.">your phone ──https──▶ generate-poster            ──https──▶ OpenAI
                       (Supabase Edge Function,              /v1/images/edits
                        project viqxskzgvvchrvhbbwia,        model gpt-image-2
                        us-west-1)
@@ -269,9 +188,9 @@
       <p>A per-book "print this one locally" toggle is a real gap. It is written down here rather than left implicit.</p>
       <hr>
       <h2>App Store privacy labels this implies</h2>
-      <div class="legal-table-wrap">
-      <table class="legal-table">
-        <thead><tr><th>Data type</th><th>Collected</th><th>Purpose</th><th>Linked to identity</th><th>Used for tracking</th></tr></thead>
+      <div class="legal-table-wrap" tabindex="0" role="region" aria-label="App Store privacy labels this policy implies">
+      <table class="legal-table" aria-label="App Store privacy labels this policy implies">
+        <thead><tr><th scope="col">Data type</th><th scope="col">Collected</th><th scope="col">Purpose</th><th scope="col">Linked to identity</th><th scope="col">Used for tracking</th></tr></thead>
         <tbody>
           <tr><td><strong>Photos or Videos</strong></td><td>Yes</td><td>App Functionality</td><td>No</td><td>No</td></tr>
           <tr><td><strong>Coarse Location</strong></td><td>Yes</td><td>App Functionality</td><td>No</td><td>No</td></tr>

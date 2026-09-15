@@ -3,129 +3,42 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1d1d1f">
   <meta name="description" content="Terms of Service for the Quarters iOS app.">
   <meta name="author" content="Isaac Perez">
   <meta name="robots" content="index, follow">
 
+  <!-- Open Graph. These pages are reached deep-linked from an App Store
+       listing or in-app Settings, never via the homepage, so the share
+       bubble is the whole first impression. Values mirror the title,
+       description and canonical above -- keep the four in step. -->
+  <meta property="og:title" content="Terms of Service — Quarters">
+  <meta property="og:description" content="Terms of Service for the Quarters iOS app.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://isaacperez.co/roommate/terms/">
+  <meta property="og:site_name" content="Isaac Perez">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary">
+
   <link rel="canonical" href="https://isaacperez.co/roommate/terms/">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="/favicon.svg">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
   <title>Terms of Service — Quarters</title>
 
   <script>
     (function() {
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme) {
-        document.documentElement.setAttribute('data-theme', savedTheme);
-      }
+      try {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+          document.documentElement.setAttribute('data-theme', savedTheme);
+        }
+      } catch (error) { /* Theme still works when storage is unavailable. */ }
     })();
   </script>
 
-  <link rel="stylesheet" href="/css/design-system.css">
-
-  <style>
-    body {
-      background: var(--color-surface);
-      color: var(--color-text-primary);
-      font-family: var(--font-sans);
-      line-height: 1.6;
-    }
-
-    .legal-container {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: var(--space-12) var(--space-6) var(--space-16);
-    }
-
-    .legal-header {
-      margin-bottom: var(--space-12);
-      padding-bottom: var(--space-8);
-      border-bottom: 1px solid var(--color-border);
-    }
-
-    .legal-eyebrow {
-      font-size: var(--text-sm);
-      font-weight: var(--font-semibold);
-      color: var(--color-accent);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: var(--space-2);
-    }
-
-    .legal-title {
-      font-size: var(--text-3xl);
-      font-weight: var(--font-bold);
-      color: var(--color-text-primary);
-      margin: 0 0 var(--space-3);
-      letter-spacing: -0.02em;
-    }
-
-    .legal-meta {
-      font-size: var(--text-sm);
-      color: var(--color-text-tertiary);
-    }
-
-    .legal-content h2 {
-      font-size: var(--text-xl);
-      font-weight: var(--font-semibold);
-      color: var(--color-text-primary);
-      margin: var(--space-10) 0 var(--space-3);
-      letter-spacing: -0.01em;
-    }
-
-    .legal-content h2:first-child { margin-top: 0; }
-
-    .legal-content p,
-    .legal-content li {
-      font-size: var(--text-base);
-      color: var(--color-text-secondary);
-    }
-
-    .legal-content p {
-      margin: 0 0 var(--space-4);
-    }
-
-    .legal-content ul {
-      margin: 0 0 var(--space-4);
-      padding-left: var(--space-6);
-    }
-
-    .legal-content li {
-      margin-bottom: var(--space-2);
-    }
-
-    .legal-content a {
-      color: var(--color-accent);
-      text-decoration: none;
-      border-bottom: 1px solid transparent;
-      transition: border-color 0.15s ease;
-    }
-
-    .legal-content a:hover {
-      border-bottom-color: var(--color-accent);
-    }
-
-    .legal-content strong {
-      color: var(--color-text-primary);
-      font-weight: var(--font-semibold);
-    }
-
-    .legal-footer {
-      margin-top: var(--space-12);
-      padding-top: var(--space-8);
-      border-top: 1px solid var(--color-border);
-      font-size: var(--text-sm);
-      color: var(--color-text-tertiary);
-    }
-
-    .legal-footer a {
-      color: var(--color-text-secondary);
-      text-decoration: none;
-    }
-
-    .legal-footer a:hover { color: var(--color-accent); }
-  </style>
+  <link rel="stylesheet" href="/css/legal.css">
 </head>
 <body>
   <main class="legal-container">

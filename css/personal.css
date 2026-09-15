@@ -46,7 +46,7 @@ button { font: inherit; }
 button[hidden] { display: none; }
 ::selection { color: var(--bg); background: var(--text); }
 :focus-visible { outline: 2px solid currentColor; outline-offset: 6px; }
-section, footer { scroll-margin-top: 32px; }
+section, footer, .legacy-anchor { scroll-margin-top: 32px; }
 .page-width { width: min(1120px, calc(100% - 96px)); margin-inline: auto; }
 .skip-link { position: fixed; top: 12px; left: 12px; z-index: 10; padding: 12px 20px; color: var(--bg); background: var(--text); transform: translateY(-160%); }
 .skip-link:focus { transform: translateY(0); }
@@ -75,6 +75,8 @@ h1 { font-size: clamp(78px, 10.5vw, 136px); font-weight: 550; line-height: .89; 
 .name-period { font-weight: 400; }
 .portrait { grid-area: portrait; align-self: start; }
 .portrait-frame { overflow: hidden; border-radius: 28px; box-shadow: var(--portrait-shadow); }
+/* <picture> is inline by default; around a block img that adds a line box under the photo. */
+.portrait picture { display: block; }
 .portrait img { display: block; width: 100%; height: auto; aspect-ratio: 1056 / 1200; object-fit: cover; }
 .portrait figcaption { display: flex; justify-content: space-between; padding-top: 14px; color: var(--text-2); font-size: 12px; }
 .intro-copy { grid-area: copy; align-self: end; padding-bottom: 36px; }

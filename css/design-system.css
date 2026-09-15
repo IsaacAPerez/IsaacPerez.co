@@ -9,6 +9,11 @@
    ============================================================ */
 
 :root {
+  /* Scrollbars, the overscroll rubber-band and the pre-paint canvas follow this
+     rather than --color-surface; without it the four legal pages render light
+     browser chrome around a dark page. css/personal.css:3 does the same. */
+  color-scheme: light;
+
   /* -------------------- Colors -------------------- */
   
   /* Neutral Palette */
@@ -50,7 +55,11 @@
   /* Text Colors */
   --color-text-primary: var(--color-gray-900);
   --color-text-secondary: var(--color-gray-600);
-  --color-text-tertiary: var(--color-gray-500);
+  /* gray-500 is 3.62:1 on --color-surface, and the legal pages use tertiary for
+     the 15px "Last updated" line and the footer's only link -- small text, so
+     4.5:1 applies. Between gray-500 and gray-600; the dark blocks below keep
+     gray-500, where it already clears AA. */
+  --color-text-tertiary: #74747a;
   --color-text-inverse: var(--color-white);
   
   /* Border Colors */
@@ -183,6 +192,8 @@
 /* System preference dark mode */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
     /* Surface Colors */
     --color-surface: var(--color-gray-900);
     --color-surface-elevated: #2d2d2d;
@@ -198,8 +209,11 @@
     --color-border: rgba(255, 255, 255, 0.1);
     --color-border-light: rgba(255, 255, 255, 0.05);
     
-    /* Adjusted accent for dark mode */
-    --color-accent-subtle: rgba(0, 113, 227, 0.2);
+    /* Adjusted accent for dark mode. #0071e3 is only 3.58:1 on --color-surface,
+       and it paints every legal-page eyebrow and every link in the body copy --
+       the App-Store-declared privacy, terms and support URLs. */
+    --color-accent: #4da3ff;
+    --color-accent-subtle: rgba(77, 163, 255, 0.2);
     
     /* Shadows for dark mode */
     --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.2);
@@ -213,6 +227,8 @@
 
 /* Manual dark mode toggle */
 :root[data-theme="dark"] {
+  color-scheme: dark;
+
   /* Surface Colors */
   --color-surface: var(--color-gray-900);
   --color-surface-elevated: #2d2d2d;
@@ -228,8 +244,9 @@
   --color-border: rgba(255, 255, 255, 0.1);
   --color-border-light: rgba(255, 255, 255, 0.05);
   
-  /* Adjusted accent for dark mode */
-  --color-accent-subtle: rgba(0, 113, 227, 0.2);
+  /* Adjusted accent for dark mode -- see the media-query block above. */
+  --color-accent: #4da3ff;
+  --color-accent-subtle: rgba(77, 163, 255, 0.2);
   
   /* Shadows for dark mode */
   --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.2);

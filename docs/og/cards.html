@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Open Graph cards — source</title>
+<!--
+  SOURCE FOR THE THREE SHARE CARDS. Repo-only: docs/ is withheld from the
+  deployment (.vercelignore), so this file is never served.
+
+  Each .card below is exactly 1200x630 -- the size Facebook, LinkedIn, Slack,
+  iMessage and X want for a large-format card -- and is shot to the PNG named in
+  its data-out attribute at the repo root:
+
+      /og-home.jpg            ->  /   (JPEG: it is a photograph)
+      /og-shootsort.png       ->  /shootsort/
+      /og-photo-pricing.png   ->  /photo/pricing/
+
+  RE-SHOOT AFTER EDITING. Any headless browser will do; the audit used
+  puppeteer-core with element.screenshot() at deviceScaleFactor 1. Nothing here
+  is generated, so the copy must be kept equal to each page's own og:title /
+  og:description by hand.
+
+  Colours and type are the site's own light tokens (css/personal.css,
+  css/site.css): --bg #fbfbfd, --text #1d1d1f, --text-2 #6e6e73, --line #d2d2d7,
+  and the same -apple-system stack. The cards are deliberately light-only: an
+  unfurl has no theme, and light is what the site paints by default.
+
+  Layout follows the split-hero pattern -- type left, artifact right, with the
+  face off-centre rather than centre-cropped (Legora, PayPal) -- and the product
+  cards follow name-first left-aligned type beside the thing itself (Slack for
+  Mac, Notion), so an unfurl says "software" / "photography" at a glance instead
+  of showing a portrait.
+
+  The right-hand panels are copied from the pages: the ShootSort tree is the
+  <pre class="ss-tree"> block on /shootsort/, and the four package names are the
+  <h2 class="ph-price-name"> headings on /photo/pricing/. Keep them equal to the
+  page. Deliberately NO prices in the pricing panel -- a cached card that
+  advertises a rate Isaac no longer charges is worse than a card that says less,
+  and "Starting at $200" is already the page's own meta description.
+-->
+<style>
+  /* JetBrains Mono, from /fonts/. This file is now its only consumer: the pages
+     themselves set their monospace in installed faces, so re-shooting the cards
+     is what keeps this font in the repo. It is .vercelignore'd, never served. */
+  @font-face {
+    font-family: 'JetBrains Mono';
+    font-style: normal;
+    font-weight: 400 700;
+    src: url(../../fonts/jetbrains-mono-latin.woff2) format('woff2');
+  }
+  :root {
+    --bg: #fbfbfd;
+    --text: #1d1d1f;
+    --text-2: #6e6e73;
+    --line: #d2d2d7;
+    --line-soft: #e8e8ed;
+    --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Segoe UI", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: #7a7a7a; font-family: var(--font); }
+  .card {
+    position: relative;
+    display: flex;
+    width: 1200px;
+    height: 630px;
+    overflow: hidden;
+    color: var(--text);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+  }
+  .card + .card { margin-top: 40px; }
+
+  .col {
+    display: flex;
+    flex: 0 0 686px;
+    flex-direction: column;
+    padding: 72px 64px;
+  }
+  .panel {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+    padding: 72px 64px 72px 8px;
+  }
+  .mark {
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #1d1d1f, #2d2d2d);
+    color: #fff;
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -.02em;
+  }
+  .eyebrow {
+    margin-top: auto;
+    padding-top: 40px;
+    color: var(--text-2);
+    font-size: 21px;
+    font-weight: 550;
+    letter-spacing: .085em;
+    text-transform: uppercase;
+  }
+  h1 {
+    margin-top: 18px;
+    font-size: 96px;
+    font-weight: 650;
+    line-height: .98;
+    letter-spacing: -.045em;
+  }
+  .sub {
+    max-width: 30ch;
+    margin-top: 26px;
+    color: var(--text-2);
+    font-size: 26px;
+    line-height: 1.4;
+    letter-spacing: -.01em;
+  }
+  .url {
+    margin-top: auto;
+    padding-top: 40px;
+    color: var(--text-2);
+    font-size: 22px;
+    letter-spacing: -.01em;
+  }
+  .rule { width: 100%; height: 1px; margin-top: 34px; background: var(--line); }
+
+  /* Home -- split: type left, portrait right, face kept whole. */
+  #og-home h1 { font-size: 116px; }
+  #og-home .period { color: var(--text-2); }
+  .portrait { flex: 1; }
+  .portrait img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 18%; }
+
+  /* ShootSort -- name-first type beside the shape the app actually writes.
+     The tree is the page's own .ss-tree: same face, same colours. */
+  #og-shootsort h1 { font-size: 108px; }
+  .tree {
+    padding: 26px 28px;
+    border: 1px solid var(--line-soft);
+    border-radius: 18px;
+    color: var(--text-2);
+    font-family: 'JetBrains Mono', 'SF Mono', ui-monospace, monospace;
+    font-size: 15px;
+    line-height: 2;
+    white-space: pre;
+  }
+  .tree b { color: var(--text); font-weight: 600; }
+
+  /* Pricing -- the packages, by name. */
+  #og-photo-pricing h1 { font-size: 84px; }
+  .pkg {
+    padding-block: 19px;
+    border-top: 1px solid var(--line-soft);
+    color: var(--text);
+    font-size: 27px;
+    font-weight: 550;
+    letter-spacing: -.02em;
+  }
+  .pkg:last-child { border-bottom: 1px solid var(--line-soft); }
+</style>
+</head>
+<body>
+
+<div class="card" id="og-home" data-out="og-home.jpg">
+  <div class="col">
+    <div class="mark">IP</div>
+    <p class="eyebrow">iOS engineer &amp; founder</p>
+    <h1>Isaac<br>Perez<span class="period">.</span></h1>
+    <div class="rule"></div>
+    <p class="url">isaacperez.co <span aria-hidden="true">·</span> Los Angeles</p>
+  </div>
+  <div class="portrait"><img src="../../isaac.JPG" alt=""></div>
+</div>
+
+<div class="card" id="og-shootsort" data-out="og-shootsort.png">
+  <div class="col">
+    <div class="mark">IP</div>
+    <p class="eyebrow">macOS <span aria-hidden="true">·</span> Swift <span aria-hidden="true">·</span> SwiftUI</p>
+    <h1>ShootSort</h1>
+    <p class="sub">Files a shoot the moment the card mounts — checksum-verified copies that never write back to the card.</p>
+    <p class="url">isaacperez.co/shootsort</p>
+  </div>
+  <div class="panel">
+    <pre class="tree"><b>&lt;Year&gt;/&lt;Camera&gt;/&lt;Photos|Videos&gt;/&lt;Month&gt;/</b>
+
+2026/A7 IV/Photos/06 June/DSC00001.JPG
+2025/FX3/Photos/12 December/DSC00003.JPG
+2026/A7 IV/Videos/06 June/C0001.MP4</pre>
+  </div>
+</div>
+
+<div class="card" id="og-photo-pricing" data-out="og-photo-pricing.png">
+  <div class="col">
+    <div class="mark">IP</div>
+    <p class="eyebrow">Photo &amp; Film <span aria-hidden="true">·</span> A FIRSTUNIT practice</p>
+    <h1>Photo &amp; film pricing.</h1>
+    <p class="sub">Simple, transparent packages for sports, real estate, and lifestyle work in Los Angeles. Starting at $200.</p>
+    <p class="url">isaacperez.co/photo/pricing</p>
+  </div>
+  <div class="panel">
+    <p class="pkg">Sports Coverage</p>
+    <p class="pkg">Real Estate Content</p>
+    <p class="pkg">Lifestyle &amp; Brand</p>
+    <p class="pkg">Drone-Only Coverage</p>
+  </div>
+</div>
+
+</body>
+</html>

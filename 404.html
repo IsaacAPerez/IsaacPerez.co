@@ -3,23 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fbfbfd">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000">
   <meta name="robots" content="noindex">
   <meta name="description" content="Page not found — isaacperez.co">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="/favicon.svg">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <title>Not found — Isaac Perez</title>
 
   <!-- Prevent flash of wrong theme -->
   <script>
     (function () {
-      var t = localStorage.getItem('theme');
-      if (t) document.documentElement.setAttribute('data-theme', t);
+      try {
+        var t = localStorage.getItem('theme');
+        if (t) document.documentElement.setAttribute('data-theme', t);
+      } catch (e) { /* Theme still works when storage is unavailable. */ }
     })();
   </script>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 
   <!-- Absolute paths: this page is served for any bad URL at any depth. -->
   <link rel="stylesheet" href="/css/site.css">
@@ -27,7 +27,7 @@
   <style>
     .nf { min-height: 100svh; display: grid; place-items: center; text-align: center; padding: 96px 24px; }
     .nf-code {
-      font-family: 'JetBrains Mono', 'SF Mono', monospace;
+      font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
       font-size: 13px;
       letter-spacing: 0.22em;
       text-transform: uppercase;
@@ -47,8 +47,8 @@
       <p>The link you followed doesn't exist here anymore. Everything that does is one click away.</p>
       <div class="nf-links">
         <a href="/" class="btn btn-pill">Back home</a>
-        <a href="https://firstunit.io/fu-0001" class="btn btn-text">Photo &amp; film <span class="arrow">→</span></a>
-        <a href="/#contact" class="btn btn-text">Get in touch <span class="arrow">→</span></a>
+        <a href="https://firstunit.io/fu-0001" class="btn btn-text">Photo &amp; film <span class="arrow" aria-hidden="true">→</span></a>
+        <a href="/#contact" class="btn btn-text">Get in touch <span class="arrow" aria-hidden="true">→</span></a>
       </div>
     </div>
   </main>
