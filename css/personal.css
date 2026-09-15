@@ -46,7 +46,7 @@ button { font: inherit; }
 button[hidden] { display: none; }
 ::selection { color: var(--bg); background: var(--text); }
 :focus-visible { outline: 2px solid currentColor; outline-offset: 6px; }
-section, footer { scroll-margin-top: 32px; }
+section, footer, .legacy-anchor { scroll-margin-top: 32px; }
 .page-width { width: min(1120px, calc(100% - 96px)); margin-inline: auto; }
 .skip-link { position: fixed; top: 12px; left: 12px; z-index: 10; padding: 12px 20px; color: var(--bg); background: var(--text); transform: translateY(-160%); }
 .skip-link:focus { transform: translateY(0); }
