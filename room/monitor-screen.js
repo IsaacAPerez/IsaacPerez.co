@@ -137,7 +137,7 @@
           if (!response.ok) throw new Error('The about page could not load.');
           return response.text();
         }).then(parseHomepage);
-      return bounded(source, timeout, 'The homepage load timed out.');
+      return bounded(source, timeout, 'The about page load timed out.');
     }).then(function (value) {
       if (disposed) return;
       if (!value.title || value.title === '.' || !value.intro) throw new Error('The about-page content could not be read.');
@@ -145,7 +145,7 @@
       if (!value.portraitURL) throw new Error('The about-page portrait is unavailable.');
       var url = new URL(value.portraitURL, location.origin + '/');
       if (url.origin !== location.origin) throw new Error('The monitor portrait must be a local about-page asset.');
-      return bounded(loadPortrait(url.href), timeout - (Date.now() - started), 'The homepage portrait load timed out.').then(function (image) {
+      return bounded(loadPortrait(url.href), timeout - (Date.now() - started), 'The about-page portrait load timed out.').then(function (image) {
         if (disposed) return;
         portrait = image; phase = 'ready'; repaint(true);
       });

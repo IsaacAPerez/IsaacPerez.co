@@ -23,3 +23,4 @@
 @media(max-width:760px){.photo-quest-toggle{right:18px;top:236px;padding:10px 14px}.photo-quest{right:18px;top:78px;max-height:calc(100svh - 156px)}}
 @media(max-height:500px){.photo-quest-toggle{right:max(18px,env(safe-area-inset-right));top:226px}.photo-quest{right:max(18px,env(safe-area-inset-right));top:70px;max-height:calc(100svh - 134px)}}
 @media(max-height:500px) and (max-width:600px){.photo-quest-toggle{top:176px}}
+@media(max-height:500px) and (min-width:601px) and (max-width:760px){.inspect:not([hidden]){right:calc(max(18px,env(safe-area-inset-right)) + 132px)}}

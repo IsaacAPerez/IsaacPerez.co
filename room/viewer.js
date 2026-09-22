@@ -1057,9 +1057,9 @@
     return !!((experience && !experience.classList.contains('entered')) || (refs && !refs.hidden)
       || document.querySelector('dialog[open]') || panelOpen || typing || (!forMovement && focusedControl));
   }
-  function movement(dt) {
+  function movement(dt, stepDirection) {
     if (mode === 'overview' || inputBlocked(true)) return;
-    const held = new Set([...keys, ...touchMoves.values()]);
+    const held = stepDirection ? new Set([stepDirection]) : new Set([...keys, ...touchMoves.values()]);
     let forward = Number(held.has('w') || held.has('arrowup') || held.has('forward')) - Number(held.has('s') || held.has('arrowdown') || held.has('back'));
     let right = Number(held.has('d') || held.has('arrowright') || held.has('right')) - Number(held.has('a') || held.has('arrowleft') || held.has('left'));
     const length = Math.hypot(forward, right);
@@ -1258,6 +1258,12 @@
   document.addEventListener('keyup', event => { keys.delete(event.key.toLowerCase()); });
   document.querySelectorAll('[data-move]').forEach(button => {
     button.style.touchAction = 'none';
+    button.addEventListener('click', event => {
+      // Keyboard and switch activation fires a click without a pointer sequence.
+      if (event.detail !== 0) return;
+      movement(0.16, button.dataset.move);
+      invalidate();
+    });
     button.addEventListener('pointerdown', event => {
       event.preventDefault(); canvas.focus({ preventScroll: true }); button.setPointerCapture(event.pointerId);
       touchMoves.set(event.pointerId, button.dataset.move); invalidate();
