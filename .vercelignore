@@ -23,3 +23,7 @@ fonts/jetbrains-mono-latin.woff2
 # The pre-commit guard. It reads the repo (asset case, .vercelignore, sitemap,
 # CSP hashes, the pricing figures) and is not part of the website.
 tools/
+
+brand/
+
+scripts/brand-studio.sh

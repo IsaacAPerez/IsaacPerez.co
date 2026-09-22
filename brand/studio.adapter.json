@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "product": {
+    "slug": "isaac-perez-co",
+    "name": "Isaac Perez",
+    "kind": "web",
+    "tagline": ""
+  },
+  "appearances": [
+    "light",
+    "dark"
+  ],
+  "sources": [
+    {
+      "id": "homepage",
+      "path": "css/personal.css",
+      "kind": "css"
+    },
+    {
+      "id": "utilities",
+      "path": "css/site.css",
+      "kind": "css"
+    },
+    {
+      "id": "pricing",
+      "path": "css/photo.css",
+      "kind": "css"
+    },
+    {
+      "id": "legal",
+      "path": "css/legal.css",
+      "kind": "css"
+    },
+    {
+      "id": "motion-source",
+      "path": "js/personal.js",
+      "kind": "typescript"
+    },
+    {
+      "id": "component-0",
+      "path": "index.html",
+      "kind": "documentation"
+    }
+  ],
+  "assets": [
+    {
+      "id": "personal-favicon",
+      "path": "favicon.svg",
+      "kind": "identity",
+      "label": "Personal favicon"
+    },
+    {
+      "id": "inter-latin",
+      "path": "fonts/inter-latin.woff2",
+      "kind": "font",
+      "label": "Inter · Latin"
+    },
+    {
+      "id": "inter-latin-ext",
+      "path": "fonts/inter-latin-ext.woff2",
+      "kind": "font",
+      "label": "Inter · Latin extended"
+    }
+  ],
+  "documents": [
+    {
+      "id": "studio-guide",
+      "path": "brand/README.md",
+      "title": "Studio source and usage guide"
+    }
+  ],
+  "roles": {
+    "background": "homepage:--bg",
+    "surface": "homepage:--bg-alt",
+    "textPrimary": "homepage:--text",
+    "textSecondary": "homepage:--text-2",
+    "border": "homepage:--line"
+  },
+  "specimens": []
+}

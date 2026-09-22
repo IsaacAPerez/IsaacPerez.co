@@ -1,0 +1,3667 @@
+{
+  "schemaVersion": 1,
+  "product": {
+    "slug": "isaac-perez-co",
+    "name": "Isaac Perez",
+    "kind": "web",
+    "tagline": ""
+  },
+  "appearances": [
+    "light",
+    "dark"
+  ],
+  "sourceRevision": "sha256:eea539f670e2",
+  "sourceDigest": "eea539f670e2ef1bc7d46cc17d9d3dd946df6efb5bd69d5681fac3707334cdd3",
+  "sources": [
+    {
+      "id": "studio-guide",
+      "repository": "IsaacPerez.co",
+      "path": "brand/README.md",
+      "sha256": "896522c4453c2c458c27fb80035be3520577a976a8bd89498006a9bc2b6467bc"
+    },
+    {
+      "id": "adapter",
+      "repository": "IsaacPerez.co",
+      "path": "brand/studio.adapter.json",
+      "sha256": "b6c307cfd38cc535f77e6d6dd438902f45c25b714c0f28b1aae3be2da6d52dba"
+    },
+    {
+      "id": "legal",
+      "repository": "IsaacPerez.co",
+      "path": "css/legal.css",
+      "sha256": "860ea5be2a939bd1502946d5681964fddb9e06b0b04773a385b7c8249780e5aa"
+    },
+    {
+      "id": "homepage",
+      "repository": "IsaacPerez.co",
+      "path": "css/personal.css",
+      "sha256": "3b5841b214eab252b607fb2274d62299b95d418124c1bcef272ec789049e631f"
+    },
+    {
+      "id": "pricing",
+      "repository": "IsaacPerez.co",
+      "path": "css/photo.css",
+      "sha256": "702873b011d23121c98103a09f3d5fe727920c747f5653d3ec6414bc6023d9c7"
+    },
+    {
+      "id": "utilities",
+      "repository": "IsaacPerez.co",
+      "path": "css/site.css",
+      "sha256": "2158c9a7754aaad5756e1dc0c08f97dc586146046d7f8426b14a4c23c84deadc"
+    },
+    {
+      "id": "personal-favicon",
+      "repository": "IsaacPerez.co",
+      "path": "favicon.svg",
+      "sha256": "d8b1ce72d1cfecf9685c908184062091eb165dad0b9204c0eb9a04db70218430"
+    },
+    {
+      "id": "inter-latin-ext",
+      "repository": "IsaacPerez.co",
+      "path": "fonts/inter-latin-ext.woff2",
+      "sha256": "a28eb6d3ccb534ae0c94ca999371df024aab60b08c3c8a5720ee9e32fa0faaa2"
+    },
+    {
+      "id": "inter-latin",
+      "repository": "IsaacPerez.co",
+      "path": "fonts/inter-latin.woff2",
+      "sha256": "c940764593d0fe5d596be327ca7558855e018039fb78509aa21921fd3644c3e4"
+    },
+    {
+      "id": "component-0",
+      "repository": "IsaacPerez.co",
+      "path": "index.html",
+      "sha256": "242890df797b5bc254ffb5c6f1eece71ef679d2e7116e52e43c69f754524de39"
+    },
+    {
+      "id": "motion-source",
+      "repository": "IsaacPerez.co",
+      "path": "js/personal.js",
+      "sha256": "fb47c285640c7f070429de2a338feec912e3f1855e304c421d4b6f18b40e2c21"
+    },
+    {
+      "id": "tool:Package.swift",
+      "repository": "platform",
+      "path": "Package.swift",
+      "sha256": "1405f22ac43702ebf6c6b067a37c6343e7084cf053253222666ee994212db911"
+    },
+    {
+      "id": "tool:packages/brand-studio/Sources/BrandStudioKit/BrandAssetView.swift",
+      "repository": "platform",
+      "path": "packages/brand-studio/Sources/BrandStudioKit/BrandAssetView.swift",
+      "sha256": "3327de4c1db2caf09b1c6edbbf060c66bb53f6d12ccf101ceed07949d7b7d8dc"
+    },
+    {
+      "id": "tool:packages/brand-studio/Sources/BrandStudioKit/BrandCatalog.swift",
+      "repository": "platform",
+      "path": "packages/brand-studio/Sources/BrandStudioKit/BrandCatalog.swift",
+      "sha256": "b0b88e0b4721a3f4241b50ae9dc6d311c281c7d4853554ee34d40028562c0aa9"
+    },
+    {
+      "id": "tool:packages/brand-studio/Sources/BrandStudioKit/BrandColor.swift",
+      "repository": "platform",
+      "path": "packages/brand-studio/Sources/BrandStudioKit/BrandColor.swift",
+      "sha256": "852d6f1e5a280b91762274ba63cdeea5dee7ea51db9a2560dda632f9221e5bca"
+    },
+    {
+      "id": "tool:packages/brand-studio/Sources/BrandStudioKit/BrandNativeTokens.swift",
+      "repository": "platform",
+      "path": "packages/brand-studio/Sources/BrandStudioKit/BrandNativeTokens.swift",
+      "sha256": "ecc601806af717bbf578e5b481208dc21598840235c9395454a077ef975111b9"
+    },
+    {
+      "id": "tool:packages/brand-studio/Sources/BrandStudioKit/BrandStudioResourceView.swift",
+      "repository": "platform",
+      "path": "packages/brand-studio/Sources/BrandStudioKit/BrandStudioResourceView.swift",
+      "sha256": "f51f368f1f29d06c8c28db650c6fb256259ed21621c8e88b39d673774cfadb87"
+    },
+    {
+      "id": "tool:packages/brand-studio/Sources/BrandStudioKit/BrandStudioView.swift",
+      "repository": "platform",
+      "path": "packages/brand-studio/Sources/BrandStudioKit/BrandStudioView.swift",
+      "sha256": "1a4bb07720c1c2e44537c86f1d1cab4818ad81596be35292e5dfe004a61fe262"
+    },
+    {
+      "id": "tool:packages/brand-studio/Sources/BrandStudioKit/BrandStudy.swift",
+      "repository": "platform",
+      "path": "packages/brand-studio/Sources/BrandStudioKit/BrandStudy.swift",
+      "sha256": "27dc50b24dd9bb7fd4c9a296fd73072179c661629fe61253f1bdf8ea55534fd5"
+    },
+    {
+      "id": "tool:packages/brand-studio/Tests/BrandStudioKitTests/BrandCatalogTests.swift",
+      "repository": "platform",
+      "path": "packages/brand-studio/Tests/BrandStudioKitTests/BrandCatalogTests.swift",
+      "sha256": "05febb76f9ff174d803b20ab6a200891e94761790b8be99686a1661a3791f0cb"
+    },
+    {
+      "id": "tool:tools/brand-studio/bundle-native.mjs",
+      "repository": "platform",
+      "path": "tools/brand-studio/bundle-native.mjs",
+      "sha256": "19bff9d9db09e5539d9973395fa9f1de4e7068ddf90a599d79a27800b4a80b81"
+    },
+    {
+      "id": "tool:export.mjs",
+      "repository": "platform",
+      "path": "tools/brand-studio/export.mjs",
+      "sha256": "e40b472310acef9cc9b709f3138031130c5551bbfa42fe82c4bade145f95f7d4"
+    },
+    {
+      "id": "tool:renderer/index.html",
+      "repository": "platform",
+      "path": "tools/brand-studio/renderer/index.html",
+      "sha256": "1daa9208a762ef6208792f0366b1b58f28da3db6928e0cf3918543f8a8660294"
+    },
+    {
+      "id": "tool:renderer/studio.css",
+      "repository": "platform",
+      "path": "tools/brand-studio/renderer/studio.css",
+      "sha256": "207bfe0789a814ff3da5ba145d8fa677ea2a0e4bb209624da93fcfe1f9d05b36"
+    },
+    {
+      "id": "tool:renderer/studio.js",
+      "repository": "platform",
+      "path": "tools/brand-studio/renderer/studio.js",
+      "sha256": "ba632741d46d093ac03075bf4d34861b80a46c788d4f797c4fdfa16a9903a203"
+    },
+    {
+      "id": "tool:tools/brand-studio/serve.mjs",
+      "repository": "platform",
+      "path": "tools/brand-studio/serve.mjs",
+      "sha256": "d761c11346734c34d25b6c7256d953000137aa9d7a1c5c577d1600d0ba986553"
+    },
+    {
+      "id": "tool:validate.mjs",
+      "repository": "platform",
+      "path": "tools/brand-studio/validate.mjs",
+      "sha256": "e068dbf8dd46c3562022476a186b0158589341494b93beec4eed54bc5235122e"
+    },
+    {
+      "id": "tool:tools/brand-studio/vendor-native.mjs",
+      "repository": "platform",
+      "path": "tools/brand-studio/vendor-native.mjs",
+      "sha256": "97d774e9a4067b94bcd4b6fa2779c5ef4420e796b5d3fb78e58b9d3544aa82d1"
+    }
+  ],
+  "colors": [
+    {
+      "id": "homepage:--bg",
+      "name": "--bg",
+      "group": "Source",
+      "sourceId": "homepage",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "#fbfbfd",
+      "light": "#FBFBFD",
+      "dark": "#000000"
+    },
+    {
+      "id": "homepage:--bg-alt",
+      "name": "--bg-alt",
+      "group": "Source",
+      "sourceId": "homepage",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "#f5f5f7",
+      "light": "#F5F5F7",
+      "dark": "#0A0A0A"
+    },
+    {
+      "id": "homepage:--line",
+      "name": "--line",
+      "group": "Source",
+      "sourceId": "homepage",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "#d2d2d7",
+      "light": "#D2D2D7",
+      "dark": "#2A2A2C"
+    },
+    {
+      "id": "homepage:--line-soft",
+      "name": "--line-soft",
+      "group": "Source",
+      "sourceId": "homepage",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "#e8e8ed",
+      "light": "#E8E8ED",
+      "dark": "#1C1C1E"
+    },
+    {
+      "id": "homepage:--text",
+      "name": "--text",
+      "group": "Source",
+      "sourceId": "homepage",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "#1d1d1f",
+      "light": "#1D1D1F",
+      "dark": "#F5F5F7"
+    },
+    {
+      "id": "homepage:--text-2",
+      "name": "--text-2",
+      "group": "Source",
+      "sourceId": "homepage",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "#6e6e73",
+      "light": "#6E6E73",
+      "dark": "#A1A1A6"
+    },
+    {
+      "id": "homepage:@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])::--bg",
+      "name": "--bg",
+      "group": "Source",
+      "sourceId": "homepage",
+      "sourceLine": 27,
+      "scope": "@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])",
+      "expression": "#000000",
+      "value": "#000000"
+    },
+    {
+      "id": "homepage:@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])::--bg-alt",
+      "name": "--bg-alt",
+      "group": "Source",
+      "sourceId": "homepage",
+      "sourceLine": 27,
+      "scope": "@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])",
+      "expression": "#0a0a0a",
+      "value": "#0A0A0A"
+    },
+    {
+      "id": "homepage:@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])::--line",
+      "name": "--line",
+      "group": "Source",
+      "sourceId": "homepage",
+      "sourceLine": 27,
+      "scope": "@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])",
+      "expression": "#2a2a2c",
+      "value": "#2A2A2C"
+    },
+    {
+      "id": "homepage:@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])::--line-soft",
+      "name": "--line-soft",
+      "group": "Source",
+      "sourceId": "homepage",
+      "sourceLine": 27,
+      "scope": "@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])",
+      "expression": "#1c1c1e",
+      "value": "#1C1C1E"
+    },
+    {
+      "id": "homepage:@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])::--text",
+      "name": "--text",
+      "group": "Source",
+      "sourceId": "homepage",
+      "sourceLine": 27,
+      "scope": "@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])",
+      "expression": "#f5f5f7",
+      "value": "#F5F5F7"
+    },
+    {
+      "id": "homepage:@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])::--text-2",
+      "name": "--text-2",
+      "group": "Source",
+      "sourceId": "homepage",
+      "sourceLine": 27,
+      "scope": "@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])",
+      "expression": "#a1a1a6",
+      "value": "#A1A1A6"
+    },
+    {
+      "id": "legal:--color-accent",
+      "name": "--color-accent",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "#0071e3",
+      "light": "#0071E3",
+      "dark": "#4DA3FF"
+    },
+    {
+      "id": "legal:--color-accent-dark",
+      "name": "--color-accent-dark",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "#0058b0",
+      "light": "#0058B0",
+      "dark": "#0058B0"
+    },
+    {
+      "id": "legal:--color-accent-light",
+      "name": "--color-accent-light",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "#40a0ff",
+      "light": "#40A0FF",
+      "dark": "#40A0FF"
+    },
+    {
+      "id": "legal:--color-accent-subtle",
+      "name": "--color-accent-subtle",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "rgba(0, 113, 227, 0.1)"
+    },
+    {
+      "id": "legal:--color-black",
+      "name": "--color-black",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "#000000",
+      "light": "#000000",
+      "dark": "#000000"
+    },
+    {
+      "id": "legal:--color-border",
+      "name": "--color-border",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "var(--color-gray-200)",
+      "light": "#E8E8ED"
+    },
+    {
+      "id": "legal:--color-border-light",
+      "name": "--color-border-light",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "var(--color-gray-100)",
+      "light": "#F5F5F7"
+    },
+    {
+      "id": "legal:--color-error",
+      "name": "--color-error",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "#ff3b30",
+      "light": "#FF3B30",
+      "dark": "#FF3B30"
+    },
+    {
+      "id": "legal:--color-gray-100",
+      "name": "--color-gray-100",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "#f5f5f7",
+      "light": "#F5F5F7",
+      "dark": "#F5F5F7"
+    },
+    {
+      "id": "legal:--color-gray-200",
+      "name": "--color-gray-200",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "#e8e8ed",
+      "light": "#E8E8ED",
+      "dark": "#E8E8ED"
+    },
+    {
+      "id": "legal:--color-gray-300",
+      "name": "--color-gray-300",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "#d2d2d7",
+      "light": "#D2D2D7",
+      "dark": "#D2D2D7"
+    },
+    {
+      "id": "legal:--color-gray-400",
+      "name": "--color-gray-400",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "#a1a1a6",
+      "light": "#A1A1A6",
+      "dark": "#A1A1A6"
+    },
+    {
+      "id": "legal:--color-gray-50",
+      "name": "--color-gray-50",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "#fafafa",
+      "light": "#FAFAFA",
+      "dark": "#FAFAFA"
+    },
+    {
+      "id": "legal:--color-gray-500",
+      "name": "--color-gray-500",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "#86868b",
+      "light": "#86868B",
+      "dark": "#86868B"
+    },
+    {
+      "id": "legal:--color-gray-600",
+      "name": "--color-gray-600",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "#6e6e73",
+      "light": "#6E6E73",
+      "dark": "#6E6E73"
+    },
+    {
+      "id": "legal:--color-gray-700",
+      "name": "--color-gray-700",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "#424245",
+      "light": "#424245",
+      "dark": "#424245"
+    },
+    {
+      "id": "legal:--color-gray-800",
+      "name": "--color-gray-800",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "#2d2d2d",
+      "light": "#2D2D2D",
+      "dark": "#2D2D2D"
+    },
+    {
+      "id": "legal:--color-gray-900",
+      "name": "--color-gray-900",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "#1d1d1f",
+      "light": "#1D1D1F",
+      "dark": "#1D1D1F"
+    },
+    {
+      "id": "legal:--color-primary",
+      "name": "--color-primary",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "#2d3436",
+      "light": "#2D3436",
+      "dark": "#2D3436"
+    },
+    {
+      "id": "legal:--color-primary-dark",
+      "name": "--color-primary-dark",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "#1e2224",
+      "light": "#1E2224",
+      "dark": "#1E2224"
+    },
+    {
+      "id": "legal:--color-primary-light",
+      "name": "--color-primary-light",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "#636e72",
+      "light": "#636E72",
+      "dark": "#636E72"
+    },
+    {
+      "id": "legal:--color-success",
+      "name": "--color-success",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "#34c759",
+      "light": "#34C759",
+      "dark": "#34C759"
+    },
+    {
+      "id": "legal:--color-surface",
+      "name": "--color-surface",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "var(--color-white)",
+      "light": "#FFFFFF",
+      "dark": "#1D1D1F"
+    },
+    {
+      "id": "legal:--color-surface-elevated",
+      "name": "--color-surface-elevated",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "var(--color-white)",
+      "light": "#FFFFFF",
+      "dark": "#2D2D2D"
+    },
+    {
+      "id": "legal:--color-surface-secondary",
+      "name": "--color-surface-secondary",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "var(--color-gray-50)",
+      "light": "#FAFAFA",
+      "dark": "#1A1A1A"
+    },
+    {
+      "id": "legal:--color-surface-tertiary",
+      "name": "--color-surface-tertiary",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "var(--color-gray-100)",
+      "light": "#F5F5F7",
+      "dark": "#000000"
+    },
+    {
+      "id": "legal:--color-text-inverse",
+      "name": "--color-text-inverse",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "var(--color-white)",
+      "light": "#FFFFFF",
+      "dark": "#FFFFFF"
+    },
+    {
+      "id": "legal:--color-text-primary",
+      "name": "--color-text-primary",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "var(--color-gray-900)",
+      "light": "#1D1D1F",
+      "dark": "#F5F5F7"
+    },
+    {
+      "id": "legal:--color-text-secondary",
+      "name": "--color-text-secondary",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "var(--color-gray-600)",
+      "light": "#6E6E73",
+      "dark": "#A1A1A6"
+    },
+    {
+      "id": "legal:--color-text-tertiary",
+      "name": "--color-text-tertiary",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "#74747a",
+      "light": "#74747A",
+      "dark": "#86868B"
+    },
+    {
+      "id": "legal:--color-warning",
+      "name": "--color-warning",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "#ff9f0a",
+      "light": "#FF9F0A",
+      "dark": "#FF9F0A"
+    },
+    {
+      "id": "legal:--color-white",
+      "name": "--color-white",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "#ffffff",
+      "light": "#FFFFFF",
+      "dark": "#FFFFFF"
+    },
+    {
+      "id": "legal:--shadow-accent",
+      "name": "--shadow-accent",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "0 4px 16px rgba(0, 113, 227, 0.2)"
+    },
+    {
+      "id": "legal:@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])::--color-accent",
+      "name": "--color-accent",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 201,
+      "scope": "@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])",
+      "expression": "#4da3ff",
+      "value": "#4DA3FF"
+    },
+    {
+      "id": "legal:@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])::--color-accent-subtle",
+      "name": "--color-accent-subtle",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 201,
+      "scope": "@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])",
+      "expression": "rgba(77, 163, 255, 0.2)"
+    },
+    {
+      "id": "legal:@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])::--color-border",
+      "name": "--color-border",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 201,
+      "scope": "@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])",
+      "expression": "rgba(255, 255, 255, 0.1)"
+    },
+    {
+      "id": "legal:@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])::--color-border-light",
+      "name": "--color-border-light",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 201,
+      "scope": "@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])",
+      "expression": "rgba(255, 255, 255, 0.05)"
+    },
+    {
+      "id": "legal:@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])::--color-surface",
+      "name": "--color-surface",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 201,
+      "scope": "@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])",
+      "expression": "var(--color-gray-900)",
+      "value": "#1D1D1F"
+    },
+    {
+      "id": "legal:@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])::--color-surface-elevated",
+      "name": "--color-surface-elevated",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 201,
+      "scope": "@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])",
+      "expression": "#2d2d2d",
+      "value": "#2D2D2D"
+    },
+    {
+      "id": "legal:@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])::--color-surface-secondary",
+      "name": "--color-surface-secondary",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 201,
+      "scope": "@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])",
+      "expression": "#1a1a1a",
+      "value": "#1A1A1A"
+    },
+    {
+      "id": "legal:@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])::--color-surface-tertiary",
+      "name": "--color-surface-tertiary",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 201,
+      "scope": "@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])",
+      "expression": "var(--color-black)",
+      "value": "#000000"
+    },
+    {
+      "id": "legal:@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])::--color-text-primary",
+      "name": "--color-text-primary",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 201,
+      "scope": "@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])",
+      "expression": "var(--color-gray-100)",
+      "value": "#F5F5F7"
+    },
+    {
+      "id": "legal:@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])::--color-text-secondary",
+      "name": "--color-text-secondary",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 201,
+      "scope": "@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])",
+      "expression": "var(--color-gray-400)",
+      "value": "#A1A1A6"
+    },
+    {
+      "id": "legal:@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])::--color-text-tertiary",
+      "name": "--color-text-tertiary",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 201,
+      "scope": "@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])",
+      "expression": "var(--color-gray-500)",
+      "value": "#86868B"
+    },
+    {
+      "id": "utilities:--accent",
+      "name": "--accent",
+      "group": "Source",
+      "sourceId": "utilities",
+      "sourceLine": 30,
+      "scope": "global",
+      "expression": "#1d1d1f",
+      "light": "#1D1D1F",
+      "dark": "#F5F5F7"
+    },
+    {
+      "id": "utilities:--accent-hover",
+      "name": "--accent-hover",
+      "group": "Source",
+      "sourceId": "utilities",
+      "sourceLine": 30,
+      "scope": "global",
+      "expression": "#000000",
+      "light": "#000000",
+      "dark": "#FFFFFF"
+    },
+    {
+      "id": "utilities:--bg",
+      "name": "--bg",
+      "group": "Source",
+      "sourceId": "utilities",
+      "sourceLine": 30,
+      "scope": "global",
+      "expression": "#fbfbfd",
+      "light": "#FBFBFD",
+      "dark": "#000000"
+    },
+    {
+      "id": "utilities:--bg-alt",
+      "name": "--bg-alt",
+      "group": "Source",
+      "sourceId": "utilities",
+      "sourceLine": 30,
+      "scope": "global",
+      "expression": "#f5f5f7",
+      "light": "#F5F5F7",
+      "dark": "#0A0A0A"
+    },
+    {
+      "id": "utilities:--card",
+      "name": "--card",
+      "group": "Source",
+      "sourceId": "utilities",
+      "sourceLine": 30,
+      "scope": "global",
+      "expression": "#ffffff",
+      "light": "#FFFFFF",
+      "dark": "#161617"
+    },
+    {
+      "id": "utilities:--line",
+      "name": "--line",
+      "group": "Source",
+      "sourceId": "utilities",
+      "sourceLine": 30,
+      "scope": "global",
+      "expression": "#d2d2d7",
+      "light": "#D2D2D7",
+      "dark": "#2A2A2C"
+    },
+    {
+      "id": "utilities:--line-soft",
+      "name": "--line-soft",
+      "group": "Source",
+      "sourceId": "utilities",
+      "sourceLine": 30,
+      "scope": "global",
+      "expression": "#e8e8ed",
+      "light": "#E8E8ED",
+      "dark": "#1C1C1E"
+    },
+    {
+      "id": "utilities:--text",
+      "name": "--text",
+      "group": "Source",
+      "sourceId": "utilities",
+      "sourceLine": 30,
+      "scope": "global",
+      "expression": "#1d1d1f",
+      "light": "#1D1D1F",
+      "dark": "#F5F5F7"
+    },
+    {
+      "id": "utilities:--text-2",
+      "name": "--text-2",
+      "group": "Source",
+      "sourceId": "utilities",
+      "sourceLine": 30,
+      "scope": "global",
+      "expression": "#6e6e73",
+      "light": "#6E6E73",
+      "dark": "#A1A1A6"
+    },
+    {
+      "id": "utilities:--text-3",
+      "name": "--text-3",
+      "group": "Source",
+      "sourceId": "utilities",
+      "sourceLine": 30,
+      "scope": "global",
+      "expression": "#727278",
+      "light": "#727278",
+      "dark": "#8E8E93"
+    },
+    {
+      "id": "utilities:@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])::--accent",
+      "name": "--accent",
+      "group": "Source",
+      "sourceId": "utilities",
+      "sourceLine": 78,
+      "scope": "@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])",
+      "expression": "#f5f5f7",
+      "value": "#F5F5F7"
+    },
+    {
+      "id": "utilities:@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])::--accent-hover",
+      "name": "--accent-hover",
+      "group": "Source",
+      "sourceId": "utilities",
+      "sourceLine": 78,
+      "scope": "@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])",
+      "expression": "#ffffff",
+      "value": "#FFFFFF"
+    },
+    {
+      "id": "utilities:@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])::--bg",
+      "name": "--bg",
+      "group": "Source",
+      "sourceId": "utilities",
+      "sourceLine": 78,
+      "scope": "@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])",
+      "expression": "#000000",
+      "value": "#000000"
+    },
+    {
+      "id": "utilities:@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])::--bg-alt",
+      "name": "--bg-alt",
+      "group": "Source",
+      "sourceId": "utilities",
+      "sourceLine": 78,
+      "scope": "@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])",
+      "expression": "#0a0a0a",
+      "value": "#0A0A0A"
+    },
+    {
+      "id": "utilities:@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])::--card",
+      "name": "--card",
+      "group": "Source",
+      "sourceId": "utilities",
+      "sourceLine": 78,
+      "scope": "@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])",
+      "expression": "#161617",
+      "value": "#161617"
+    },
+    {
+      "id": "utilities:@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])::--line",
+      "name": "--line",
+      "group": "Source",
+      "sourceId": "utilities",
+      "sourceLine": 78,
+      "scope": "@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])",
+      "expression": "#2a2a2c",
+      "value": "#2A2A2C"
+    },
+    {
+      "id": "utilities:@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])::--line-soft",
+      "name": "--line-soft",
+      "group": "Source",
+      "sourceId": "utilities",
+      "sourceLine": 78,
+      "scope": "@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])",
+      "expression": "#1c1c1e",
+      "value": "#1C1C1E"
+    },
+    {
+      "id": "utilities:@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])::--text",
+      "name": "--text",
+      "group": "Source",
+      "sourceId": "utilities",
+      "sourceLine": 78,
+      "scope": "@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])",
+      "expression": "#f5f5f7",
+      "value": "#F5F5F7"
+    },
+    {
+      "id": "utilities:@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])::--text-2",
+      "name": "--text-2",
+      "group": "Source",
+      "sourceId": "utilities",
+      "sourceLine": 78,
+      "scope": "@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])",
+      "expression": "#a1a1a6",
+      "value": "#A1A1A6"
+    },
+    {
+      "id": "utilities:@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])::--text-3",
+      "name": "--text-3",
+      "group": "Source",
+      "sourceId": "utilities",
+      "sourceLine": 78,
+      "scope": "@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])",
+      "expression": "#8e8e93",
+      "value": "#8E8E93"
+    },
+    {
+      "id": "utilities:@media print → :root, :root[data-theme=\"dark\"], :root:not([data-theme=\"light\"])::--accent",
+      "name": "--accent",
+      "group": "Source",
+      "sourceId": "utilities",
+      "sourceLine": 402,
+      "scope": "@media print → :root, :root[data-theme=\"dark\"], :root:not([data-theme=\"light\"])",
+      "expression": "#000000",
+      "value": "#000000"
+    },
+    {
+      "id": "utilities:@media print → :root, :root[data-theme=\"dark\"], :root:not([data-theme=\"light\"])::--accent-hover",
+      "name": "--accent-hover",
+      "group": "Source",
+      "sourceId": "utilities",
+      "sourceLine": 402,
+      "scope": "@media print → :root, :root[data-theme=\"dark\"], :root:not([data-theme=\"light\"])",
+      "expression": "#000000",
+      "value": "#000000"
+    },
+    {
+      "id": "utilities:@media print → :root, :root[data-theme=\"dark\"], :root:not([data-theme=\"light\"])::--bg",
+      "name": "--bg",
+      "group": "Source",
+      "sourceId": "utilities",
+      "sourceLine": 402,
+      "scope": "@media print → :root, :root[data-theme=\"dark\"], :root:not([data-theme=\"light\"])",
+      "expression": "#ffffff",
+      "value": "#FFFFFF"
+    },
+    {
+      "id": "utilities:@media print → :root, :root[data-theme=\"dark\"], :root:not([data-theme=\"light\"])::--bg-alt",
+      "name": "--bg-alt",
+      "group": "Source",
+      "sourceId": "utilities",
+      "sourceLine": 402,
+      "scope": "@media print → :root, :root[data-theme=\"dark\"], :root:not([data-theme=\"light\"])",
+      "expression": "#ffffff",
+      "value": "#FFFFFF"
+    },
+    {
+      "id": "utilities:@media print → :root, :root[data-theme=\"dark\"], :root:not([data-theme=\"light\"])::--card",
+      "name": "--card",
+      "group": "Source",
+      "sourceId": "utilities",
+      "sourceLine": 402,
+      "scope": "@media print → :root, :root[data-theme=\"dark\"], :root:not([data-theme=\"light\"])",
+      "expression": "#ffffff",
+      "value": "#FFFFFF"
+    },
+    {
+      "id": "utilities:@media print → :root, :root[data-theme=\"dark\"], :root:not([data-theme=\"light\"])::--line",
+      "name": "--line",
+      "group": "Source",
+      "sourceId": "utilities",
+      "sourceLine": 402,
+      "scope": "@media print → :root, :root[data-theme=\"dark\"], :root:not([data-theme=\"light\"])",
+      "expression": "#999999",
+      "value": "#999999"
+    },
+    {
+      "id": "utilities:@media print → :root, :root[data-theme=\"dark\"], :root:not([data-theme=\"light\"])::--line-soft",
+      "name": "--line-soft",
+      "group": "Source",
+      "sourceId": "utilities",
+      "sourceLine": 402,
+      "scope": "@media print → :root, :root[data-theme=\"dark\"], :root:not([data-theme=\"light\"])",
+      "expression": "#cccccc",
+      "value": "#CCCCCC"
+    },
+    {
+      "id": "utilities:@media print → :root, :root[data-theme=\"dark\"], :root:not([data-theme=\"light\"])::--nav-bg",
+      "name": "--nav-bg",
+      "group": "Source",
+      "sourceId": "utilities",
+      "sourceLine": 402,
+      "scope": "@media print → :root, :root[data-theme=\"dark\"], :root:not([data-theme=\"light\"])",
+      "expression": "transparent",
+      "value": "#00000000"
+    },
+    {
+      "id": "utilities:@media print → :root, :root[data-theme=\"dark\"], :root:not([data-theme=\"light\"])::--text",
+      "name": "--text",
+      "group": "Source",
+      "sourceId": "utilities",
+      "sourceLine": 402,
+      "scope": "@media print → :root, :root[data-theme=\"dark\"], :root:not([data-theme=\"light\"])",
+      "expression": "#000000",
+      "value": "#000000"
+    },
+    {
+      "id": "utilities:@media print → :root, :root[data-theme=\"dark\"], :root:not([data-theme=\"light\"])::--text-2",
+      "name": "--text-2",
+      "group": "Source",
+      "sourceId": "utilities",
+      "sourceLine": 402,
+      "scope": "@media print → :root, :root[data-theme=\"dark\"], :root:not([data-theme=\"light\"])",
+      "expression": "#333333",
+      "value": "#333333"
+    },
+    {
+      "id": "utilities:@media print → :root, :root[data-theme=\"dark\"], :root:not([data-theme=\"light\"])::--text-3",
+      "name": "--text-3",
+      "group": "Source",
+      "sourceId": "utilities",
+      "sourceLine": 402,
+      "scope": "@media print → :root, :root[data-theme=\"dark\"], :root:not([data-theme=\"light\"])",
+      "expression": "#555555",
+      "value": "#555555"
+    }
+  ],
+  "typography": [
+    {
+      "id": "homepage:--font",
+      "name": "--font",
+      "group": "Typography",
+      "sourceId": "homepage",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "-apple-system, BlinkMacSystemFont, \"SF Pro Display\", \"Inter\", \"Segoe UI\", system-ui, sans-serif",
+      "family": "-apple-system, BlinkMacSystemFont, SF Pro Display, Inter, Segoe UI, system-ui, sans-serif"
+    },
+    {
+      "id": "homepage:.company-content h2|scoped:type",
+      "name": ".company-content h2",
+      "sourceId": "homepage",
+      "sourceLine": 108,
+      "scope": ".company-content h2",
+      "expression": "font-size: clamp(32px, 3.45vw, 44px); "
+    },
+    {
+      "id": "homepage:.company-content p|scoped:type",
+      "name": ".company-content p",
+      "sourceId": "homepage",
+      "sourceLine": 109,
+      "scope": ".company-content p",
+      "expression": "font-size: 16px; line-height: 1.65; ",
+      "size": 16,
+      "unit": "px",
+      "lineHeight": 1.65,
+      "lineHeightUnit": "number"
+    },
+    {
+      "id": "homepage:.company-link span|scoped:type",
+      "name": ".company-link span",
+      "sourceId": "homepage",
+      "sourceLine": 112,
+      "scope": ".company-link span",
+      "expression": "font-size: 21px; ",
+      "size": 21,
+      "unit": "px"
+    },
+    {
+      "id": "homepage:.company-link|scoped:type",
+      "name": ".company-link",
+      "sourceId": "homepage",
+      "sourceLine": 110,
+      "scope": ".company-link",
+      "expression": "font-size: 14px; ",
+      "size": 14,
+      "unit": "px"
+    },
+    {
+      "id": "homepage:.company-role|scoped:type",
+      "name": ".company-role",
+      "sourceId": "homepage",
+      "sourceLine": 105,
+      "scope": ".company-role",
+      "expression": "font-size: 12px; ",
+      "size": 12,
+      "unit": "px"
+    },
+    {
+      "id": "homepage:.experience-copy|scoped:type",
+      "name": ".experience-copy",
+      "sourceId": "homepage",
+      "sourceLine": 101,
+      "scope": ".experience-copy",
+      "expression": "font-size: 16px; line-height: 1.6; ",
+      "size": 16,
+      "unit": "px",
+      "lineHeight": 1.6,
+      "lineHeightUnit": "number"
+    },
+    {
+      "id": "homepage:.experience-date|scoped:type",
+      "name": ".experience-date",
+      "sourceId": "homepage",
+      "sourceLine": 93,
+      "scope": ".experience-date",
+      "expression": "font-size: 13px; ",
+      "size": 13,
+      "unit": "px"
+    },
+    {
+      "id": "homepage:.experience-role h3|scoped:type",
+      "name": ".experience-role h3",
+      "sourceId": "homepage",
+      "sourceLine": 99,
+      "scope": ".experience-role h3",
+      "expression": "font-size: 29px; font-weight: 500; line-height: 1.2; letter-spacing: -.045em; ",
+      "size": 29,
+      "unit": "px",
+      "weight": 500,
+      "lineHeight": 1.2,
+      "lineHeightUnit": "number",
+      "tracking": -0.045,
+      "trackingUnit": "em"
+    },
+    {
+      "id": "homepage:.experience-role p|scoped:type",
+      "name": ".experience-role p",
+      "sourceId": "homepage",
+      "sourceLine": 100,
+      "scope": ".experience-role p",
+      "expression": "font-size: 14px; ",
+      "size": 14,
+      "unit": "px"
+    },
+    {
+      "id": "homepage:.eyebrow|scoped:type",
+      "name": ".eyebrow",
+      "sourceId": "homepage",
+      "sourceLine": 68,
+      "scope": ".eyebrow",
+      "expression": "font-size: 12px; font-weight: 550; letter-spacing: .085em; text-transform: uppercase; ",
+      "size": 12,
+      "unit": "px",
+      "weight": 550,
+      "tracking": 0.085,
+      "trackingUnit": "em",
+      "textCase": "uppercase"
+    },
+    {
+      "id": "homepage:.intro-copy p|scoped:type",
+      "name": ".intro-copy p",
+      "sourceId": "homepage",
+      "sourceLine": 82,
+      "scope": ".intro-copy p",
+      "expression": "font-size: clamp(18px, 1.82vw, 22px); line-height: 1.5; letter-spacing: -.025em; ",
+      "lineHeight": 1.5,
+      "lineHeightUnit": "number",
+      "tracking": -0.025,
+      "trackingUnit": "em"
+    },
+    {
+      "id": "homepage:.name-period|scoped:type",
+      "name": ".name-period",
+      "sourceId": "homepage",
+      "sourceLine": 74,
+      "scope": ".name-period",
+      "expression": "font-weight: 400; ",
+      "weight": 400
+    },
+    {
+      "id": "homepage:.personal-name|scoped:type",
+      "name": ".personal-name",
+      "sourceId": "homepage",
+      "sourceLine": 54,
+      "scope": ".personal-name",
+      "expression": "font-size: 16px; font-weight: 650; letter-spacing: -.035em; ",
+      "size": 16,
+      "unit": "px",
+      "weight": 650,
+      "tracking": -0.035,
+      "trackingUnit": "em"
+    },
+    {
+      "id": "homepage:.portrait figcaption|scoped:type",
+      "name": ".portrait figcaption",
+      "sourceId": "homepage",
+      "sourceLine": 80,
+      "scope": ".portrait figcaption",
+      "expression": "font-size: 12px; ",
+      "size": 12,
+      "unit": "px"
+    },
+    {
+      "id": "homepage:.site-footer|scoped:type",
+      "name": ".site-footer",
+      "sourceId": "homepage",
+      "sourceLine": 113,
+      "scope": ".site-footer",
+      "expression": "font-size: 12px; ",
+      "size": 12,
+      "unit": "px"
+    },
+    {
+      "id": "homepage:.site-header nav a|scoped:type",
+      "name": ".site-header nav a",
+      "sourceId": "homepage",
+      "sourceLine": 56,
+      "scope": ".site-header nav a",
+      "expression": "font-size: 14px; ",
+      "size": 14,
+      "unit": "px"
+    },
+    {
+      "id": "homepage:.text-link span|scoped:type",
+      "name": ".text-link span",
+      "sourceId": "homepage",
+      "sourceLine": 85,
+      "scope": ".text-link span",
+      "expression": "font-size: 19px; ",
+      "size": 19,
+      "unit": "px"
+    },
+    {
+      "id": "homepage:.text-link|scoped:type",
+      "name": ".text-link",
+      "sourceId": "homepage",
+      "sourceLine": 83,
+      "scope": ".text-link",
+      "expression": "font-size: 13px; ",
+      "size": 13,
+      "unit": "px"
+    },
+    {
+      "id": "homepage:@media (max-width: 600px) → .company .eyebrow|scoped:type",
+      "name": ".company .eyebrow",
+      "sourceId": "homepage",
+      "sourceLine": 207,
+      "scope": "@media (max-width: 600px) → .company .eyebrow",
+      "expression": "font-size: 10px; ",
+      "size": 10,
+      "unit": "px"
+    },
+    {
+      "id": "homepage:@media (max-width: 600px) → .company-content h2|scoped:type",
+      "name": ".company-content h2",
+      "sourceId": "homepage",
+      "sourceLine": 211,
+      "scope": "@media (max-width: 600px) → .company-content h2",
+      "expression": "font-size: 36px; ",
+      "size": 36,
+      "unit": "px"
+    },
+    {
+      "id": "homepage:@media (max-width: 600px) → .company-content p|scoped:type",
+      "name": ".company-content p",
+      "sourceId": "homepage",
+      "sourceLine": 212,
+      "scope": "@media (max-width: 600px) → .company-content p",
+      "expression": "font-size: 15px; ",
+      "size": 15,
+      "unit": "px"
+    },
+    {
+      "id": "homepage:@media (max-width: 600px) → .company-role|scoped:type",
+      "name": ".company-role",
+      "sourceId": "homepage",
+      "sourceLine": 208,
+      "scope": "@media (max-width: 600px) → .company-role",
+      "expression": "font-size: 11px; ",
+      "size": 11,
+      "unit": "px"
+    },
+    {
+      "id": "homepage:@media (max-width: 600px) → .experience-copy|scoped:type",
+      "name": ".experience-copy",
+      "sourceId": "homepage",
+      "sourceLine": 205,
+      "scope": "@media (max-width: 600px) → .experience-copy",
+      "expression": "font-size: 15px; ",
+      "size": 15,
+      "unit": "px"
+    },
+    {
+      "id": "homepage:@media (max-width: 600px) → .experience-date|scoped:type",
+      "name": ".experience-date",
+      "sourceId": "homepage",
+      "sourceLine": 203,
+      "scope": "@media (max-width: 600px) → .experience-date",
+      "expression": "font-size: 11px; ",
+      "size": 11,
+      "unit": "px"
+    },
+    {
+      "id": "homepage:@media (max-width: 600px) → .experience-role h3|scoped:type",
+      "name": ".experience-role h3",
+      "sourceId": "homepage",
+      "sourceLine": 204,
+      "scope": "@media (max-width: 600px) → .experience-role h3",
+      "expression": "font-size: 27px; ",
+      "size": 27,
+      "unit": "px"
+    },
+    {
+      "id": "homepage:@media (max-width: 600px) → .intro-copy p|scoped:type",
+      "name": ".intro-copy p",
+      "sourceId": "homepage",
+      "sourceLine": 194,
+      "scope": "@media (max-width: 600px) → .intro-copy p",
+      "expression": "font-size: 20px; line-height: 1.5; ",
+      "size": 20,
+      "unit": "px",
+      "lineHeight": 1.5,
+      "lineHeightUnit": "number"
+    },
+    {
+      "id": "homepage:@media (max-width: 600px) → .intro-heading .eyebrow|scoped:type",
+      "name": ".intro-heading .eyebrow",
+      "sourceId": "homepage",
+      "sourceLine": 190,
+      "scope": "@media (max-width: 600px) → .intro-heading .eyebrow",
+      "expression": "font-size: 11px; ",
+      "size": 11,
+      "unit": "px"
+    },
+    {
+      "id": "homepage:@media (max-width: 600px) → .personal-name|scoped:type",
+      "name": ".personal-name",
+      "sourceId": "homepage",
+      "sourceLine": 185,
+      "scope": "@media (max-width: 600px) → .personal-name",
+      "expression": "font-size: 15px; ",
+      "size": 15,
+      "unit": "px"
+    },
+    {
+      "id": "homepage:@media (max-width: 600px) → .portrait figcaption|scoped:type",
+      "name": ".portrait figcaption",
+      "sourceId": "homepage",
+      "sourceLine": 193,
+      "scope": "@media (max-width: 600px) → .portrait figcaption",
+      "expression": "font-size: 11px; ",
+      "size": 11,
+      "unit": "px"
+    },
+    {
+      "id": "homepage:@media (max-width: 600px) → .site-footer|scoped:type",
+      "name": ".site-footer",
+      "sourceId": "homepage",
+      "sourceLine": 214,
+      "scope": "@media (max-width: 600px) → .site-footer",
+      "expression": "font-size: 11px; ",
+      "size": 11,
+      "unit": "px"
+    },
+    {
+      "id": "homepage:@media (max-width: 600px) → .site-header nav a|scoped:type",
+      "name": ".site-header nav a",
+      "sourceId": "homepage",
+      "sourceLine": 187,
+      "scope": "@media (max-width: 600px) → .site-header nav a",
+      "expression": "font-size: 12px; ",
+      "size": 12,
+      "unit": "px"
+    },
+    {
+      "id": "homepage:@media (max-width: 600px) → .text-link|scoped:type",
+      "name": ".text-link",
+      "sourceId": "homepage",
+      "sourceLine": 195,
+      "scope": "@media (max-width: 600px) → .text-link",
+      "expression": "font-size: 13px; ",
+      "size": 13,
+      "unit": "px"
+    },
+    {
+      "id": "homepage:@media (max-width: 600px) → h1|scoped:type",
+      "name": "h1",
+      "sourceId": "homepage",
+      "sourceLine": 191,
+      "scope": "@media (max-width: 600px) → h1",
+      "expression": "font-size: clamp(80px, 23vw, 128px); line-height: .88; ",
+      "lineHeight": 0.88,
+      "lineHeightUnit": "number"
+    },
+    {
+      "id": "homepage:@media (max-width: 900px) → .experience-copy|scoped:type",
+      "name": ".experience-copy",
+      "sourceId": "homepage",
+      "sourceLine": 171,
+      "scope": "@media (max-width: 900px) → .experience-copy",
+      "expression": "font-size: 14px; ",
+      "size": 14,
+      "unit": "px"
+    },
+    {
+      "id": "homepage:@media (max-width: 900px) → .intro-copy p|scoped:type",
+      "name": ".intro-copy p",
+      "sourceId": "homepage",
+      "sourceLine": 167,
+      "scope": "@media (max-width: 900px) → .intro-copy p",
+      "expression": "font-size: 18px; ",
+      "size": 18,
+      "unit": "px"
+    },
+    {
+      "id": "homepage:@media (max-width: 900px) → .intro-heading .eyebrow|scoped:type",
+      "name": ".intro-heading .eyebrow",
+      "sourceId": "homepage",
+      "sourceLine": 165,
+      "scope": "@media (max-width: 900px) → .intro-heading .eyebrow",
+      "expression": "font-size: 10px; ",
+      "size": 10,
+      "unit": "px"
+    },
+    {
+      "id": "homepage:@media (max-width: 900px) → .text-link|scoped:type",
+      "name": ".text-link",
+      "sourceId": "homepage",
+      "sourceLine": 168,
+      "scope": "@media (max-width: 900px) → .text-link",
+      "expression": "font-size: 12px; ",
+      "size": 12,
+      "unit": "px"
+    },
+    {
+      "id": "homepage:@media (max-width: 900px) → h1|scoped:type",
+      "name": "h1",
+      "sourceId": "homepage",
+      "sourceLine": 164,
+      "scope": "@media (max-width: 900px) → h1",
+      "expression": "font-size: 11.5vw; ",
+      "size": 11.5,
+      "unit": "vw"
+    },
+    {
+      "id": "homepage:body|light:type",
+      "name": "body",
+      "sourceId": "homepage",
+      "sourceLine": 41,
+      "scope": "global",
+      "appearance": "light",
+      "expression": "font: 16px/1.5 var(--font); "
+    },
+    {
+      "id": "homepage:button|scoped:type",
+      "name": "button",
+      "sourceId": "homepage",
+      "sourceLine": 44,
+      "scope": "button",
+      "expression": "font: inherit; "
+    },
+    {
+      "id": "homepage:h1|scoped:type",
+      "name": "h1",
+      "sourceId": "homepage",
+      "sourceLine": 73,
+      "scope": "h1",
+      "expression": "font-size: clamp(78px, 10.5vw, 136px); font-weight: 550; line-height: .89; letter-spacing: -.075em; ",
+      "weight": 550,
+      "lineHeight": 0.89,
+      "lineHeightUnit": "number",
+      "tracking": -0.075,
+      "trackingUnit": "em"
+    },
+    {
+      "id": "homepage:h2|scoped:type",
+      "name": "h2",
+      "sourceId": "homepage",
+      "sourceLine": 91,
+      "scope": "h2",
+      "expression": "font-size: clamp(32px, 3.45vw, 44px); font-weight: 500; line-height: 1.09; letter-spacing: -.055em; ",
+      "weight": 500,
+      "lineHeight": 1.09,
+      "lineHeightUnit": "number",
+      "tracking": -0.055,
+      "trackingUnit": "em"
+    },
+    {
+      "id": "legal:--font-mono",
+      "name": "--font-mono",
+      "group": "Typography",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "'SF Mono', SFMono-Regular, ui-monospace, Menlo, Monaco, 'Cascadia Mono', monospace",
+      "family": "SF Mono, SFMono-Regular, ui-monospace, Menlo, Monaco, Cascadia Mono, monospace"
+    },
+    {
+      "id": "legal:--font-sans",
+      "name": "--font-sans",
+      "group": "Typography",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif",
+      "family": "-apple-system, BlinkMacSystemFont, SF Pro Display, SF Pro Text, Helvetica Neue, Helvetica, Arial, sans-serif"
+    },
+    {
+      "id": "legal:.legal-content h2|scoped:type",
+      "name": ".legal-content h2",
+      "sourceId": "legal",
+      "sourceLine": 397,
+      "scope": ".legal-content h2",
+      "expression": "font-size: var(--text-xl); font-weight: var(--font-semibold); letter-spacing: -0.01em; ",
+      "weight": 600,
+      "tracking": -0.01,
+      "trackingUnit": "em"
+    },
+    {
+      "id": "legal:.legal-content p,\n.legal-content li|scoped:type",
+      "name": ".legal-content p,\n.legal-content li",
+      "sourceId": "legal",
+      "sourceLine": 407,
+      "scope": ".legal-content p, .legal-content li",
+      "expression": "font-size: var(--text-base); "
+    },
+    {
+      "id": "legal:.legal-content strong|scoped:type",
+      "name": ".legal-content strong",
+      "sourceId": "legal",
+      "sourceLine": 442,
+      "scope": ".legal-content strong",
+      "expression": "font-weight: var(--font-semibold); ",
+      "weight": 600
+    },
+    {
+      "id": "legal:.legal-eyebrow|scoped:type",
+      "name": ".legal-eyebrow",
+      "sourceId": "legal",
+      "sourceLine": 375,
+      "scope": ".legal-eyebrow",
+      "expression": "font-size: var(--text-sm); font-weight: var(--font-semibold); text-transform: uppercase; letter-spacing: 0.08em; ",
+      "weight": 600,
+      "textCase": "uppercase",
+      "tracking": 0.08,
+      "trackingUnit": "em"
+    },
+    {
+      "id": "legal:.legal-footer|scoped:type",
+      "name": ".legal-footer",
+      "sourceId": "legal",
+      "sourceLine": 447,
+      "scope": ".legal-footer",
+      "expression": "font-size: var(--text-sm); "
+    },
+    {
+      "id": "legal:.legal-meta|scoped:type",
+      "name": ".legal-meta",
+      "sourceId": "legal",
+      "sourceLine": 392,
+      "scope": ".legal-meta",
+      "expression": "font-size: var(--text-sm); "
+    },
+    {
+      "id": "legal:.legal-title|scoped:type",
+      "name": ".legal-title",
+      "sourceId": "legal",
+      "sourceLine": 384,
+      "scope": ".legal-title",
+      "expression": "font-size: var(--text-3xl); font-weight: var(--font-bold); letter-spacing: -0.02em; ",
+      "weight": 700,
+      "tracking": -0.02,
+      "trackingUnit": "em"
+    },
+    {
+      "id": "legal:@media print → body|scoped:type",
+      "name": "body",
+      "sourceId": "legal",
+      "sourceLine": 328,
+      "scope": "@media print → body",
+      "expression": "font-size: 12pt; ",
+      "size": 12,
+      "unit": "pt"
+    },
+    {
+      "id": "legal:body|light:type",
+      "name": "body",
+      "sourceId": "legal",
+      "sourceLine": 285,
+      "scope": "global",
+      "appearance": "light",
+      "expression": "font-family: var(--font-sans); font-size: var(--text-base); font-weight: var(--font-regular); line-height: var(--leading-normal); font-family: var(--font-sans); line-height: 1.6; ",
+      "family": "-apple-system, BlinkMacSystemFont, SF Pro Display, SF Pro Text, Helvetica Neue, Helvetica, Arial, sans-serif",
+      "weight": 400,
+      "lineHeight": 1.6,
+      "lineHeightUnit": "number"
+    },
+    {
+      "id": "legal:h1, h2, h3, h4, h5, h6|scoped:type",
+      "name": "h1, h2, h3, h4, h5, h6",
+      "sourceId": "legal",
+      "sourceLine": 311,
+      "scope": "h1, h2, h3, h4, h5, h6",
+      "expression": "font-weight: var(--font-semibold); line-height: var(--leading-tight); letter-spacing: var(--tracking-tight); ",
+      "weight": 600,
+      "lineHeight": 1.1,
+      "lineHeightUnit": "number",
+      "tracking": -0.02,
+      "trackingUnit": "em"
+    },
+    {
+      "id": "pricing:.fu-band-cap|scoped:type",
+      "name": ".fu-band-cap",
+      "sourceId": "pricing",
+      "sourceLine": 149,
+      "scope": ".fu-band-cap",
+      "expression": "font-size: 13px; ",
+      "size": 13,
+      "unit": "px"
+    },
+    {
+      "id": "pricing:.ph-addon b|scoped:type",
+      "name": ".ph-addon b",
+      "sourceId": "pricing",
+      "sourceLine": 89,
+      "scope": ".ph-addon b",
+      "expression": "font-weight: 600; ",
+      "weight": 600
+    },
+    {
+      "id": "pricing:.ph-addon|scoped:type",
+      "name": ".ph-addon",
+      "sourceId": "pricing",
+      "sourceLine": 85,
+      "scope": ".ph-addon",
+      "expression": "font-size: 0.95rem; ",
+      "size": 0.95,
+      "unit": "rem"
+    },
+    {
+      "id": "pricing:.ph-card p|scoped:type",
+      "name": ".ph-card p",
+      "sourceId": "pricing",
+      "sourceLine": 35,
+      "scope": ".ph-card p",
+      "expression": "font-size: 1rem; line-height: 1.55; ",
+      "size": 1,
+      "unit": "rem",
+      "lineHeight": 1.55,
+      "lineHeightUnit": "number"
+    },
+    {
+      "id": "pricing:.ph-hair-cell span|scoped:type",
+      "name": ".ph-hair-cell span",
+      "sourceId": "pricing",
+      "sourceLine": 124,
+      "scope": ".ph-hair-cell span",
+      "expression": "font-size: 0.92rem; font-weight: 600; ",
+      "size": 0.92,
+      "unit": "rem",
+      "weight": 600
+    },
+    {
+      "id": "pricing:.ph-hero .hero-title|scoped:type",
+      "name": ".ph-hero .hero-title",
+      "sourceId": "pricing",
+      "sourceLine": 13,
+      "scope": ".ph-hero .hero-title",
+      "expression": "font-size: clamp(2.6rem, 8vw, 5.4rem); "
+    },
+    {
+      "id": "pricing:.ph-kicker|scoped:type",
+      "name": ".ph-kicker",
+      "sourceId": "pricing",
+      "sourceLine": 70,
+      "scope": ".ph-kicker",
+      "expression": "font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; ",
+      "size": 12,
+      "unit": "px",
+      "weight": 600,
+      "textCase": "uppercase",
+      "tracking": 0.08,
+      "trackingUnit": "em"
+    },
+    {
+      "id": "pricing:.ph-list li|scoped:type",
+      "name": ".ph-list li",
+      "sourceId": "pricing",
+      "sourceLine": 76,
+      "scope": ".ph-list li",
+      "expression": "font-size: 0.98rem; line-height: 1.45; ",
+      "size": 0.98,
+      "unit": "rem",
+      "lineHeight": 1.45,
+      "lineHeightUnit": "number"
+    },
+    {
+      "id": "pricing:.ph-note|scoped:type",
+      "name": ".ph-note",
+      "sourceId": "pricing",
+      "sourceLine": 94,
+      "scope": ".ph-note",
+      "expression": "font-size: 13px; line-height: 1.5; ",
+      "size": 13,
+      "unit": "px",
+      "lineHeight": 1.5,
+      "lineHeightUnit": "number"
+    },
+    {
+      "id": "pricing:.ph-price-amt .from|scoped:type",
+      "name": ".ph-price-amt .from",
+      "sourceId": "pricing",
+      "sourceLine": 49,
+      "scope": ".ph-price-amt .from",
+      "expression": "font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; ",
+      "size": 12,
+      "unit": "px",
+      "textCase": "uppercase",
+      "tracking": 0.08,
+      "trackingUnit": "em"
+    },
+    {
+      "id": "pricing:.ph-price-amt .val|scoped:type",
+      "name": ".ph-price-amt .val",
+      "sourceId": "pricing",
+      "sourceLine": 53,
+      "scope": ".ph-price-amt .val",
+      "expression": "font-size: 2.6rem; font-weight: 700; letter-spacing: -0.04em; ",
+      "size": 2.6,
+      "unit": "rem",
+      "weight": 700,
+      "tracking": -0.04,
+      "trackingUnit": "em"
+    },
+    {
+      "id": "pricing:.ph-price-flag|scoped:type",
+      "name": ".ph-price-flag",
+      "sourceId": "pricing",
+      "sourceLine": 64,
+      "scope": ".ph-price-flag",
+      "expression": "font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; ",
+      "size": 11,
+      "unit": "px",
+      "weight": 600,
+      "textCase": "uppercase",
+      "tracking": 0.1,
+      "trackingUnit": "em"
+    },
+    {
+      "id": "pricing:.ph-price-name|scoped:type",
+      "name": ".ph-price-name",
+      "sourceId": "pricing",
+      "sourceLine": 44,
+      "scope": ".ph-price-name",
+      "expression": "font-size: 1.45rem; font-weight: 700; letter-spacing: -0.02em; ",
+      "size": 1.45,
+      "unit": "rem",
+      "weight": 700,
+      "tracking": -0.02,
+      "trackingUnit": "em"
+    },
+    {
+      "id": "pricing:.ph-step .no|scoped:type",
+      "name": ".ph-step .no",
+      "sourceId": "pricing",
+      "sourceLine": 132,
+      "scope": ".ph-step .no",
+      "expression": "font-size: 13px; font-weight: 700; ",
+      "size": 13,
+      "unit": "px",
+      "weight": 700
+    },
+    {
+      "id": "pricing:.ph-step h3|scoped:type",
+      "name": ".ph-step h3",
+      "sourceId": "pricing",
+      "sourceLine": 136,
+      "scope": ".ph-step h3",
+      "expression": "font-size: 1.2rem; font-weight: 700; letter-spacing: -0.02em; ",
+      "size": 1.2,
+      "unit": "rem",
+      "weight": 700,
+      "tracking": -0.02,
+      "trackingUnit": "em"
+    },
+    {
+      "id": "pricing:.ph-step p|scoped:type",
+      "name": ".ph-step p",
+      "sourceId": "pricing",
+      "sourceLine": 137,
+      "scope": ".ph-step p",
+      "expression": "font-size: 0.98rem; line-height: 1.55; ",
+      "size": 0.98,
+      "unit": "rem",
+      "lineHeight": 1.55,
+      "lineHeightUnit": "number"
+    },
+    {
+      "id": "pricing:.sec-head .sec-sub|scoped:type",
+      "name": ".sec-head .sec-sub",
+      "sourceId": "pricing",
+      "sourceLine": 141,
+      "scope": ".sec-head .sec-sub",
+      "expression": "font-size: 1.05rem; line-height: 1.55; ",
+      "size": 1.05,
+      "unit": "rem",
+      "lineHeight": 1.55,
+      "lineHeightUnit": "number"
+    },
+    {
+      "id": "utilities:--font",
+      "name": "--font",
+      "group": "Typography",
+      "sourceId": "utilities",
+      "sourceLine": 30,
+      "scope": "global",
+      "expression": "-apple-system, BlinkMacSystemFont, \"SF Pro Display\", \"Inter\", \"Segoe UI\", system-ui, sans-serif",
+      "family": "-apple-system, BlinkMacSystemFont, SF Pro Display, Inter, Segoe UI, system-ui, sans-serif"
+    },
+    {
+      "id": "utilities:.btn|scoped:type",
+      "name": ".btn",
+      "sourceId": "utilities",
+      "sourceLine": 252,
+      "scope": ".btn",
+      "expression": "font-size: 16px; font-weight: 400; ",
+      "size": 16,
+      "unit": "px",
+      "weight": 400
+    },
+    {
+      "id": "utilities:.contact h2|scoped:type",
+      "name": ".contact h2",
+      "sourceId": "utilities",
+      "sourceLine": 369,
+      "scope": ".contact h2",
+      "expression": "font-size: clamp(2.4rem, 7vw, 5rem); font-weight: 700; letter-spacing: -0.04em; line-height: 1.02; ",
+      "weight": 700,
+      "tracking": -0.04,
+      "trackingUnit": "em",
+      "lineHeight": 1.02,
+      "lineHeightUnit": "number"
+    },
+    {
+      "id": "utilities:.contact p|scoped:type",
+      "name": ".contact p",
+      "sourceId": "utilities",
+      "sourceLine": 370,
+      "scope": ".contact p",
+      "expression": "font-size: clamp(1.1rem, 2vw, 1.4rem); "
+    },
+    {
+      "id": "utilities:.eyebrow|scoped:type",
+      "name": ".eyebrow",
+      "sourceId": "utilities",
+      "sourceLine": 338,
+      "scope": ".eyebrow",
+      "expression": "font-size: 13px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; ",
+      "size": 13,
+      "unit": "px",
+      "weight": 600,
+      "tracking": 0.1,
+      "trackingUnit": "em",
+      "textCase": "uppercase"
+    },
+    {
+      "id": "utilities:.foot small|scoped:type",
+      "name": ".foot small",
+      "sourceId": "utilities",
+      "sourceLine": 379,
+      "scope": ".foot small",
+      "expression": "font-size: 13px; ",
+      "size": 13,
+      "unit": "px"
+    },
+    {
+      "id": "utilities:.foot-links a|scoped:type",
+      "name": ".foot-links a",
+      "sourceId": "utilities",
+      "sourceLine": 381,
+      "scope": ".foot-links a",
+      "expression": "font-size: 13px; ",
+      "size": 13,
+      "unit": "px"
+    },
+    {
+      "id": "utilities:.hero-eyebrow|scoped:type",
+      "name": ".hero-eyebrow",
+      "sourceId": "utilities",
+      "sourceLine": 313,
+      "scope": ".hero-eyebrow",
+      "expression": "font-size: 13px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; ",
+      "size": 13,
+      "unit": "px",
+      "weight": 600,
+      "tracking": 0.12,
+      "trackingUnit": "em",
+      "textCase": "uppercase"
+    },
+    {
+      "id": "utilities:.hero-sub|scoped:type",
+      "name": ".hero-sub",
+      "sourceId": "utilities",
+      "sourceLine": 322,
+      "scope": ".hero-sub",
+      "expression": "font-size: clamp(1.1rem, 2.4vw, 1.6rem); font-weight: 400; line-height: 1.45; ",
+      "weight": 400,
+      "lineHeight": 1.45,
+      "lineHeightUnit": "number"
+    },
+    {
+      "id": "utilities:.hero-title|scoped:type",
+      "name": ".hero-title",
+      "sourceId": "utilities",
+      "sourceLine": 317,
+      "scope": ".hero-title",
+      "expression": "font-size: clamp(3rem, 11vw, 8rem); font-weight: 700; letter-spacing: -0.04em; line-height: 0.98; ",
+      "weight": 700,
+      "tracking": -0.04,
+      "trackingUnit": "em",
+      "lineHeight": 0.98,
+      "lineHeightUnit": "number"
+    },
+    {
+      "id": "utilities:.nav-brand|scoped:type",
+      "name": ".nav-brand",
+      "sourceId": "utilities",
+      "sourceLine": 167,
+      "scope": ".nav-brand",
+      "expression": "font-size: 17px; font-weight: 600; letter-spacing: -0.02em; ",
+      "size": 17,
+      "unit": "px",
+      "weight": 600,
+      "tracking": -0.02,
+      "trackingUnit": "em"
+    },
+    {
+      "id": "utilities:.nav-links a, .nav-cta|scoped:type",
+      "name": ".nav-links a, .nav-cta",
+      "sourceId": "utilities",
+      "sourceLine": 169,
+      "scope": ".nav-links a, .nav-cta",
+      "expression": "font-size: 13px; ",
+      "size": 13,
+      "unit": "px"
+    },
+    {
+      "id": "utilities:.sec-title|scoped:type",
+      "name": ".sec-title",
+      "sourceId": "utilities",
+      "sourceLine": 343,
+      "scope": ".sec-title",
+      "expression": "font-size: clamp(2rem, 5vw, 3.4rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1.05; ",
+      "weight": 700,
+      "tracking": -0.03,
+      "trackingUnit": "em",
+      "lineHeight": 1.05,
+      "lineHeightUnit": "number"
+    },
+    {
+      "id": "utilities:.work-tag|scoped:type",
+      "name": ".work-tag",
+      "sourceId": "utilities",
+      "sourceLine": 346,
+      "scope": ".work-tag",
+      "expression": "font-size: 12px; ",
+      "size": 12,
+      "unit": "px"
+    },
+    {
+      "id": "utilities:@media (max-width: 640px) → .nav-links a|scoped:type",
+      "name": ".nav-links a",
+      "sourceId": "utilities",
+      "sourceLine": 249,
+      "scope": "@media (max-width: 640px) → .nav-links a",
+      "expression": "font-size: 15px; ",
+      "size": 15,
+      "unit": "px"
+    },
+    {
+      "id": "utilities:body|light:type",
+      "name": "body",
+      "sourceId": "utilities",
+      "sourceLine": 92,
+      "scope": "global",
+      "appearance": "light",
+      "expression": "font-family: var(--font); line-height: 1.5; letter-spacing: -0.01em; ",
+      "family": "-apple-system, BlinkMacSystemFont, SF Pro Display, Inter, Segoe UI, system-ui, sans-serif",
+      "lineHeight": 1.5,
+      "lineHeightUnit": "number",
+      "tracking": -0.01,
+      "trackingUnit": "em"
+    }
+  ],
+  "metrics": [
+    {
+      "id": "homepage:--portrait-shadow",
+      "name": "--portrait-shadow",
+      "group": "Source",
+      "sourceId": "homepage",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "0 24px 70px rgba(0, 0, 0, 0.12)"
+    },
+    {
+      "id": "homepage:@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])::--portrait-shadow",
+      "name": "--portrait-shadow",
+      "group": "Source",
+      "sourceId": "homepage",
+      "sourceLine": 27,
+      "scope": "@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])",
+      "expression": "0 30px 80px rgba(0, 0, 0, 0.6)"
+    },
+    {
+      "id": "legal:--border-width",
+      "name": "--border-width",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "1px",
+      "value": 1,
+      "unit": "px"
+    },
+    {
+      "id": "legal:--border-width-2",
+      "name": "--border-width-2",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "2px",
+      "value": 2,
+      "unit": "px"
+    },
+    {
+      "id": "legal:--container-2xl",
+      "name": "--container-2xl",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "1440px",
+      "value": 1440,
+      "unit": "px"
+    },
+    {
+      "id": "legal:--container-lg",
+      "name": "--container-lg",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "1024px",
+      "value": 1024,
+      "unit": "px"
+    },
+    {
+      "id": "legal:--container-md",
+      "name": "--container-md",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "768px",
+      "value": 768,
+      "unit": "px"
+    },
+    {
+      "id": "legal:--container-sm",
+      "name": "--container-sm",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "640px",
+      "value": 640,
+      "unit": "px"
+    },
+    {
+      "id": "legal:--container-xl",
+      "name": "--container-xl",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "1200px",
+      "value": 1200,
+      "unit": "px"
+    },
+    {
+      "id": "legal:--font-bold",
+      "name": "--font-bold",
+      "group": "Typography",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "700",
+      "value": 700,
+      "unit": "number"
+    },
+    {
+      "id": "legal:--font-light",
+      "name": "--font-light",
+      "group": "Typography",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "300",
+      "value": 300,
+      "unit": "number"
+    },
+    {
+      "id": "legal:--font-medium",
+      "name": "--font-medium",
+      "group": "Typography",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "500",
+      "value": 500,
+      "unit": "number"
+    },
+    {
+      "id": "legal:--font-regular",
+      "name": "--font-regular",
+      "group": "Typography",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "400",
+      "value": 400,
+      "unit": "number"
+    },
+    {
+      "id": "legal:--font-semibold",
+      "name": "--font-semibold",
+      "group": "Typography",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "600",
+      "value": 600,
+      "unit": "number"
+    },
+    {
+      "id": "legal:--grid-gap",
+      "name": "--grid-gap",
+      "group": "Spacing",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "var(--space-6)",
+      "value": 1.5,
+      "unit": "rem"
+    },
+    {
+      "id": "legal:--leading-loose",
+      "name": "--leading-loose",
+      "group": "Typography",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "2",
+      "value": 2,
+      "unit": "number"
+    },
+    {
+      "id": "legal:--leading-none",
+      "name": "--leading-none",
+      "group": "Typography",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "1",
+      "value": 1,
+      "unit": "number"
+    },
+    {
+      "id": "legal:--leading-normal",
+      "name": "--leading-normal",
+      "group": "Typography",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "1.5",
+      "value": 1.5,
+      "unit": "number"
+    },
+    {
+      "id": "legal:--leading-relaxed",
+      "name": "--leading-relaxed",
+      "group": "Typography",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "1.625",
+      "value": 1.625,
+      "unit": "number"
+    },
+    {
+      "id": "legal:--leading-snug",
+      "name": "--leading-snug",
+      "group": "Typography",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "1.25",
+      "value": 1.25,
+      "unit": "number"
+    },
+    {
+      "id": "legal:--leading-tight",
+      "name": "--leading-tight",
+      "group": "Typography",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "1.1",
+      "value": 1.1,
+      "unit": "number"
+    },
+    {
+      "id": "legal:--radius-2xl",
+      "name": "--radius-2xl",
+      "group": "Radius",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "1.5rem",
+      "value": 1.5,
+      "unit": "rem"
+    },
+    {
+      "id": "legal:--radius-3xl",
+      "name": "--radius-3xl",
+      "group": "Radius",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "2rem",
+      "value": 2,
+      "unit": "rem"
+    },
+    {
+      "id": "legal:--radius-full",
+      "name": "--radius-full",
+      "group": "Radius",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "9999px",
+      "value": 9999,
+      "unit": "px"
+    },
+    {
+      "id": "legal:--radius-lg",
+      "name": "--radius-lg",
+      "group": "Radius",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "0.75rem",
+      "value": 0.75,
+      "unit": "rem"
+    },
+    {
+      "id": "legal:--radius-md",
+      "name": "--radius-md",
+      "group": "Radius",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "0.5rem",
+      "value": 0.5,
+      "unit": "rem"
+    },
+    {
+      "id": "legal:--radius-none",
+      "name": "--radius-none",
+      "group": "Radius",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "0",
+      "value": 0,
+      "unit": "number"
+    },
+    {
+      "id": "legal:--radius-sm",
+      "name": "--radius-sm",
+      "group": "Radius",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "0.375rem",
+      "value": 0.375,
+      "unit": "rem"
+    },
+    {
+      "id": "legal:--radius-xl",
+      "name": "--radius-xl",
+      "group": "Radius",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "1rem",
+      "value": 1,
+      "unit": "rem"
+    },
+    {
+      "id": "legal:--section-gap",
+      "name": "--section-gap",
+      "group": "Spacing",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "var(--space-24)",
+      "value": 6,
+      "unit": "rem"
+    },
+    {
+      "id": "legal:--shadow-2xl",
+      "name": "--shadow-2xl",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "0 24px 64px rgba(0, 0, 0, 0.16), 0 12px 24px rgba(0, 0, 0, 0.08)"
+    },
+    {
+      "id": "legal:--shadow-lg",
+      "name": "--shadow-lg",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "0 8px 32px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.04)"
+    },
+    {
+      "id": "legal:--shadow-md",
+      "name": "--shadow-md",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "0 4px 16px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04)"
+    },
+    {
+      "id": "legal:--shadow-sm",
+      "name": "--shadow-sm",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "0 2px 8px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06)"
+    },
+    {
+      "id": "legal:--shadow-xl",
+      "name": "--shadow-xl",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "0 16px 48px rgba(0, 0, 0, 0.12), 0 8px 16px rgba(0, 0, 0, 0.06)"
+    },
+    {
+      "id": "legal:--shadow-xs",
+      "name": "--shadow-xs",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "0 1px 2px rgba(0, 0, 0, 0.04)"
+    },
+    {
+      "id": "legal:--space-0",
+      "name": "--space-0",
+      "group": "Spacing",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "0",
+      "value": 0,
+      "unit": "number"
+    },
+    {
+      "id": "legal:--space-1",
+      "name": "--space-1",
+      "group": "Spacing",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "0.25rem",
+      "value": 0.25,
+      "unit": "rem"
+    },
+    {
+      "id": "legal:--space-10",
+      "name": "--space-10",
+      "group": "Spacing",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "2.5rem",
+      "value": 2.5,
+      "unit": "rem"
+    },
+    {
+      "id": "legal:--space-12",
+      "name": "--space-12",
+      "group": "Spacing",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "3rem",
+      "value": 3,
+      "unit": "rem"
+    },
+    {
+      "id": "legal:--space-16",
+      "name": "--space-16",
+      "group": "Spacing",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "4rem",
+      "value": 4,
+      "unit": "rem"
+    },
+    {
+      "id": "legal:--space-2",
+      "name": "--space-2",
+      "group": "Spacing",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "0.5rem",
+      "value": 0.5,
+      "unit": "rem"
+    },
+    {
+      "id": "legal:--space-20",
+      "name": "--space-20",
+      "group": "Spacing",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "5rem",
+      "value": 5,
+      "unit": "rem"
+    },
+    {
+      "id": "legal:--space-24",
+      "name": "--space-24",
+      "group": "Spacing",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "6rem",
+      "value": 6,
+      "unit": "rem"
+    },
+    {
+      "id": "legal:--space-3",
+      "name": "--space-3",
+      "group": "Spacing",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "0.75rem",
+      "value": 0.75,
+      "unit": "rem"
+    },
+    {
+      "id": "legal:--space-32",
+      "name": "--space-32",
+      "group": "Spacing",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "8rem",
+      "value": 8,
+      "unit": "rem"
+    },
+    {
+      "id": "legal:--space-4",
+      "name": "--space-4",
+      "group": "Spacing",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "1rem",
+      "value": 1,
+      "unit": "rem"
+    },
+    {
+      "id": "legal:--space-40",
+      "name": "--space-40",
+      "group": "Spacing",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "10rem",
+      "value": 10,
+      "unit": "rem"
+    },
+    {
+      "id": "legal:--space-5",
+      "name": "--space-5",
+      "group": "Spacing",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "1.25rem",
+      "value": 1.25,
+      "unit": "rem"
+    },
+    {
+      "id": "legal:--space-6",
+      "name": "--space-6",
+      "group": "Spacing",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "1.5rem",
+      "value": 1.5,
+      "unit": "rem"
+    },
+    {
+      "id": "legal:--space-8",
+      "name": "--space-8",
+      "group": "Spacing",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "2rem",
+      "value": 2,
+      "unit": "rem"
+    },
+    {
+      "id": "legal:--text-2xl",
+      "name": "--text-2xl",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "clamp(1.75rem, 1.4rem + 1.5vw, 2.5rem)"
+    },
+    {
+      "id": "legal:--text-3xl",
+      "name": "--text-3xl",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "clamp(2.25rem, 1.8rem + 2vw, 3.5rem)"
+    },
+    {
+      "id": "legal:--text-4xl",
+      "name": "--text-4xl",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "clamp(2.75rem, 2rem + 3vw, 4.5rem)"
+    },
+    {
+      "id": "legal:--text-5xl",
+      "name": "--text-5xl",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "clamp(3.5rem, 2.5rem + 4vw, 6rem)"
+    },
+    {
+      "id": "legal:--text-base",
+      "name": "--text-base",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "clamp(0.9375rem, 0.875rem + 0.3vw, 1.0625rem)"
+    },
+    {
+      "id": "legal:--text-lg",
+      "name": "--text-lg",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "clamp(1.125rem, 1rem + 0.5vw, 1.3125rem)"
+    },
+    {
+      "id": "legal:--text-sm",
+      "name": "--text-sm",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "clamp(0.8125rem, 0.75rem + 0.3vw, 0.9375rem)"
+    },
+    {
+      "id": "legal:--text-xl",
+      "name": "--text-xl",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "clamp(1.3125rem, 1.1rem + 0.9vw, 1.75rem)"
+    },
+    {
+      "id": "legal:--text-xs",
+      "name": "--text-xs",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "clamp(0.75rem, 0.7rem + 0.25vw, 0.8125rem)"
+    },
+    {
+      "id": "legal:--tracking-normal",
+      "name": "--tracking-normal",
+      "group": "Typography",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "0",
+      "value": 0,
+      "unit": "number"
+    },
+    {
+      "id": "legal:--tracking-tight",
+      "name": "--tracking-tight",
+      "group": "Typography",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "-0.02em",
+      "value": -0.02,
+      "unit": "em"
+    },
+    {
+      "id": "legal:--tracking-tighter",
+      "name": "--tracking-tighter",
+      "group": "Typography",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "-0.03em",
+      "value": -0.03,
+      "unit": "em"
+    },
+    {
+      "id": "legal:--tracking-wide",
+      "name": "--tracking-wide",
+      "group": "Typography",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "0.02em",
+      "value": 0.02,
+      "unit": "em"
+    },
+    {
+      "id": "legal:--tracking-wider",
+      "name": "--tracking-wider",
+      "group": "Typography",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "0.05em",
+      "value": 0.05,
+      "unit": "em"
+    },
+    {
+      "id": "legal:--z-base",
+      "name": "--z-base",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "0",
+      "value": 0,
+      "unit": "number"
+    },
+    {
+      "id": "legal:--z-below",
+      "name": "--z-below",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "-1",
+      "value": -1,
+      "unit": "number"
+    },
+    {
+      "id": "legal:--z-dropdown",
+      "name": "--z-dropdown",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "100",
+      "value": 100,
+      "unit": "number"
+    },
+    {
+      "id": "legal:--z-modal",
+      "name": "--z-modal",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "400",
+      "value": 400,
+      "unit": "number"
+    },
+    {
+      "id": "legal:--z-overlay",
+      "name": "--z-overlay",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "300",
+      "value": 300,
+      "unit": "number"
+    },
+    {
+      "id": "legal:--z-raised",
+      "name": "--z-raised",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "10",
+      "value": 10,
+      "unit": "number"
+    },
+    {
+      "id": "legal:--z-sticky",
+      "name": "--z-sticky",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "200",
+      "value": 200,
+      "unit": "number"
+    },
+    {
+      "id": "legal:--z-toast",
+      "name": "--z-toast",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "500",
+      "value": 500,
+      "unit": "number"
+    },
+    {
+      "id": "legal:@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])::--shadow-2xl",
+      "name": "--shadow-2xl",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 201,
+      "scope": "@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])",
+      "expression": "0 24px 64px rgba(0, 0, 0, 0.6), 0 12px 24px rgba(0, 0, 0, 0.4)"
+    },
+    {
+      "id": "legal:@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])::--shadow-lg",
+      "name": "--shadow-lg",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 201,
+      "scope": "@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])",
+      "expression": "0 8px 32px rgba(0, 0, 0, 0.5), 0 4px 8px rgba(0, 0, 0, 0.3)"
+    },
+    {
+      "id": "legal:@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])::--shadow-md",
+      "name": "--shadow-md",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 201,
+      "scope": "@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])",
+      "expression": "0 4px 16px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.2)"
+    },
+    {
+      "id": "legal:@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])::--shadow-sm",
+      "name": "--shadow-sm",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 201,
+      "scope": "@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])",
+      "expression": "0 2px 8px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2)"
+    },
+    {
+      "id": "legal:@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])::--shadow-xl",
+      "name": "--shadow-xl",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 201,
+      "scope": "@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])",
+      "expression": "0 16px 48px rgba(0, 0, 0, 0.5), 0 8px 16px rgba(0, 0, 0, 0.3)"
+    },
+    {
+      "id": "legal:@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])::--shadow-xs",
+      "name": "--shadow-xs",
+      "group": "Source",
+      "sourceId": "legal",
+      "sourceLine": 201,
+      "scope": "@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])",
+      "expression": "0 1px 2px rgba(0, 0, 0, 0.2)"
+    },
+    {
+      "id": "utilities:--maxw",
+      "name": "--maxw",
+      "group": "Source",
+      "sourceId": "utilities",
+      "sourceLine": 30,
+      "scope": "global",
+      "expression": "1120px",
+      "value": 1120,
+      "unit": "px"
+    },
+    {
+      "id": "utilities:--nav-bg",
+      "name": "--nav-bg",
+      "group": "Source",
+      "sourceId": "utilities",
+      "sourceLine": 30,
+      "scope": "global",
+      "expression": "rgba(251, 251, 253, 0.72)"
+    },
+    {
+      "id": "utilities:--shadow",
+      "name": "--shadow",
+      "group": "Source",
+      "sourceId": "utilities",
+      "sourceLine": 30,
+      "scope": "global",
+      "expression": "0 4px 24px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.04)"
+    },
+    {
+      "id": "utilities:--shadow-lg",
+      "name": "--shadow-lg",
+      "group": "Source",
+      "sourceId": "utilities",
+      "sourceLine": 30,
+      "scope": "global",
+      "expression": "0 24px 70px rgba(0, 0, 0, 0.12)"
+    },
+    {
+      "id": "utilities:@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])::--nav-bg",
+      "name": "--nav-bg",
+      "group": "Source",
+      "sourceId": "utilities",
+      "sourceLine": 78,
+      "scope": "@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])",
+      "expression": "rgba(0, 0, 0, 0.72)"
+    },
+    {
+      "id": "utilities:@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])::--shadow",
+      "name": "--shadow",
+      "group": "Source",
+      "sourceId": "utilities",
+      "sourceLine": 78,
+      "scope": "@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])",
+      "expression": "0 4px 24px rgba(0, 0, 0, 0.4)"
+    },
+    {
+      "id": "utilities:@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])::--shadow-lg",
+      "name": "--shadow-lg",
+      "group": "Source",
+      "sourceId": "utilities",
+      "sourceLine": 78,
+      "scope": "@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])",
+      "expression": "0 30px 80px rgba(0, 0, 0, 0.6)"
+    },
+    {
+      "id": "utilities:@media print → :root, :root[data-theme=\"dark\"], :root:not([data-theme=\"light\"])::--shadow",
+      "name": "--shadow",
+      "group": "Source",
+      "sourceId": "utilities",
+      "sourceLine": 402,
+      "scope": "@media print → :root, :root[data-theme=\"dark\"], :root:not([data-theme=\"light\"])",
+      "expression": "none"
+    },
+    {
+      "id": "utilities:@media print → :root, :root[data-theme=\"dark\"], :root:not([data-theme=\"light\"])::--shadow-lg",
+      "name": "--shadow-lg",
+      "group": "Source",
+      "sourceId": "utilities",
+      "sourceLine": 402,
+      "scope": "@media print → :root, :root[data-theme=\"dark\"], :root:not([data-theme=\"light\"])",
+      "expression": "none"
+    }
+  ],
+  "motion": [
+    {
+      "id": "homepage:--ease",
+      "name": "--ease",
+      "group": "Motion",
+      "sourceId": "homepage",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "cubic-bezier(0.16, 1, 0.3, 1)",
+      "curve": [
+        0.16,
+        1,
+        0.3,
+        1
+      ]
+    },
+    {
+      "id": "homepage:--ease-soft",
+      "name": "--ease-soft",
+      "group": "Motion",
+      "sourceId": "homepage",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "cubic-bezier(0.4, 0, 0.2, 1)",
+      "curve": [
+        0.4,
+        0,
+        0.2,
+        1
+      ]
+    },
+    {
+      "id": "homepage:@media (prefers-reduced-motion: no-preference) → .company-link:transition:scoped",
+      "name": ".company-link · transition",
+      "sourceId": "homepage",
+      "sourceLine": 139,
+      "scope": "@media (prefers-reduced-motion: no-preference) → .company-link",
+      "expression": "border-color 250ms var(--ease-soft)"
+    },
+    {
+      "id": "homepage:@media (prefers-reduced-motion: no-preference) → .company:transition:scoped",
+      "name": ".company · transition",
+      "sourceId": "homepage",
+      "sourceLine": 138,
+      "scope": "@media (prefers-reduced-motion: no-preference) → .company",
+      "expression": "border-color 350ms var(--ease-soft)"
+    },
+    {
+      "id": "homepage:@media (prefers-reduced-motion: no-preference) → .employer-icon:transition:scoped",
+      "name": ".employer-icon · transition",
+      "sourceId": "homepage",
+      "sourceLine": 137,
+      "scope": "@media (prefers-reduced-motion: no-preference) → .employer-icon",
+      "expression": "transform 400ms var(--ease)"
+    },
+    {
+      "id": "homepage:@media (prefers-reduced-motion: no-preference) → .portrait img:transition:scoped",
+      "name": ".portrait img · transition",
+      "sourceId": "homepage",
+      "sourceLine": 136,
+      "scope": "@media (prefers-reduced-motion: no-preference) → .portrait img",
+      "expression": "transform 900ms var(--ease)"
+    },
+    {
+      "id": "homepage:@media (prefers-reduced-motion: no-preference) → .portrait-frame:transition:scoped",
+      "name": ".portrait-frame · transition",
+      "sourceId": "homepage",
+      "sourceLine": 135,
+      "scope": "@media (prefers-reduced-motion: no-preference) → .portrait-frame",
+      "expression": "box-shadow 650ms var(--ease)"
+    },
+    {
+      "id": "homepage:@media (prefers-reduced-motion: no-preference) → .site-header nav a, .site-footer a, .text-link, .experience-copy:transition:scoped",
+      "name": ".site-header nav a, .site-footer a, .text-link, .experience-copy · transition",
+      "sourceId": "homepage",
+      "sourceLine": 133,
+      "scope": "@media (prefers-reduced-motion: no-preference) → .site-header nav a, .site-footer a, .text-link, .experience-copy",
+      "expression": "color 250ms var(--ease-soft)"
+    },
+    {
+      "id": "homepage:@media (prefers-reduced-motion: no-preference) → .site-header nav a::after, .site-footer a::after, .text-link::after:transition:scoped",
+      "name": ".site-header nav a::after, .site-footer a::after, .text-link::after · transition",
+      "sourceId": "homepage",
+      "sourceLine": 134,
+      "scope": "@media (prefers-reduced-motion: no-preference) → .site-header nav a::after, .site-footer a::after, .text-link::after",
+      "expression": "transform 350ms var(--ease)"
+    },
+    {
+      "id": "homepage:@media (prefers-reduced-motion: no-preference) → .site-header, .experience, .experience-row:transition:scoped",
+      "name": ".site-header, .experience, .experience-row · transition",
+      "sourceId": "homepage",
+      "sourceLine": 132,
+      "scope": "@media (prefers-reduced-motion: no-preference) → .site-header, .experience, .experience-row",
+      "expression": "border-color 350ms var(--ease-soft)"
+    },
+    {
+      "id": "homepage:@media (prefers-reduced-motion: no-preference) → .text-link span, .company-link span:transition:scoped",
+      "name": ".text-link span, .company-link span · transition",
+      "sourceId": "homepage",
+      "sourceLine": 140,
+      "scope": "@media (prefers-reduced-motion: no-preference) → .text-link span, .company-link span",
+      "expression": "transform 400ms var(--ease)"
+    },
+    {
+      "id": "homepage:@media (prefers-reduced-motion: no-preference) → .theme-toggle:transition:scoped",
+      "name": ".theme-toggle · transition",
+      "sourceId": "homepage",
+      "sourceLine": 141,
+      "scope": "@media (prefers-reduced-motion: no-preference) → .theme-toggle",
+      "expression": "background-color 250ms var(--ease-soft), border-color 250ms var(--ease-soft), transform 300ms var(--ease)"
+    },
+    {
+      "id": "homepage:@media (prefers-reduced-motion: no-preference) → body:transition:scoped",
+      "name": "body · transition",
+      "sourceId": "homepage",
+      "sourceLine": 131,
+      "scope": "@media (prefers-reduced-motion: no-preference) → body",
+      "expression": "background-color 350ms var(--ease-soft), color 350ms var(--ease-soft)"
+    },
+    {
+      "id": "legal:--duration-fast",
+      "name": "--duration-fast",
+      "group": "Motion",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "150ms",
+      "duration": 0.15
+    },
+    {
+      "id": "legal:--duration-normal",
+      "name": "--duration-normal",
+      "group": "Motion",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "250ms",
+      "duration": 0.25
+    },
+    {
+      "id": "legal:--duration-slow",
+      "name": "--duration-slow",
+      "group": "Motion",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "400ms",
+      "duration": 0.4
+    },
+    {
+      "id": "legal:--duration-slower",
+      "name": "--duration-slower",
+      "group": "Motion",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "600ms",
+      "duration": 0.6
+    },
+    {
+      "id": "legal:--ease-bounce",
+      "name": "--ease-bounce",
+      "group": "Motion",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "cubic-bezier(0.34, 1.56, 0.64, 1)",
+      "curve": [
+        0.34,
+        1.56,
+        0.64,
+        1
+      ]
+    },
+    {
+      "id": "legal:--ease-default",
+      "name": "--ease-default",
+      "group": "Motion",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "cubic-bezier(0.25, 0.1, 0.25, 1)",
+      "curve": [
+        0.25,
+        0.1,
+        0.25,
+        1
+      ]
+    },
+    {
+      "id": "legal:--ease-in",
+      "name": "--ease-in",
+      "group": "Motion",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "cubic-bezier(0.42, 0, 1, 1)",
+      "curve": [
+        0.42,
+        0,
+        1,
+        1
+      ]
+    },
+    {
+      "id": "legal:--ease-in-out",
+      "name": "--ease-in-out",
+      "group": "Motion",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "cubic-bezier(0.42, 0, 0.58, 1)",
+      "curve": [
+        0.42,
+        0,
+        0.58,
+        1
+      ]
+    },
+    {
+      "id": "legal:--ease-out",
+      "name": "--ease-out",
+      "group": "Motion",
+      "sourceId": "legal",
+      "sourceLine": 1,
+      "scope": "global",
+      "expression": "cubic-bezier(0, 0, 0.58, 1)",
+      "curve": [
+        0,
+        0,
+        0.58,
+        1
+      ]
+    },
+    {
+      "id": "legal:.legal-content a:transition:scoped",
+      "name": ".legal-content a · transition",
+      "sourceId": "legal",
+      "sourceLine": 426,
+      "scope": ".legal-content a",
+      "expression": "text-decoration-thickness 0.15s ease"
+    },
+    {
+      "id": "pricing:.fu-band-cap .arrow:transition:scoped",
+      "name": ".fu-band-cap .arrow · transition",
+      "sourceId": "pricing",
+      "sourceLine": 155,
+      "scope": ".fu-band-cap .arrow",
+      "expression": "transform 0.3s var(--ease)"
+    },
+    {
+      "id": "pricing:.fu-foot .fu-link:transition:scoped",
+      "name": ".fu-foot .fu-link · transition",
+      "sourceId": "pricing",
+      "sourceLine": 147,
+      "scope": ".fu-foot .fu-link",
+      "expression": "opacity 0.2s"
+    },
+    {
+      "id": "utilities:--ease",
+      "name": "--ease",
+      "group": "Motion",
+      "sourceId": "utilities",
+      "sourceLine": 30,
+      "scope": "global",
+      "expression": "cubic-bezier(0.16, 1, 0.3, 1)",
+      "curve": [
+        0.16,
+        1,
+        0.3,
+        1
+      ]
+    },
+    {
+      "id": "utilities:--ease-soft",
+      "name": "--ease-soft",
+      "group": "Motion",
+      "sourceId": "utilities",
+      "sourceLine": 30,
+      "scope": "global",
+      "expression": "cubic-bezier(0.4, 0, 0.2, 1)",
+      "curve": [
+        0.4,
+        0,
+        0.2,
+        1
+      ]
+    },
+    {
+      "id": "utilities:.btn-text .arrow:transition:scoped",
+      "name": ".btn-text .arrow · transition",
+      "sourceId": "utilities",
+      "sourceLine": 272,
+      "scope": ".btn-text .arrow",
+      "expression": "transform 0.3s var(--ease)"
+    },
+    {
+      "id": "utilities:.btn:transition:scoped",
+      "name": ".btn · transition",
+      "sourceId": "utilities",
+      "sourceLine": 252,
+      "scope": ".btn",
+      "expression": "transform 0.3s var(--ease), background 0.2s, color 0.2s, opacity 0.2s, border-color 0.2s"
+    },
+    {
+      "id": "utilities:.foot-links a:transition:scoped",
+      "name": ".foot-links a · transition",
+      "sourceId": "utilities",
+      "sourceLine": 381,
+      "scope": ".foot-links a",
+      "expression": "color 0.2s"
+    },
+    {
+      "id": "utilities:.hero-bg .b1:animation:scoped",
+      "name": ".hero-bg .b1 · animation",
+      "sourceId": "utilities",
+      "sourceLine": 307,
+      "scope": ".hero-bg .b1",
+      "expression": "drift1 22s var(--ease-soft) infinite alternate"
+    },
+    {
+      "id": "utilities:.hero-bg .b2:animation:scoped",
+      "name": ".hero-bg .b2 · animation",
+      "sourceId": "utilities",
+      "sourceLine": 308,
+      "scope": ".hero-bg .b2",
+      "expression": "drift2 26s var(--ease-soft) infinite alternate"
+    },
+    {
+      "id": "utilities:.hero-title.go .w:animation:scoped",
+      "name": ".hero-title.go .w · animation",
+      "sourceId": "utilities",
+      "sourceLine": 331,
+      "scope": ".hero-title.go .w",
+      "expression": "wordIn 1s var(--ease) forwards"
+    },
+    {
+      "id": "utilities:.js [data-reveal]:transition:scoped",
+      "name": ".js [data-reveal] · transition",
+      "sourceId": "utilities",
+      "sourceLine": 274,
+      "scope": ".js [data-reveal]",
+      "expression": "opacity 0.9s var(--ease), transform 0.9s var(--ease), filter 0.9s var(--ease)"
+    },
+    {
+      "id": "utilities:.nav-links a, .nav-cta:transition:scoped",
+      "name": ".nav-links a, .nav-cta · transition",
+      "sourceId": "utilities",
+      "sourceLine": 169,
+      "scope": ".nav-links a, .nav-cta",
+      "expression": "color 0.2s"
+    },
+    {
+      "id": "utilities:.nav-links a::after, .nav-cta::after:transition:scoped",
+      "name": ".nav-links a::after, .nav-cta::after · transition",
+      "sourceId": "utilities",
+      "sourceLine": 179,
+      "scope": ".nav-links a::after, .nav-cta::after",
+      "expression": "width 0.3s var(--ease)"
+    },
+    {
+      "id": "utilities:.nav-toggle-bars, .nav-toggle-bars::before, .nav-toggle-bars::after:transition:scoped",
+      "name": ".nav-toggle-bars, .nav-toggle-bars::before, .nav-toggle-bars::after · transition",
+      "sourceId": "utilities",
+      "sourceLine": 217,
+      "scope": ".nav-toggle-bars, .nav-toggle-bars::before, .nav-toggle-bars::after",
+      "expression": "transform 0.3s var(--ease), opacity 0.2s"
+    },
+    {
+      "id": "utilities:.nav-toggle:transition:scoped",
+      "name": ".nav-toggle · transition",
+      "sourceId": "utilities",
+      "sourceLine": 205,
+      "scope": ".nav-toggle",
+      "expression": "color 0.2s, background 0.2s"
+    },
+    {
+      "id": "utilities:.nav:transition:scoped",
+      "name": ".nav · transition",
+      "sourceId": "utilities",
+      "sourceLine": 143,
+      "scope": ".nav",
+      "expression": "transform 0.4s var(--ease), border-color 0.4s var(--ease-soft), background 0.5s var(--ease-soft)"
+    },
+    {
+      "id": "utilities:.theme-btn:transition:scoped",
+      "name": ".theme-btn · transition",
+      "sourceId": "utilities",
+      "sourceLine": 185,
+      "scope": ".theme-btn",
+      "expression": "color 0.2s, background 0.2s"
+    },
+    {
+      "id": "utilities:@media (prefers-reduced-motion: reduce) → *, *::before, *::after:animation-duration:scoped",
+      "name": "*, *::before, *::after · animation-duration",
+      "sourceId": "utilities",
+      "sourceLine": 389,
+      "scope": "@media (prefers-reduced-motion: reduce) → *, *::before, *::after",
+      "expression": "0.001ms",
+      "duration": 0.000001
+    },
+    {
+      "id": "utilities:@media (prefers-reduced-motion: reduce) → *, *::before, *::after:transition-duration:scoped",
+      "name": "*, *::before, *::after · transition-duration",
+      "sourceId": "utilities",
+      "sourceLine": 389,
+      "scope": "@media (prefers-reduced-motion: reduce) → *, *::before, *::after",
+      "expression": "0.001ms",
+      "duration": 0.000001
+    },
+    {
+      "id": "utilities:@media print → *, *::before, *::after:animation:scoped",
+      "name": "*, *::before, *::after · animation",
+      "sourceId": "utilities",
+      "sourceLine": 421,
+      "scope": "@media print → *, *::before, *::after",
+      "expression": "none"
+    },
+    {
+      "id": "utilities:@media print → *, *::before, *::after:transition:scoped",
+      "name": "*, *::before, *::after · transition",
+      "sourceId": "utilities",
+      "sourceLine": 421,
+      "scope": "@media print → *, *::before, *::after",
+      "expression": "none"
+    },
+    {
+      "id": "utilities:body:transition:light",
+      "name": "body · transition",
+      "sourceId": "utilities",
+      "sourceLine": 92,
+      "scope": "global",
+      "appearance": "light",
+      "expression": "background 0.5s var(--ease-soft), color 0.5s var(--ease-soft)"
+    }
+  ],
+  "assets": [
+    {
+      "id": "personal-favicon",
+      "label": "Personal favicon",
+      "kind": "identity",
+      "path": "favicon.svg",
+      "mimeType": "image/svg+xml",
+      "sha256": "d8b1ce72d1cfecf9685c908184062091eb165dad0b9204c0eb9a04db70218430",
+      "bytes": 518,
+      "repository": "IsaacPerez.co"
+    },
+    {
+      "id": "inter-latin",
+      "label": "Inter · Latin",
+      "kind": "font",
+      "path": "fonts/inter-latin.woff2",
+      "mimeType": "font/woff2",
+      "sha256": "c940764593d0fe5d596be327ca7558855e018039fb78509aa21921fd3644c3e4",
+      "bytes": 48432,
+      "repository": "IsaacPerez.co",
+      "fontFaces": [
+        {
+          "family": "Inter",
+          "weight": "400 600",
+          "style": "normal",
+          "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "id": "inter-latin-ext",
+      "label": "Inter · Latin extended",
+      "kind": "font",
+      "path": "fonts/inter-latin-ext.woff2",
+      "mimeType": "font/woff2",
+      "sha256": "a28eb6d3ccb534ae0c94ca999371df024aab60b08c3c8a5720ee9e32fa0faaa2",
+      "bytes": 85272,
+      "repository": "IsaacPerez.co",
+      "fontFaces": [
+        {
+          "family": "Inter",
+          "weight": "400 600",
+          "style": "normal",
+          "unicodeRange": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF"
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "id": "studio-guide",
+      "title": "Studio source and usage guide",
+      "path": "brand/README.md",
+      "repository": "IsaacPerez.co",
+      "sha256": "896522c4453c2c458c27fb80035be3520577a976a8bd89498006a9bc2b6467bc",
+      "text": "# Isaac Perez design source library\n\nThis adapter points to the existing product source. It does not define another palette, type scale, or component family. The browser renderer and extraction logic are maintained once in `platform/tools/brand-studio/`.\n\n## Source ownership\n\n- `IsaacPerez.co/css/personal.css`\n- `IsaacPerez.co/css/site.css`\n- `IsaacPerez.co/css/photo.css`\n- `IsaacPerez.co/css/legal.css`\n- `IsaacPerez.co/js/personal.js`\n- `IsaacPerez.co/index.html`\n\nThe adapter’s `roles` map semantic names to source symbols. Generated `brand/studio/catalog.json` records the exact source bytes and shared-tool fingerprint. Unsupported expressions stay visible as diagnostics; they are never filled in with a guessed value.\n\n## Preview and validate\n\nFrom this isolated checkout, point `BRAND_STUDIO_PLATFORM_ROOT` to the reviewed platform checkout and `BRAND_STUDIO_SOURCE_MAP` to a host-controlled JSON map of canonical repository names to local roots. No absolute machine paths are stored in the adapter.\n\n```sh\n./scripts/brand-studio.sh export\n./scripts/brand-studio.sh check\n./scripts/brand-studio.sh serve\n```\n\n`serve` binds loopback only. CodeByIP’s product Brand & Design System view reads this same catalog through its authenticated API. Neither surface changes source values. Studies preserve their original source fingerprint, record the current catalog separately, and become fresh only after Reset.\n\n## Access and specimens\n\nThis is repo-only tooling. brand/ and the launcher are excluded from public deployment. The personal homepage and utility pages have distinct source families; the unlinked css/design-system.css is not authoritative. FIRSTUNIT branding stays inside the company section.\n\nThe initial shared browser provides source-backed foundation specimens. Product component files are fingerprinted for traceability but are not instantiated by the generic renderer. Real component examples must be registered explicitly with synthetic state and their existing access gate; a generic preview is never evidence of production rendering.\n\n## Authority and generated output\n\nEdit existing source and its applicable manual, then regenerate. Review source, catalog diagnostics, source fingerprint, and the actual product before accepting a change. Generated snapshots and design packs are read-only derivatives. A renderer copy is not maintained in this repository.\n\n## Entry point\n\nUse the repository-local launcher or CodeByIP. This static site has no authenticated developer shell; no public route was added. `.vercelignore` excludes the brand directory and launcher.\n\n[Open this source catalog in CodeByIP](codebyip://tab/products?brand=isaac-perez-co).\n\nThe neutral browser uses source-derived foundation specimens. Actual product components remain in gated product Dev Tools; source registrations do not claim to reproduce those components in vanilla JavaScript. Native-only/computed expressions remain labeled. No generated catalog should be edited by hand.\n\n## Shared tooling pin\n\nThis consumer is reviewed against [platform `2fcef736964befbb8fdffe81c593e5dcb7b698ab`](https://github.com/IsaacAPerez/platform/commit/2fcef736964befbb8fdffe81c593e5dcb7b698ab). The launcher requires that commit in `BRAND_STUDIO_PLATFORM_ROOT` (or the adjacent `platform` checkout). Update this reference deliberately when adopting shared tooling changes; regenerate and check the catalog afterward.\n"
+    }
+  ],
+  "specimens": [],
+  "theme": {
+    "background": "homepage:--bg",
+    "surface": "homepage:--bg-alt",
+    "textPrimary": "homepage:--text",
+    "textSecondary": "homepage:--text-2",
+    "border": "homepage:--line"
+  },
+  "diagnostics": [
+    {
+      "severity": "info",
+      "sourceId": "homepage",
+      "message": "--portrait-shadow: metric expression retained verbatim (0 24px 70px rgba(0, 0, 0, 0.12))."
+    },
+    {
+      "severity": "info",
+      "sourceId": "homepage",
+      "message": "--portrait-shadow: metric expression retained verbatim (0 30px 80px rgba(0, 0, 0, 0.6))."
+    },
+    {
+      "severity": "info",
+      "sourceId": "utilities",
+      "message": "--shadow: metric expression retained verbatim (0 4px 24px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.04))."
+    },
+    {
+      "severity": "info",
+      "sourceId": "utilities",
+      "message": "--shadow-lg: metric expression retained verbatim (0 24px 70px rgba(0, 0, 0, 0.12))."
+    },
+    {
+      "severity": "info",
+      "sourceId": "utilities",
+      "message": "--nav-bg: metric expression retained verbatim (rgba(251, 251, 253, 0.72))."
+    },
+    {
+      "severity": "info",
+      "sourceId": "utilities",
+      "message": "--shadow: metric expression retained verbatim (0 4px 24px rgba(0, 0, 0, 0.4))."
+    },
+    {
+      "severity": "info",
+      "sourceId": "utilities",
+      "message": "--shadow-lg: metric expression retained verbatim (0 30px 80px rgba(0, 0, 0, 0.6))."
+    },
+    {
+      "severity": "info",
+      "sourceId": "utilities",
+      "message": "--nav-bg: metric expression retained verbatim (rgba(0, 0, 0, 0.72))."
+    },
+    {
+      "severity": "info",
+      "sourceId": "utilities",
+      "message": "--shadow: metric expression retained verbatim (none)."
+    },
+    {
+      "severity": "info",
+      "sourceId": "utilities",
+      "message": "--shadow-lg: metric expression retained verbatim (none)."
+    },
+    {
+      "severity": "warning",
+      "sourceId": "legal",
+      "message": "--color-accent-subtle (global): unresolved color expression (rgba(0, 113, 227, 0.1)); no color is invented."
+    },
+    {
+      "severity": "warning",
+      "sourceId": "legal",
+      "message": "--color-border (global): unresolved color expression (var(--color-gray-200)); no color is invented."
+    },
+    {
+      "severity": "warning",
+      "sourceId": "legal",
+      "message": "--color-border-light (global): unresolved color expression (var(--color-gray-100)); no color is invented."
+    },
+    {
+      "severity": "info",
+      "sourceId": "legal",
+      "message": "--text-xs: metric expression retained verbatim (clamp(0.75rem, 0.7rem + 0.25vw, 0.8125rem))."
+    },
+    {
+      "severity": "info",
+      "sourceId": "legal",
+      "message": "--text-sm: metric expression retained verbatim (clamp(0.8125rem, 0.75rem + 0.3vw, 0.9375rem))."
+    },
+    {
+      "severity": "info",
+      "sourceId": "legal",
+      "message": "--text-base: metric expression retained verbatim (clamp(0.9375rem, 0.875rem + 0.3vw, 1.0625rem))."
+    },
+    {
+      "severity": "info",
+      "sourceId": "legal",
+      "message": "--text-lg: metric expression retained verbatim (clamp(1.125rem, 1rem + 0.5vw, 1.3125rem))."
+    },
+    {
+      "severity": "info",
+      "sourceId": "legal",
+      "message": "--text-xl: metric expression retained verbatim (clamp(1.3125rem, 1.1rem + 0.9vw, 1.75rem))."
+    },
+    {
+      "severity": "info",
+      "sourceId": "legal",
+      "message": "--text-2xl: metric expression retained verbatim (clamp(1.75rem, 1.4rem + 1.5vw, 2.5rem))."
+    },
+    {
+      "severity": "info",
+      "sourceId": "legal",
+      "message": "--text-3xl: metric expression retained verbatim (clamp(2.25rem, 1.8rem + 2vw, 3.5rem))."
+    },
+    {
+      "severity": "info",
+      "sourceId": "legal",
+      "message": "--text-4xl: metric expression retained verbatim (clamp(2.75rem, 2rem + 3vw, 4.5rem))."
+    },
+    {
+      "severity": "info",
+      "sourceId": "legal",
+      "message": "--text-5xl: metric expression retained verbatim (clamp(3.5rem, 2.5rem + 4vw, 6rem))."
+    },
+    {
+      "severity": "info",
+      "sourceId": "legal",
+      "message": "--shadow-xs: metric expression retained verbatim (0 1px 2px rgba(0, 0, 0, 0.04))."
+    },
+    {
+      "severity": "info",
+      "sourceId": "legal",
+      "message": "--shadow-sm: metric expression retained verbatim (0 2px 8px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06))."
+    },
+    {
+      "severity": "info",
+      "sourceId": "legal",
+      "message": "--shadow-md: metric expression retained verbatim (0 4px 16px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04))."
+    },
+    {
+      "severity": "info",
+      "sourceId": "legal",
+      "message": "--shadow-lg: metric expression retained verbatim (0 8px 32px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.04))."
+    },
+    {
+      "severity": "info",
+      "sourceId": "legal",
+      "message": "--shadow-xl: metric expression retained verbatim (0 16px 48px rgba(0, 0, 0, 0.12), 0 8px 16px rgba(0, 0, 0, 0.06))."
+    },
+    {
+      "severity": "info",
+      "sourceId": "legal",
+      "message": "--shadow-2xl: metric expression retained verbatim (0 24px 64px rgba(0, 0, 0, 0.16), 0 12px 24px rgba(0, 0, 0, 0.08))."
+    },
+    {
+      "severity": "warning",
+      "sourceId": "legal",
+      "message": "--shadow-accent (global): unresolved color expression (0 4px 16px rgba(0, 113, 227, 0.2)); no color is invented."
+    },
+    {
+      "severity": "warning",
+      "sourceId": "legal",
+      "message": "--color-border (@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])): unresolved color expression (rgba(255, 255, 255, 0.1)); no color is invented."
+    },
+    {
+      "severity": "warning",
+      "sourceId": "legal",
+      "message": "--color-border-light (@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])): unresolved color expression (rgba(255, 255, 255, 0.05)); no color is invented."
+    },
+    {
+      "severity": "warning",
+      "sourceId": "legal",
+      "message": "--color-accent-subtle (@media (prefers-color-scheme: dark) → :root:not([data-theme=\"light\"])): unresolved color expression (rgba(77, 163, 255, 0.2)); no color is invented."
+    },
+    {
+      "severity": "info",
+      "sourceId": "legal",
+      "message": "--shadow-xs: metric expression retained verbatim (0 1px 2px rgba(0, 0, 0, 0.2))."
+    },
+    {
+      "severity": "info",
+      "sourceId": "legal",
+      "message": "--shadow-sm: metric expression retained verbatim (0 2px 8px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2))."
+    },
+    {
+      "severity": "info",
+      "sourceId": "legal",
+      "message": "--shadow-md: metric expression retained verbatim (0 4px 16px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.2))."
+    },
+    {
+      "severity": "info",
+      "sourceId": "legal",
+      "message": "--shadow-lg: metric expression retained verbatim (0 8px 32px rgba(0, 0, 0, 0.5), 0 4px 8px rgba(0, 0, 0, 0.3))."
+    },
+    {
+      "severity": "info",
+      "sourceId": "legal",
+      "message": "--shadow-xl: metric expression retained verbatim (0 16px 48px rgba(0, 0, 0, 0.5), 0 8px 16px rgba(0, 0, 0, 0.3))."
+    },
+    {
+      "severity": "info",
+      "sourceId": "legal",
+      "message": "--shadow-2xl: metric expression retained verbatim (0 24px 64px rgba(0, 0, 0, 0.6), 0 12px 24px rgba(0, 0, 0, 0.4))."
+    },
+    {
+      "severity": "info",
+      "sourceId": "motion-source",
+      "message": "typescript source fingerprinted; values require a typed/native or product-specific adapter."
+    },
+    {
+      "severity": "info",
+      "sourceId": "component-0",
+      "message": "documentation source fingerprinted; values require a typed/native or product-specific adapter."
+    }
+  ]
+}
