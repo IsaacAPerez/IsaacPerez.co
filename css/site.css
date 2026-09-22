@@ -11,7 +11,7 @@
    No code face is declared: /shootsort/'s folder tree and 404.html's error
    label ask for installed monospace, because JetBrains Mono cost 31KB to set
    four lines of ASCII and one nine-character label. Space Grotesk is not
-   declared either -- only the undeployed css/game.css and css/rpg.css ask. */
+   declared either; no active stylesheet needs it. */
 @font-face {
   font-family: 'Inter';
   font-style: normal;
@@ -397,7 +397,7 @@ section[id], main[id] { scroll-margin-top: 64px; }
    Saving the page as a PDF is how a client forwards a quote, so paper has to
    carry the content, not the motion layer's starting state. Without this every
    [data-reveal] block prints at opacity 0 and the PDF contains no package and
-   no price at all. css/design-system.css:1311 does the same for the legal
+   no price at all. css/legal.css does the same for the legal
    pages. */
 @media print {
   /* Print the light palette whichever theme the screen was in. The selectors

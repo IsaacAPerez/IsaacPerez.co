@@ -1,7 +1,7 @@
 /*
  * Isaac Perez - Legal pages stylesheet
  * ============================================================
- * The tokens, reset and base type from css/design-system.css, and nothing
+ * The tokens, reset and base type from the former fleet design-system.css copy, and nothing
  * else. /roommate/{privacy,terms,support}/ and /souvenir/privacy/ are the only
  * pages here that ever loaded the design system, and they use none of its
  * components: every rule they carry is in their own page-scoped <style> block,
@@ -9,13 +9,7 @@
  * one render-blocking asset on an App Store legal page described buttons,
  * cards, navs, heroes and device frames that page does not contain.
  *
- * css/design-system.css itself is NOT edited or deleted: it is byte-identical
- * to the copies in CapturedByIP, TeamUp/web and CurbSide/web, where the
- * components are used. It stays in the repo, unlinked and .vercelignore'd. If a
- * page here ever needs .btn/.card/.nav, link the design system again and drop
- * its .vercelignore line in the same commit -- and keep any token edit made
- * here in step with it.
- * ============================================================
+ * The unlinked fleet copy was removed; these retained tokens are self-contained.
  */
 
 /* ============================================================
