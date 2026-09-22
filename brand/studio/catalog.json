@@ -10,14 +10,14 @@
     "light",
     "dark"
   ],
-  "sourceRevision": "sha256:eea539f670e2",
-  "sourceDigest": "eea539f670e2ef1bc7d46cc17d9d3dd946df6efb5bd69d5681fac3707334cdd3",
+  "sourceRevision": "sha256:21ea7338a412",
+  "sourceDigest": "21ea7338a41204542b2829303eee6220c0efc70e68e621ef7cb5ea7d2c4f15d9",
   "sources": [
     {
       "id": "studio-guide",
       "repository": "IsaacPerez.co",
       "path": "brand/README.md",
-      "sha256": "896522c4453c2c458c27fb80035be3520577a976a8bd89498006a9bc2b6467bc"
+      "sha256": "3f36fe1f586be1e571e11995d61b7e6a0e78655ff6ceef1a2c8676be7c23252f"
     },
     {
       "id": "adapter",
@@ -143,7 +143,7 @@
       "id": "tool:export.mjs",
       "repository": "platform",
       "path": "tools/brand-studio/export.mjs",
-      "sha256": "e40b472310acef9cc9b709f3138031130c5551bbfa42fe82c4bade145f95f7d4"
+      "sha256": "11b4ddae85e1f9688999d827d389ab4da92871e7d84f9257f28bea1154ede8dc"
     },
     {
       "id": "tool:renderer/index.html",
@@ -173,7 +173,7 @@
       "id": "tool:validate.mjs",
       "repository": "platform",
       "path": "tools/brand-studio/validate.mjs",
-      "sha256": "e068dbf8dd46c3562022476a186b0158589341494b93beec4eed54bc5235122e"
+      "sha256": "8af15bc1174a7931ea2d8846ed943c909d18f2b93bd4be34251327c84e95f418"
     },
     {
       "id": "tool:tools/brand-studio/vendor-native.mjs",
@@ -1577,7 +1577,7 @@
       "trackingUnit": "em"
     },
     {
-      "id": "legal:.legal-content p,\n.legal-content li|scoped:type",
+      "id": "legal:.legal-content p, .legal-content li|scoped:type",
       "name": ".legal-content p,\n.legal-content li",
       "sourceId": "legal",
       "sourceLine": 407,
@@ -3450,8 +3450,8 @@
       "title": "Studio source and usage guide",
       "path": "brand/README.md",
       "repository": "IsaacPerez.co",
-      "sha256": "896522c4453c2c458c27fb80035be3520577a976a8bd89498006a9bc2b6467bc",
-      "text": "# Isaac Perez design source library\n\nThis adapter points to the existing product source. It does not define another palette, type scale, or component family. The browser renderer and extraction logic are maintained once in `platform/tools/brand-studio/`.\n\n## Source ownership\n\n- `IsaacPerez.co/css/personal.css`\n- `IsaacPerez.co/css/site.css`\n- `IsaacPerez.co/css/photo.css`\n- `IsaacPerez.co/css/legal.css`\n- `IsaacPerez.co/js/personal.js`\n- `IsaacPerez.co/index.html`\n\nThe adapter’s `roles` map semantic names to source symbols. Generated `brand/studio/catalog.json` records the exact source bytes and shared-tool fingerprint. Unsupported expressions stay visible as diagnostics; they are never filled in with a guessed value.\n\n## Preview and validate\n\nFrom this isolated checkout, point `BRAND_STUDIO_PLATFORM_ROOT` to the reviewed platform checkout and `BRAND_STUDIO_SOURCE_MAP` to a host-controlled JSON map of canonical repository names to local roots. No absolute machine paths are stored in the adapter.\n\n```sh\n./scripts/brand-studio.sh export\n./scripts/brand-studio.sh check\n./scripts/brand-studio.sh serve\n```\n\n`serve` binds loopback only. CodeByIP’s product Brand & Design System view reads this same catalog through its authenticated API. Neither surface changes source values. Studies preserve their original source fingerprint, record the current catalog separately, and become fresh only after Reset.\n\n## Access and specimens\n\nThis is repo-only tooling. brand/ and the launcher are excluded from public deployment. The personal homepage and utility pages have distinct source families; the unlinked css/design-system.css is not authoritative. FIRSTUNIT branding stays inside the company section.\n\nThe initial shared browser provides source-backed foundation specimens. Product component files are fingerprinted for traceability but are not instantiated by the generic renderer. Real component examples must be registered explicitly with synthetic state and their existing access gate; a generic preview is never evidence of production rendering.\n\n## Authority and generated output\n\nEdit existing source and its applicable manual, then regenerate. Review source, catalog diagnostics, source fingerprint, and the actual product before accepting a change. Generated snapshots and design packs are read-only derivatives. A renderer copy is not maintained in this repository.\n\n## Entry point\n\nUse the repository-local launcher or CodeByIP. This static site has no authenticated developer shell; no public route was added. `.vercelignore` excludes the brand directory and launcher.\n\n[Open this source catalog in CodeByIP](codebyip://tab/products?brand=isaac-perez-co).\n\nThe neutral browser uses source-derived foundation specimens. Actual product components remain in gated product Dev Tools; source registrations do not claim to reproduce those components in vanilla JavaScript. Native-only/computed expressions remain labeled. No generated catalog should be edited by hand.\n\n## Shared tooling pin\n\nThis consumer is reviewed against [platform `2fcef736964befbb8fdffe81c593e5dcb7b698ab`](https://github.com/IsaacAPerez/platform/commit/2fcef736964befbb8fdffe81c593e5dcb7b698ab). The launcher requires that commit in `BRAND_STUDIO_PLATFORM_ROOT` (or the adjacent `platform` checkout). Update this reference deliberately when adopting shared tooling changes; regenerate and check the catalog afterward.\n"
+      "sha256": "3f36fe1f586be1e571e11995d61b7e6a0e78655ff6ceef1a2c8676be7c23252f",
+      "text": "# Isaac Perez design source library\n\nThis adapter points to the existing product source. It does not define another palette, type scale, or component family. The browser renderer and extraction logic are maintained once in `platform/tools/brand-studio/`.\n\n## Source ownership\n\n- `IsaacPerez.co/css/personal.css`\n- `IsaacPerez.co/css/site.css`\n- `IsaacPerez.co/css/photo.css`\n- `IsaacPerez.co/css/legal.css`\n- `IsaacPerez.co/js/personal.js`\n- `IsaacPerez.co/index.html`\n\nThe adapter’s `roles` map semantic names to source symbols. Generated `brand/studio/catalog.json` records the exact source bytes and shared-tool fingerprint. Unsupported expressions stay visible as diagnostics; they are never filled in with a guessed value.\n\n## Preview and validate\n\nFrom this isolated checkout, point `BRAND_STUDIO_PLATFORM_ROOT` to the reviewed platform checkout and `BRAND_STUDIO_SOURCE_MAP` to a host-controlled JSON map of canonical repository names to local roots. No absolute machine paths are stored in the adapter.\n\n```sh\n./scripts/brand-studio.sh export\n./scripts/brand-studio.sh check\n./scripts/brand-studio.sh serve\n```\n\n`serve` binds loopback only. CodeByIP’s product Brand & Design System view reads this same catalog through its authenticated API. Neither surface changes source values. Studies preserve their original source fingerprint, record the current catalog separately, and become fresh only after Reset.\n\n## Access and specimens\n\nThis is repo-only tooling. brand/ and the launcher are excluded from public deployment. The personal homepage and utility pages have distinct source families; the unlinked css/design-system.css is not authoritative. FIRSTUNIT branding stays inside the company section.\n\nThe initial shared browser provides source-backed foundation specimens. Product component files are fingerprinted for traceability but are not instantiated by the generic renderer. Real component examples must be registered explicitly with synthetic state and their existing access gate; a generic preview is never evidence of production rendering.\n\n## Authority and generated output\n\nEdit existing source and its applicable manual, then regenerate. Review source, catalog diagnostics, source fingerprint, and the actual product before accepting a change. Generated snapshots and design packs are read-only derivatives. A renderer copy is not maintained in this repository.\n\n## Entry point\n\nUse the repository-local launcher or CodeByIP. This static site has no authenticated developer shell; no public route was added. `.vercelignore` excludes the brand directory and launcher.\n\n[Open this source catalog in CodeByIP](codebyip://tab/products?brand=isaac-perez-co).\n\nThe neutral browser uses source-derived foundation specimens. Actual product components remain in gated product Dev Tools; source registrations do not claim to reproduce those components in vanilla JavaScript. Native-only/computed expressions remain labeled. No generated catalog should be edited by hand.\n\n## Shared tooling pin\n\nThis consumer is reviewed against [platform `609b22ddd65957ad2a459d043815c8032bec5bf4`](https://github.com/IsaacAPerez/platform/commit/609b22ddd65957ad2a459d043815c8032bec5bf4). The launcher requires that commit in `BRAND_STUDIO_PLATFORM_ROOT` (or the adjacent `platform` checkout). Update this reference deliberately when adopting shared tooling changes; regenerate and check the catalog afterward.\n"
     }
   ],
   "specimens": [],

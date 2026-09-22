@@ -19,6 +19,7 @@ export const META = {
 };
 
 export const DECISIONS = [
+  {"axis": "Brand Studio ownership", "decision": "The product owns existing design source, brand/studio.adapter.json pointers and a generated read-only catalog. The pinned platform checkout owns extraction, validation and the shared browser/native renderer; CodeByIP reads that same fingerprinted catalog instead of authoring a second design system. The source library is local-only: .vercelignore excludes brand/ and the launcher; the public static site gains no developer route.", "adr": "brand/README.md"},
   {
     axis: "Runtime",
     decision: "Vanilla HTML/CSS/JS, one IIFE per script. No framework, package.json, bundler, node_modules or application build. The repository tree is the site.",

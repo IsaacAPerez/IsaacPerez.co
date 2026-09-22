@@ -3,7 +3,7 @@
 set -eu
 ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 PLATFORM=${BRAND_STUDIO_PLATFORM_ROOT:-"$ROOT/../platform"}
-PLATFORM_REVISION="2fcef736964befbb8fdffe81c593e5dcb7b698ab"
+PLATFORM_REVISION="609b22ddd65957ad2a459d043815c8032bec5bf4"
 ACTUAL_REVISION=$(git -C "$PLATFORM" rev-parse HEAD 2>/dev/null || true)
 if [ "$ACTUAL_REVISION" != "$PLATFORM_REVISION" ]; then
   printf '%s\n' "Brand Studio requires platform $PLATFORM_REVISION. Set BRAND_STUDIO_PLATFORM_ROOT to that reviewed checkout." >&2
