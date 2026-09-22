@@ -2,11 +2,11 @@
 
 _**This file is the living source of truth for the shape of isaacperez.co.** The interactive atlas is built from the same data._
 
-_Question status: **1 open · 11 resolved**._
+_Question status: **1 open · 8 resolved**._
 
 ## One paragraph
 
-IsaacPerez.co is Isaac's personal site: seven public pages of hand-written static HTML with no package.json, bundler, application build, tests or CI. The homepage follows Me → Experience → My company, with the original portrait in Me and a quiet personal contact footer. FIRSTUNIT branding appears only in the company section, linking to firstunit.io. Homepage styling and behavior live in css/personal.css and js/personal.js. The shared utility-page assets remain intact: /photo/pricing/ and /shootsort/ stay available but unpromoted, and four legal-style pages serve Quarters and Souvenir. /photo and /photo/ redirect to the existing FIRSTUNIT Studios destination. The old game files and app icons remain in the repository but are withheld from the deployment by .vercelignore, and the homepage no longer loads the game or exposes its achievement UI. A push to main is a production deploy through Vercel's git integration.
+IsaacPerez.co is Isaac's personal site: seven public pages of hand-written static HTML with no package.json, bundler, application build, tests or CI. The homepage follows Me → Experience → My company, with the original portrait in Me and a quiet personal contact footer. FIRSTUNIT branding appears only in the company section, linking to firstunit.io. Homepage styling and behavior live in css/personal.css and js/personal.js. The shared utility-page assets remain intact: /photo/pricing/ and /shootsort/ stay available but unpromoted, and four legal-style pages serve Quarters and Souvenir. /photo and /photo/ redirect to the existing FIRSTUNIT Studios destination. The authorized dead-code audit removed the unreferenced office game, RPG skin, fleet stylesheet copy and product app icons; git history preserves their source. A push to main is a production deploy through Vercel's git integration.
 
 ## Decisions locked
 
@@ -15,7 +15,7 @@ IsaacPerez.co is Isaac's personal site: seven public pages of hand-written stati
 | Runtime | Vanilla HTML/CSS/JS, one IIFE per script. No framework, package.json, bundler, node_modules or application build. The repository tree is the site. | — |
 | Homepage | Me → Experience → My company, then a quiet personal contact footer. Retain the original portrait. No apps catalogue, photography portfolio, pricing promotion, office game, achievements or skills marquee. | User direction · 2026-09-11 |
 | FIRSTUNIT | Company branding appears only in the homepage company section, with one company destination: https://firstunit.io. Personal identity, employer experience and contact remain independent of the company brand. | User direction · 2026-09-11 |
-| Asset ownership | css/personal.css and js/personal.js own homepage behavior and styling. css/site.css may supply base tokens but remains unchanged with js/site.js for utility pages. Game files and app icons are retained without homepage promotion and withheld from the deployment; css/rpg.css remains unlinked. | User direction · 2026-09-11 |
+| Asset ownership | css/personal.css and js/personal.js own homepage behavior and styling. css/site.css may supply base tokens but remains unchanged with js/site.js for utility pages. The unreferenced game, RPG skin, fleet stylesheet copy and app icons were removed in the authorized dead-code audit. | User direction · 2026-09-11 |
 | Hosting | Vercel git integration publishes main with no build step. vercel.json retains the response headers and permanent /photo redirects; production publication requires the approved preview. | — |
 | Theme and motion | Keep the inline pre-paint theme script and localStorage theme preference. Guard runtime storage access and honor prefers-reduced-motion. The homepage no longer awards badges or bakes game art. | — |
 | Asset paths | Root homepage asset paths are relative. Nested pages and 404.html use absolute paths. All references must match filename case exactly. | — |
@@ -29,12 +29,10 @@ IsaacPerez.co is Isaac's personal site: seven public pages of hand-written stati
 1. **A personal page and a static host** — Me → Experience → My company, served as hand-written HTML. _(adds L, V)_
 2. **Homepage assets** — A dedicated stylesheet, the original portrait and existing font integration. _(adds C, I, E)_
 3. **A small, separate runtime** — Editorial uses native scroll reveals and CSS hover motion; theme remains the active saved preference. _(adds M, T, S)_
-4. **The office is dormant** — The source assets remain; the homepage no longer initializes or exposes the game. _(adds G, A)_
-5. **Retained photo URLs** — The old photo route redirects; pricing stays available without homepage promotion. _(adds P, R, O)_
-6. **The retained download page** — ShootSort remains reachable at its existing URL. _(adds D)_
-7. **The pages that remain permanent** — Four app-facing documents and the existing commit hooks stay in place. _(adds Q, H)_
-8. **Other retained legacy assets** — Unlinked files stay unlinked instead of becoming a new cleanup project. _(adds X)_
-9. **The whole system** — The personal homepage, retained utilities, dormant assets and static deployment together.
+4. **Retained photo URLs** — The old photo route redirects; pricing stays available without homepage promotion. _(adds P, R, O)_
+5. **The retained download page** — ShootSort remains reachable at its existing URL. _(adds D)_
+6. **The pages that remain permanent** — Four app-facing documents and the existing commit hooks stay in place. _(adds Q, H)_
+7. **The whole system** — The personal homepage, retained utilities and static deployment together.
 
 ## Structures
 
@@ -46,7 +44,7 @@ IsaacPerez.co is Isaac's personal site: seven public pages of hand-written stati
 
 **What it does.** Three sections in order: Me, with the original portrait and personal introduction; Experience, with Tinder, Nextdoor, and UC Berkeley (EECS); My company, with the only FIRSTUNIT branding and one link to firstunit.io. A quiet footer holds personal contact links. The former product catalogue, photo promotion, game, achievements and skills marquee are absent.
 
-**How it's built.** `index.html` is hand-written HTML with relative asset paths. It loads homepage-only `css/personal.css` and `js/personal.js`; `css/site.css` may supply shared base tokens. The theme pre-paint IIFE remains inline before the stylesheets. `js/site.js`, `js/game.js` and `css/game.css` are not homepage dependencies. Native homepage anchors retain `#about` for Me, `#experience` and the legacy `#work` target for Experience, `#firstunit` for My company, and `#contact` for the footer.
+**How it's built.** `index.html` is hand-written HTML with relative asset paths. It loads homepage-only `css/personal.css` and `js/personal.js`; `css/site.css` may supply shared base tokens. The theme pre-paint IIFE remains inline before the stylesheets. `js/site.js` is not a homepage dependency. Native homepage anchors retain `#about` for Me, `#experience` and the legacy `#work` target for Experience, `#firstunit` for My company, and `#contact` for the footer.
 
 **Steps in execution.**
 
@@ -58,7 +56,7 @@ IsaacPerez.co is Isaac's personal site: seven public pages of hand-written stati
 
 **Questions.**
 
-- ~~**Q-L1** Should the homepage still download and bake the office when nobody opens it?~~ ✓ No. The user removed the office from the personal homepage. Game markup, achievement integration and the game CSS/JS dependencies are absent; the source assets remain dormant in the repository (2026-09-11).
+- ~~**Q-L1** Should the homepage still download and bake the office when nobody opens it?~~ ✓ No. The user removed the office from the personal homepage. Game markup, achievement integration and the game CSS/JS dependencies are absent; their unreferenced source was removed in the authorized dead-code audit (2026-09-21).
 
 #### P · /photo/ redirect
 
@@ -187,55 +185,19 @@ IsaacPerez.co is Isaac's personal site: seven public pages of hand-written stati
 
 ### What ships with the page
 
-#### G · Retained office source _(not switched on)_
-
-**In one line.** The previous canvas office implementation remains on disk but has no homepage entry point.
-
-**What it does.** js/game.js and css/game.css are retained assets that .vercelignore keeps out of the deployment, so neither is fetchable. The personal homepage does not load them, render their canvas or controls, expose the #office experience, or initialize their art and animation loop.
-
-**How it's built.** The existing game IIFE contains its tile map, entities, canvas renderer, audio and browser-state helpers. Its former homepage markup and inline achievement engine have been removed from the active surface. The retained JavaScript and stylesheet alone are not a standalone game page. Restoring an office experience would require an explicit future scope decision.
-
-**Steps in execution.**
-
-1. **Retain** — Keep js/game.js and css/game.css unchanged on disk, and listed in .vercelignore.
-2. **Exclude** — Do not reference either asset from index.html.
-3. **Stay dormant** — No canvas, game initialization, audio, animation loop or game-state writes run on homepage visits.
-
-**Questions.**
-
-- ~~**Q-G1** Should the office return as a footer easter egg?~~ ✓ No. The approved personal homepage contains Me, Experience and My company with a quiet contact footer, and explicitly excludes the office game. The source is retained without an entry point (2026-09-11).
-
-#### A · Removed achievement integration _(not switched on)_
-
-**In one line.** The former homepage achievement engine and toast UI are no longer active.
-
-**What it does.** There is no inline award engine, theme-toggle badge, Konami listener, achievement counter or toast stack on the personal homepage. Old browser values are left alone.
-
-**How it's built.** The former integration lived inside `index.html` and cooperated with `js/game.js`. That homepage markup and script have been removed. Game-side helpers remain only in the dormant game source; they do not execute because the homepage no longer loads it.
-
-**Steps in execution.**
-
-1. **Remove active integration** — Omit the old inline engine and achievement markup from index.html.
-2. **Preserve old data** — Do not clear ip-achievements or ip-game-state as part of the homepage revision.
-
-**Questions.**
-
-- ~~**Q-A1** Should theme changes still unlock a badge outside the game?~~ ✓ No. Achievement UI and code are excluded from the personal homepage. The theme toggle only changes the theme (2026-09-11).
-
 #### C · Stylesheets
 
-**In one line.** Homepage-only styles sit beside stable utility-page styles and dormant legacy sheets.
+**In one line.** Homepage-only styles sit beside stable utility-page styles.
 
-**What it does.** The personal homepage has css/personal.css. Pricing, ShootSort, the custom 404 and legal pages retain their existing stylesheet ownership. Game and RPG sheets remain on disk without homepage references.
+**What it does.** The personal homepage has css/personal.css. Pricing, ShootSort, the custom 404 and legal pages retain their existing stylesheet ownership.
 
-**How it's built.** `css/personal.css` owns the homepage layout and components, including the portrait’s 28px rounded mask and fine-pointer hover zoom, timed underlines, arrow movements and theme transitions. CSS motion is gated by `prefers-reduced-motion`; native smooth scrolling becomes immediate scrolling when reduction is requested. `css/site.css` remains unchanged for utility pages. Pricing adds `css/photo.css`. The four legal-style pages use `css/legal.css`, the token subset of the fleet design system. ShootSort and 404 keep their scoped style blocks. `css/game.css` and `css/rpg.css` are not loaded by the homepage.
+**How it's built.** `css/personal.css` owns the homepage layout and components, including the portrait’s 28px rounded mask and fine-pointer hover zoom, timed underlines, arrow movements and theme transitions. CSS motion is gated by `prefers-reduced-motion`; native smooth scrolling becomes immediate scrolling when reduction is requested. `css/site.css` remains unchanged for utility pages. Pricing adds `css/photo.css`. The four legal-style pages use `css/legal.css`, the token subset of the fleet design system. ShootSort and 404 keep their scoped style blocks.
 
 **Steps in execution.**
 
 1. **Homepage** — Use css/personal.css for the selected personal-page variation.
 2. **Utility pages** — Keep site.css and page-specific additions unchanged.
 3. **Legal pages** — Keep the separate legal.css token system.
-4. **Dormant assets** — Retain game.css and rpg.css without links from the homepage.
 
 #### I · Images & documents
 
@@ -293,7 +255,7 @@ IsaacPerez.co is Isaac's personal site: seven public pages of hand-written stati
 
 **What it does.** There is no build. Vercel clones the repo, serves the files as they are, gives each directory an extensionless URL, and terminates TLS on the apex domain. Pushing to main is publishing.
 
-**How it's built.** Vercel project `isaacperez`, root `.`, serves GitHub `IsaacAPerez/IsaacPerez.co`; the project and team ids live in the Vercel dashboard and are deliberately not recorded in this public repo. `vercel.json` has response headers and two permanent photo redirects, with no build command or rewrites. `.vercelignore` withholds the repo-only files — `AGENTS.md`, `CLAUDE.md`, `docs/`, the unlinked `Resume.pdf`, the retired game bundle (`js/game.js`, `css/game.css`, `css/rpg.css`) and the unreferenced `images/` icons — from the upload, so they exist in the repository but not at a URL. The custom `404.html` handles unknown URLs. Git push to main publishes production; the three design branches are review alternatives until a version is approved.
+**How it's built.** Vercel project `isaacperez`, root `.`, serves GitHub `IsaacAPerez/IsaacPerez.co`; the project and team ids live in the Vercel dashboard and are deliberately not recorded in this public repo. `vercel.json` has response headers and two permanent photo redirects, with no build command or rewrites. `.vercelignore` withholds the repo-only files — `AGENTS.md`, `CLAUDE.md`, `docs/`, the unlinked `Resume.pdf`, the share-card font and `tools/` — from the upload, so they exist in the repository but not at a URL. The custom `404.html` handles unknown URLs. Git push to main publishes production; the three design branches are review alternatives until a version is approved.
 
 **Steps in execution.**
 
@@ -325,26 +287,6 @@ IsaacPerez.co is Isaac's personal site: seven public pages of hand-written stati
 **Questions.**
 
 - ~~**Q-O1** Should the reduced homepage remove the pricing, ShootSort or legal URLs from the sitemap?~~ ✓ No. The user approved keeping all seven routes functional and unchanged. Homepage promotion and route existence are separate decisions (2026-09-11).
-
-### Not yet switched on (designed for, not built)
-
-#### X · RPG redesign _(not switched on)_
-
-**In one line.** Designed for, not switched on: a whole RPG-styled skin for the site, written and then never linked to anything.
-
-**What it does.** An abandoned fantasy/RPG stylesheet remains in the repository without any active reference. The later office game is also now dormant, but its files are separate from this earlier unused skin.
-
-**How it's built.** `css/rpg.css` is retained and loaded by no page. The operating manual explicitly forbids linking, refactoring or deleting it without Isaac requesting that work. It contributes no homepage network or rendering dependency.
-
-**Steps in execution.**
-
-1. **Written** — A full alternate skin lands in one commit.
-2. **Orphaned** — The direction changes the next day; no stylesheet link is ever added.
-3. **Kept** — It ships with every deploy, unreferenced, as a deliberate archive.
-
-**Questions.**
-
-- ~~**Q-X1** Delete it, or wire it up as an alternate theme?~~ ✓ Neither, without asking. AGENTS.md rules it off-limits: never link, refactor, or delete css/rpg.css unless Isaac explicitly asks for it (2026-08-24).
 
 ## Flows (representative packets)
 
@@ -388,24 +330,21 @@ Payload shapes are what the design implies, not measured traffic.
 
 Reference by ID. ✓ resolved (with date) · otherwise open.
 
-- ~~**Q-L1**~~ (L) ✓ No. The user removed the office from the personal homepage. Game markup, achievement integration and the game CSS/JS dependencies are absent; the source assets remain dormant in the repository (2026-09-11).
+- ~~**Q-L1**~~ (L) ✓ No. The user removed the office from the personal homepage. Game markup, achievement integration and the game CSS/JS dependencies are absent; their unreferenced source was removed in the authorized dead-code audit (2026-09-21).
 - ~~**Q-P1**~~ (P) ✓ No. Live verification found capturedbyip.com returning HTTP 301 directly to https://firstunit.io/fu-0001. This repository separately retains its /photo redirects for older inbound links (2026-09-11).
 - ~~**Q-R1**~~ (R) ✓ No. The user approved retaining every sitemap route and keeping this utility page functional but unpromoted. A later relocation or offer change is separate work (2026-09-11).
 - **Q-D1** (D) The page claims Apple silicon + macOS 14 and a notarized build, taken from `dist/appcast.xml` and the README. Nothing re-checks that when ShootSort ships a release — should the requirements line be generated, or is a page that only changes when the app's floor changes fine as prose?
 - ~~**Q-Q1**~~ (Q) ✓ No. App Store metadata and external systems point at the existing URLs; AGENTS.md marks the path permanent and allows only copy renames — and a rename must match `\bCrib\b` case-sensitively, a precaution the rename commit 85c58c1 records because a case-insensitive replace would mangle the word "describes" in the privacy policy (2026-08-24).
 - ~~**Q-T1**~~ (T) ✓ Deliberate. AGENTS.md rules that the inline pre-paint script stays verbatim in `<head>` before the stylesheets — never externalized, never deferred — because it exists to prevent FOUC (2026-08-24).
-- ~~**Q-G1**~~ (G) ✓ No. The approved personal homepage contains Me, Experience and My company with a quiet contact footer, and explicitly excludes the office game. The source is retained without an entry point (2026-09-11).
-- ~~**Q-A1**~~ (A) ✓ No. Achievement UI and code are excluded from the personal homepage. The theme toggle only changes the theme (2026-09-11).
 - ~~**Q-H1**~~ (H) ✓ No. The approved implementation remains vanilla static HTML/CSS/JS; Vercel git integration is the deployment pipeline (2026-09-11).
 - ~~**Q-V1**~~ (V) ✓ No. The file is removed and vercel.json returns HTTP 308 to https://firstunit.io/fu-0001. The existing rule is preserved by the personal-site redesign (2026-09-11).
 - ~~**Q-O1**~~ (O) ✓ No. The user approved keeping all seven routes functional and unchanged. Homepage promotion and route existence are separate decisions (2026-09-11).
-- ~~**Q-X1**~~ (X) ✓ Neither, without asking. AGENTS.md rules it off-limits: never link, refactor, or delete css/rpg.css unless Isaac explicitly asks for it (2026-08-24).
 
 ## What the platform gives vs what we own
 
 **Platform gives:** Vercel provides git integration on <code>main</code>, TLS, CDN delivery, directory-style URLs and a custom 404 without an application build. <code>vercel.json</code> carries response headers — including the HSTS and CORS values that would otherwise be Vercel platform defaults — and permanent redirects for <code>/photo</code> and <code>/photo/</code>. <code>.vercelignore</code> decides which tracked files are uploaded at all. GitHub stores the source; the fleet platform supplies Conventional Commit and activity-feed hooks. No third party serves anything at runtime: the one webfont, Inter, is self-hosted from <code>/fonts/</code>. There is no application backend, analytics integration or GitHub Actions workflow in this repository. Machine-level monitoring is managed outside this repo; its configuration is not part of the website runtime.
 
-**We own:** The personal homepage, retained pricing and download pages, four legal-style pages, custom 404, page-specific styles and scripts, inline theme pre-paint, image/document assets, redirect configuration and discovery metadata. We also retain dormant game assets and the unlinked RPG stylesheet without making them homepage dependencies.
+**We own:** The personal homepage, retained pricing and download pages, four legal-style pages, custom 404, page-specific styles and scripts, inline theme pre-paint, image/document assets, redirect configuration and discovery metadata.
 
 ## Planned filesystem
 
@@ -417,13 +356,9 @@ IsaacPerez.co/
     site.css            shared utility-page styling and base tokens
     photo.css           /photo/pricing/ only
     legal.css           four legal-style pages: the design system's tokens, none of its components, plus the .legal-* layout all four shared inline
-    design-system.css   fleet design system, byte-identical to 3 sibling repos; unlinked here, not deployed
-    game.css            retained office chrome; not loaded, not deployed
-    rpg.css             abandoned redesign; no references, not deployed
   js/
     personal.js         homepage theme and accessible one-time scroll reveals
     site.js             retained utility-page motion and theme behavior
-    game.js             retained office implementation; not loaded, not deployed
   photo/
     (no index.html; /photo and /photo/ return 308 via vercel.json)
     pricing/index.html  retained pricing and OfferCatalog; unpromoted on homepage
@@ -435,7 +370,6 @@ IsaacPerez.co/
   souvenir/
     privacy/index.html  rendered from Souvenir/docs/privacy.md
   404.html              custom not-found page
-  images/               retained product icons; unreferenced, not deployed
   isaac.JPG  isaac.avif  original portrait; AVIF is what a browser takes, JPEG is the fallback and the JSON-LD image
   fonts/                self-hosted Inter; JetBrains Mono is repo-only, for docs/og/cards.html
   Resume.pdf            old résumé, retained, unlinked and not deployed
