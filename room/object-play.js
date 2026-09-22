@@ -4,6 +4,19 @@
   // The mesh builder batches repeated props by material. These small interaction
   // volumes follow its authored coordinates; sceneObjects gates their existence.
   var REACH = 2.5;
+  // Bottom-up case colors from the authored scene palette. These describe the
+  // rendered pairs, not authenticated product names or a physical inventory.
+  var SHOE_COLORS = [
+    ['Silver-grey', 'Orange', 'Ivory', 'Black', 'Blue', 'Ivory', 'Yellow', 'Ivory'],
+    ['Ivory', 'Silver-grey', 'Navy', 'Ivory', 'Black', 'Silver-grey', 'Pink', 'Ivory'],
+    ['Red', 'Black', 'Cream', 'Silver-grey', 'Red', 'Ivory', 'Silver-grey', 'Ivory'],
+    ['Ivory', 'Pink', 'Turquoise', 'Black', 'Blue', 'Silver-grey', 'Cream', 'Ivory'],
+    ['Turquoise', 'Ivory', 'Navy', 'Orange', 'Yellow', 'Black', 'Silver-grey', 'Red'],
+    ['Orange', 'Purple', 'Navy', 'Silver-grey', 'Purple', 'Lime', 'Ivory', 'Turquoise'],
+    ['Blue', 'Red', 'Navy', 'Pink', 'Orange'],
+    ['Cream', 'Pink', 'Pink', 'Ivory', 'Black'],
+    ['Ivory', 'Red', 'Cream', 'Black', 'Black']
+  ];
   var SHOE_TITLES = {
     '6:8': 'Turquoise ribbed sneakers',
     '6:7': 'Cream sculpted sneakers',
@@ -13,7 +26,7 @@
     '7:5': 'Red-orange sculpted sneakers',
     '7:4': 'Pink sculpted sneakers',
     '7:3': 'Navy sculpted sneakers',
-    '5:7': 'Gray-green basketball sneakers',
+    '5:7': 'Silver-grey basketball sneakers',
     '5:6': 'Black basketball sneakers',
     '5:5': 'Yellow basketball sneakers',
     '4:5': 'Blue basketball sneakers'
@@ -62,8 +75,8 @@
       for (var col = 0; col < 9; col++) {
         for (var row = 0; row < (col < 6 ? 8 : 5); row++) {
           var x = .26 + col * .37, y = .075 + row * .248 + .12;
-          var title = SHOE_TITLES[(col + 1) + ':' + (row + 1)];
-          result.push(target('shoe-' + (col + 1) + '-' + (row + 1), 'shoe', title || 'Sneaker case',
+          var title = SHOE_TITLES[(col + 1) + ':' + (row + 1)] || SHOE_COLORS[col][row] + ' sneakers';
+          result.push(target('shoe-' + (col + 1) + '-' + (row + 1), 'shoe', title,
             [x - .1745, y - .1145, -.3665], [x + .1745, y + .1145, -.3635], [0, 0, -1],
             { case: { column: col + 1, row: row + 1 },
               ignoreNames: ['Sneaker clear doors', 'Sneaker case frame'] }));
@@ -182,7 +195,7 @@
       if (item.kind === 'monitor') monitor(token);
       else {
         body.append(node('p', item.kind === 'shoe'
-          ? (item.title === 'Sneaker case' ? 'One pair in the clear-box collection. Its exact name is still being catalogued.' : 'A pair from Isaac’s clear-box sneaker collection.')
+          ? 'A pair from Isaac’s clear-box sneaker collection.'
           : item.description));
         body.append(node('p', 'Close this card and move around the object to see it in the 3D room.'));
       }
