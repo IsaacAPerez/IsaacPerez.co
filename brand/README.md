@@ -45,4 +45,4 @@ The neutral browser uses source-derived foundation specimens. Actual product com
 
 ## Shared tooling pin
 
-This consumer is reviewed against [platform `f558b4c8091fe12d402f03c78d31189d2abdc79c`](https://github.com/IsaacAPerez/platform/commit/f558b4c8091fe12d402f03c78d31189d2abdc79c). The launcher requires that commit in `BRAND_STUDIO_PLATFORM_ROOT` (or the adjacent `platform` checkout). Update this reference deliberately when adopting shared tooling changes; regenerate and check the catalog afterward.
+This consumer is reviewed against [platform `f558b4c8091fe12d402f03c78d31189d2abdc79c`](https://github.com/IsaacAPerez/platform/commit/f558b4c8091fe12d402f03c78d31189d2abdc79c). The launcher requires that commit to be available in `BRAND_STUDIO_PLATFORM_ROOT` (or the adjacent `platform` checkout), with identical tracked contents and no untracked files under `Package.swift`, `packages/brand-studio`, and `tools/brand-studio`. A squash merge or unrelated change to platform HEAD is allowed when these reviewed tooling paths still match. Update this reference deliberately when adopting shared tooling changes; regenerate and check the catalog afterward.
