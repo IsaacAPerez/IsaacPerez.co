@@ -1,0 +1,9 @@
+.toy-sound-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px;font-size:12px;color:var(--ink)}
+.toy-sound-toggle{min-width:64px;min-height:44px;padding:8px 15px;border:1px solid var(--line);border-radius:22px;background:var(--bg);color:var(--ink);font-size:12px}
+.toy-sound-toggle[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.toy-sound-toggle:focus-visible{outline:3px solid #3277d1;outline-offset:3px}
+@keyframes toy-soft-land{0%{transform:translateY(-1px) scale(1.002)}45%{transform:translateY(1px) scale(1.003)}100%{transform:none}}
+@keyframes toy-firm-land{0%{transform:translateY(-2px) scale(1.003)}45%{transform:translateY(2px) scale(1.006)}100%{transform:none}}
+#experience.toy-landing #room-canvas{animation:toy-firm-land 260ms cubic-bezier(.2,.7,.3,1) both}
+#experience.toy-landing.toy-landing-soft #room-canvas{animation-name:toy-soft-land}
+@media(prefers-reduced-motion:reduce){#experience.toy-landing #room-canvas{animation:none!important}}

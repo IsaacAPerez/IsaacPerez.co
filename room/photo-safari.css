@@ -1,0 +1,25 @@
+.photo-quest-toggle{position:absolute;right:32px;top:252px;min-height:44px;font-size:12px}
+.photo-quest{position:absolute;z-index:6;right:32px;top:92px;width:min(374px,calc(100% - 36px));max-height:calc(100svh - 174px);overflow:auto;overscroll-behavior:contain;padding:20px 22px;border:1px solid #ffffffa6;border-radius:20px;background:rgba(251,251,253,.98);box-shadow:0 12px 40px #0003;backdrop-filter:blur(16px)}
+.photo-quest .panel-heading{margin-bottom:10px}.photo-quest .panel-heading h2{font-size:23px}
+.photo-quest-intro{font-size:12px;color:var(--muted);margin-bottom:13px}
+.photo-progress{font-size:11px;font-weight:650;color:var(--ink);padding:10px 12px;background:#ebebe9;border-radius:10px;font-variant-numeric:tabular-nums}
+.photo-missions{margin:0;padding:0;list-style:none}
+.photo-missions li{border-top:1px solid var(--line);padding:15px 0 16px}
+.photo-mission-heading{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.photo-mission-heading h3{font-size:14px;font-weight:630;letter-spacing:-.02em}
+.photo-check{font-size:18px;color:#246045;font-weight:700}
+.photo-hint,.photo-readiness,.photo-footnote{font-size:11px;line-height:1.45;color:var(--muted)}
+.photo-hint{margin:3px 0 6px}.photo-readiness{margin-bottom:10px;min-height:16px}
+.photo-mission-actions{display:flex;gap:7px}
+.photo-mission-actions button,.photo-postcard-button,.photo-download{min-height:44px;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);font-size:11px;font-weight:600}
+.photo-mission-actions button{flex:1}.photo-mission-actions button:last-child,.photo-postcard-button{background:var(--ink);color:white;border-color:var(--ink)}
+.photo-mission-actions button:disabled,.photo-postcard-button:disabled{opacity:.45}
+.photo-thumb{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:contain;margin-top:11px;border-radius:9px;background:#e9e3d8}
+.photo-feedback{min-height:17px;font-size:11px;color:var(--ink);margin:0 0 12px}
+.photo-postcard-button{display:block;width:100%;font-size:12px}
+.photo-download{display:flex;align-items:center;justify-content:center;width:100%;margin-top:8px;text-decoration:underline;text-underline-offset:2px}
+.photo-footnote{margin-top:15px}.photo-footnote a{text-underline-offset:2px}
+.photo-open .cat-controls,.photo-open .ambience-toggle,.photo-open .photo-quest-toggle{visibility:hidden}
+@media(max-width:760px){.photo-quest-toggle{right:18px;top:236px;padding:10px 14px}.photo-quest{right:18px;top:78px;max-height:calc(100svh - 156px)}}
+@media(max-height:500px){.photo-quest-toggle{right:max(18px,env(safe-area-inset-right));top:226px}.photo-quest{right:max(18px,env(safe-area-inset-right));top:70px;max-height:calc(100svh - 134px)}}
+@media(max-height:500px) and (max-width:600px){.photo-quest-toggle{top:176px}}

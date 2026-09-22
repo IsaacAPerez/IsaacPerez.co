@@ -2,11 +2,11 @@
 
 _**This file is the living source of truth for the shape of isaacperez.co.** The interactive atlas is built from the same data._
 
-_Question status: **1 open · 8 resolved**._
+_Question status: **1 open · 7 resolved**._
 
 ## One paragraph
 
-IsaacPerez.co is Isaac's personal site: seven public pages of hand-written static HTML with no package.json, bundler, application build, tests or CI. The homepage follows Me → Experience → My company, with the original portrait in Me and a quiet personal contact footer. FIRSTUNIT branding appears only in the company section, linking to firstunit.io. Homepage styling and behavior live in css/personal.css and js/personal.js. The shared utility-page assets remain intact: /photo/pricing/ and /shootsort/ stay available but unpromoted, and four legal-style pages serve Quarters and Souvenir. /photo and /photo/ redirect to the existing FIRSTUNIT Studios destination. The authorized dead-code audit removed the unreferenced office game, RPG skin, fleet stylesheet copy and product app icons; git history preserves their source. A push to main is a production deploy through Vercel's git integration.
+IsaacPerez.co is Isaac's personal site: eight public pages of hand-written static HTML with no package.json, bundler, application build or CI. The root homepage is a first-person, toy-eye-level room based on Isaac's photographs. Visitors explore the bedroom and bathroom, meet Mimi and Charlie, inspect work and sneaker details, control lights and music, and optionally make a three-photo postcard. The earlier Me → Experience → My company page remains at /about/ with the original portrait and personal contact; the room reads its content rather than forking the biography. Public scripts, GLBs and the short material-study film live under /room/, while the source/prototype and original reference photos stay outside the deployment under docs/room-preview and in Isaac's Downloads. Pricing, ShootSort and four legal pages retain their URLs; /photo redirects to FIRSTUNIT Studios. A push to main publishes through Vercel's git integration.
 
 ## Decisions locked
 
@@ -14,56 +14,70 @@ IsaacPerez.co is Isaac's personal site: seven public pages of hand-written stati
 |---|---|---|
 | Brand Studio ownership | The product owns existing design source, brand/studio.adapter.json pointers and a generated read-only catalog. The pinned platform checkout owns extraction, validation and the shared browser/native renderer; CodeByIP reads that same fingerprinted catalog instead of authoring a second design system. The source library is local-only: .vercelignore excludes brand/ and the launcher; the public static site gains no developer route. | brand/README.md |
 | Runtime | Vanilla HTML/CSS/JS, one IIFE per script. No framework, package.json, bundler, node_modules or application build. The repository tree is the site. | — |
-| Homepage | Me → Experience → My company, then a quiet personal contact footer. Retain the original portrait. No apps catalogue, photography portfolio, pricing promotion, office game, achievements or skills marquee. | User direction · 2026-09-11 |
-| FIRSTUNIT | Company branding appears only in the homepage company section, with one company destination: https://firstunit.io. Personal identity, employer experience and contact remain independent of the company brand. | User direction · 2026-09-11 |
-| Asset ownership | css/personal.css and js/personal.js own homepage behavior and styling. css/site.css may supply base tokens but remains unchanged with js/site.js for utility pages. The unreferenced game, RPG skin, fleet stylesheet copy and app icons were removed in the authorized dead-code audit. | User direction · 2026-09-11 |
+| Homepage | The room becomes /, with toy-eye-level first-person exploration. Preserve the prior Me → Experience → My company page at /about/ as the readable alternative and content source; retain its original portrait and contact footer. | User direction · 2026-09-22 |
+| FIRSTUNIT | Company branding remains in /about/'s My company section and the corresponding room story; the company destination is https://firstunit.io. Personal identity, employer experience and contact remain independent of the company brand. | User direction · 2026-09-11 and 2026-09-22 |
+| Asset ownership | The root loads curated public room styles and scripts from /room/. css/personal.css and js/personal.js move with the former editorial page to /about/; /room/portfolio.js fetches that page on demand. docs/room-preview/ remains the excluded source and local reference prototype. | User direction · 2026-09-22 |
 | Hosting | Vercel git integration publishes main with no build step. vercel.json retains the response headers and permanent /photo redirects; production publication requires the approved preview. | — |
-| Theme and motion | Keep the inline pre-paint theme script and localStorage theme preference. Guard runtime storage access and honor prefers-reduced-motion. The homepage no longer awards badges or bakes game art. | — |
-| Asset paths | Root homepage asset paths are relative. Nested pages and 404.html use absolute paths. All references must match filename case exactly. | — |
-| Existing URLs | All seven sitemap pages remain. Pricing and ShootSort are retained but unpromoted; /photo and /photo/ continue to return HTTP 308 to https://firstunit.io/fu-0001. Keep legal URLs permanent and preserve utility-page navigation back to the homepage. | User direction · 2026-09-11 |
+| Theme and motion | Keep the editorial /about/ pre-paint theme script and localStorage theme preference. The room honors prefers-reduced-motion, gates sound behind visitor entry, and keeps cat movement optional under reduced motion. | — |
+| Asset paths | The root room and nested /about/ use exact absolute paths for their shared /room/ and /css/ resources. Existing nested pages and 404.html keep absolute paths; all references must match filename case exactly. | — |
+| Existing URLs | The seven existing sitemap routes remain, and /about/ is added as the eighth. Pricing and ShootSort stay functional; /photo and /photo/ still return HTTP 308 to FIRSTUNIT Studios. Utility-page section links now target /about/# anchors; home links return to the room at /. | User direction · 2026-09-22 |
 | Commits | Fleet hooks enforce Conventional Commits. Do not bypass them or push an unapproved landing-page change to main. | — |
 
 ## Cost model
 
 ## Reading order (the atlas chapters)
 
-1. **A personal page and a static host** — Me → Experience → My company, served as hand-written HTML. _(adds L, V)_
-2. **Homepage assets** — A dedicated stylesheet, the original portrait and existing font integration. _(adds C, I, E)_
-3. **A small, separate runtime** — Editorial uses native scroll reveals and CSS hover motion; theme remains the active saved preference. _(adds M, T, S)_
+1. **A playable room and a readable page** — The room is /; the earlier personal page survives at /about/. _(adds L, A, V)_
+2. **Public media and styles** — Curated GLBs and a short film ship; source photos stay private. _(adds C, I, E)_
+3. **The room comes to life** — Navigate, inspect, play with cats, relight the scene and take photos. _(adds M, T, S)_
 4. **Retained photo URLs** — The old photo route redirects; pricing stays available without homepage promotion. _(adds P, R, O)_
 5. **The retained download page** — ShootSort remains reachable at its existing URL. _(adds D)_
 6. **The pages that remain permanent** — Four app-facing documents and the existing commit hooks stay in place. _(adds Q, H)_
-7. **The whole system** — The personal homepage, retained utilities and static deployment together.
+7. **The whole system** — The room, readable alternative, retained utilities and static deployment together.
 
 ## Structures
 
 ### What a visitor lands on
 
-#### L · Landing page
+#### L · Room homepage
 
-**In one line.** The personal front door: who Isaac is, his engineering experience, and the company he founded.
+**In one line.** A first-person visit to Isaac's room, with the preserved personal page one link away.
 
-**What it does.** Three sections in order: Me, with the original portrait and personal introduction; Experience, with Tinder, Nextdoor, and UC Berkeley (EECS); My company, with the only FIRSTUNIT branding and one link to firstunit.io. A quiet footer holds personal contact links. The former product catalogue, photo promotion, game, achievements and skills marquee are absent.
+**What it does.** Explore the bedroom and connected bathroom at toy height. The approved layout uses a 70-inch desk and a queen mattress as scale anchors, with the corrected window cabinet, sneaker wall, desk-mounted monitor and accessible bathroom route. Mimi and Charlie roam, loaf and use their cat furniture. Visitors can inspect objects, read Isaac's existing Me, Experience and company content, raise the desk, adjust lights, play local lo-fi or house music, and make an optional three-shot postcard.
 
-**How it's built.** `index.html` is hand-written HTML with relative asset paths. It loads homepage-only `css/personal.css` and `js/personal.js`; `css/site.css` may supply shared base tokens. The theme pre-paint IIFE remains inline before the stylesheets. `js/site.js` is not a homepage dependency. Native homepage anchors retain `#about` for Me, `#experience` and the legacy `#work` target for Experience, `#firstunit` for My company, and `#contact` for the footer.
+**How it's built.** `index.html` owns the public root route and loads same-origin `/room/` scripts, styles and curated media. `/room/viewer.js` renders the static GLB through a small WebGL viewer and supports navigation, collision, reflections, lighting, cats and desk motion. The page links to `/about/` for the accessible, readable editorial alternative. Content panels fetch `/about/` rather than duplicating its biography and work copy.
 
 **Steps in execution.**
 
-1. **Pre-paint theme** — The inline head IIFE applies the saved theme before stylesheet parsing.
-2. **Me** — Render the personal introduction and original isaac.JPG portrait.
-3. **Experience** — Show Tinder, Nextdoor, and UC Berkeley (EECS) in the second section.
-4. **My company** — Present FIRSTUNIT only here and link to https://firstunit.io.
-5. **Contact** — Close with quiet personal links rather than a service-booking funnel.
+1. **Load** — Show the entry overlay while the room GLB and cat models load.
+2. **Enter** — Explore from toy height with keyboard/touch controls and optional pointer capture.
+3. **Inspect** — Use nearby shoes, collectibles, the workstation and cats to open detail panels.
+4. **Play** — Call or pet cats, hop onto furniture, set music and lights, and move the standing desk.
+5. **Read or save** — Open /about/ for the full site, or complete the optional three-photo postcard.
 
 **Questions.**
 
-- ~~**Q-L1** Should the homepage still download and bake the office when nobody opens it?~~ ✓ No. The user removed the office from the personal homepage. Game markup, achievement integration and the game CSS/JS dependencies are absent; their unreferenced source was removed in the authorized dead-code audit (2026-09-21).
+- ~~**Q-L1** Which page is the homepage?~~ ✓ The user chose the room at /, while the earlier editorial page remains at /about/ (2026-09-22).
+
+#### A · About page
+
+**In one line.** The earlier personal homepage survives intact as the readable content source.
+
+**What it does.** Me → Experience → My company, followed by Isaac's personal contact footer. The original portrait, Tinder and Nextdoor experience, Berkeley education and FIRSTUNIT company section remain. Visitors can read it directly without loading or navigating the 3D room.
+
+**How it's built.** `about/index.html` has an exact /about/ canonical, uses `/css/personal.css` and `/js/personal.js`, and keeps the pre-paint theme IIFE. Its `#about`, `#experience`, legacy `#work`, `#firstunit` and `#contact` anchors receive utility-page links. `/room/portfolio.js` fetches this public page on demand and extracts the existing copy, portrait and links for room stories and the monitor.
+
+**Steps in execution.**
+
+1. **Read** — Serve the original editorial content at /about/.
+2. **Reuse** — Room stories and monitor draw from its content.
+3. **Return** — The personal-name link leads back to the playable room at /.
 
 #### P · /photo/ redirect
 
 **In one line.** A preserved permanent redirect from the former photo page to FIRSTUNIT Studios.
 
-**What it does.** Requests to /photo or /photo/ reach the existing FIRSTUNIT Studios record. There is no photo/index.html and no photography portfolio on the personal homepage. The retained pricing page has its own separate route.
+**What it does.** Requests to /photo or /photo/ reach the existing FIRSTUNIT Studios record. There is no photo/index.html. The retained pricing page has its own separate route; the room's optional postcard activity does not change this redirect.
 
 **How it's built.** Two `vercel.json` redirect rules use `permanent: true` and point to `https://firstunit.io/fu-0001`. Vercel currently returns **HTTP 308** for both. The redirected path is excluded from the sitemap. The external retired domain `capturedbyip.com` returns HTTP 301 directly to the same destination (verified 2026-09-11); its configuration is outside this repository.
 
@@ -79,11 +93,11 @@ IsaacPerez.co is Isaac's personal site: seven public pages of hand-written stati
 
 #### R · Pricing page
 
-**In one line.** A retained pricing utility page, available by URL but unpromoted on the personal homepage.
+**In one line.** A retained pricing utility page, available by its existing URL.
 
-**What it does.** Four existing packages and their add-ons, booking explanation, and quote CTAs remain intact. Removing their homepage promotion does not remove or change the offers.
+**What it does.** Four existing packages and their add-ons, booking explanation, and quote CTAs remain intact. The new room homepage does not change the offers.
 
-**How it's built.** `photo/pricing/index.html` continues to load `/css/site.css`, `/css/photo.css` and `/js/site.js`. Its four visible prices and `OfferCatalog` JSON-LD must remain in step. Existing FIRSTUNIT practice copy and wordmark remain on this retained utility page; the homepage company-only branding rule does not silently authorize changing this page. Every quote CTA mails `hello@firstunit.io` — the enquiries address FIRSTUNIT publishes for the practice this page prices — with the package in the subject; the nav and footer still link back to the homepage sections.
+**How it's built.** `photo/pricing/index.html` continues to load `/css/site.css`, `/css/photo.css` and `/js/site.js`. Its four visible prices and `OfferCatalog` JSON-LD must remain in step. Existing FIRSTUNIT practice copy and wordmark remain on this retained utility page. Every quote CTA mails `hello@firstunit.io` with the package in the subject. Me, Experience, company and contact links target the corresponding `/about/#` anchors; Home returns to the room at /.
 
 **Steps in execution.**
 
@@ -97,11 +111,11 @@ IsaacPerez.co is Isaac's personal site: seven public pages of hand-written stati
 
 #### D · ShootSort page
 
-**In one line.** A retained public ShootSort download page, without a homepage product card.
+**In one line.** A retained public ShootSort download page at its existing URL.
 
-**What it does.** Existing visitors can still read the card-ingest promise, folder structure and system requirements, then download the macOS app. The personal homepage no longer promotes the app.
+**What it does.** Existing visitors can still read the card-ingest promise, folder structure and system requirements, then download the macOS app.
 
-**How it's built.** `shootsort/index.html` retains `/css/site.css`, its page-scoped style block and `/js/site.js`. Download buttons target the public `github.com/IsaacAPerez/ShootSort-releases/releases/latest/download/ShootSort.zip` endpoint. The source repository remains outside this site. Existing navigation to `/#work` now reaches the Experience section through a retained native anchor, without restoring the apps catalogue.
+**How it's built.** `shootsort/index.html` retains `/css/site.css`, its page-scoped style block and `/js/site.js`. Download buttons target the public `github.com/IsaacAPerez/ShootSort-releases/releases/latest/download/ShootSort.zip` endpoint. The source repository remains outside this site. Section links navigate to `/about/#` anchors; Home returns to the room at /.
 
 **Steps in execution.**
 
@@ -135,99 +149,97 @@ IsaacPerez.co is Isaac's personal site: seven public pages of hand-written stati
 
 ### What runs in the browser
 
-#### M · Page behavior
+#### M · Room runtime
 
-**In one line.** Homepage behavior is separate from the unchanged utility-page motion script.
+**In one line.** Small, same-origin browser scripts make the static room explorable.
 
-**What it does.** Editorial adds one-time scroll reveals, a clipped portrait hover zoom, timed link underlines and arrow movements, and theme transitions. The homepage behavior stays independent of js/site.js, which remains unchanged for pricing, ShootSort and other existing utility surfaces.
+**What it does.** A native WebGL viewer loads the room and cat GLBs. Separate scripts own cat routes, play interactions, desk movement, mirror and monitor surfaces, object details, original Web Audio music and toy sounds, and the optional photo adventure. The editorial page still has its own scroll behavior.
 
-**How it's built.** Both scripts stay vanilla IIFEs. `js/personal.js` handles the theme and uses IntersectionObserver to trigger one-time native Web Animations on `[data-reveal]` elements. Baseline content stays visible: supported motion briefly fades and translates it on entry, while missing APIs or reduced motion leave it fully readable. Live `prefers-reduced-motion` changes cancel active reveals; focus and hash navigation reveal their targets immediately. Anchors use native scrolling, with smooth behavior disabled under reduced motion. The homepage loads no `js/site.js` or external animation dependency; the retained shared utility script is unchanged.
-
-**Steps in execution.**
-
-1. **Baseline** — Keep content visible without JavaScript or animation support.
-2. **Scroll entry** — IntersectionObserver starts each eligible Web Animation once and then unobserves it.
-3. **Hover** — CSS clips portrait zoom within its rounded mask and animates links, arrows and theme changes when motion is allowed.
-4. **Respect preferences** — Respond to live reduced-motion changes and cancel active reveals.
-5. **Keep navigation immediate** — Focus and hash navigation reveal their destinations immediately while native anchors retain #about, #experience, #work, #firstunit and #contact.
-6. **Utility pages** — Keep js/site.js and its behavior unchanged.
-
-#### T · Theme switch
-
-**In one line.** A saved light or dark preference shared by the personal homepage and utility pages.
-
-**What it does.** The pre-paint script applies the saved theme early. Page-specific runtime code changes and stores the theme on request; there are no homepage achievement rewards or game-art updates.
-
-**How it's built.** Each page keeps the existing inline head IIFE reading `localStorage["theme"]` and setting `data-theme` before styles load. `js/personal.js` handles the homepage toggle; `js/site.js` handles utility pages. Runtime storage access is guarded. CSS answers through the root theme attribute and the system color-scheme preference.
+**How it's built.** The root loads `/room/viewer.js` with `renderer-math.js`, `room-config.js` and feature IIFEs under `/room/`. The approved enclosure stays fixed; interaction changes are runtime behavior. `portfolio.js` fetches `/about/` on first story use. `/about/` loads `/js/personal.js` for its native reveals; pricing and ShootSort retain `/js/site.js`. No framework or third-party script is required.
 
 **Steps in execution.**
 
-1. **Pre-paint** — Apply the saved theme before styles parse.
-2. **Toggle** — The page script computes and stores the next theme.
-3. **Restyle** — CSS custom properties and page rules react to data-theme.
+1. **Load geometry** — Read static GLBs for the room, Mimi and Charlie.
+2. **Navigate** — Render first-person movement, toy hopping, collisions and reflections.
+3. **Interact** — Use nearby objects, the moving desk, cats, music and light controls.
+4. **Read content** — Fetch /about/ for the monitor and story panels.
+5. **Capture** — Use the live rendered scene for optional postcard photos.
 
-**Questions.**
+#### T · Mood controls
 
-- ~~**Q-T1** Every other localStorage access is try/catch-wrapped for Safari private mode; the pre-paint IIFEs call `getItem` bare. Bug?~~ ✓ Deliberate. AGENTS.md rules that the inline pre-paint script stays verbatim in `<head>` before the stylesheets — never externalized, never deferred — because it exists to prevent FOUC (2026-08-24).
+**In one line.** Visitor-controlled lighting and local music make the room feel lived in.
+
+**What it does.** Day, Warm and Night presets plus separate daylight, bedroom, bathroom and warmth sliders adjust the actual scene. The original lo-fi and house tracks are synthesized in the browser, with play/pause and volume controls; toy steps and interactions make local sounds. The editorial /about/ page separately retains its saved light/dark theme.
+
+**How it's built.** `/room/room-audio.js` uses Web Audio, without streamed tracks or remote requests. `/room/interface.js` exposes music and light controls; `/room/viewer.js` updates scene lights and mirror captures. Entry is a visitor gesture for audio startup. Hidden-tab and reduced-motion handling suspend sound or animated movement as appropriate. The existing pre-paint theme script and `localStorage["theme"]` continue on /about/ and utility pages.
+
+**Steps in execution.**
+
+1. **Enter** — Start quiet local music after visitor action.
+2. **Choose** — Switch lo-fi or house, adjust volume or pause.
+3. **Relight** — Apply a preset or change individual light sliders.
+4. **Respect preferences** — Pause on hidden tabs and keep reduced-motion behavior optional.
 
 #### S · Browser storage
 
-**In one line.** The active persistent website preference is the theme in the visitor’s browser.
+**In one line.** The room needs no account or backend; theme is the existing saved preference.
 
-**What it does.** The personal homepage remembers light or dark mode. There is no website account, application backend, analytics or game-state activity on the new homepage.
+**What it does.** The optional photo adventure keeps captures in the current page, then builds a downloadable postcard image in the browser. It does not upload a visitor's photos. The editorial and utility pages continue to remember the light/dark theme locally.
 
-**How it's built.** `localStorage["theme"]` is read by the pre-paint IIFE and written by the active page script. Historic `ip-achievements` and `ip-game-state` values may remain in a returning visitor’s browser, but the new homepage neither reads nor writes them. Runtime theme storage access remains guarded; the existing inline pre-paint scripts are retained.
+**How it's built.** `/room/photo-safari.js` captures the current WebGL canvas, stores the three shots in memory and composes a JPEG data URL for download. No analytics, account or application backend is involved. `localStorage["theme"]` remains active for /about/ and utility pages; historic game keys remain dormant.
 
 **Steps in execution.**
 
-1. **Read** — Apply the saved theme before page paint.
-2. **Write** — Save the preference when the visitor toggles it.
-3. **Leave history alone** — Old game keys remain dormant; no migration or clearing is needed.
+1. **Frame** — Check each subject's position and visibility in the current room.
+2. **Capture** — Keep three live-rendered shots in page memory.
+3. **Compose** — Generate a downloadable postcard locally.
+4. **Theme** — Leave the existing saved editorial preference intact.
 
 ### What ships with the page
 
 #### C · Stylesheets
 
-**In one line.** Homepage-only styles sit beside stable utility-page styles.
+**In one line.** The room and editorial page each own their interface styling.
 
-**What it does.** The personal homepage has css/personal.css. Pricing, ShootSort, the custom 404 and legal pages retain their existing stylesheet ownership.
+**What it does.** Room styles live under /room/ for the full-scene canvas, floating controls and detail panels. The earlier editorial design moves with its page to /about/ and keeps the original portrait treatment. Utility and legal styles remain separate.
 
-**How it's built.** `css/personal.css` owns the homepage layout and components, including the portrait’s 28px rounded mask and fine-pointer hover zoom, timed underlines, arrow movements and theme transitions. CSS motion is gated by `prefers-reduced-motion`; native smooth scrolling becomes immediate scrolling when reduction is requested. `css/site.css` remains unchanged for utility pages. Pricing adds `css/photo.css`. The four legal-style pages use `css/legal.css`, the token subset of the fleet design system. ShootSort and 404 keep their scoped style blocks.
-
-**Steps in execution.**
-
-1. **Homepage** — Use css/personal.css for the selected personal-page variation.
-2. **Utility pages** — Keep site.css and page-specific additions unchanged.
-3. **Legal pages** — Keep the separate legal.css token system.
-
-#### I · Images & documents
-
-**In one line.** The original portrait stays prominent; existing images and the unlinked résumé stay on disk.
-
-**What it does.** Me uses Isaac’s original isaac.JPG inside a 28px rounded frame that clips its fine-pointer hover zoom. Tinder and Nextdoor employer logos, the Berkeley seal, and the favicon remain available. Product icons are retained even though the apps catalogue is removed. Resume.pdf remains unlinked because it is the old résumé.
-
-**How it's built.** Assets are committed directly, with no transformation pipeline. The exact case of `isaac.JPG` matters on Vercel. Homepage references are relative; utility references are absolute. The original image also supplies existing share metadata. Asset optimization stays in place under the same filename, and removing a homepage reference does not authorize deleting the underlying asset.
+**How it's built.** `/room/styles.css` and feature-specific room styles own the homepage interface. `/css/personal.css` serves /about/, preserving the portrait's rounded mask and reduced-motion handling. `/css/site.css` serves utility pages; pricing adds `/css/photo.css`, and legal pages use `/css/legal.css`. ShootSort and 404 retain their scoped blocks.
 
 **Steps in execution.**
 
-1. **Reference** — Use the original isaac.JPG in Me.
-2. **Retain** — Keep existing app icons, employer marks, berkeley-seal.png and unlinked Resume.pdf.
-3. **Verify case** — Check every changed src/href against the on-disk filename.
+1. **Room** — Load /room/ styles for canvas controls and panels.
+2. **About** — Use /css/personal.css for the readable editorial page.
+3. **Utilities** — Keep existing site, photo and legal styles separate.
+
+#### I · Room media and images
+
+**In one line.** Curated public 3D assets and a short film ship separately from private references.
+
+**What it does.** The room GLB and separate Mimi/Charlie GLBs supply live geometry. A short self-hosted Seedance 2.5 material-study film offers a cinematic view; it is not the navigable scene. The original portrait remains on /about/. Original multi-angle room and close-up reference photos are not published as a gallery.
+
+**How it's built.** Public assets are committed under `/room/` and fetched same-origin. The photos, editable Blender scene, generation provenance and local reference-panel server remain under `docs/room-preview/` or Isaac's Downloads and are excluded by `.vercelignore`. Exact filename case still matters on Vercel; the unlinked old `Resume.pdf` remains withheld.
+
+**Steps in execution.**
+
+1. **Load** — Fetch the room and two cat GLBs from /room/.
+2. **Watch** — Play the optional self-hosted film on request.
+3. **Protect** — Keep source photos and provenance out of the public bundle.
+4. **Verify case** — Check changed asset references against exact filenames.
 
 #### E · External services and links
 
-**In one line.** No third party at all any more: the one webfont is served from this origin, and the only outbound links are ordinary ones.
+**In one line.** The game loads its media from this origin; outbound links remain ordinary navigation.
 
-**What it does.** Nothing on the site fetches anything off-origin. Inter is self-hosted for the pages that need a webfont; the homepage and the legal pages use installed system faces, and so do the code blocks on /shootsort/ and 404.html. The personal homepage has one company destination inside My company and ordinary personal contact links. No YouTube player or third-party script is embedded anywhere.
+**What it does.** The WebGL assets, material-study film and original music use no third-party runtime service. /room/portfolio.js fetches /about/ from the same origin. Inter is self-hosted for utility pages. Company and personal contact links remain ordinary navigation.
 
-**How it's built.** The CSP grants neither Google font host: `font-src 'self'`, and `/fonts/inter-latin*.woff2` is declared by `css/site.css`, because a render-blocking `<link>` to `fonts.googleapis.com` meant a network that blackholes Google produced no first paint at all. JetBrains Mono was dropped with it — 31KB to set four ASCII lines — so there is no code face. The `www.youtube-nocookie.com` `frame-src` grant left over from the earlier photo page is removed; nothing on the site frames anything, so `default-src 'self'` is the fallback. `script-src` carries no `'unsafe-inline'` — it allowlists five sha256 hashes: the three pre-paint theme IIFE variants and the two JSON-LD blocks (the homepage Person graph and the pricing OfferCatalog), so an injected inline script is refused. `tools/check-site.sh` fails a commit whose inline scripts and hashes have drifted apart. Visiting FIRSTUNIT navigates to another site; it is not an embedded runtime dependency.
+**How it's built.** The CSP grants `font-src 'self'` and `connect-src 'self'`, allowing the room's same-origin fetches while refusing third-party scripts. Its inline-script hashes continue to cover the /about/ pre-paint and Person graph plus existing utility-page blocks; `tools/check-site.sh` detects drift. Visiting FIRSTUNIT navigates to another site; it is not an embedded dependency. There is no streamed music or external video player.
 
 **Steps in execution.**
 
-1. **Load fonts** — Serve Inter from /fonts/ on this origin, or use an installed face.
-2. **Visit company** — The company section links to https://firstunit.io.
-3. **Contact Isaac** — Footer links open the chosen personal contact destination.
-4. **Keep scope** — Do not add analytics, tag managers, external scripts or portfolio embeds.
+1. **Load** — Serve GLBs, film, scripts and styles from this origin.
+2. **Reuse content** — Fetch /about/ for the room's portfolio panels.
+3. **Navigate out** — Follow company or contact links only when the visitor chooses.
+4. **Keep scope** — Do not add analytics, tag managers or external players.
 
 ### How it gets live
 
@@ -241,9 +253,9 @@ IsaacPerez.co is Isaac's personal site: seven public pages of hand-written stati
 
 **Steps in execution.**
 
-1. **Write the message** — Use type(scope): subject, such as feat(site): simplify the personal homepage.
+1. **Write the message** — Use type(scope): subject, such as feat(site): launch the room homepage.
 2. **Run hooks** — Commit normally; do not use --no-verify without explicit permission.
-3. **Review preview** — Verify the homepage and retained utility routes before production publication.
+3. **Review preview** — Verify the room, /about/ and retained utility routes before production publication.
 4. **Publish when approved** — A push to main triggers Vercel.
 
 **Questions.**
@@ -252,18 +264,18 @@ IsaacPerez.co is Isaac's personal site: seven public pages of hand-written stati
 
 #### V · Vercel
 
-**In one line.** The host: it watches main, and whatever is in the tree becomes the live site.
+**In one line.** The host watches main and serves the files not withheld by .vercelignore.
 
 **What it does.** There is no build. Vercel clones the repo, serves the files as they are, gives each directory an extensionless URL, and terminates TLS on the apex domain. Pushing to main is publishing.
 
-**How it's built.** Vercel project `isaacperez`, root `.`, serves GitHub `IsaacAPerez/IsaacPerez.co`; the project and team ids live in the Vercel dashboard and are deliberately not recorded in this public repo. `vercel.json` has response headers and two permanent photo redirects, with no build command or rewrites. `.vercelignore` withholds the repo-only files — `AGENTS.md`, `CLAUDE.md`, `docs/`, the unlinked `Resume.pdf`, the share-card font and `tools/` — from the upload, so they exist in the repository but not at a URL. The custom `404.html` handles unknown URLs. Git push to main publishes production; the three design branches are review alternatives until a version is approved.
+**How it's built.** Vercel project `isaacperez`, root `.`, serves GitHub `IsaacAPerez/IsaacPerez.co`; project and team ids stay in the dashboard. `vercel.json` has response headers and two permanent photo redirects, with no build command or rewrites. `.vercelignore` withholds repo-only files including `docs/room-preview/`, original references, `Resume.pdf` and `tools/`; curated `/room/` runtime files are public. The custom `404.html` handles unknown URLs. Git push to main publishes production after preview approval.
 
 **Steps in execution.**
 
-1. **Preview** — Review a branch locally before publication.
+1. **Preview** — Review the room at /, editorial fallback at /about/ and utilities locally.
 2. **Push approved main** — Vercel receives the git update.
 3. **Serve files** — The repository tree supplies the static output.
-4. **Route** — Directory indexes serve retained pages; /photo and /photo/ return HTTP 308.
+4. **Route** — Root serves the room, /about/ serves editorial, and /photo returns HTTP 308.
 5. **Verify** — Check changed content, utility pages and redirects after publication.
 
 **Questions.**
@@ -272,116 +284,112 @@ IsaacPerez.co is Isaac's personal site: seven public pages of hand-written stati
 
 #### O · Discovery surface
 
-**In one line.** Seven sitemap pages remain discoverable even though the homepage is much smaller.
+**In one line.** The room and preserved editorial page have distinct canonical public URLs.
 
-**What it does.** The sitemap, robots file, per-page canonicals, share metadata and pricing OfferCatalog remain. Removing a homepage card does not remove its public URL from the sitemap.
+**What it does.** The sitemap, robots file, per-page canonicals, share metadata and pricing OfferCatalog remain. The seven existing routes stay; /about/ becomes the eighth listed page.
 
-**How it's built.** `sitemap.xml` lists `/`, `/photo/pricing/`, `/shootsort/`, `/souvenir/privacy/`, and the three `/roommate/` pages. `/photo/` is excluded because it redirects. `404.html` is excluded and marked noindex. The homepage, pricing and ShootSort retain Open Graph and Twitter metadata; pricing retains its OfferCatalog. A future route change requires updating sitemap and canonical tags together.
+**How it's built.** `sitemap.xml` lists the room at `/`, editorial page at `/about/`, pricing, ShootSort, Souvenir privacy and the three Quarters pages. `/photo/` is excluded because it redirects. `404.html` is excluded and marked noindex. The room and editorial page each use their exact canonical; existing utility URLs remain unchanged.
 
 **Steps in execution.**
 
-1. **Preserve** — Keep all seven existing loc entries.
-2. **Canonicalize** — Each public page points to its exact production URL.
-3. **Share** — Metadata continues to identify the personal site or specific utility page.
+1. **Add** — List /about/ alongside the seven retained URLs.
+2. **Canonicalize** — Point / and /about/ to their own exact production URLs.
+3. **Share** — Keep page-specific Open Graph and Twitter metadata.
 4. **Audit** — Compare sitemap paths, real pages and intentional redirects.
 
 **Questions.**
 
-- ~~**Q-O1** Should the reduced homepage remove the pricing, ShootSort or legal URLs from the sitemap?~~ ✓ No. The user approved keeping all seven routes functional and unchanged. Homepage promotion and route existence are separate decisions (2026-09-11).
+- ~~**Q-O1** Does moving the editorial page to /about/ remove pricing, ShootSort or legal URLs from the sitemap?~~ ✓ No. The seven earlier URLs remain and /about/ is added as the eighth; homepage format and route existence are separate decisions (2026-09-22).
 
 ## Flows (representative packets)
 
 Payload shapes are what the design implies, not measured traffic.
 
-### A personal homepage visit
+### A first room visit
 
 | # | From → To | Packet | Representative payload |
 |---|---|---|---|
 | 1 | L → V | GET / | `{"path":"/","accept":"text/html"}` |
-| 2 | V → L | 200 index.html | `{"sections":["Me","Experience","My company"],"build":"none"}` |
-| 3 | L → C | homepage styles | `{"sheet":"css/personal.css"}` |
-| 4 | L → I | original portrait | `{"src":"isaac.JPG","section":"Me"}` |
-| 5 | S → T | saved theme | `{"key":"theme","value":"dark"}` |
-| 6 | T → L | pre-paint theme | `{"attribute":"data-theme","value":"dark"}` |
-| 7 | L → M | homepage script | `{"src":"js/personal.js","defer":true}` |
+| 2 | V → L | 200 room homepage | `{"entry":"toy-eye-level","build":"none"}` |
+| 3 | L → C | room styles | `{"sheet":"/room/styles.css"}` |
+| 4 | L → I | room and cat GLBs | `{"base":"/room/"}` |
+| 5 | L → M | room scripts | `{"src":"/room/viewer.js","defer":true}` |
+| 6 | M → T | music and lighting | `{"music":["lofi","house"],"lights":["day","warm","night"]}` |
+| 7 | M → A | portfolio content | `{"fetch":"/about/"}` |
 
 ### A retained utility-page visit
 
 | # | From → To | Packet | Representative payload |
 |---|---|---|---|
 | 1 | R → V | GET /photo/pricing/ | `{"path":"/photo/pricing/"}` |
-| 2 | V → R | 200 pricing page | `{"preserved":true,"homepagePromotion":false}` |
+| 2 | V → R | 200 pricing page | `{"preserved":true}` |
 | 3 | R → C | utility styles | `{"links":["/css/site.css","/css/photo.css"]}` |
 | 4 | R → M | utility script | `{"src":"/js/site.js"}` |
-| 5 | R → L | homepage sections | `{"nav":["/#about","/#experience","/#firstunit"],"contact":"/#contact"}` |
+| 5 | R → A | editorial sections | `{"nav":["/about/#about","/about/#experience","/about/#firstunit"],"contact":"/about/#contact"}` |
+| 6 | R → L | room home | `{"href":"/"}` |
 
 ### Publishing an approved change
 
 | # | From → To | Packet | Representative payload |
 |---|---|---|---|
-| 1 | H → V | git push origin main | `{"subject":"feat(site): simplify the personal homepage","previewApproved":true}` |
-| 2 | V → L | serve homepage | `{"path":"/"}` |
-| 3 | V → P | preserve photo redirect | `{"status":308,"destination":"https://firstunit.io/fu-0001"}` |
-| 4 | V → R | preserve pricing | `{"path":"/photo/pricing/"}` |
-| 5 | V → D | preserve download page | `{"path":"/shootsort/"}` |
-| 6 | V → Q | preserve legal pages | `{"count":4}` |
-| 7 | V → O | preserve discovery | `{"sitemapPages":7}` |
+| 1 | H → V | git push origin main | `{"subject":"feat(site): launch the room homepage","previewApproved":true}` |
+| 2 | V → L | serve room | `{"path":"/"}` |
+| 3 | V → A | serve editorial | `{"path":"/about/"}` |
+| 4 | V → P | preserve photo redirect | `{"status":308,"destination":"https://firstunit.io/fu-0001"}` |
+| 5 | V → R | preserve pricing | `{"path":"/photo/pricing/"}` |
+| 6 | V → D | preserve download page | `{"path":"/shootsort/"}` |
+| 7 | V → Q | preserve legal pages | `{"count":4}` |
+| 8 | V → O | update discovery | `{"sitemapPages":8}` |
 
 ## Questions — index
 
 Reference by ID. ✓ resolved (with date) · otherwise open.
 
-- ~~**Q-L1**~~ (L) ✓ No. The user removed the office from the personal homepage. Game markup, achievement integration and the game CSS/JS dependencies are absent; their unreferenced source was removed in the authorized dead-code audit (2026-09-21).
+- ~~**Q-L1**~~ (L) ✓ The user chose the room at /, while the earlier editorial page remains at /about/ (2026-09-22).
 - ~~**Q-P1**~~ (P) ✓ No. Live verification found capturedbyip.com returning HTTP 301 directly to https://firstunit.io/fu-0001. This repository separately retains its /photo redirects for older inbound links (2026-09-11).
 - ~~**Q-R1**~~ (R) ✓ No. The user approved retaining every sitemap route and keeping this utility page functional but unpromoted. A later relocation or offer change is separate work (2026-09-11).
 - **Q-D1** (D) The page claims Apple silicon + macOS 14 and a notarized build, taken from `dist/appcast.xml` and the README. Nothing re-checks that when ShootSort ships a release — should the requirements line be generated, or is a page that only changes when the app's floor changes fine as prose?
 - ~~**Q-Q1**~~ (Q) ✓ No. App Store metadata and external systems point at the existing URLs; AGENTS.md marks the path permanent and allows only copy renames — and a rename must match `\bCrib\b` case-sensitively, a precaution the rename commit 85c58c1 records because a case-insensitive replace would mangle the word "describes" in the privacy policy (2026-08-24).
-- ~~**Q-T1**~~ (T) ✓ Deliberate. AGENTS.md rules that the inline pre-paint script stays verbatim in `<head>` before the stylesheets — never externalized, never deferred — because it exists to prevent FOUC (2026-08-24).
 - ~~**Q-H1**~~ (H) ✓ No. The approved implementation remains vanilla static HTML/CSS/JS; Vercel git integration is the deployment pipeline (2026-09-11).
 - ~~**Q-V1**~~ (V) ✓ No. The file is removed and vercel.json returns HTTP 308 to https://firstunit.io/fu-0001. The existing rule is preserved by the personal-site redesign (2026-09-11).
-- ~~**Q-O1**~~ (O) ✓ No. The user approved keeping all seven routes functional and unchanged. Homepage promotion and route existence are separate decisions (2026-09-11).
+- ~~**Q-O1**~~ (O) ✓ No. The seven earlier URLs remain and /about/ is added as the eighth; homepage format and route existence are separate decisions (2026-09-22).
 
 ## What the platform gives vs what we own
 
-**Platform gives:** Vercel provides git integration on <code>main</code>, TLS, CDN delivery, directory-style URLs and a custom 404 without an application build. <code>vercel.json</code> carries response headers — including the HSTS and CORS values that would otherwise be Vercel platform defaults — and permanent redirects for <code>/photo</code> and <code>/photo/</code>. <code>.vercelignore</code> decides which tracked files are uploaded at all. GitHub stores the source; the fleet platform supplies Conventional Commit and activity-feed hooks. No third party serves anything at runtime: the one webfont, Inter, is self-hosted from <code>/fonts/</code>. There is no application backend, analytics integration or GitHub Actions workflow in this repository. Machine-level monitoring is managed outside this repo; its configuration is not part of the website runtime.
+**Platform gives:** Vercel provides git integration on <code>main</code>, TLS, CDN delivery, directory-style URLs and a custom 404 without an application build. <code>vercel.json</code> carries response headers and permanent redirects for <code>/photo</code> and <code>/photo/</code>. <code>.vercelignore</code> withholds the source/prototype and original references under <code>docs/</code>; curated runtime files under <code>/room/</code> ship. GitHub stores the source; fleet hooks supply Conventional Commit enforcement and activity-feed logging. The room's GLBs, film and sound synthesis load from this origin without a backend, analytics, CDN, streaming service or GitHub Actions workflow. Machine-level monitoring is managed outside this repo.
 
-**We own:** The personal homepage, retained pricing and download pages, four legal-style pages, custom 404, page-specific styles and scripts, inline theme pre-paint, image/document assets, redirect configuration and discovery metadata.
+**We own:** The playable room homepage, preserved /about/ editorial page, retained pricing and download pages, four legal-style pages, custom 404, self-hosted room assets and scripts, page-specific styles, redirect configuration and discovery metadata.
 
 ## Planned filesystem
 
 ```
 IsaacPerez.co/
-  index.html            Me → Experience → My company; personal contact footer
+  index.html            first-person room homepage; links to /about/
+  room/                 public room scripts, styles, GLBs and short film
+  about/index.html      prior Me → Experience → My company page
   css/
-    personal.css        homepage only; may use site.css base tokens
+    personal.css        /about/ editorial layout and reveals
     site.css            shared utility-page styling and base tokens
     photo.css           /photo/pricing/ only
-    legal.css           four legal-style pages: the design system's tokens, none of its components, plus the .legal-* layout all four shared inline
+    legal.css           four legal-style pages
   js/
-    personal.js         homepage theme and accessible one-time scroll reveals
+    personal.js         /about/ theme and one-time scroll reveals
     site.js             retained utility-page motion and theme behavior
   photo/
     (no index.html; /photo and /photo/ return 308 via vercel.json)
-    pricing/index.html  retained pricing and OfferCatalog; unpromoted on homepage
-  shootsort/index.html  retained macOS download page; unpromoted on homepage
-  roommate/
-    privacy/index.html  Quarters privacy policy
-    terms/index.html    Quarters terms
-    support/index.html  Quarters support summary and canonical-page link
-  souvenir/
-    privacy/index.html  rendered from Souvenir/docs/privacy.md
+    pricing/index.html  retained pricing and OfferCatalog
+  shootsort/index.html  retained macOS download page
+  roommate/             Quarters privacy, terms and support pages
+  souvenir/privacy/     rendered from Souvenir/docs/privacy.md
   404.html              custom not-found page
-  isaac.JPG  isaac.avif  original portrait; AVIF is what a browser takes, JPEG is the fallback and the JSON-LD image
-  fonts/                self-hosted Inter; JetBrains Mono is repo-only, for docs/og/cards.html
+  isaac.JPG  isaac.avif  original portrait, now displayed at /about/
+  fonts/                self-hosted Inter; JetBrains Mono is repo-only
   Resume.pdf            old résumé, retained, unlinked and not deployed
-  favicon.svg  ndLogo.webp  tinderLogo.png
-  berkeley-seal.png     Berkeley seal, 96×96 PNG (3× its 32px render box)
   sitemap.xml  robots.txt  vercel.json
-  tools/check-site.sh   pre-commit guard: asset case, .vercelignore, sitemap, CSP hashes, prices; repo-only
-  .vercelignore         repo-only files withheld from the deployment
-  AGENTS.md             operating manual; repo-only, not served
-  .vercel/              gitignored Vercel linkage
-  docs/atlas/           data.mjs → atlas.html + SYSTEM.md; repo-only, not served
+  tools/check-site.sh   repo-only static-site guard
+  .vercelignore         repo-only files withheld from deployment
+  docs/room-preview/    source/prototype and provenance; excluded from Vercel
+  docs/atlas/           data.mjs → atlas.html + SYSTEM.md; repo-only
 ```
 
 ## How this file is maintained

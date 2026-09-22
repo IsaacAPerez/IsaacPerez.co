@@ -1,0 +1,11 @@
+/* Object cues retain the room's floating-control vocabulary. */
+.object-use{position:absolute;z-index:2;bottom:120px;left:50%;transform:translateX(-50%);max-width:calc(100% - 36px);min-height:48px;border:1px solid var(--line);border-radius:12px;background:#fbfbfdf5;color:var(--ink);padding:12px 18px;box-shadow:0 4px 20px #0002;font-size:12px}
+.object-use kbd{display:inline-block;margin-right:9px;border:1px solid var(--line);padding:1px 5px;border-radius:4px}
+.object-aimed #inspect-object{display:none!important}
+.object-play-dialog{width:min(520px,calc(100% - 36px))}
+.object-play-dialog>.panel-heading{position:sticky;top:-28px;padding:12px 0;z-index:1;background:var(--bg)}
+.object-play-dialog h2{font-size:25px;margin-bottom:0}.object-play-dialog .eyebrow{font-size:10px;margin-bottom:6px}
+.object-play-body>p{font-size:13px}.object-play-body h3{font-size:20px;font-weight:570;letter-spacing:-.025em;margin:0 0 16px}
+.object-play-body .portfolio-sections{margin-top:4px}
+@media(max-width:760px),(pointer:coarse){.object-use{left:auto;right:18px;transform:none;bottom:140px;max-width:calc(100% - 172px);text-align:left}.object-use kbd{display:none}}
+@media(max-height:500px){.object-use{bottom:84px;left:auto;right:max(18px,env(safe-area-inset-right));transform:none}.object-play-dialog>.panel-heading{top:-18px}}

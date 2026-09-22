@@ -8,7 +8,7 @@ generated from **one** file, which is the only one anyone edits.
 | `data.mjs` | The single source: structures, flows, chapters, decisions, open questions. | **Yes — this one.** |
 | `build.mjs` | `data.mjs` → `atlas.html` + `SYSTEM.md`. Byte-identical across all 12 fleet repos. | No |
 | `template.html` | The isometric renderer. Byte-identical across all 12 fleet repos. | No |
-| `atlas.html` | The interactive map (16 structures, 8 chapters). Generated. | Never |
+| `atlas.html` | The interactive map (15 structures, 7 chapters). Generated. | Never |
 | `SYSTEM.md` | The text twin — decisions table, every structure, the flows, the question index. Generated. | Never |
 
 ## Rebuild
