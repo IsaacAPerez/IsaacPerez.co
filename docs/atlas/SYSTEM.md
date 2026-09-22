@@ -12,6 +12,7 @@ IsaacPerez.co is Isaac's personal site: seven public pages of hand-written stati
 
 | Axis | Decision | ADR |
 |---|---|---|
+| Brand Studio ownership | The product owns existing design source, brand/studio.adapter.json pointers and a generated read-only catalog. The pinned platform checkout owns extraction, validation and the shared browser/native renderer; CodeByIP reads that same fingerprinted catalog instead of authoring a second design system. The source library is local-only: .vercelignore excludes brand/ and the launcher; the public static site gains no developer route. | brand/README.md |
 | Runtime | Vanilla HTML/CSS/JS, one IIFE per script. No framework, package.json, bundler, node_modules or application build. The repository tree is the site. | — |
 | Homepage | Me → Experience → My company, then a quiet personal contact footer. Retain the original portrait. No apps catalogue, photography portfolio, pricing promotion, office game, achievements or skills marquee. | User direction · 2026-09-11 |
 | FIRSTUNIT | Company branding appears only in the homepage company section, with one company destination: https://firstunit.io. Personal identity, employer experience and contact remain independent of the company brand. | User direction · 2026-09-11 |
