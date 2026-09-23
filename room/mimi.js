@@ -228,8 +228,12 @@
       return true;
     }
     function jumpDefinition(from,to) {
-      const cacheKey=[from.id,to.id,...from.center].join(',');
-      if(arcCache.has(cacheKey)) {const cached=arcCache.get(cacheKey);return cached ? {...cached,elapsed:0} : null;}
+      // Route planning repeatedly checks the same authored nodes. A real takeoff
+      // uses the cat's current position and yaw, so it must be checked afresh;
+      // caching those nearly unique positions would grow for the entire visit.
+      const cacheable=from===nodes.get(from.id) && to===nodes.get(to.id);
+      const cacheKey=cacheable ? [from.id,to.id,...from.center].join(',') : null;
+      if(cacheable && arcCache.has(cacheKey)) {const cached=arcCache.get(cacheKey);return cached ? {...cached,elapsed:0} : null;}
       const distance=Math.hypot(to.center[0]-from.center[0],to.center[2]-from.center[2]), rise=to.center[1]-from.center[1];
       if (distance>1.6 || Math.abs(rise)>1.2) return null;
       const startYaw=from.yaw === undefined ? Math.atan2(to.center[0]-from.center[0],to.center[2]-from.center[2]) : from.yaw, endYaw=to.yaw === undefined ? startYaw : to.yaw;
@@ -246,9 +250,9 @@
           const p=flightPoint(arc,i/64);
           if (!volumeClear(p.x,p.y,p.z,p.yaw,from,to,p)) { valid=false;break; }
         }
-        if (valid) {arcCache.set(cacheKey,arc);return {...arc};}
+        if (valid) {if(cacheable)arcCache.set(cacheKey,arc);return {...arc};}
       }
-      arcCache.set(cacheKey,null);return null;
+      if(cacheable)arcCache.set(cacheKey,null);return null;
     }
     function flightPoint(arc,t) {
       const f=t*t*(3-2*t), a=arc.from.center, b=arc.to.center;

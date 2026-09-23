@@ -22,6 +22,7 @@
     var delay = context.createDelay(2), echoTone = context.createBiquadFilter();
     var feedback = context.createGain(), wet = context.createGain();
     var permanent = [mix, keys, fader, compressor, makeup, delay, echoTone, feedback, wet];
+    var panners = new Map(), idleGains = [];
     keys.type = 'lowpass'; keys.frequency.value = spec.tone; keys.Q.value = 0.35;
     compressor.threshold.value = -16; compressor.knee.value = 14; compressor.ratio.value = 3;
     compressor.attack.value = 0.006; compressor.release.value = 0.20;
@@ -38,11 +39,26 @@
       seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
       samples[i] = (seed / 4294967296) * 2 - 1;
     }
-    function voice(sources, nodes, end) {
+    function gain() {
+      var node = idleGains.pop() || context.createGain();
+      node.gain.cancelScheduledValues(context.currentTime);
+      node.gain.setValueAtTime(0, context.currentTime);
+      return node;
+    }
+    function voice(sources, nodes, end, reusable) {
+      reusable = reusable || [];
       var entry = { sources: sources, nodes: nodes, end: end, released: false };
       function release() {
         if (entry.released) return;
-        entry.released = true; nodes.forEach(disconnect); voices.delete(entry);
+        entry.released = true;
+        // A finished AudioScheduledSourceNode may stay alive until the browser's
+        // next GC. Remove its handler and references to the rest of the voice now.
+        sources[0].onended = null;
+        nodes.forEach(disconnect);
+        if (!released) reusable.forEach(function (node) { idleGains.push(node); });
+        reusable.length = 0;
+        sources.length = 0; nodes.length = 0;
+        voices.delete(entry);
       }
       sources[0].onended = release;
       sources.forEach(function (source) { source.stop(end); });
@@ -50,13 +66,20 @@
     }
     function pan(node, value, output) {
       if (!context.createStereoPanner) { node.connect(output); return []; }
-      var panner = context.createStereoPanner(); panner.pan.value = value;
-      node.connect(panner); panner.connect(output); return [panner];
+      // The arrangement uses fixed pan positions. A panner is linear, so voices
+      // at the same position can share one instead of allocating a node per hit.
+      var key = (output === keys ? 'keys:' : 'mix:') + value;
+      var panner = panners.get(key);
+      if (!panner) {
+        panner = context.createStereoPanner(); panner.pan.value = value;
+        panner.connect(output); panners.set(key, panner); permanent.push(panner);
+      }
+      node.connect(panner); return [];
     }
     function rhodes(note, time, duration, level, position) {
       if (released || (!offline && voices.size >= 64)) return;
       var carrier = context.createOscillator(), modulator = context.createOscillator();
-      var modulation = context.createGain(), envelope = context.createGain(), hz = frequency(note);
+      var modulation = gain(), envelope = gain(), hz = frequency(note);
       carrier.type = 'sine'; carrier.frequency.value = hz;
       modulator.type = 'sine'; modulator.frequency.value = hz * 2;
       modulation.gain.setValueAtTime(hz * 0.85, time);
@@ -68,39 +91,39 @@
       envelope.gain.linearRampToValueAtTime(0, time + duration);
       var extra = pan(envelope, position, keys);
       carrier.start(time); modulator.start(time);
-      voice([carrier, modulator], [carrier, modulator, modulation, envelope].concat(extra), time + duration + 0.02);
+      voice([carrier, modulator], [carrier, modulator, modulation, envelope].concat(extra), time + duration + 0.02, [modulation, envelope]);
     }
     function bass(note, time, duration, level) {
       if (released || (!offline && voices.size >= 64)) return;
-      var source = context.createOscillator(), filter = context.createBiquadFilter(), envelope = context.createGain();
+      var source = context.createOscillator(), filter = context.createBiquadFilter(), envelope = gain();
       source.type = 'triangle'; source.frequency.value = frequency(note);
       filter.type = 'lowpass'; filter.frequency.value = house ? 520 : 350; filter.Q.value = 0.3;
       source.connect(filter); filter.connect(envelope); envelope.connect(mix);
       envelope.gain.setValueAtTime(0, time); envelope.gain.linearRampToValueAtTime(level, time + 0.018);
       envelope.gain.setValueAtTime(level * 0.72, time + Math.min(0.1, duration * 0.4));
       envelope.gain.exponentialRampToValueAtTime(0.0001, time + duration);
-      source.start(time); voice([source], [source, filter, envelope], time + duration + 0.015);
+      source.start(time); voice([source], [source, filter, envelope], time + duration + 0.015, [envelope]);
     }
     function kick(time, level) {
       if (released || (!offline && voices.size >= 64)) return;
-      var source = context.createOscillator(), envelope = context.createGain();
+      var source = context.createOscillator(), envelope = gain();
       source.frequency.setValueAtTime(house ? 145 : 115, time);
       source.frequency.exponentialRampToValueAtTime(house ? 49 : 45, time + 0.10);
       envelope.gain.setValueAtTime(0, time); envelope.gain.linearRampToValueAtTime(level, time + 0.004);
       envelope.gain.exponentialRampToValueAtTime(0.0001, time + (house ? 0.31 : 0.27));
       source.connect(envelope); envelope.connect(mix); source.start(time);
-      voice([source], [source, envelope], time + 0.34);
+      voice([source], [source, envelope], time + 0.34, [envelope]);
     }
     function noiseHit(time, duration, level, cutoff, kind, position) {
       if (released || (!offline && voices.size >= 64)) return;
-      var source = context.createBufferSource(), filter = context.createBiquadFilter(), envelope = context.createGain();
+      var source = context.createBufferSource(), filter = context.createBiquadFilter(), envelope = gain();
       source.buffer = noise; filter.type = kind; filter.frequency.value = cutoff; filter.Q.value = 0.65;
       source.connect(filter); filter.connect(envelope);
       envelope.gain.setValueAtTime(0, time); envelope.gain.linearRampToValueAtTime(level, time + 0.003);
       envelope.gain.exponentialRampToValueAtTime(0.0001, time + duration);
       var extra = pan(envelope, position, mix);
       source.start(time, (Math.floor(time * 13) % 7) / 10);
-      voice([source], [source, filter, envelope].concat(extra), time + duration + 0.015);
+      voice([source], [source, filter, envelope].concat(extra), time + duration + 0.015, [envelope]);
     }
     function schedule(index, straightTime) {
       if (released) return;
@@ -139,6 +162,7 @@
           entry.sources.forEach(function (source) { try { source.stop(); } catch (_) { /* Ended. */ } });
           entry.release();
         });
+        idleGains.forEach(disconnect); idleGains.length = 0;
         permanent.forEach(disconnect);
       },
     };

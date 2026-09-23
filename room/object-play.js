@@ -71,6 +71,7 @@
   }
   function buildTargets(objects) {
     var result = [], names = objects.map(function (o) { return o.name; }).join('\n');
+    var detailIgnoreNames = objects.filter(function (o) { return /^Detail \| Material batch \|/.test(o.name); }).map(function (o) { return o.name; });
     if (/Sneaker clear doors/.test(names)) {
       for (var col = 0; col < 9; col++) {
         for (var row = 0; row < (col < 6 ? 8 : 5); row++) {
@@ -111,7 +112,7 @@
     });
     result.forEach(function (item) {
       if (item.kind === 'collectible' || item.kind === 'keychain') {
-        item.ignoreNames = objects.filter(function (o) { return /^Detail \| Material batch \|/.test(o.name); }).map(function (o) { return o.name; });
+        item.ignoreNames = detailIgnoreNames;
       }
     });
     return result;
@@ -127,6 +128,7 @@
     var room = options.room, host = options.host || document.getElementById('experience');
     if (!room || !host) return null;
     var disposed = false, aimed = null, opened = null, revision = 0, returnFocus = null;
+    var targets = null, monitorTarget = null, monitorBaseY = null, deskOffset = 0, lastCameraKey = null;
     var cue = node('button', '', 'object-use'); cue.id = 'object-use'; cue.type = 'button'; cue.hidden = true;
     cue.setAttribute('aria-haspopup', 'dialog'); cue.setAttribute('aria-controls', 'object-play-dialog');
     var cueKey = node('kbd', 'E'), cueLabel = node('span'); cueKey.setAttribute('aria-hidden', 'true'); cue.append(cueKey, cueLabel);
@@ -137,6 +139,31 @@
     headingCopy.append(eyebrow, title); heading.append(headingCopy, close);
     var body = node('div', '', 'object-play-body'); dialog.append(heading, body); host.append(cue, dialog);
 
+    function ensureTargets(state) {
+      if (targets || !state || !state.loaded) return;
+      var deskState = room.desk && room.desk.state;
+      if (deskState && Number.isFinite(deskState.offset)) deskOffset = deskState.offset;
+      targets = buildTargets(room.sceneObjects || []);
+      monitorTarget = targets.find(function (item) { return item.kind === 'monitor'; }) || null;
+      if (monitorTarget) monitorBaseY = {
+        min: monitorTarget.bounds.min[1] - deskOffset,
+        max: monitorTarget.bounds.max[1] - deskOffset,
+        point: monitorTarget.point[1] - deskOffset
+      };
+    }
+
+    function onDeskState(event) {
+      var offset = event.detail && event.detail.offset;
+      if (!Number.isFinite(offset) || offset === deskOffset) return;
+      deskOffset = offset;
+      if (monitorTarget) {
+        monitorTarget.bounds.min[1] = monitorBaseY.min + offset;
+        monitorTarget.bounds.max[1] = monitorBaseY.max + offset;
+        monitorTarget.point[1] = monitorBaseY.point + offset;
+      }
+      update();
+    }
+
     function blocked() {
       return document.hidden || !host.classList.contains('entered') || !!document.querySelector('dialog[open]') ||
         ['references', 'ambience'].some(function (id) { var panel = document.getElementById(id); return panel && !panel.hidden; });
@@ -146,11 +173,25 @@
       var response = room.visibility(hit, { ignoreNames: item.ignoreNames || [], tolerance: .018 });
       return typeof response === 'boolean' ? response : !!(response && response.visible);
     }
-    function update() {
+    function update(force) {
       if (disposed) return null;
-      aimed = blocked() ? null : selectTarget(room.state, buildTargets(room.sceneObjects || []), visibility);
-      cue.hidden = !aimed; host.classList.toggle('object-aimed', !!aimed);
-      if (aimed) {
+      var isBlocked = blocked();
+      var state = isBlocked ? null : (room.cameraState || room.state);
+      if (state) ensureTargets(state);
+      var position = state && state.position;
+      var cameraKey = isBlocked ? 'blocked' : [
+        state && state.loaded, state && state.mode,
+        position && position.x, position && position.y, position && position.z,
+        state && state.yaw, state && state.pitch, deskOffset
+      ].join('|');
+      if (!force && cameraKey === lastCameraKey) return aimed;
+      lastCameraKey = cameraKey;
+      var previousId = aimed && aimed.id;
+      aimed = isBlocked ? null : selectTarget(state, targets || [], visibility);
+      var hasAim = !!aimed;
+      if (cue.hidden !== !hasAim) cue.hidden = !hasAim;
+      if (host.classList.contains('object-aimed') !== hasAim) host.classList.toggle('object-aimed', hasAim);
+      if (aimed && aimed.id !== previousId) {
         cueLabel.textContent = 'Use · ' + aimed.title;
         cue.setAttribute('aria-label', 'Use ' + aimed.title + (aimed.case ? ', column ' + aimed.case.column + ', row ' + aimed.case.row : ''));
       }
@@ -183,7 +224,7 @@
       });
     }
     function use() {
-      var item = update();
+      var item = update(true);
       if (!item) return false;
       var token = ++revision; opened = item; returnFocus = document.activeElement;
       if (document.pointerLockElement && document.exitPointerLock) document.exitPointerLock();
@@ -214,12 +255,15 @@
     function onVisibility() { update(); }
     document.addEventListener('visibilitychange', onVisibility);
     window.addEventListener('room:error', onVisibility);
+    window.addEventListener('desk:state', onDeskState);
+    window.addEventListener('room:ready', update);
     var timer = setInterval(update, 100); update();
     return { update: update, use: use, get target() { return aimed; }, get state() { return { target: aimed && aimed.id, open: opened && opened.id }; },
       dispose: function () {
         if (disposed) return; disposed = true; clearInterval(timer); revision++;
         if (dialog.open) dialog.close(); cue.remove(); dialog.remove(); host.classList.remove('object-aimed');
         document.removeEventListener('visibilitychange', onVisibility); window.removeEventListener('room:error', onVisibility);
+        window.removeEventListener('desk:state', onDeskState); window.removeEventListener('room:ready', update);
       } };
   }
   var api = { init: init, selectTarget: selectTarget, rayBox: rayBox, buildTargets: buildTargets };

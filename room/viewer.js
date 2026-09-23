@@ -9,6 +9,7 @@
   const config = window.ROOM_CONFIG || {};
   const runtimeMath = window.RoomRendererMath;
   const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const compactViewport = window.matchMedia('(max-width: 700px), (pointer: coarse)');
   const emit = (name, detail) => window.dispatchEvent(new CustomEvent(name, { detail }));
   const gl = canvas.getContext('webgl2', { antialias: true, alpha: false });
   function fail(error) {
@@ -75,7 +76,9 @@
   let mode = 'toy', loaded = false, meshes = [], triangleCount = 0, nearId = null;
   const player = { feetY: 0, velocityY: 0, grounded: true, support: 'floor', jumps: 0, landings: 0,
     distance: 0, lastFootstep: 0 };
-  let dirty = true, frameId = 0, lastTime = 0, destroyed = false;
+  let dirty = true, frameId = 0, lastTime = 0, nextFrameTime = 0, destroyed = false;
+  let renderedFrames = 0, skippedFrames = 0;
+  let mainDrawCalls = 0, mirrorDrawCalls = 0;
   let lights = [], shadow = null, contactTexture = null;
   let catMeshes = [], mirrors = [], shadowDirty = false, lastShadowUpdate = 0, shadowBuilds = 0;
   let sceneRevision = 0, lastDeskEvent = 0, deskNear = null;
@@ -553,6 +556,8 @@
       }
       imported.push({ name, bounds: worldBounds, originalBounds: { min: worldBounds.min.slice(), max: worldBounds.max.slice() },
         originalModel: new Float32Array(model), vao, material, model, normal: normalMatrix(model), indexType, count, ceiling, hasTangent: attrs.TANGENT !== undefined, center: transformPoint(model, center),
+        cullRadius: Math.hypot(worldBounds.max[0] - worldBounds.min[0], worldBounds.max[1] - worldBounds.min[1],
+          worldBounds.max[2] - worldBounds.min[2]) * .5,
         mirrored: model[0] * (model[5] * model[10] - model[6] * model[9]) - model[4] * (model[1] * model[10] - model[2] * model[9]) + model[8] * (model[1] * model[6] - model[2] * model[5]) < 0 });
       triangles += Math.floor(count / 3);
       if (anatomy) for (let i = 0; i < position.data.length; i += 3) samples.push(transformPoint(model, position.data.subarray(i, i + 3)));
@@ -775,7 +780,8 @@
       lastCaptureCamera: mirror.lastCaptureCamera, reflectedEye: mirror.reflectedEye, sceneRevision: mirror.sceneRevision }));
   }
   function mirrorTarget(mirror, width, height) {
-    const scale = Math.min(512 / width, 512 / height, 1), w = Math.max(1, Math.round(width * scale)), h = Math.max(1, Math.round(height * scale));
+    const limit = compactViewport.matches ? 320 : 512;
+    const scale = Math.min(limit / width, limit / height, 1), w = Math.max(1, Math.round(width * scale)), h = Math.max(1, Math.round(height * scale));
     if (mirror.target && mirror.width === w && mirror.height === h) return;
     if (mirror.target) { gl.deleteTexture(mirror.target.texture); gl.deleteRenderbuffer(mirror.target.depth); gl.deleteFramebuffer(mirror.target.framebuffer); }
     const texture = gl.createTexture(), depth = gl.createRenderbuffer(), framebuffer = gl.createFramebuffer();
@@ -918,6 +924,7 @@
   }
   function stepPlayer(dt) {
     if (mode !== 'toy' || dt <= 0) return;
+    const previousHeight = camera.y;
     if (player.grounded) {
       const under = supportAt(camera.x, camera.z, player.feetY + .05);
       if (under.id === player.support && Math.abs(under.height - player.feetY) < .08) player.feetY = under.height;
@@ -938,7 +945,7 @@
       } else player.feetY = next;
     }
     camera.y = player.feetY + .3;
-    dirty = true;
+    if (camera.y !== previousHeight) dirty = true;
   }
   function rayBox(origin, target, min, max) {
     const vector = target.map((value, i) => value - origin[i]);
@@ -1078,11 +1085,26 @@
     dirty = true; updateProximity();
   }
   let pendingMirror = false;
+  function catPoseChanged(cat) {
+    const pose = cat.controller.pose, previous = cat.visualPose;
+    cat.pose = pose;
+    const values = [pose.x, pose.y, pose.z, pose.yaw, pose.loaf, pose.tuck, pose.pitch,
+      pose.bob, pose.tail, pose.back, Number(pose.airborne)];
+    let changed = !previous || values.some((value, index) => Math.abs(value - previous.values[index]) > .0001);
+    if (!changed) for (let i = 0; i < pose.steps.length; i++) {
+      if (Math.abs(pose.steps[i] - previous.steps[i]) > .0001) { changed = true; break; }
+    }
+    if (changed) {
+      if (previous) { previous.values = values; previous.steps.set(pose.steps); }
+      else cat.visualPose = { values, steps: new Float32Array(pose.steps) };
+    }
+    return changed;
+  }
   function prepareCats() {
     const shadows = new Float32Array(8), paws = new Float32Array(32), support = new Float32Array(2);
     cats.forEach((cat, actorIndex) => {
       if (!cat.controller.obstacle.loaded) return;
-      const pose = cat.controller.pose, c = Math.cos(pose.yaw), s = Math.sin(pose.yaw);
+      const pose = cat.pose || cat.controller.pose, c = Math.cos(pose.yaw), s = Math.sin(pose.yaw);
       cat.pose = pose;
       const y = Number.isFinite(pose.y) ? pose.y : 0.026;
       cat.actor = nodeMatrix({ translation: [pose.x, y, pose.z], rotation: [0, Math.sin(pose.yaw / 2), 0, Math.cos(pose.yaw / 2)] });
@@ -1118,13 +1140,17 @@
     gl.uniform2fv(uniforms.CatSupport, catData.support);
     const distance = mesh => mesh.cat ? Math.hypot(mesh.cat.pose.x - eye[0], mesh.cat.pose.z - eye[2])
       : Math.hypot(mesh.center[0] - eye[0], mesh.center[1] - eye[1], mesh.center[2] - eye[2]);
-    const visible = meshes.filter(mesh => !(mode === 'overview' && mesh.ceiling) && !(capture && mesh.mirror)).concat(catMeshes);
+    const frustum = runtimeMath.frustumPlanes(viewProjection);
+    const visible = meshes.filter(mesh => !(mode === 'overview' && mesh.ceiling) && !(capture && mesh.mirror)
+      && runtimeMath.sphereVisible(mesh.bounds, frustum, mesh.cullRadius)).concat(catMeshes);
     if (ballMesh && catPlay && catPlay.state.ball && catPlay.state.ball.visible) {
       const ball = catPlay.state.ball;
       ballMesh.model[12] = ball.x; ballMesh.model[13] = ball.y; ballMesh.model[14] = ball.z;
       ballMesh.center[0] = ball.x; ballMesh.center[1] = ball.y; ballMesh.center[2] = ball.z;
       visible.push(ballMesh);
     }
+    if (capture) mirrorDrawCalls += visible.length;
+    else mainDrawCalls = visible.length;
     const transparent = visible.filter(mesh => mesh.material.blend).sort((a, b) => distance(b) - distance(a));
     function draw(mesh) {
       const m = mesh.material;
@@ -1165,7 +1191,7 @@
     gl.depthMask(true); gl.disable(gl.BLEND); gl.bindVertexArray(null);
   }
   function render() {
-    const rect = canvas.getBoundingClientRect(), ratio = Math.min(window.devicePixelRatio || 1, 2);
+    const rect = canvas.getBoundingClientRect(), ratio = Math.min(window.devicePixelRatio || 1, compactViewport.matches ? 1.25 : 1.5);
     const width = Math.max(1, Math.round(rect.width * ratio)), height = Math.max(1, Math.round(rect.height * ratio));
     if (canvas.width !== width || canvas.height !== height) { canvas.width = width; canvas.height = height; }
     if (!loaded) { gl.viewport(0, 0, width, height); gl.clearColor(0.075, 0.081, 0.09, 1); gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT); return; }
@@ -1174,7 +1200,7 @@
     const view = viewMatrix(), perspective = projection(width / height), mainVP = multiply(perspective, view);
     const eye = [camera.x, camera.y, camera.z], catData = prepareCats(), now = performance.now();
     const signature = [...eye, camera.yaw, camera.pitch, width, height, sceneRevision].join(',');
-    pendingMirror = false;
+    pendingMirror = false; mirrorDrawCalls = 0;
     for (const mirror of mirrors) {
       // The approved east wall only opens onto the bathroom corridor at
       // z=-4.2..-3.25. Test that aperture instead of capturing through the closet.
@@ -1185,7 +1211,7 @@
       if (!mirror.visible || sceneSuspended()) continue;
       mirrorTarget(mirror, width, height);
       if (mirror.signature === signature) continue;
-      if (mirror.captures && now - mirror.lastTime < 50) { pendingMirror = true; continue; }
+      if (mirror.captures && now - mirror.lastTime < 100) { pendingMirror = true; continue; }
       const reflectedEye = transformPoint(mirror.matrix, eye), reflectedVP = multiply(mainVP, mirror.matrix);
       // A reflected view reverses handedness. Front-face winding is reversed in
       // drawPass; world clipping removes the geometry behind the silvered plane.
@@ -1200,18 +1226,32 @@
     gl.bindFramebuffer(gl.FRAMEBUFFER, null); gl.viewport(0, 0, width, height);
     gl.depthMask(true); gl.clearColor(0.075, 0.081, 0.09, 1); gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     drawPass(mainVP, eye, catData);
+    renderedFrames++;
   }
   function frame(time) {
     frameId = 0;
-    if (document.hidden || destroyed) { lastTime = 0; return; }
+    if (document.hidden || destroyed) { lastTime = 0; nextFrameTime = 0; return; }
+    // Follow the display clock while limiting work to 60 Hz on desktop and
+    // 30 Hz on touch or narrow screens. Keep the fractional phase for 90/144 Hz
+    // displays, but never run catch-up frames after a background/slow frame.
+    const interval = 1000 / (compactViewport.matches ? 30 : 60);
+    if (nextFrameTime && time + 1 < nextFrameTime) {
+      skippedFrames++; frameId = requestAnimationFrame(frame); return;
+    }
+    nextFrameTime = nextFrameTime ? nextFrameTime + interval : time + interval;
+    if (nextFrameTime < time) nextFrameTime = time + interval;
     const dt = lastTime ? Math.min((time - lastTime) / 1000, 0.05) : 0;
     lastTime = time;
     if (loaded) { movement(dt); stepDesk(dt); stepPlayer(dt); }
-    for (const cat of cats) if (cat.controller.step(dt)) { dirty = true; sceneRevision++; updateProximity(); }
+    let catChanged = false;
+    for (const cat of cats) {
+      if (cat.controller.step(dt) && catPoseChanged(cat)) catChanged = true;
+    }
+    if (catChanged) { dirty = true; sceneRevision++; updateProximity(); }
     if (catPlay && catPlay.step(dt)) { dirty = true; sceneRevision++; }
     if (dirty || pendingMirror) { render(); dirty = false; }
     if (keys.size || touchMoves.size || !player.grounded || (catPlay && catPlay.active) || cats.some(cat => cat.controller.active) || (!sceneSuspended() && (desk.moving || pendingMirror))) frameId = requestAnimationFrame(frame);
-    else lastTime = 0;
+    else { lastTime = 0; nextFrameTime = 0; }
   }
   function invalidate() {
     dirty = true;
@@ -1289,7 +1329,7 @@
   });
   window.addEventListener('blur', () => { keys.clear(); touchMoves.clear(); dragging = null; });
   document.addEventListener('visibilitychange', () => {
-    keys.clear(); touchMoves.clear(); dragging = null; lastTime = 0;
+    keys.clear(); touchMoves.clear(); dragging = null; lastTime = 0; nextFrameTime = 0;
     if (document.hidden) { cancelAnimationFrame(frameId); frameId = 0; }
     else invalidate();
   });
@@ -1313,7 +1353,12 @@
       monitor: { loaded: monitor.loaded, uploads: monitor.uploads, source: monitor.source ? monitor.source.state : null },
       player: { ...player }, catPlay: catPlay ? catPlay.state : null,
       mimi: cats[0] ? cats[0].controller.state : null, charlie: cats[1] ? cats[1].controller.state : null,
-      cats: cats.map(cat => ({ ...cat.controller.state, triangles: cat.triangles || 0 })) }; },
+      cats: cats.map(cat => ({ ...cat.controller.state, triangles: cat.triangles || 0 })),
+      performance: { renderedFrames, skippedFrames, targetFps: compactViewport.matches ? 30 : 60,
+        pixelRatio: Math.min(window.devicePixelRatio || 1, compactViewport.matches ? 1.25 : 1.5),
+        mainDrawCalls, mirrorDrawCalls } }; },
+    get cameraState() { return { position: { x: camera.x, y: camera.y, z: camera.z }, yaw: camera.yaw,
+      pitch: camera.pitch, mode, loaded, deskHeight: desk.height }; },
     reset, canStand, jump: jumpPlayer, visibility, photoVisible, photoAim, captureFrame,
     get sceneObjects() { return meshes.map(mesh => ({ name: mesh.name, min: mesh.bounds.min.slice(), max: mesh.bounds.max.slice() })); },
     get catPlay() { return catPlay; },

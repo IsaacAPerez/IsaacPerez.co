@@ -29,6 +29,27 @@
     }
     return true;
   }
+  function frustumPlanes(m) {
+    // A column-major clip matrix. Normalize each plane so a world-space sphere
+    // can be tested without expanding all eight corners of every mesh.
+    const planes = [];
+    for (const [axis, sign] of [[0, 1], [0, -1], [1, 1], [1, -1], [2, 1], [2, -1]]) {
+      const plane = [m[3] + sign * m[axis], m[7] + sign * m[4 + axis],
+        m[11] + sign * m[8 + axis], m[15] + sign * m[12 + axis]];
+      const length = Math.hypot(plane[0], plane[1], plane[2]) || 1;
+      planes.push(plane.map(value => value / length));
+    }
+    return planes;
+  }
+  function sphereVisible(bounds, planes, radius) {
+    const x = (bounds.min[0] + bounds.max[0]) * .5;
+    const y = (bounds.min[1] + bounds.max[1]) * .5;
+    const z = (bounds.min[2] + bounds.max[2]) * .5;
+    const extent = radius === undefined ? Math.hypot(bounds.max[0] - bounds.min[0],
+      bounds.max[1] - bounds.min[1], bounds.max[2] - bounds.min[2]) * .5 : radius;
+    for (const plane of planes) if (plane[0] * x + plane[1] * y + plane[2] * z + plane[3] < -extent) return false;
+    return true;
+  }
   function portalVisibleX(eye, corners, x, minZ, maxZ) {
     if (eye[0] >= x) return true;
     const crossings = corners.filter(p => p[0] > x).map(p => eye[2] + (p[2] - eye[2]) * (x - eye[0]) / (p[0] - eye[0]));
@@ -48,5 +69,6 @@
     const dz = Math.max(box.minZ - eye.z, 0, eye.z - box.maxZ);
     return Math.hypot(dx, dz) >= radius || box.minY + offset >= eye.y + 0.10;
   }
-  window.RoomRendererMath = Object.freeze({ reflection, homogeneous, visible, portalVisibleX, deskHeight, deskStep, deskClearance });
+  window.RoomRendererMath = Object.freeze({ reflection, homogeneous, visible, frustumPlanes, sphereVisible,
+    portalVisibleX, deskHeight, deskStep, deskClearance });
 }());

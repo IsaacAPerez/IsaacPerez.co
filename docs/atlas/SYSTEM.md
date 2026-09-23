@@ -155,7 +155,7 @@ IsaacPerez.co is Isaac's personal site: eight public pages of hand-written stati
 
 **What it does.** A native WebGL viewer loads the room and cat GLBs. Separate scripts own cat routes, play interactions, desk movement, mirror and monitor surfaces, object details, original Web Audio music and toy sounds, and the optional photo adventure. The editorial page still has its own scroll behavior.
 
-**How it's built.** The root loads `/room/viewer.js` with `renderer-math.js`, `room-config.js` and feature IIFEs under `/room/`. The approved enclosure stays fixed; interaction changes are runtime behavior. `portfolio.js` fetches `/about/` on first story use. `/about/` loads `/js/personal.js` for its native reveals; pricing and ShootSort retain `/js/site.js`. No framework or third-party script is required.
+**How it's built.** The root loads `/room/viewer.js` with `renderer-math.js`, `room-config.js` and feature IIFEs under `/room/`. The viewer culls out-of-view meshes, limits its frame work to 60 Hz on desktop or 30 Hz on compact and touch screens, and redraws mirrors only when needed. The object inspector caches its scene targets and the cats use bounded route data. The approved enclosure stays fixed. `portfolio.js` fetches `/about/` on first story use. `/about/` loads `/js/personal.js` for its native reveals; pricing and ShootSort retain `/js/site.js`. No framework or third-party script is required.
 
 **Steps in execution.**
 
@@ -171,7 +171,7 @@ IsaacPerez.co is Isaac's personal site: eight public pages of hand-written stati
 
 **What it does.** Day, Warm and Night presets plus separate daylight, bedroom, bathroom and warmth sliders adjust the actual scene. The original lo-fi and house tracks are synthesized in the browser, with play/pause and volume controls; toy steps and interactions make local sounds. The editorial /about/ page separately retains its saved light/dark theme.
 
-**How it's built.** `/room/room-audio.js` uses Web Audio, without streamed tracks or remote requests. `/room/interface.js` exposes music and light controls; `/room/viewer.js` updates scene lights and mirror captures. Entry is a visitor gesture for audio startup. Hidden-tab and reduced-motion handling suspend sound or animated movement as appropriate. The existing pre-paint theme script and `localStorage["theme"]` continue on /about/ and utility pages.
+**How it's built.** `/room/room-audio.js` uses Web Audio, without streamed tracks or remote requests; it reuses fixed-position panners and gain nodes and releases finished source handlers. `/room/interface.js` exposes music and light controls; `/room/viewer.js` updates scene lights and mirror captures. Entry is a visitor gesture for audio startup. Hidden-tab and reduced-motion handling suspend sound or animated movement as appropriate. The existing pre-paint theme script and `localStorage["theme"]` continue on /about/ and utility pages.
 
 **Steps in execution.**
 
