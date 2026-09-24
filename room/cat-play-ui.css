@@ -13,3 +13,28 @@
 .cat-play-open .hop-button,.photo-open .hop-button,.ambience-open .hop-button{visibility:hidden}
 @media(max-width:760px){#cat-play-panel{max-height:calc(100svh - 156px)}.hop-button{margin-left:auto}.toolbar .reset{margin-left:0}}
 @media(max-height:500px){#cat-play-panel{max-height:calc(100svh - 142px)}}
+
+/* The launcher lives in the room's Explore menu; the cat sheet owns this rail. */
+.cat-controls{position:static;width:0;height:0}
+#cat-play-panel{position:absolute;z-index:8;top:97px;right:32px;width:min(350px,calc(100vw - 36px));max-height:calc(100svh - 129px);border-color:var(--room-panel-line);border-radius:22px;background:var(--room-panel);color:var(--room-panel-ink);box-shadow:0 18px 54px #1f1a1438}
+#cat-play-panel .panel-heading{position:sticky;top:-20px;z-index:1;padding:7px 0 12px;background:var(--room-panel)}
+#cat-play-panel .eyebrow{color:#8b523b}
+.cat-play-row{border-color:var(--room-panel-line)}
+.cat-play-row button,.cat-ball-button,.cat-roam-controls .round-button{border-color:var(--room-panel-line);background:#fffdf9;color:var(--room-panel-ink)}
+.cat-ball-button{background:#29241e;color:#fffaf2;border-color:#29241e}
+.cat-play-status,.cat-play-intro,.cat-notice{color:var(--room-panel-muted)}
+.cat-notice{background:#f1e9dd}
+.hop-button{border-color:#ffffffaa;background:rgba(250,247,241,.97);color:#29241e}
+
+@media(max-width:760px),(pointer:coarse){
+ #cat-play-panel{top:calc(env(safe-area-inset-top) + 12px);right:calc(env(safe-area-inset-right) + 12px);bottom:calc(env(safe-area-inset-bottom) + 12px);left:calc(env(safe-area-inset-left) + 12px);width:auto;max-height:none;padding:19px 20px;box-shadow:0 22px 72px #1f1a1452}
+ #cat-play-panel .panel-heading{top:-19px}
+ .cat-play-row{flex-wrap:wrap;gap:8px}
+ .cat-play-row button{min-width:58px}
+ .hop-button{bottom:calc(env(safe-area-inset-bottom) + 78px);margin:0}
+}
+
+@media(max-height:560px) and (max-width:760px), (max-height:560px) and (pointer:coarse){
+ #cat-play-panel{top:calc(env(safe-area-inset-top) + 8px);right:calc(env(safe-area-inset-right) + 8px);bottom:calc(env(safe-area-inset-bottom) + 8px);left:calc(env(safe-area-inset-left) + 8px);padding:14px 16px}
+ .hop-button{bottom:calc(env(safe-area-inset-bottom) + 64px)}
+}

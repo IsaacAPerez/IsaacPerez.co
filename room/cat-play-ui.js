@@ -6,6 +6,9 @@
   const close = document.getElementById('cat-play-close');
   const status = document.getElementById('cat-play-status');
   if (!main || !toggle || !panel || !close || !status) return;
+  function syncAvailability() {
+    toggle.hidden = !main.classList.contains('entered') || !window.RoomPreview || !window.RoomPreview.catPlay;
+  }
   function setOpen(open, restoreFocus) {
     if (open && (!main.classList.contains('entered') || !window.RoomPreview || !window.RoomPreview.catPlay)) return;
     if (open) {
@@ -20,8 +23,12 @@
     panel.hidden = !open;
     main.classList.toggle('cat-play-open', open);
     toggle.setAttribute('aria-expanded', String(open));
+    if (window.RoomOverlayUI) window.RoomOverlayUI.sync();
     if (open) close.focus({ preventScroll: true });
-    else if (restoreFocus) toggle.focus({ preventScroll: true });
+    else if (restoreFocus) {
+      if (window.RoomOverlayUI) window.RoomOverlayUI.focusLauncher(toggle);
+      else toggle.focus({ preventScroll: true });
+    }
   }
   function explain(name, kind, response) {
     if (response.accepted) {
@@ -48,8 +55,9 @@
     const play = window.RoomPreview && window.RoomPreview.catPlay;
     if (play) status.textContent = explain('the cats', 'ball', play.rollBall());
   });
-  document.getElementById('enter-room').addEventListener('click', () => { toggle.hidden = false; });
-  if (main.classList.contains('entered')) toggle.hidden = false;
+  document.getElementById('enter-room').addEventListener('click', syncAvailability);
+  window.addEventListener('room:ready', syncAvailability);
+  syncAvailability();
   window.addEventListener('room:error', () => { toggle.disabled = true; setOpen(false, false); });
   for (const name of ['mimi', 'charlie']) window.addEventListener(name + ':interaction', event => {
     if (!panel.hidden && event.detail && event.detail.interaction) {

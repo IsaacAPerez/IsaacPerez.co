@@ -141,7 +141,7 @@
     toggle.id = 'photo-quest-toggle'; toggle.className = 'round-button photo-quest-toggle';
     toggle.textContent = 'Photo adventure'; toggle.setAttribute('aria-expanded', 'false');
     toggle.setAttribute('aria-controls', 'photo-quest'); toggle.hidden = true;
-    main.appendChild(toggle);
+    (doc.getElementById('action-list') || main).appendChild(toggle);
 
     const panel = doc.createElement('aside'); panel.id = 'photo-quest'; panel.className = 'photo-quest';
     panel.setAttribute('aria-labelledby', 'photo-quest-title'); panel.hidden = true;
@@ -197,9 +197,13 @@
       }
       open = value; panel.hidden = !value; main.classList.toggle('photo-open', value);
       toggle.setAttribute('aria-expanded', String(value));
+      if (root.RoomOverlayUI) root.RoomOverlayUI.sync();
       if (timer) { root.clearInterval(timer); timer = 0; }
       if (value) { refresh(); timer = root.setInterval(refresh, 900); panel.querySelector('#photo-quest-close').focus(); }
-      else if (restoreFocus) toggle.focus();
+      else if (restoreFocus) {
+        if (root.RoomOverlayUI) root.RoomOverlayUI.focusLauncher(toggle);
+        else toggle.focus();
+      }
     }
     function capture(id) {
       const check = getAssessment(id);

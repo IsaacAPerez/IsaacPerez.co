@@ -6,7 +6,7 @@ _Question status: **1 open · 7 resolved**._
 
 ## One paragraph
 
-IsaacPerez.co is Isaac's personal site: eight public pages of hand-written static HTML with no package.json, bundler, application build or CI. The root homepage is a first-person, toy-eye-level room based on Isaac's photographs. Visitors explore the bedroom and bathroom, meet Mimi and Charlie, inspect work and sneaker details, control lights and music, and optionally make a three-photo postcard. The earlier Me → Experience → My company page remains at /about/ with the original portrait and personal contact; the room reads its content rather than forking the biography. Public scripts, GLBs and the short material-study film live under /room/, while the source/prototype and original reference photos stay outside the deployment under docs/room-preview and in Isaac's Downloads. Pricing, ShootSort and four legal pages retain their URLs; /photo redirects to FIRSTUNIT Studios. A push to main publishes through Vercel's git integration.
+IsaacPerez.co is Isaac's personal site: eight public pages of hand-written static HTML with no package.json, bundler, application build or CI. The root homepage is a first-person, toy-eye-level room based on Isaac's photographs. Visitors explore the bedroom and bathroom, meet Mimi and Charlie, inspect work and sneaker details, control lights and music, and optionally make a three-photo postcard. The room title links to /about/; compact screens group optional activities under Explore while movement and camera controls occupy separate zones. The earlier Me → Experience → My company page remains at /about/ with the original portrait and personal contact; the room reads its content rather than forking the biography. Public scripts, GLBs and the short material-study film live under /room/, while the source/prototype and original reference photos stay outside the deployment under docs/room-preview and in Isaac's Downloads. Pricing, ShootSort and four legal pages retain their URLs; /photo redirects to FIRSTUNIT Studios. A push to main publishes through Vercel's git integration.
 
 ## Decisions locked
 
@@ -15,6 +15,7 @@ IsaacPerez.co is Isaac's personal site: eight public pages of hand-written stati
 | Brand Studio ownership | The product owns existing design source, brand/studio.adapter.json pointers and a generated read-only catalog. The pinned platform checkout owns extraction, validation and the shared browser/native renderer; CodeByIP reads that same fingerprinted catalog instead of authoring a second design system. The source library is local-only: .vercelignore excludes brand/ and the launcher; the public static site gains no developer route. | brand/README.md |
 | Runtime | Vanilla HTML/CSS/JS, one IIFE per script. No framework, package.json, bundler, node_modules or application build. The repository tree is the site. | — |
 | Homepage | The room becomes /, with toy-eye-level first-person exploration. Preserve the prior Me → Experience → My company page at /about/ as the readable alternative and content source; retain its original portrait and contact footer. | User direction · 2026-09-22 |
+| Room overlays | Replace the IP badge with a room-title link to /about/. On compact screens, Explore opens the film, cats, music and lighting, and photo activities. Keep camera selection, movement arrows, and hop/inspect in distinct zones; present long controls and copy in scrollable panels, hiding the game HUD and blocking movement while a menu or panel is open. | User direction · 2026-09-23 |
 | FIRSTUNIT | Company branding remains in /about/'s My company section and the corresponding room story; the company destination is https://firstunit.io. Personal identity, employer experience and contact remain independent of the company brand. | User direction · 2026-09-11 and 2026-09-22 |
 | Asset ownership | The root loads curated public room styles and scripts from /room/. css/personal.css and js/personal.js move with the former editorial page to /about/; /room/portfolio.js fetches that page on demand. docs/room-preview/ remains the excluded source and local reference prototype. | User direction · 2026-09-22 |
 | Hosting | Vercel git integration publishes main with no build step. vercel.json retains the response headers and permanent /photo redirects; production publication requires the approved preview. | — |
@@ -43,17 +44,18 @@ IsaacPerez.co is Isaac's personal site: eight public pages of hand-written stati
 
 **In one line.** A first-person visit to Isaac's room, with the preserved personal page one link away.
 
-**What it does.** Explore the bedroom and connected bathroom at toy height. The approved layout uses a 70-inch desk and a queen mattress as scale anchors, with the corrected window cabinet, sneaker wall, desk-mounted monitor and accessible bathroom route. Mimi and Charlie roam, loaf and use their cat furniture. Visitors can inspect objects, read Isaac's existing Me, Experience and company content, raise the desk, adjust lights, play local lo-fi or house music, and make an optional three-shot postcard.
+**What it does.** Explore the bedroom and connected bathroom at toy height. The approved layout uses a 70-inch desk and a queen mattress as scale anchors, with the corrected window cabinet, sneaker wall, desk-mounted monitor and accessible bathroom route. Mimi and Charlie roam, loaf and use their cat furniture. Visitors can inspect objects, read Isaac's existing Me, Experience and company content, raise the desk, adjust lights, play local lo-fi or house music, and make an optional three-shot postcard. The homepage title leads to /about/; compact screens group optional activities under Explore.
 
-**How it's built.** `index.html` owns the public root route and loads same-origin `/room/` scripts, styles and curated media. `/room/viewer.js` renders the static GLB through a small WebGL viewer and supports navigation, collision, reflections, lighting, cats and desk motion. The page links to `/about/` for the accessible, readable editorial alternative. Content panels fetch `/about/` rather than duplicating its biography and work copy.
+**How it's built.** `index.html` owns the public root route and loads same-origin `/room/` scripts, styles and curated media. `/room/viewer.js` renders the static GLB through a small WebGL viewer and supports navigation, collision, reflections, lighting, cats and desk motion. `/room/interface.js` coordinates the Explore menu and story/mood panels with feature-specific cat and photo panels; opening a menu or panel hides the movement HUD and suspends movement. The `Isaac's room` title links to `/about/` for the accessible, readable editorial alternative. Content panels fetch `/about/` rather than duplicating its biography and work copy.
 
 **Steps in execution.**
 
 1. **Load** — Show the entry overlay while the room GLB and cat models load.
 2. **Enter** — Explore from toy height with keyboard/touch controls and optional pointer capture.
-3. **Inspect** — Use nearby shoes, collectibles, the workstation and cats to open detail panels.
-4. **Play** — Call or pet cats, hop onto furniture, set music and lights, and move the standing desk.
-5. **Read or save** — Open /about/ for the full site, or complete the optional three-photo postcard.
+3. **Choose** — On compact screens, use Explore for film, cat, music and lighting, or photo activities; camera modes and movement remain in separate zones.
+4. **Inspect** — Use nearby shoes, collectibles, the workstation and cats to open detail panels without controls underneath.
+5. **Play** — Call or pet cats, hop onto furniture, set music and lights, and move the standing desk.
+6. **Read or save** — Open /about/ for the full site, or complete the optional three-photo postcard.
 
 **Questions.**
 
@@ -153,17 +155,18 @@ IsaacPerez.co is Isaac's personal site: eight public pages of hand-written stati
 
 **In one line.** Small, same-origin browser scripts make the static room explorable.
 
-**What it does.** A native WebGL viewer loads the room and cat GLBs. Separate scripts own cat routes, play interactions, desk movement, mirror and monitor surfaces, object details, original Web Audio music and toy sounds, and the optional photo adventure. The editorial page still has its own scroll behavior.
+**What it does.** A native WebGL viewer loads the room and cat GLBs. Separate scripts own cat routes, play interactions, desk movement, mirror and monitor surfaces, object details, original Web Audio music and toy sounds, and the optional photo adventure. The interface script owns the compact Explore menu and coordinates panel visibility so that movement does not continue behind an open overlay. The editorial page still has its own scroll behavior.
 
-**How it's built.** The root loads `/room/viewer.js` with `renderer-math.js`, `room-config.js` and feature IIFEs under `/room/`. The viewer culls out-of-view meshes, limits its frame work to 60 Hz on desktop or 30 Hz on compact and touch screens, and redraws mirrors only when needed. The object inspector caches its scene targets and the cats use bounded route data. The approved enclosure stays fixed. `portfolio.js` fetches `/about/` on first story use. `/about/` loads `/js/personal.js` for its native reveals; pricing and ShootSort retain `/js/site.js`. No framework or third-party script is required.
+**How it's built.** The root loads `/room/viewer.js` with `renderer-math.js`, `room-config.js` and feature IIFEs under `/room/`. The viewer culls out-of-view meshes, limits its frame work to 60 Hz on desktop or 30 Hz on compact and touch screens, and redraws mirrors only when needed. `interface.js` manages the Explore menu and closes it as a panel opens; the viewer blocks movement while it is open. Cat, photo, ambience and object scripts coordinate with the panel state, and the object inspector suppresses its cue behind menus and panels. The inspector caches its scene targets and the cats use bounded route data. The approved enclosure stays fixed. `portfolio.js` fetches `/about/` on first story use. `/about/` loads `/js/personal.js` for its native reveals; pricing and ShootSort retain `/js/site.js`. No framework or third-party script is required.
 
 **Steps in execution.**
 
 1. **Load geometry** — Read static GLBs for the room, Mimi and Charlie.
 2. **Navigate** — Render first-person movement, toy hopping, collisions and reflections.
-3. **Interact** — Use nearby objects, the moving desk, cats, music and light controls.
-4. **Read content** — Fetch /about/ for the monitor and story panels.
-5. **Capture** — Use the live rendered scene for optional postcard photos.
+3. **Open a panel** — Hide game controls, suspend movement, and keep longer copy or settings scrollable.
+4. **Interact** — Use nearby objects, the moving desk, cats, music and light controls.
+5. **Read content** — Fetch /about/ for the monitor and story panels.
+6. **Capture** — Use the live rendered scene for optional postcard photos.
 
 #### T · Mood controls
 
@@ -171,7 +174,7 @@ IsaacPerez.co is Isaac's personal site: eight public pages of hand-written stati
 
 **What it does.** Day, Warm and Night presets plus separate daylight, bedroom, bathroom and warmth sliders adjust the actual scene. The original lo-fi and house tracks are synthesized in the browser, with play/pause and volume controls; toy steps and interactions make local sounds. The editorial /about/ page separately retains its saved light/dark theme.
 
-**How it's built.** `/room/room-audio.js` uses Web Audio, without streamed tracks or remote requests; it reuses fixed-position panners and gain nodes and releases finished source handlers. `/room/interface.js` exposes music and light controls; `/room/viewer.js` updates scene lights and mirror captures. Entry is a visitor gesture for audio startup. Hidden-tab and reduced-motion handling suspend sound or animated movement as appropriate. The existing pre-paint theme script and `localStorage["theme"]` continue on /about/ and utility pages.
+**How it's built.** `/room/room-audio.js` uses Web Audio, without streamed tracks or remote requests; it reuses fixed-position panners and gain nodes and releases finished source handlers. `/room/interface.js` exposes music and light controls in a scrollable panel reached through Explore on compact screens; `/room/viewer.js` updates scene lights and mirror captures. Entry is a visitor gesture for audio startup. Hidden-tab and reduced-motion handling suspend sound or animated movement as appropriate. The existing pre-paint theme script and `localStorage["theme"]` continue on /about/ and utility pages.
 
 **Steps in execution.**
 
@@ -201,13 +204,13 @@ IsaacPerez.co is Isaac's personal site: eight public pages of hand-written stati
 
 **In one line.** The room and editorial page each own their interface styling.
 
-**What it does.** Room styles live under /room/ for the full-scene canvas, floating controls and detail panels. The earlier editorial design moves with its page to /about/ and keeps the original portrait treatment. Utility and legal styles remain separate.
+**What it does.** Room styles live under /room/ for the full-scene canvas, a desktop action rail, compact Explore menu, separated mobile camera and movement zones, and scrollable detail panels. The earlier editorial design moves with its page to /about/ and keeps the original portrait treatment. Utility and legal styles remain separate.
 
-**How it's built.** `/room/styles.css` and feature-specific room styles own the homepage interface. `/css/personal.css` serves /about/, preserving the portrait's rounded mask and reduced-motion handling. `/css/site.css` serves utility pages; pricing adds `/css/photo.css`, and legal pages use `/css/legal.css`. ShootSort and 404 retain their scoped blocks.
+**How it's built.** `/room/styles.css` and feature-specific room styles own the homepage interface. On compact screens the D-pad, camera strip and hop/inspect actions occupy distinct safe-area-aware zones. Long copy and settings use scrollable panels that hide the HUD instead of sitting over active arrows or other text. `/css/personal.css` serves /about/, preserving the portrait's rounded mask and reduced-motion handling. `/css/site.css` serves utility pages; pricing adds `/css/photo.css`, and legal pages use `/css/legal.css`. ShootSort and 404 retain their scoped blocks.
 
 **Steps in execution.**
 
-1. **Room** — Load /room/ styles for canvas controls and panels.
+1. **Room** — Load /room/ styles for the canvas, menu, control zones and panels.
 2. **About** — Use /css/personal.css for the readable editorial page.
 3. **Utilities** — Keep existing site, photo and legal styles separate.
 

@@ -7,6 +7,10 @@
   var dialog = document.getElementById('object-dialog');
   var ambience = document.getElementById('ambience');
   var ambienceToggle = document.getElementById('ambience-toggle');
+  var actionsToggle = document.getElementById('actions-toggle');
+  var actionList = document.getElementById('action-list');
+  var canvas = document.getElementById('room-canvas');
+  var compactQuery = window.matchMedia('(max-width: 760px), (pointer: coarse)');
   var musicPlay = document.getElementById('music-play');
   var musicStatus = document.getElementById('music-status');
   var lightingAvailable = true;
@@ -18,6 +22,28 @@
   document.getElementById('lights-title').parentElement.appendChild(lightingStatus);
   var roomAudio = window.createRoomAudio ? window.createRoomAudio({ onState: updateAudio }) : null;
   window.RoomAudio = roomAudio;
+  function compactControls() { return compactQuery.matches; }
+  function focusLauncher(button) { (compactControls() ? actionsToggle : button).focus({ preventScroll: true }); }
+  function setMenuOpen(open, restoreFocus) {
+    if (open) releaseMouse();
+    main.classList.toggle('menu-open', open);
+    actionsToggle.setAttribute('aria-expanded', String(open));
+    updateDeskVisibility();
+    if (open) {
+      var first = actionList.querySelector('button:not([hidden]):not(:disabled)');
+      if (first) first.focus({ preventScroll: true });
+    } else if (restoreFocus) actionsToggle.focus({ preventScroll: true });
+  }
+  actionsToggle.addEventListener('click', function () { setMenuOpen(!main.classList.contains('menu-open'), true); });
+  compactQuery.addEventListener('change', function () { if (!compactControls()) setMenuOpen(false, false); });
+  actionList.addEventListener('click', function (event) { if (event.target.closest('button')) setMenuOpen(false, false); });
+  document.addEventListener('pointerdown', function (event) {
+    if (main.classList.contains('menu-open') && !event.target.closest('#action-list, #actions-toggle')) setMenuOpen(false, false);
+  });
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape' && main.classList.contains('menu-open')) { event.preventDefault(); setMenuOpen(false, true); }
+  });
+  window.RoomOverlayUI = { focusLauncher: focusLauncher, closeMenu: function () { setMenuOpen(false, false); }, sync: updateDeskVisibility };
   function updateAudio(state) {
     musicPlay.textContent = state.playing ? 'Pause' : 'Play';
     musicPlay.setAttribute('aria-label', state.playing ? 'Pause music' : 'Play music');
@@ -29,13 +55,14 @@
   function toggleAmbience(show, restoreFocus) {
     if (show) {
       releaseMouse();
+      setMenuOpen(false, false);
     }
     ambience.hidden = !show;
     main.classList.toggle('ambience-open', show);
     ambienceToggle.setAttribute('aria-expanded', String(show));
     updateDeskVisibility();
     if (show) document.getElementById('ambience-close').focus();
-    else if (restoreFocus) ambienceToggle.focus();
+    else if (restoreFocus) focusLauncher(ambienceToggle);
   }
   ambienceToggle.addEventListener('click', function () { toggleAmbience(ambience.hidden, true); });
   document.getElementById('ambience-close').addEventListener('click', function () { toggleAmbience(false, true); });
@@ -87,7 +114,14 @@
   };
   function releaseMouse() { if (document.pointerLockElement) document.exitPointerLock(); }
   function updateDeskVisibility() {
-    deskControls.hidden = !deskNear || !deskState || !deskState.loaded || !main.classList.contains('entered') || dialog.open || !ambience.hidden;
+    var catPanel = document.getElementById('cat-play-panel');
+    var photoPanel = document.getElementById('photo-quest');
+    var overlayOpen = dialog.open || main.classList.contains('menu-open') || !ambience.hidden
+      || (catPanel && !catPanel.hidden) || (photoPanel && !photoPanel.hidden);
+    if (canvas.inert !== overlayOpen) canvas.inert = overlayOpen;
+    if (canvas.tabIndex !== (overlayOpen ? -1 : 0)) canvas.tabIndex = overlayOpen ? -1 : 0;
+    deskControls.hidden = !deskNear || !deskState || !deskState.loaded || !main.classList.contains('entered') || dialog.open || !ambience.hidden
+      || main.classList.contains('menu-open') || main.classList.contains('cat-play-open') || main.classList.contains('photo-open');
   }
   function updateDesk(state) {
     if (!state) return;
@@ -128,7 +162,8 @@
     var portfolio = ['me', 'work', 'projects'].includes(id);
     releaseMouse();
     toggleAmbience(false, false);
-    if (!dialog.open) lastFocused = document.activeElement;
+    if (!dialog.open) lastFocused = main.classList.contains('menu-open') ? actionsToggle : document.activeElement;
+    setMenuOpen(false, false);
     dialog.classList.toggle('film-dialog', id === 'film');
     document.getElementById('object-kicker').textContent = story.label;
     document.getElementById('object-title').textContent = story.title;

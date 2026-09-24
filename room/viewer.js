@@ -1070,7 +1070,7 @@
     const panelOpen = document.querySelector('#ambience:not([hidden]), #photo-quest:not([hidden]), #cat-play-panel:not([hidden])');
     const typing = active && active.closest('input, textarea, select, [contenteditable="true"]');
     const focusedControl = active && active.closest('button, a');
-    return !!((experience && !experience.classList.contains('entered')) || (refs && !refs.hidden)
+    return !!((experience && (!experience.classList.contains('entered') || experience.classList.contains('menu-open'))) || (refs && !refs.hidden)
       || document.querySelector('dialog[open]') || panelOpen || typing || (!forMovement && focusedControl));
   }
   function movement(dt, stepDirection) {

@@ -49,14 +49,16 @@
   <main id="experience">
     <canvas id="room-canvas" tabindex="0" aria-label="First person 3D room. Drag to look. Use W A S D or arrow keys to move. Space jumps at toy height. E uses a nearby object. Escape releases the mouse."></canvas>
     <header class="topbar">
-      <a class="identity" href="/about/" aria-label="Read about Isaac Perez">ip<span>.</span></a>
-      <div class="title"><h1>Isaac's room</h1><p>Explore my world</p></div>
-      <div class="top-actions">
-        <button class="round-button" id="film-toggle" aria-haspopup="dialog">Film</button>
-      </div>
+      <a class="title" href="/about/" aria-label="Read about Isaac Perez"><h1>Isaac's room</h1><p>About Isaac <span aria-hidden="true">↗</span></p></a>
+      <button class="actions-toggle" id="actions-toggle" type="button" aria-expanded="false" aria-controls="action-list">Explore <span aria-hidden="true">☰</span></button>
     </header>
+    <div class="action-list" id="action-list" role="group" aria-label="Explore room features">
+      <p class="action-list-label" aria-hidden="true">In this room</p>
+      <button class="round-button" id="film-toggle" aria-haspopup="dialog" type="button">Watch the film</button>
+      <button class="round-button" id="cat-play-toggle" aria-expanded="false" aria-controls="cat-play-panel" type="button" hidden>Play with the cats</button>
+      <button class="round-button ambience-toggle" id="ambience-toggle" aria-expanded="false" aria-controls="ambience" type="button">Music &amp; lights</button>
+    </div>
     <div class="cat-controls" role="group" aria-label="Roaming cats">
-      <button class="round-button" id="cat-play-toggle" aria-expanded="false" aria-controls="cat-play-panel" hidden>Play with the cats</button>
       <section id="cat-play-panel" aria-labelledby="cat-play-title" hidden>
         <div class="panel-heading"><div><p class="eyebrow">Mimi &amp; Charlie</p><h2 id="cat-play-title">Say hello.</h2></div><button id="cat-play-close" aria-label="Close cat play">×</button></div>
         <p class="cat-play-intro">They roam on their own. Call them over, give a nearby cat a pet, or roll a ball across the floor.</p>
@@ -69,7 +71,6 @@
         <p id="cat-play-status" class="cat-play-status" role="status" aria-live="polite">Meet the cats wherever they wander.</p>
       </section>
     </div>
-    <button class="round-button ambience-toggle" id="ambience-toggle" aria-expanded="false" aria-controls="ambience">Music &amp; lights</button>
     <aside class="ambience" id="ambience" aria-labelledby="ambience-title" hidden>
       <div class="panel-heading"><div><p class="eyebrow">Make yourself at home</p><h2 id="ambience-title">Set the mood.</h2></div><button id="ambience-close" aria-label="Close music and lights">×</button></div>
       <section aria-labelledby="music-title">
@@ -123,9 +124,11 @@
       <button class="hop-button" id="jump-button" type="button" aria-label="Hop at toy height">Hop</button>
       <button class="reset" id="reset-view" aria-label="Return to the entrance">↺ <span>Entrance</span></button>
     </footer>
-    <div class="touch-pad" role="group" aria-label="Move through room">
+    <p class="mobile-look-hint" aria-hidden="true">Drag the room to look</p>
+    <div class="touch-pad" role="group" aria-label="Hold an arrow to move through the room">
       <button data-move="forward" aria-label="Move forward">↑</button>
       <button data-move="left" aria-label="Move left">←</button>
+      <span class="touch-pad-center" aria-hidden="true">Move</span>
       <button data-move="back" aria-label="Move backward">↓</button>
       <button data-move="right" aria-label="Move right">→</button>
     </div>

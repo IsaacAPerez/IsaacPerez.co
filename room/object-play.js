@@ -166,7 +166,9 @@
 
     function blocked() {
       return document.hidden || !host.classList.contains('entered') || !!document.querySelector('dialog[open]') ||
-        ['references', 'ambience'].some(function (id) { var panel = document.getElementById(id); return panel && !panel.hidden; });
+        host.classList.contains('menu-open') || ['references', 'ambience', 'cat-play-panel', 'photo-quest'].some(function (id) {
+          var panel = document.getElementById(id); return panel && !panel.hidden;
+        });
     }
     function visibility(hit, item) {
       if (typeof room.visibility !== 'function') return false;

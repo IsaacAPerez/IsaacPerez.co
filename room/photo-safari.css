@@ -24,3 +24,29 @@
 @media(max-height:500px){.photo-quest-toggle{right:max(18px,env(safe-area-inset-right));top:226px}.photo-quest{right:max(18px,env(safe-area-inset-right));top:70px;max-height:calc(100svh - 134px)}}
 @media(max-height:500px) and (max-width:600px){.photo-quest-toggle{top:176px}}
 @media(max-height:500px) and (min-width:601px) and (max-width:760px){.inspect:not([hidden]){right:calc(max(18px,env(safe-area-inset-right)) + 132px)}}
+
+/* Photo mode uses the same panel rhythm as the other room activities. */
+#action-list .photo-quest-toggle{position:static;top:auto;right:auto;width:100%;min-height:47px;margin:0;padding:10px 13px}
+.photo-quest{z-index:8;top:97px;right:32px;max-height:calc(100svh - 129px);border-color:var(--room-panel-line);border-radius:22px;background:var(--room-panel);color:var(--room-panel-ink);box-shadow:0 18px 54px #1f1a1438}
+.photo-quest .panel-heading{position:sticky;top:-20px;z-index:1;margin-bottom:10px;padding:7px 0 12px;background:var(--room-panel)}
+.photo-quest .eyebrow{color:#8b523b}
+.photo-progress{background:#eee8de;color:var(--room-panel-ink)}
+.photo-missions li{border-color:var(--room-panel-line)}
+.photo-mission-actions button,.photo-postcard-button,.photo-download{border-color:var(--room-panel-line);background:#fffdf9;color:var(--room-panel-ink)}
+.photo-mission-actions button:last-child,.photo-postcard-button{background:#29241e;color:#fffaf2;border-color:#29241e}
+
+@media(max-width:760px),(pointer:coarse){
+ #action-list .photo-quest-toggle{min-height:51px}
+ .photo-quest{top:calc(env(safe-area-inset-top) + 12px);right:calc(env(safe-area-inset-right) + 12px);bottom:calc(env(safe-area-inset-bottom) + 12px);left:calc(env(safe-area-inset-left) + 12px);width:auto;max-height:none;padding:19px 20px;box-shadow:0 22px 72px #1f1a1452}
+ .photo-quest .panel-heading{top:-19px}
+}
+
+@media(max-width:350px){
+ .photo-mission-actions{flex-wrap:wrap}
+ .photo-mission-actions button{flex:1 1 100%}
+}
+
+@media(max-height:560px) and (max-width:760px), (max-height:560px) and (pointer:coarse){
+ .photo-quest{top:calc(env(safe-area-inset-top) + 8px);right:calc(env(safe-area-inset-right) + 8px);bottom:calc(env(safe-area-inset-bottom) + 8px);left:calc(env(safe-area-inset-left) + 8px);padding:14px 16px}
+ .inspect:not([hidden]){right:calc(env(safe-area-inset-right) + 12px)}
+}

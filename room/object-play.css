@@ -9,3 +9,15 @@
 .object-play-body .portfolio-sections{margin-top:4px}
 @media(max-width:760px),(pointer:coarse){.object-use{left:auto;right:18px;transform:none;bottom:140px;max-width:calc(100% - 172px);text-align:left}.object-use kbd{display:none}}
 @media(max-height:500px){.object-use{bottom:84px;left:auto;right:max(18px,env(safe-area-inset-right));transform:none}.object-play-dialog>.panel-heading{top:-18px}}
+
+.object-play-dialog{border-color:var(--room-panel-line);background:var(--room-panel);color:var(--room-panel-ink)}
+.object-play-dialog>.panel-heading{background:var(--room-panel)}
+.object-use{border-color:#ffffffaa;background:rgba(250,247,241,.97);color:#29241e}
+
+@media(max-width:760px),(pointer:coarse){
+ .object-use{z-index:3;right:calc(env(safe-area-inset-right) + 12px);bottom:calc(env(safe-area-inset-bottom) + 140px);left:auto;transform:none;min-width:112px;max-width:calc(100vw - 205px);min-height:48px;padding:8px 12px;border-radius:14px;text-align:center;font-size:12px;font-weight:700}
+}
+
+@media(max-height:560px) and (max-width:760px), (max-height:560px) and (pointer:coarse){
+ .object-use{bottom:calc(env(safe-area-inset-bottom) + 120px)}
+}
