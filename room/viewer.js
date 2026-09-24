@@ -227,7 +227,7 @@
       uniform vec2 uCatSupport;
       uniform vec4 uRoomLight;
       uniform vec3 uEmissive, uCamera;
-      uniform bool uUnlit, uHasTangent;
+      uniform bool uUnlit, uHasTangent, uCat;
       uniform float uAlphaCutoff, uRoughness, uMetallic, uNormalScale, uOcclusionStrength;
       uniform int uMapMask, uUVSets[5], uLightCount, uShadowIndex;
       uniform mat3 uUVTransforms[5];
@@ -345,9 +345,17 @@
           vec3 radiance = uLightColor[i].rgb * uLightColor[i].a * attenuation;
           color += ((1.0 - f) * (1.0 - metallic) * base.rgb / PI + specular) * radiance * nl * visibility;
         }
+        // Approximate the large west window and the room's wood/cream bounce.
+        // This stays analytic: no extra light, texture, render pass or update loop.
+        float windowReach = (1.0 - smoothstep(0.35, 4.1, vWorld.x)) * uRoomLight.x;
         vec3 reflected = reflect(-v, n);
-        vec3 environment = mix(vec3(0.13,0.115,0.095), vec3(0.36,0.40,0.44), reflected.y * 0.5 + 0.5);
-        vec3 ambient = base.rgb * (1.0 - metallic) * mix(0.18, 0.28, n.y * 0.5 + 0.5)
+        vec3 environment = mix(vec3(0.11,0.085,0.065), vec3(0.38,0.36,0.32), reflected.y * 0.5 + 0.5)
+          + vec3(0.16,0.22,0.29) * max(-reflected.x, 0.0) * windowReach;
+        float sky = clamp(n.y * 0.5 + 0.5, 0.0, 1.0);
+        float windowBounce = max(dot(n, vec3(-0.72,0.68,0.12)), 0.0) * windowReach;
+        float lowerWallShade = uCat ? 1.0 : 1.0 - 0.12 * (1.0 - smoothstep(0.04, 0.55, vWorld.y)) * (1.0 - smoothstep(0.1, 0.8, n.y));
+        vec3 ambient = base.rgb * (1.0 - metallic) *
+          (vec3(mix(0.14, 0.20, sky)) + vec3(0.18,0.20,0.22) * windowBounce) * lowerWallShade
           + environment * fresnel(nv, f0) * (1.0 - roughness * 0.55);
         float bathroom = smoothstep(4.8, 5.6, vWorld.x);
         float ambientLevel = 0.008 + uRoomLight.x * 0.72 + mix(uRoomLight.y, uRoomLight.z, bathroom) * 0.272;
@@ -620,7 +628,8 @@
     meshes = model.meshes; lights = model.lights; triangleCount = model.triangles;
     if (!lights.length) lights = [{ name: 'Window fallback', position: [0.2, 1.75, -1.3], direction: [0, -1, 0], type: 0,
       intensity: 9, color: [0.84, 0.91, 1], range: 0, cones: [1, 0] }];
-    lights = lights.slice(0, MAX_LIGHTS);
+    lights = lights.slice(0, MAX_LIGHTS).map(light => ({ ...light,
+      fill: /Bedroom ceiling soft fill/i.test(light.name) ? 0.8 : 1 }));
     initializeRuntimeSurfaces();
     if (catPlay) ballMesh = makeBallMesh();
     buildContactTexture(); buildShadowCube();
@@ -1126,7 +1135,9 @@
     gl.uniform4fv(uniforms.LightPosition, new Float32Array(lights.flatMap(light => [...light.position, light.range])));
     gl.uniform4fv(uniforms.LightColor, new Float32Array(lights.flatMap(light => {
       const group = lightGroup(light.name);
-      return [...(group === 'daylight' ? light.color : lampTint(light.color)), light.intensity * lighting[group]];
+      // The broad ceiling bulb is fill; leave the window and shelf practicals
+      // as keys so furniture does not lose its shape under uniform brightness.
+      return [...(group === 'daylight' ? light.color : lampTint(light.color)), light.intensity * lighting[group] * light.fill];
     })));
     gl.uniform4f(uniforms.RoomLight, lighting.daylight, lighting.lamps, lighting.bathroom, lighting.warmth);
     gl.uniform4fv(uniforms.LightDirection, new Float32Array(lights.flatMap(light => [...light.direction, light.type])));
