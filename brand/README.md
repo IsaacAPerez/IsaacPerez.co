@@ -27,7 +27,7 @@ From this isolated checkout, point `BRAND_STUDIO_PLATFORM_ROOT` to the reviewed 
 
 ## Access and specimens
 
-This is repo-only tooling. brand/ and the launcher are excluded from public deployment. The personal homepage and utility pages have distinct source families; the unlinked css/design-system.css is not authoritative. FIRSTUNIT branding stays inside the company section.
+This is repo-only tooling. brand/ and the launcher are excluded from public deployment. The /about/ editorial page, the /room/ homepage and the utility pages have distinct source families. FIRSTUNIT branding stays inside the company section.
 
 The initial shared browser provides source-backed foundation specimens. Product component files are fingerprinted for traceability but are not instantiated by the generic renderer. Real component examples must be registered explicitly with synthetic state and their existing access gate; a generic preview is never evidence of production rendering.
 

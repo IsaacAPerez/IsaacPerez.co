@@ -220,7 +220,7 @@ IsaacPerez.co is Isaac's personal site: eight public pages of hand-written stati
 
 **What it does.** The room GLB and separate Mimi/Charlie GLBs supply live geometry. A short self-hosted Seedance 2.5 material-study film offers a cinematic view; it is not the navigable scene. The original portrait remains on /about/. Original multi-angle room and close-up reference photos are not published as a gallery.
 
-**How it's built.** Public assets are committed under `/room/` and fetched same-origin. The photos, editable Blender scene, generation provenance and local reference-panel server remain under `docs/room-preview/` or Isaac's Downloads and are excluded by `.vercelignore`. Exact filename case still matters on Vercel; the unlinked old `Resume.pdf` remains withheld.
+**How it's built.** Public assets are committed under `/room/` and fetched same-origin. The photos, editable Blender scene, generation provenance and local reference-panel server remain under git-ignored `docs/room-preview/` or Isaac's Downloads and are never tracked (`.gitignore`). Exact filename case still matters on Vercel; the unlinked old `Resume.pdf` remains withheld.
 
 **Steps in execution.**
 
@@ -271,7 +271,7 @@ IsaacPerez.co is Isaac's personal site: eight public pages of hand-written stati
 
 **What it does.** There is no build. Vercel clones the repo, serves the files as they are, gives each directory an extensionless URL, and terminates TLS on the apex domain. Pushing to main is publishing.
 
-**How it's built.** Vercel project `isaacperez`, root `.`, serves GitHub `IsaacAPerez/IsaacPerez.co`; project and team ids stay in the dashboard. `vercel.json` has response headers and two permanent photo redirects, with no build command or rewrites. `.vercelignore` withholds repo-only files including `docs/room-preview/`, original references, `Resume.pdf` and `tools/`; curated `/room/` runtime files are public. The custom `404.html` handles unknown URLs. Git push to main publishes production after preview approval.
+**How it's built.** Vercel project `isaacperez`, root `.`, serves GitHub `IsaacAPerez/IsaacPerez.co`; project and team ids stay in the dashboard. `vercel.json` has response headers and two permanent photo redirects, with no build command or rewrites. `.vercelignore` withholds repo-only files including `docs/`, `Resume.pdf` and `tools/`; `docs/room-preview/` and the original references are git-ignored (`.gitignore`) and never tracked; curated `/room/` runtime files are public. The custom `404.html` handles unknown URLs. Git push to main publishes production after preview approval.
 
 **Steps in execution.**
 
