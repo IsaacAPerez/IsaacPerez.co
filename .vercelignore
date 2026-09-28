@@ -20,8 +20,9 @@ Resume.pdf
 # copy stays; nothing on the site requests it, so it must not be fetchable.
 fonts/jetbrains-mono-latin.woff2
 
-# The pre-commit guard. It reads the repo (asset case, .vercelignore, sitemap,
-# CSP hashes, the pricing figures) and is not part of the website.
+# The pre-commit guard, the room unit tests and the GLB material tool. They read
+# the repo (asset case, .vercelignore, sitemap, CSP hashes, the pricing figures,
+# room/*.js) and are not part of the website.
 tools/
 
 brand/
