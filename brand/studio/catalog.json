@@ -10,8 +10,8 @@
     "light",
     "dark"
   ],
-  "sourceRevision": "sha256:df1aa5215db6",
-  "sourceDigest": "df1aa5215db6f88677bdbbf028c9723ea66d3910fca34e2fcac855bc08b5487e",
+  "sourceRevision": "sha256:fa04e6337c43",
+  "sourceDigest": "fa04e6337c432b4a626046e1a1573093695698ac47c8d1c21e7eb9b115ddfe61",
   "sources": [
     {
       "id": "studio-guide",
@@ -71,7 +71,7 @@
       "id": "component-0",
       "repository": "IsaacPerez.co",
       "path": "index.html",
-      "sha256": "242890df797b5bc254ffb5c6f1eece71ef679d2e7116e52e43c69f754524de39"
+      "sha256": "40f20a15bea030f158911f177de12b8275aca40eb1181aa5d6ecc3cf48739ae6"
     },
     {
       "id": "motion-source",
