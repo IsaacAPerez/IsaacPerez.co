@@ -23,7 +23,6 @@ const md = (s) =>
     .replace(/&lt;/g, '<')
     .replace(/&gt;/g, '>')
     .trim();
-const groupTitle = Object.fromEntries(GROUPS.map((g) => [g.id, g.title]));
 const cnt = { open: 0, res: 0 };
 NODES.forEach((n) => (n.cond || []).map(Q).forEach((c) => (c.r || c.to ? cnt.res++ : cnt.open++)));
 
