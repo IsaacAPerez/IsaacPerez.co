@@ -1,2 +1,5 @@
 .vercel
 docs/room-preview/
+# Agent scratch (platform ONBOARDING.md section 0)
+.claude/worktrees/
+.claude/settings.local.json
