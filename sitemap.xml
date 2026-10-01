@@ -5,8 +5,7 @@
 
   <lastmod> is the date that page's RENDERED content last changed — not the
   date of the last commit that touched the file. A head-only edit (og tags, a
-  theme-color, an icon href) leaves the date alone, which is why the three
-  legal pages below still read August and early September. Google ignores a
+  theme-color, an icon href) leaves the date alone. Google ignores a
   lastmod it finds unreliable, so a date that moves on every deploy is worth
   less than no date at all. Update the one page you changed, in the same commit.
 
@@ -28,22 +27,30 @@
   </url>
   <url>
     <loc>https://isaacperez.co/shootsort/</loc>
-    <lastmod>2026-09-22</lastmod>
+    <lastmod>2026-10-01</lastmod>
   </url>
   <url>
     <loc>https://isaacperez.co/souvenir/privacy/</loc>
-    <lastmod>2026-09-02</lastmod>
+    <lastmod>2026-10-01</lastmod>
   </url>
   <url>
     <loc>https://isaacperez.co/roommate/privacy/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-10-01</lastmod>
   </url>
   <url>
     <loc>https://isaacperez.co/roommate/terms/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-10-01</lastmod>
   </url>
   <url>
     <loc>https://isaacperez.co/roommate/support/</loc>
-    <lastmod>2026-09-14</lastmod>
+    <lastmod>2026-10-01</lastmod>
+  </url>
+  <url>
+    <loc>https://isaacperez.co/souvenir/support/</loc>
+    <lastmod>2026-10-01</lastmod>
+  </url>
+  <url>
+    <loc>https://isaacperez.co/buckets/support/</loc>
+    <lastmod>2026-10-01</lastmod>
   </url>
 </urlset>

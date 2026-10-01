@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1d1d1f">
+  <meta name="description" content="Support for the Souvenir iOS app — get help and contact support.">
+  <meta name="author" content="Isaac Perez">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph. These pages are reached deep-linked from an App Store
+       listing or in-app Settings, never via the homepage, so the share
+       bubble is the whole first impression. Values mirror the title,
+       description and canonical above -- keep the four in step. -->
+  <meta property="og:title" content="Support — Souvenir">
+  <meta property="og:description" content="Support for the Souvenir iOS app — get help and contact support.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://isaacperez.co/souvenir/support/">
+  <meta property="og:site_name" content="Isaac Perez">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary">
+
+  <link rel="canonical" href="https://isaacperez.co/souvenir/support/">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+  <title>Support — Souvenir</title>
+
+  <script>
+    (function() {
+      try {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+          document.documentElement.setAttribute('data-theme', savedTheme);
+        }
+      } catch (error) { /* Theme still works when storage is unavailable. */ }
+    })();
+  </script>
+
+  <link rel="stylesheet" href="/css/legal.css">
+</head>
+<body>
+  <main class="legal-container">
+    <header class="legal-header">
+      <div class="legal-eyebrow">Souvenir iOS App</div>
+      <h1 class="legal-title">Support</h1>
+      <p class="legal-meta">Get help with Souvenir</p>
+    </header>
+
+    <article class="legal-content">
+      <h2>Getting help</h2>
+      <p>
+        For help with Souvenir, email
+        <a href="mailto:souvenir@firstunit.io">souvenir@firstunit.io</a>.
+      </p>
+
+      <h2>What to include</h2>
+      <p>
+        Tell us what you were trying to do and what happened. If you are reporting a
+        problem, include your device model, iOS version, and app version. A screenshot
+        can help, but please leave out passwords and other private information.
+      </p>
+
+      <h2>Privacy</h2>
+      <p><a href="/souvenir/privacy/">Read the Souvenir privacy policy.</a></p>
+    </article>
+
+    <footer class="legal-footer">
+      <a href="/">&larr; Back to isaacperez.co</a>
+    </footer>
+  </main>
+</body>
+</html>
