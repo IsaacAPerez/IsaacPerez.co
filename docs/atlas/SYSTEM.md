@@ -6,7 +6,7 @@ _Question status: **1 open · 7 resolved**._
 
 ## One paragraph
 
-IsaacPerez.co is Isaac's personal site: eight public pages of hand-written static HTML with no package.json, bundler, application build or CI. The root homepage is a first-person, toy-eye-level room based on Isaac's photographs. Visitors explore the bedroom and bathroom, meet Mimi and Charlie, inspect work and sneaker details, control lights and music, and optionally make a three-photo postcard. The room title links to /about/; compact screens group optional activities under Explore while movement and camera controls occupy separate zones. The earlier Me → Experience → My company page remains at /about/ with the original portrait and personal contact; the room reads its content rather than forking the biography. Public scripts, GLBs and the short material-study film live under /room/, while the source/prototype and original reference photos stay outside the deployment under docs/room-preview and in Isaac's Downloads. Pricing, ShootSort and four legal pages retain their URLs; /photo redirects to FIRSTUNIT Studios. A push to main publishes through Vercel's git integration.
+IsaacPerez.co is Isaac's personal site: ten public pages of hand-written static HTML with no package.json, bundler, application build or CI. The root homepage is a first-person, toy-eye-level room based on Isaac's photographs. Visitors explore the bedroom and bathroom, meet Mimi and Charlie, inspect work and sneaker details, control lights and music, and optionally make a three-photo postcard. The room title links to /about/; compact screens group optional activities under Explore while movement and camera controls occupy separate zones. The earlier Me → Experience → My company page remains at /about/ with the original portrait and personal contact; the room reads its content rather than forking the biography. Public scripts, GLBs and the short material-study film live under /room/, while the source/prototype and original reference photos stay outside the deployment under docs/room-preview and in Isaac's Downloads. Pricing, ShootSort and four existing legal pages retain their URLs, alongside new Souvenir and Buckets support pages; /photo redirects to FIRSTUNIT Studios. A push to main publishes through Vercel's git integration.
 
 ## Decisions locked
 
@@ -117,7 +117,7 @@ IsaacPerez.co is Isaac's personal site: eight public pages of hand-written stati
 
 **What it does.** Existing visitors can still read the card-ingest promise, folder structure and system requirements, then download the macOS app.
 
-**How it's built.** `shootsort/index.html` retains `/css/site.css`, its page-scoped style block and `/js/site.js`. Download buttons target the public `github.com/IsaacAPerez/ShootSort-releases/releases/latest/download/ShootSort.zip` endpoint. The source repository remains outside this site. Section links navigate to `/about/#` anchors; Home returns to the room at /.
+**How it's built.** `shootsort/index.html` retains `/css/site.css`, its page-scoped style block and `/js/site.js`. Download buttons target the public `github.com/IsaacAPerez/ShootSort-releases/releases/latest/download/ShootSort.zip` endpoint. The source repository remains outside this site. The dedicated product contact CTA mails `shootsort@firstunit.io`. Shared personal section links still navigate to `/about/#` anchors; Home returns to the room at /.
 
 **Steps in execution.**
 
@@ -132,15 +132,15 @@ IsaacPerez.co is Isaac's personal site: eight public pages of hand-written stati
 
 #### Q · App-facing legal pages
 
-**In one line.** The privacy, terms and support pages two iOS apps point their App Store listings at.
+**In one line.** The privacy, terms and support pages for Quarters, Souvenir and Buckets.
 
-**What it does.** Four plain documents. For Quarters: a privacy page (last updated May 4 2026) naming exactly what the app collects (Sign in with Apple identifier, chore-proof photos, chat messages, push tokens) and where it lives (Supabase Postgres and storage in AWS us-west-1), a terms page covering households, owners, bills and termination, and a support page. For Souvenir: a privacy page that accounts, field by field, for the one photograph per place that leaves the device when a book is pressed.
+**What it does.** Six plain documents. Support email is `quarters@firstunit.io`, `souvenir@firstunit.io` or `buckets@firstunit.io` according to the product. Souvenir and Buckets have dedicated support pages. For Quarters: a privacy page (last updated May 4 2026) naming exactly what the app collects (Sign in with Apple identifier, chore-proof photos, chat messages, push tokens) and where it lives (Supabase Postgres and storage in AWS us-west-1), a terms page covering households, owners, bills and termination, and a support page. For Souvenir: a privacy page that accounts, field by field, for the one photograph per place that leaves the device when a book is pressed.
 
-**How it's built.** `roommate/{privacy,terms,support}/index.html` and `souvenir/privacy/index.html`. They are the only pages on `/css/legal.css` — the tokens, reset and base type of the fleet design system, without the 76% of it (buttons, cards, navs, heroes, device frames, utilities) these pages never render — a different token set (`--color-accent: #0071e3`, `--space-*`) from the rest of the site — plus the `.legal-*` layout itself, which moved into that file once it turned out all four pages carried the same 106 lines inline. Only Souvenir keeps a page-local `<style>` block, for the table, `<pre>`, `hr`, `code` and `h3` rules it alone needs. Absolute asset paths, canonical links to their exact URLs, no JS beyond the theme pre-paint IIFE. **The path is permanent**: the app renamed RoommateApp → Crib → Quarters and `/roommate/` stayed. Two of the four are renderings, not originals: `/souvenir/privacy/` comes from `~/Coding/Souvenir/docs/privacy.md`, and `/roommate/support/` deliberately summarises and links to `thequarters.app/support` (the URL App Store Connect actually declares) rather than forking that FAQ.
+**How it's built.** `roommate/{privacy,terms,support}/index.html`, `souvenir/{privacy,support}/index.html` and `buckets/support/index.html`. They are the only pages on `/css/legal.css` — the tokens, reset and base type of the fleet design system, without the 76% of it (buttons, cards, navs, heroes, device frames, utilities) these pages never render — a different token set (`--color-accent: #0071e3`, `--space-*`) from the rest of the site — plus the `.legal-*` layout itself, which moved into that file once it turned out all four pages carried the same 106 lines inline. Only Souvenir keeps a page-local `<style>` block, for the table, `<pre>`, `hr`, `code` and `h3` rules it alone needs. Absolute asset paths, canonical links to their exact URLs, no JS beyond the theme pre-paint IIFE. **The path is permanent**: the app renamed RoommateApp → Crib → Quarters and `/roommate/` stayed. Two of the six are renderings, not originals: `/souvenir/privacy/` comes from `~/Coding/Souvenir/docs/privacy.md`, and `/roommate/support/` deliberately summarises and links to `thequarters.app/support` (the URL App Store Connect actually declares) rather than forking that FAQ.
 
 **Steps in execution.**
 
-1. **Serve** — Vercel returns the directory index for /roommate/privacy/, /roommate/terms/, /roommate/support/ or /souvenir/privacy/.
+1. **Serve** — Vercel returns the directory index for /roommate/privacy/, /roommate/terms/, /roommate/support/ /souvenir/privacy/, /souvenir/support/ or /buckets/support/.
 2. **Style** — legal.css provides the tokens and the shared .legal-* layout; only Souvenir adds a page-local block.
 3. **Read** — Static prose — collection, use, storage, choices, children, changes, contact.
 4. **Exit** — One footer link back to isaacperez.co.
@@ -289,13 +289,13 @@ IsaacPerez.co is Isaac's personal site: eight public pages of hand-written stati
 
 **In one line.** The room and preserved editorial page have distinct canonical public URLs.
 
-**What it does.** The sitemap, robots file, per-page canonicals, share metadata and pricing OfferCatalog remain. The seven existing routes stay; /about/ becomes the eighth listed page.
+**What it does.** The sitemap, robots file, per-page canonicals, share metadata and pricing OfferCatalog remain. All existing routes remain, with Souvenir and Buckets support bringing the sitemap to ten pages.
 
-**How it's built.** `sitemap.xml` lists the room at `/`, editorial page at `/about/`, pricing, ShootSort, Souvenir privacy and the three Quarters pages. `/photo/` is excluded because it redirects. `404.html` is excluded and marked noindex. The room and editorial page each use their exact canonical; existing utility URLs remain unchanged.
+**How it's built.** `sitemap.xml` lists the room at `/`, editorial page at `/about/`, pricing, ShootSort, Souvenir privacy and support, Buckets support and the three Quarters pages. `/photo/` is excluded because it redirects. `404.html` is excluded and marked noindex. The room and editorial page each use their exact canonical; existing utility URLs remain unchanged.
 
 **Steps in execution.**
 
-1. **Add** — List /about/ alongside the seven retained URLs.
+1. **Add** — List all ten public URLs, including Souvenir and Buckets support.
 2. **Canonicalize** — Point / and /about/ to their own exact production URLs.
 3. **Share** — Keep page-specific Open Graph and Twitter metadata.
 4. **Audit** — Compare sitemap paths, real pages and intentional redirects.
@@ -341,8 +341,8 @@ Payload shapes are what the design implies, not measured traffic.
 | 4 | V → P | preserve photo redirect | `{"status":308,"destination":"https://firstunit.io/fu-0001"}` |
 | 5 | V → R | preserve pricing | `{"path":"/photo/pricing/"}` |
 | 6 | V → D | preserve download page | `{"path":"/shootsort/"}` |
-| 7 | V → Q | preserve legal pages | `{"count":4}` |
-| 8 | V → O | update discovery | `{"sitemapPages":8}` |
+| 7 | V → Q | preserve legal pages | `{"count":6}` |
+| 8 | V → O | update discovery | `{"sitemapPages":10}` |
 
 ## Questions — index
 
@@ -361,7 +361,7 @@ Reference by ID. ✓ resolved (with date) · otherwise open.
 
 **Platform gives:** Vercel provides git integration on <code>main</code>, TLS, CDN delivery, directory-style URLs and a custom 404 without an application build. <code>vercel.json</code> carries response headers and permanent redirects for <code>/photo</code> and <code>/photo/</code>. <code>.vercelignore</code> withholds the source/prototype and original references under <code>docs/</code>; curated runtime files under <code>/room/</code> ship. GitHub stores the source; fleet hooks supply Conventional Commit enforcement and activity-feed logging. The room's GLBs, film and sound synthesis load from this origin without a backend, analytics, CDN, streaming service or GitHub Actions workflow. Machine-level monitoring is managed outside this repo.
 
-**We own:** The playable room homepage, preserved /about/ editorial page, retained pricing and download pages, four legal-style pages, custom 404, self-hosted room assets and scripts, page-specific styles, redirect configuration and discovery metadata.
+**We own:** The playable room homepage, preserved /about/ editorial page, retained pricing and download pages, six legal-style pages, custom 404, self-hosted room assets and scripts, page-specific styles, redirect configuration and discovery metadata.
 
 ## Planned filesystem
 
@@ -374,7 +374,7 @@ IsaacPerez.co/
     personal.css        /about/ editorial layout and reveals
     site.css            shared utility-page styling and base tokens
     photo.css           /photo/pricing/ only
-    legal.css           four legal-style pages
+    legal.css           six legal-style pages
   js/
     personal.js         /about/ theme and one-time scroll reveals
     site.js             retained utility-page motion and theme behavior
@@ -384,6 +384,8 @@ IsaacPerez.co/
   shootsort/index.html  retained macOS download page
   roommate/             Quarters privacy, terms and support pages
   souvenir/privacy/     rendered from Souvenir/docs/privacy.md
+  souvenir/support/     Souvenir email support
+  buckets/support/      Buckets email support
   404.html              custom not-found page
   isaac.JPG  isaac.avif  original portrait, now displayed at /about/
   fonts/                self-hosted Inter; JetBrains Mono is repo-only
