@@ -1,0 +1,30 @@
+/* Source: firstunit-brand/BRAND.md §13. Loaded only by product pages. */
+@font-face {
+  font-family: "FIRSTUNIT Attribution";
+  src: url("/fonts/ibm-plex-mono-v20-400-latin.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+.product-footer-credit .firstunit-attribution {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  font-family: "FIRSTUNIT Attribution", monospace;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.09em;
+  color: inherit;
+  opacity: 1;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.product-footer-credit .firstunit-attribution:hover { text-decoration-thickness: 2px; }
+.product-footer-credit .firstunit-attribution:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+.product-footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 20px; }
+.product-footer-credit { margin-top: 12px; text-align: center; color: var(--color-text-primary, var(--text, currentColor)); }
+.foot .product-footer-credit { flex-basis: 100%; margin-top: 0; }
+.foot:has(.product-footer-credit) { flex-wrap: wrap; }

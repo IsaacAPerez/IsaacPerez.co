@@ -30,7 +30,7 @@
   <link rel="canonical" href="https://isaacperez.co/shootsort/">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-  <title>ShootSort — Isaac Perez</title>
+  <title>ShootSort — Verified photo and video offloads</title>
 
   <!-- Prevent flash of wrong theme -->
   <script>
@@ -52,6 +52,7 @@
   </script>
 
   <link rel="stylesheet" href="/css/site.css">
+  <link rel="stylesheet" href="/css/firstunit-attribution.css">
 
   <style>
     /* Page-scoped: ShootSort is a single page and does not earn a stylesheet. */
@@ -109,23 +110,18 @@
 <body>
   <a class="skip-link" href="#top">Skip to content</a>
 
-  <!-- ==================== NAV ====================
-       SHARED BLOCK: byte-identical to the nav in /photo/pricing/. This site has no
-       build step and so no partial to render it from -- this note is the
-       only thing holding the two copies together, so edit both in the same
-       commit. The links mirror the homepage's own sections and order
-       (AGENTS.md); adding a label the homepage does not use breaks that. -->
+  <!-- ShootSort product navigation. Personal navigation stays on /about/. -->
   <header>
     <nav class="nav" id="nav" aria-label="Main navigation">
       <div class="nav-inner">
-        <a href="/" class="nav-brand">Isaac Perez</a>
+        <a href="/shootsort/" class="nav-brand">ShootSort</a>
         <div class="nav-end">
           <ul class="nav-links" id="navLinks">
-            <li><a href="/about/#about">Me</a></li>
-            <li><a href="/about/#experience">Experience</a></li>
-            <li><a href="/about/#firstunit">FIRSTUNIT</a></li>
+            <li><a href="#promise">The promise</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="https://github.com/IsaacAPerez/ShootSort-releases/releases">Releases</a></li>
           </ul>
-          <a href="/about/#contact" class="nav-cta">Contact</a>
+          <a href="mailto:shootsort@firstunit.io" class="nav-cta">Support</a>
           <button class="theme-btn" id="themeToggle" type="button" aria-label="Toggle theme" hidden>
             <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
             <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4.5"/><line x1="12" y1="1.5" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22.5"/><line x1="3.5" y1="3.5" x2="5.3" y2="5.3"/><line x1="18.7" y1="18.7" x2="20.5" y2="20.5"/><line x1="1.5" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22.5" y2="12"/><line x1="3.5" y1="20.5" x2="5.3" y2="18.7"/><line x1="18.7" y1="5.3" x2="20.5" y2="3.5"/></svg>
@@ -228,17 +224,14 @@
     </section>
   </main>
 
-  <!-- ==================== FOOTER ====================
-       SHARED SHAPE with /photo/pricing/: Home and Contact are the same on both and
-       move together. Only the middle link differs, on purpose -- each page
-       offers the destination that follows from it. -->
+  <!-- Product links and maker attribution; legal copyright remains accurate. -->
   <footer class="foot wrap">
     <small>© 2026 Isaac Perez</small>
     <div class="foot-links">
-      <a href="/">Home</a>
-      <a href="/about/#experience">Experience</a>
-      <a href="/about/#contact">Contact</a>
+      <a href="https://github.com/IsaacAPerez/ShootSort-releases/releases">Releases</a>
+      <a href="mailto:shootsort@firstunit.io">Support</a>
     </div>
+    <div class="product-footer-credit"><a class="firstunit-attribution" href="https://firstunit.io">A FIRSTUNIT PRODUCT</a></div>
   </footer>
 
   <script src="/js/site.js" defer></script>
