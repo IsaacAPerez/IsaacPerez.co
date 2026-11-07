@@ -1,7 +1,7 @@
-/* Source: firstunit-brand/BRAND.md §13. Loaded only by product pages. */
+/* Source: firstunit-brand/BRAND.md §13, brand.json v1.12: Fragment Mono, +70. Loaded only by product pages. */
 @font-face {
   font-family: "FIRSTUNIT Attribution";
-  src: url("/fonts/ibm-plex-mono-v20-400-latin.woff2") format("woff2");
+  src: url("/fonts/fragment-mono-400-latin.woff2") format("woff2");
   font-style: normal;
   font-weight: 400;
   font-display: swap;
@@ -15,7 +15,7 @@
   font-size: 12px;
   font-weight: 400;
   line-height: 1.5;
-  letter-spacing: 0.09em;
+  letter-spacing: 0.07em;
   color: inherit;
   opacity: 1;
   text-decoration: underline;
