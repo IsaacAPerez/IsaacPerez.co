@@ -9,9 +9,9 @@ export const META = {
   artifactUrl: "",
   sourcePath: "docs/atlas/data.mjs",
   buildCmd: "node docs/atlas/build.mjs",
-  stats: [{"k":"Product","v":"isaac-perez-co · static"},{"k":"Public pages","v":"8"}],
+  stats: [{"k":"Product","v":"isaac-perez-co · static + voice API"},{"k":"Public pages","v":"10"}],
   intro: "_**This file is the living source of truth for the shape of isaacperez.co.** The interactive atlas is built from the same data._",
-  onePara: "IsaacPerez.co is Isaac's personal site: ten public pages of hand-written static HTML with no package.json, bundler, application build or CI. The root homepage is a first-person, toy-eye-level room based on Isaac's photographs. Visitors explore the bedroom and bathroom, meet Mimi and Charlie, inspect work and sneaker details, control lights and music, and optionally make a three-photo postcard. The room title links to /about/; compact screens group optional activities under Explore while movement and camera controls occupy separate zones. The earlier Me → Experience → My company page remains at /about/ with the original portrait and personal contact; the room reads its content rather than forking the biography. Public scripts, GLBs and the short material-study film live under /room/, while the source/prototype and original reference photos stay outside the deployment under docs/room-preview and in Isaac's Downloads. Pricing, ShootSort and four existing legal pages retain their URLs, alongside new Souvenir and Buckets support pages; /photo redirects to FIRSTUNIT Studios. A push to main publishes through Vercel's git integration.",
+  onePara: "IsaacPerez.co is Isaac's personal site: ten public pages of hand-written static HTML with no package.json, bundler, application build or CI. The root homepage is a first-person, toy-eye-level room based on Isaac's photographs. Visitors explore the bedroom and bathroom, meet Mimi and Charlie, inspect work and sneaker details, control lights and music, and optionally make a three-photo postcard. The room title links to /about/; compact screens group optional activities under Explore while movement and camera controls occupy separate zones. The earlier Me → Experience → My company page remains at /about/ with the original portrait and personal contact; the room reads its content rather than forking the biography. Public scripts, GLBs and the short material-study film live under /room/, while the source/prototype and original reference photos stay outside the deployment under docs/room-preview and in Isaac's Downloads. Pricing, ShootSort and four existing legal pages retain their URLs, alongside new Souvenir and Buckets support pages; /photo redirects to FIRSTUNIT Studios. A staged voice-only assistant adds bounded spoken turns on the room and about pages through one same-origin Vercel function; it reads public about facts, requires durable budget admission, and remains disabled in production pending preview approval. A push to main publishes through Vercel's git integration.",
   costModel: [],
   deepDive: "",
   platformGives: "Vercel provides git integration on <code>main</code>, TLS, CDN delivery, directory-style URLs and a custom 404 without an application build. <code>vercel.json</code> carries response headers and permanent redirects for <code>/photo</code> and <code>/photo/</code>. <code>.vercelignore</code> withholds the source/prototype and original references under <code>docs/</code>; curated runtime files under <code>/room/</code> ship. GitHub stores the source; fleet hooks supply Conventional Commit enforcement and activity-feed logging. The room's GLBs, film and sound synthesis load from this origin without a backend, analytics, CDN, streaming service or GitHub Actions workflow. Machine-level monitoring is managed outside this repo.",
@@ -20,6 +20,7 @@ export const META = {
 };
 
 export const DECISIONS = [
+  {axis:"Voice-only assistant",decision:"Approved November 11: bounded spoken turns on the room and about pages, with no text composer or transcript feed. A same-origin server function keeps credentials private, reads only public about content, and requires atomic budget admission. Custom voice enrollment is separate; production is gated until the preview is approved and the durable store is activated.",adr:"docs/voice-assistant-runtime.md"},
   {"axis": "Brand Studio ownership", "decision": "The product owns existing design source, brand/studio.adapter.json pointers and a generated read-only catalog. The pinned platform checkout owns extraction, validation and the shared browser/native renderer; CodeByIP reads that same fingerprinted catalog instead of authoring a second design system. The source library is local-only: .vercelignore excludes brand/ and the launcher; the public static site gains no developer route.", "adr": "brand/README.md"},
   {
     axis: "Runtime",
@@ -93,6 +94,12 @@ export const GROUPS = [
 ];
 
 export const NODES = [
+  {id:"VA",code:"VA",name:"Voice-only assistant",short:"SPOKEN TURNS",group:"runtime",gx:17,gy:3,w:2.5,d:2,h:34,kind:"box",
+   one:"A bounded voice conversation grounded in the public about page.",
+   what:"Visitors choose Speak, finish their recording, and hear an AI-generated reply. Mute, stop and recovery controls are explicit. The personal identity remains separate from FIRSTUNIT. No text composer, private document access, or action tools.",
+   how:"The vanilla browser records mono PCM16 audio, at most twenty seconds. /api/voice validates it and admits spend atomically before calling the audio model. Context is authenticated and site-scoped. Unknown cost stays held; recovery never repeats inference. Public operation fails closed until durable budget storage and explicit activation are configured.",
+   steps:[["Speak","Capture a bounded utterance after microphone permission."],["Admit","Validate input and reserve allowance before inference."],["Answer","Use only public /about/ facts and return spoken audio."],["Recover","Retrieve a saved result without another paid request."]],
+   cond:[{q:"Is this production enabled or Isaac's cloned voice?",r:"No. The implementation is staged for preview; the default is a labeled stock AI voice. Public activation and recorded-voice enrollment are separate verified steps (2026-11-11)."}]},
   {
     id: "L",
     code: "L",
@@ -366,6 +373,7 @@ export const NODES = [
 ];
 
 export const FLOWS = [
+  {id:"voice",name:"A bounded spoken question",hops:[["A","VA","spoken question",{input:"PCM16 WAV",maxSeconds:20},"xy"],["VA","A","approved public knowledge",{privateSources:false},"yx"],["VA","V","same-origin API",{route:"/api/voice",budget:"durable admission required"},"xy"]]},
   {
     id: "visit",
     name: "A first room visit",
