@@ -118,12 +118,18 @@ requires `VOICE_PUBLIC_APPROVED=true`. Missing storage, RPCs, valid rate headers
 enabled budget or current cycle yields unavailable. A deployment by itself
 does not create database tables or enable paid traffic.
 
-`voice-budget-draft.sql` is an **unapplied draft**, not the canonical platform
-migration. Move it through the platform's migration/review process before
-deployment, then independently verify grants, RLS, concurrency, a disabled
-budget, and only afterward the approved current $8 allowance. It seeds no grant.
-The aggregate cap applies jointly to both sites. A future renewal needs an
-explicit new cycle design, not deleting requests or overwriting this ledger.
+The sole canonical SQL source is
+`platform/supabase/migrations/0023_website_voice_budget.sql`, staged and **unapplied**
+in the isolated platform worktree. The canonical deployment and idempotent receipt-import
+plan is `platform/supabase/website-voice-deployment.md`. There is no website-local
+SQL copy. No grant is seeded.
+PostgreSQL contract/concurrency tests are authored but have not executed: the
+local Docker daemon was unavailable and was not started. Complete those checks
+before hosted approval/application. The current $8 combined allocation already
+includes known charges and unknown holds from local testing; freeze local writers
+and import those exact receipts before public admission. A fresh empty $8 row
+would incorrectly replenish the allowance. Future renewal needs an explicit new
+cycle design, not deleted receipts or a rewritten expiry.
 
 Provider eligibility, the recorded custom voice, a real physical microphone,
 phone playback and public deployment are separate proof boundaries.
