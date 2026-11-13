@@ -122,17 +122,26 @@ enabled budget or current cycle yields unavailable. A deployment by itself
 does not create database tables or enable paid traffic.
 
 The sole canonical SQL source is
-`platform/supabase/migrations/0023_website_voice_budget.sql`, staged and **unapplied**
-in the isolated platform worktree. The canonical deployment and idempotent receipt-import
-plan is `platform/supabase/website-voice-deployment.md`. There is no website-local
-SQL copy. No grant is seeded.
-PostgreSQL contract/concurrency tests are authored but have not executed: the
-local Docker daemon was unavailable and was not started. Complete those checks
-before hosted approval/application. The current $8 combined allocation already
-includes known charges and unknown holds from local testing; freeze local writers
-and import those exact receipts before public admission. A fresh empty $8 row
-would incorrectly replenish the allowance. Future renewal needs an explicit new
-cycle design, not deleted receipts or a rewritten expiry.
+`platform/supabase/migrations/0023_website_voice_budget.sql`, applied to the
+platform control plane `fqnphkqymzbxdzyqgsji` as migration version
+`20261113043805` on November 12, 2026 (Pacific). The canonical deployment and
+idempotent receipt-import plan is `platform/supabase/website-voice-deployment.md`;
+there is no website-local SQL copy.
+
+Exact SQL, RLS, concurrency and receipt-import tests passed in isolated native
+PostgreSQL 17.11. The private evidence bundle is `voice-sql-validation-20261112`
+within the November 11 API-credit-renewal evidence folder. Docker was not needed.
+The three frozen local receipts have been imported into the hosted store with
+the existing **$8 cap**, **$0.034747 known charges**, **$0.25 held/unknown**, and
+**$7.715253 remaining**. These are recorded pilot obligations, not an
+organization-wide billing statement or a newly issued grant. The hosted allowance
+remains **disabled**; this completed migration/import does not activate public
+traffic. Personal-site Vercel team authorization and production environment setup
+are still pending, so the release remains unmerged.
+
+Do not restart the old file-ledger writers, seed a fresh $8 row, or release the
+unknown hold as part of activation. Future renewal needs an explicit new cycle
+design, not deleted receipts or a rewritten expiry.
 
 Provider eligibility, the recorded custom voice, a real physical microphone,
 phone playback and public deployment are separate proof boundaries.
