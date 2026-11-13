@@ -56,7 +56,10 @@ OpenAI completion storage; it is not a claim of zero provider retention.
 The server calls `gpt-audio-1.5` once per accepted question, with audio input and
 output, no tools, one choice and 512 maximum completion tokens. Custom voices
 use an approved recorded `voice_*` ID. The default is explicitly labeled
-**AI preview voice**, not Isaac's voice.
+**OpenAI voice**, not Isaac's voice. The initial public release uses the built-in
+`marin` voice. Keep `VOICE_CUSTOM_APPROVED` unset or `false` and omit
+`OPENAI_CUSTOM_VOICE_ID` for this release; recording-based enrollment remains
+separate from public assistant activation.
 
 Each accepted turn atomically reserves $0.25 before dispatch. Actual USD is
 calculated from returned text/audio token details; cached input is conservatively

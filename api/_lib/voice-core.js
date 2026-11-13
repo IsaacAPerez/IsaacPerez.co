@@ -73,7 +73,7 @@ function priceUsage(u) {
 function voiceIdentity(env) {
   const custom = /^voice_[A-Za-z0-9_-]{4,120}$/.test(env.OPENAI_CUSTOM_VOICE_ID || '') && env.VOICE_CUSTOM_APPROVED === 'true';
   return {voice:custom ? {id:env.OPENAI_CUSTOM_VOICE_ID} : 'marin', voiceIsCustom:custom,
-    voiceLabel:custom ? 'Isaac’s AI voice' : 'AI preview voice'};
+    voiceLabel:custom ? 'Isaac’s AI voice' : 'OpenAI voice'};
 }
 function ready(env) {
   return env.VOICE_ENABLED === 'true' && /^sk-/.test(env.OPENAI_API_KEY || '') &&

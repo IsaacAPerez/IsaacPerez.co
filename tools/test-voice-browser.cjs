@@ -36,7 +36,7 @@ let browser;
     await page.locator('.voice-speak:not([disabled])').waitFor();
     assert.equal(await page.locator('.voice-dialog input,.voice-dialog textarea').count(),0);checks++;
     assert.equal(await page.locator('.voice-dialog').evaluate(el=>el.scrollWidth<=el.clientWidth+1),true);checks++;
-    assert.equal(await page.locator('.voice-identity').textContent(),'Preview voice');checks++;
+    assert.equal(await page.locator('.voice-identity').textContent(),'OpenAI voice');checks++;
     if(evidence)await page.screenshot({path:path.join(evidence,(personal?'personal':'firstunit')+'-'+viewport.width+'-ready.png')});
     if(evidence)await page.waitForTimeout(1200);
     await page.locator('.voice-speak').click();await page.locator('[data-state="recording"]').waitFor({state:'attached'});

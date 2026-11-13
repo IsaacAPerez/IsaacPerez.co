@@ -28,7 +28,7 @@
     '<div class="voice-instrument" aria-hidden="true"><div class="voice-wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>' +
     '<div class="voice-state"><p class="voice-status" role="status" aria-live="polite">Ready when you are</p><p class="voice-detail">Choose Speak, then allow your microphone.</p></div>' +
     '<div class="voice-controls"><button class="voice-mute" type="button" aria-label="Mute microphone" aria-pressed="false" disabled>' + microphoneIcon + '<span>Mute</span></button><button class="voice-speak" type="button">' + microphoneIcon + '<span>Speak</span></button><button class="voice-stop" type="button" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12"/></svg><span>Stop</span></button></div>' +
-    '<button class="voice-play" type="button" hidden>Play answer</button><button class="voice-recover" type="button" hidden>Check for answer</button><p class="voice-disclosure">AI-generated voice · <span class="voice-identity">Preview voice</span></p>' +
+    '<button class="voice-play" type="button" hidden>Play answer</button><button class="voice-recover" type="button" hidden>Check for answer</button><p class="voice-disclosure">AI-generated voice · <span class="voice-identity">OpenAI voice</span></p>' +
     '<p class="voice-privacy">Audio goes to OpenAI when you finish or after 20 seconds. Answers use this website’s public information.</p>' +
     '<a class="voice-contact" href="' + (personal ? 'mailto:iperez2435@gmail.com' : 'mailto:hello@firstunit.io') + '">Contact ' + (personal ? 'Isaac' : 'FIRSTUNIT') + ' <span aria-hidden="true">↗</span></a>' +
     '<audio class="voice-audio" preload="none"></audio></dialog>';
@@ -107,7 +107,7 @@
       }
       maximumSeconds = Math.min(20, Math.max(1, Number(data.maxRecordingSeconds) || 20));
       root.querySelector('.voice-privacy').textContent = 'Audio goes to OpenAI when you finish or after ' + maximumSeconds + ' seconds. Answers use this website’s public information.';
-      root.querySelector('.voice-identity').textContent = data.voiceIsCustom ? 'Isaac’s approved AI voice' : 'Preview voice';
+      root.querySelector('.voice-identity').textContent = data.voiceIsCustom ? 'Isaac’s approved AI voice' : 'OpenAI voice';
       if (!window.isSecureContext || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !(window.AudioContext || window.webkitAudioContext)) {
         setState('unavailable', 'This browser can’t use voice here', 'Open this page in a current browser with microphone access.');
         return;

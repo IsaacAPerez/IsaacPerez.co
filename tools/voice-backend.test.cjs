@@ -64,7 +64,7 @@ test('host spoof, foreign origin, unknown text fields and bad audio cannot reach
 });
 test('successful audio turn is source-grounded, bounded and recoverable without another charge',async t=>{
   const f=fixture(t),b=input(),first=await f.invoke(b);assert.equal(first.status,200);
-  assert.equal(first.body.voiceIsCustom,false);assert.equal(first.body.voiceLabel,'AI preview voice');
+  assert.equal(first.body.voiceIsCustom,false);assert.equal(first.body.voiceLabel,'OpenAI voice');
   assert.ok(first.body.audioBase64);assert.equal(first.body.mimeType,'audio/wav');assert.ok(first.body.conversationToken);
   const recovered=await f.invoke({action:'recover',requestId:b.requestId,requestToken:b.requestToken});assert.deepEqual(recovered.body,first.body);
   assert.deepEqual((await f.invoke(b)).body,first.body);assert.equal(f.calls(),1);
@@ -85,7 +85,7 @@ test('approved custom voice is identified and serialized in the provider audio r
   assert.deepEqual((await f.invoke({action:'recover',requestId:body.requestId,requestToken:body.requestToken})).body,reply.body);
   assert.equal(f.calls(),1);
 });
-test('invalid or unapproved custom voice always uses and identifies the preview voice',async t=>{
+test('invalid or unapproved custom voice always uses and identifies the built-in AI voice',async t=>{
   const configurations=[
     {OPENAI_CUSTOM_VOICE_ID:'voice_test_isaac_custom'},
     {OPENAI_CUSTOM_VOICE_ID:'voice_test_isaac_custom',VOICE_CUSTOM_APPROVED:'false'},
@@ -98,9 +98,9 @@ test('invalid or unapproved custom voice always uses and identifies the preview 
   for(const configuration of configurations){
     const f=fixture(t);Object.assign(f.env,configuration);
     const discovery=await f.invoke(null,{method:'GET'});
-    assert.equal(discovery.body.voiceIsCustom,false);assert.equal(discovery.body.voiceLabel,'AI preview voice');
+    assert.equal(discovery.body.voiceIsCustom,false);assert.equal(discovery.body.voiceLabel,'OpenAI voice');
     const reply=await f.invoke(input());assert.equal(reply.status,200);
-    assert.equal(reply.body.voiceIsCustom,false);assert.equal(reply.body.voiceLabel,'AI preview voice');
+    assert.equal(reply.body.voiceIsCustom,false);assert.equal(reply.body.voiceLabel,'OpenAI voice');
     assert.deepEqual(f.bodies[0].audio,{voice:'marin',format:'wav'});
   }
 });
