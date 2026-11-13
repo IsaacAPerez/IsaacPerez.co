@@ -72,6 +72,38 @@ test('successful audio turn is source-grounded, bounded and recoverable without 
   assert.ok(sent.messages[0].content.includes('public factual reference'));assert.equal(sent.messages.at(-1).content[0].type,'input_audio');
   const row=JSON.parse(fs.readFileSync(f.file)).requests[0];assert.equal(row.chargedMicroUsd,19100);assert.equal(row.state,'complete');assert.equal(row.audioBase64,undefined);
 });
+test('approved custom voice is identified and serialized in the provider audio request',async t=>{
+  const f=fixture(t),voiceId='voice_test_isaac_custom';
+  Object.assign(f.env,{OPENAI_CUSTOM_VOICE_ID:voiceId,VOICE_CUSTOM_APPROVED:'true'});
+  const discovery=await f.invoke(null,{method:'GET'});
+  assert.equal(discovery.status,200);assert.equal(discovery.body.available,true);
+  assert.equal(discovery.body.voiceIsCustom,true);assert.equal(discovery.body.voiceLabel,'Isaac’s AI voice');
+  assert.equal(f.calls(),0);
+  const body=input(),reply=await f.invoke(body);assert.equal(reply.status,200);
+  assert.equal(reply.body.voiceIsCustom,true);assert.equal(reply.body.voiceLabel,'Isaac’s AI voice');
+  assert.deepEqual(f.bodies[0].audio,{voice:{id:voiceId},format:'wav'});
+  assert.deepEqual((await f.invoke({action:'recover',requestId:body.requestId,requestToken:body.requestToken})).body,reply.body);
+  assert.equal(f.calls(),1);
+});
+test('invalid or unapproved custom voice always uses and identifies the preview voice',async t=>{
+  const configurations=[
+    {OPENAI_CUSTOM_VOICE_ID:'voice_test_isaac_custom'},
+    {OPENAI_CUSTOM_VOICE_ID:'voice_test_isaac_custom',VOICE_CUSTOM_APPROVED:'false'},
+    {OPENAI_CUSTOM_VOICE_ID:'voice_test_isaac_custom',VOICE_CUSTOM_APPROVED:'TRUE'},
+    {VOICE_CUSTOM_APPROVED:'true'},
+    {OPENAI_CUSTOM_VOICE_ID:'not-a-voice-id',VOICE_CUSTOM_APPROVED:'true'},
+    {OPENAI_CUSTOM_VOICE_ID:'voice_abc',VOICE_CUSTOM_APPROVED:'true'},
+    {OPENAI_CUSTOM_VOICE_ID:'voice_'+ 'x'.repeat(121),VOICE_CUSTOM_APPROVED:'true'}
+  ];
+  for(const configuration of configurations){
+    const f=fixture(t);Object.assign(f.env,configuration);
+    const discovery=await f.invoke(null,{method:'GET'});
+    assert.equal(discovery.body.voiceIsCustom,false);assert.equal(discovery.body.voiceLabel,'AI preview voice');
+    const reply=await f.invoke(input());assert.equal(reply.status,200);
+    assert.equal(reply.body.voiceIsCustom,false);assert.equal(reply.body.voiceLabel,'AI preview voice');
+    assert.deepEqual(f.bodies[0].audio,{voice:'marin',format:'wav'});
+  }
+});
 test('wrong recovery capability and changed duplicate payload are rejected',async t=>{
   const f=fixture(t),b=input();await f.invoke(b);
   assert.equal((await f.invoke({action:'recover',requestId:b.requestId,requestToken:randomBytes(32).toString('base64url')})).status,404);
