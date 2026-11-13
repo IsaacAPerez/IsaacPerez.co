@@ -7,7 +7,22 @@ Ten public pages are in the sitemap: `/`, `/about/`, `/photo/pricing/`, `/shoots
 Pure static — vanilla HTML/CSS/JS plus local GLB, image and video assets; no package.json, application build or CI. The WebGL room loads from `/room/`, while research, source photos, model-generation notes and the architecture atlas stay in git-ignored `docs/room-preview/` inside the working tree (never tracked; only `docs/atlas/` and `docs/og/` are in git) and in Isaac's Downloads. Do not publish original room photos or source media merely to make the preview work: they include private details and may retain location metadata. `vercel.json` contains the photo redirects and response headers (hash-based CSP + HSTS + nosniff + frame/referrer/permissions/CORS), with no build command. `.vercelignore` keeps the repo-only files out of the deployment. Hosted on Vercel (project `isaacperez`, root `.`), auto-deploying `main` from GitHub `IsaacAPerez/IsaacPerez.co`. The project and team ids are in the Vercel dashboard — this is a public repo, so don't record them here.
 Prime directive: the repo tree IS the site and a push to main IS a production deploy — keep it vanilla, and preview before you ship anything user-visible.
 
+## Approved voice extension — November 11, 2026
+
+Isaac requested a voice-only assistant on this site and FIRSTUNIT. This explicitly
+extends the earlier static/no-API architecture: `api/voice.js` is a dependency-free
+Vercel function, with server-only provider credentials and atomic budget admission.
+The rest of the site remains vanilla and build-free. `js/voice-assistant.js`, its
+audio worklet, and `css/voice-assistant.css` add spoken turns to `/` and `/about/`;
+there is no text composer or chat feed. The assistant reads only approved public
+`/about/` content and cannot access private room sources, the old résumé, or local
+agent memory. Custom-voice enrollment and recordings remain outside the repo.
+See `docs/voice-assistant-runtime.md` for provider, recovery, retention, budget and
+activation boundaries. A stock preview voice is never presented as Isaac's clone.
+The existing preview-before-production requirement remains in force.
+
 ## Commands
+
 - Rebuild the architecture atlas after changing how IsaacPerez.co works: `node docs/atlas/build.mjs` (edit `docs/atlas/data.mjs` only — `atlas.html` and `SYSTEM.md` are generated). It renders inside IsaacPerez.co's tab in the CodeByIP app, with a drift count since `data.mjs` was last committed; `docs/atlas/README.md` explains the set.
 - Preview: `python3 -m http.server 8000` from repo root, open http://localhost:8000. No build step — any static server works.
 - Deploy prod: `git push origin main` (Vercel auto-deploys; no CI, no staging gate).

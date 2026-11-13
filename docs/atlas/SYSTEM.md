@@ -2,16 +2,17 @@
 
 _**This file is the living source of truth for the shape of isaacperez.co.** The interactive atlas is built from the same data._
 
-_Question status: **1 open · 7 resolved**._
+_Question status: **1 open · 8 resolved**._
 
 ## One paragraph
 
-IsaacPerez.co is Isaac's personal site: ten public pages of hand-written static HTML with no package.json, bundler, application build or CI. The root homepage is a first-person, toy-eye-level room based on Isaac's photographs. Visitors explore the bedroom and bathroom, meet Mimi and Charlie, inspect work and sneaker details, control lights and music, and optionally make a three-photo postcard. The room title links to /about/; compact screens group optional activities under Explore while movement and camera controls occupy separate zones. The earlier Me → Experience → My company page remains at /about/ with the original portrait and personal contact; the room reads its content rather than forking the biography. Public scripts, GLBs and the short material-study film live under /room/, while the source/prototype and original reference photos stay outside the deployment under docs/room-preview and in Isaac's Downloads. Pricing, ShootSort and four existing legal pages retain their URLs, alongside new Souvenir and Buckets support pages; /photo redirects to FIRSTUNIT Studios. A push to main publishes through Vercel's git integration.
+IsaacPerez.co is Isaac's personal site: ten public pages of hand-written static HTML with no package.json, bundler, application build or CI. The root homepage is a first-person, toy-eye-level room based on Isaac's photographs. Visitors explore the bedroom and bathroom, meet Mimi and Charlie, inspect work and sneaker details, control lights and music, and optionally make a three-photo postcard. The room title links to /about/; compact screens group optional activities under Explore while movement and camera controls occupy separate zones. The earlier Me → Experience → My company page remains at /about/ with the original portrait and personal contact; the room reads its content rather than forking the biography. Public scripts, GLBs and the short material-study film live under /room/, while the source/prototype and original reference photos stay outside the deployment under docs/room-preview and in Isaac's Downloads. Pricing, ShootSort and four existing legal pages retain their URLs, alongside new Souvenir and Buckets support pages; /photo redirects to FIRSTUNIT Studios. A voice-only assistant adds bounded spoken turns on the room and about pages through one same-origin Vercel function; it reads public about facts, uses the built-in marin AI voice for the initial public release, and fails closed unless durable budget admission and public activation are configured. A push to main publishes through Vercel's git integration.
 
 ## Decisions locked
 
 | Axis | Decision | ADR |
 |---|---|---|
+| Voice-only assistant | Approved November 11: bounded spoken turns on the room and about pages, with no text composer or transcript feed. A same-origin server function keeps credentials private, reads only public about content, and requires atomic budget admission. The November 12 release authorization selects the built-in marin AI voice. Custom voice enrollment stays disabled and separate; production still requires the durable store and explicit public activation configuration. | docs/voice-assistant-runtime.md |
 | Brand Studio ownership | The product owns existing design source, brand/studio.adapter.json pointers and a generated read-only catalog. The pinned platform checkout owns extraction, validation and the shared browser/native renderer; CodeByIP reads that same fingerprinted catalog instead of authoring a second design system. The source library is local-only: .vercelignore excludes brand/ and the launcher; the public static site gains no developer route. | brand/README.md |
 | Runtime | Vanilla HTML/CSS/JS, one IIFE per script. No framework, package.json, bundler, node_modules or application build. The repository tree is the site. | — |
 | Homepage | The room becomes /, with toy-eye-level first-person exploration. Preserve the prior Me → Experience → My company page at /about/ as the readable alternative and content source; retain its original portrait and contact footer. | User direction · 2026-09-22 |
@@ -150,6 +151,25 @@ IsaacPerez.co is Isaac's personal site: ten public pages of hand-written static 
 - ~~**Q-Q1** Should these move to `/quarters/` now that the app has its final name?~~ ✓ No. App Store metadata and external systems point at the existing URLs; AGENTS.md marks the path permanent and allows only copy renames — and a rename must match `\bCrib\b` case-sensitively, a precaution the rename commit 85c58c1 records because a case-insensitive replace would mangle the word "describes" in the privacy policy (2026-08-24).
 
 ### What runs in the browser
+
+#### VA · Voice-only assistant
+
+**In one line.** A bounded voice conversation grounded in the public about page.
+
+**What it does.** Visitors choose Speak, finish their recording, and hear an AI-generated reply. Mute, stop and recovery controls are explicit. The personal identity remains separate from FIRSTUNIT. No text composer, private document access, or action tools.
+
+**How it's built.** The vanilla browser records mono PCM16 audio, at most twenty seconds. /api/voice validates it and admits spend atomically before calling the audio model. Context is authenticated and site-scoped. Unknown cost stays held; recovery never repeats inference. Public operation fails closed until durable budget storage and explicit activation are configured.
+
+**Steps in execution.**
+
+1. **Speak** — Capture a bounded utterance after microphone permission.
+2. **Admit** — Validate input and reserve allowance before inference.
+3. **Answer** — Use only public /about/ facts and return spoken audio.
+4. **Recover** — Retrieve a saved result without another paid request.
+
+**Questions.**
+
+- ~~**Q-VA1** What voice is this release configured to use?~~ ✓ Isaac approved the built-in marin voice, labeled OpenAI voice, for the initial public release. Custom voice enrollment remains disabled; hosted availability still depends on configured public activation and durable budget admission (2026-11-12).
 
 #### M · Room runtime
 
@@ -308,6 +328,14 @@ IsaacPerez.co is Isaac's personal site: ten public pages of hand-written static 
 
 Payload shapes are what the design implies, not measured traffic.
 
+### A bounded spoken question
+
+| # | From → To | Packet | Representative payload |
+|---|---|---|---|
+| 1 | A → VA | spoken question | `{"input":"PCM16 WAV","maxSeconds":20}` |
+| 2 | VA → A | approved public knowledge | `{"privateSources":false}` |
+| 3 | VA → V | same-origin API | `{"route":"/api/voice","budget":"durable admission required"}` |
+
 ### A first room visit
 
 | # | From → To | Packet | Representative payload |
@@ -353,6 +381,7 @@ Reference by ID. ✓ resolved (with date) · otherwise open.
 - ~~**Q-R1**~~ (R) ✓ No. The user approved retaining every sitemap route and keeping this utility page functional but unpromoted. A later relocation or offer change is separate work (2026-09-11).
 - **Q-D1** (D) The page claims Apple silicon + macOS 14 and a notarized build, taken from `dist/appcast.xml` and the README. Nothing re-checks that when ShootSort ships a release — should the requirements line be generated, or is a page that only changes when the app's floor changes fine as prose?
 - ~~**Q-Q1**~~ (Q) ✓ No. App Store metadata and external systems point at the existing URLs; AGENTS.md marks the path permanent and allows only copy renames — and a rename must match `\bCrib\b` case-sensitively, a precaution the rename commit 85c58c1 records because a case-insensitive replace would mangle the word "describes" in the privacy policy (2026-08-24).
+- ~~**Q-VA1**~~ (VA) ✓ Isaac approved the built-in marin voice, labeled OpenAI voice, for the initial public release. Custom voice enrollment remains disabled; hosted availability still depends on configured public activation and durable budget admission (2026-11-12).
 - ~~**Q-H1**~~ (H) ✓ No. The approved implementation remains vanilla static HTML/CSS/JS; Vercel git integration is the deployment pipeline (2026-09-11).
 - ~~**Q-V1**~~ (V) ✓ No. The file is removed and vercel.json returns HTTP 308 to https://firstunit.io/fu-0001. The existing rule is preserved by the personal-site redesign (2026-09-11).
 - ~~**Q-O1**~~ (O) ✓ No. The seven earlier URLs remain and /about/ is added as the eighth; homepage format and route existence are separate decisions (2026-09-22).

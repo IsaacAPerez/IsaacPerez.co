@@ -1339,6 +1339,7 @@
     }
   });
   window.addEventListener('blur', () => { keys.clear(); touchMoves.clear(); dragging = null; });
+  document.addEventListener('site-voice-open', () => { keys.clear(); touchMoves.clear(); dragging = null; });
   document.addEventListener('visibilitychange', () => {
     keys.clear(); touchMoves.clear(); dragging = null; lastTime = 0; nextFrameTime = 0;
     if (document.hidden) { cancelAnimationFrame(frameId); frameId = 0; }
