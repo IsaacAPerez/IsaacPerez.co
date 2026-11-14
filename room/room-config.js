@@ -3,8 +3,10 @@
   // Blender x/east, y/north, z/up becomes glTF x/east, y/up, z/south.
   // Photo-inferred enclosure approved by Isaac on 2026-09-21; desk/mattress are scale anchors.
   window.ROOM_CONFIG = {
-    // Local revision-22 derivative: open the existing corner cat box for Charlie.
-    modelUrl: '/room/room-cat-furniture.glb',
+    // Curated Blender fidelity pass with persistent HDR diffuse lighting.
+    modelUrl: '/room/room-fidelity-v6.glb',
+    lightingUrl: '/room/lighting/manifest-v6.json',
+    entranceDoor: { hinge: [4.005, 1.005], direction: [-.8660254038, .5], width: .835 },
     // Modelled travel; preserves the approved 0.998 m startup position and
     // clearance beneath the fixed pegboard tray above the desk-mounted screen.
     desk: { min: .748, max: .998 },
@@ -27,7 +29,8 @@
       { name: 'Window cabinet', minX: .06, maxX: .44, minZ: -1.59, maxZ: -.97, minY: 0, maxY: .74 },
       { name: 'Fan', minX: .77, maxX: 1.03, minZ: -1.04, maxZ: -.78, minY: 0, maxY: .93 },
       { name: 'Bags', minX: 2.52, maxX: 3.35, minZ: -1.14, maxZ: -.6, minY: 0, maxY: .48 },
-      { name: 'Open entrance door', minX: 3.13, maxX: 3.99, minZ: -1.052, maxZ: -1.007, minY: 0, maxY: 2.1 },
+      // Cats use a conservative AABB; the player uses the oriented leaf above.
+      { name: 'Open entrance door', minX: 3.26, maxX: 4.025, minZ: -1.445, maxZ: -.985, minY: 0, maxY: 2.13 },
       { name: 'Closet', minX: 3.96, maxX: 4.6, minZ: -3.22, maxZ: -1.18, minY: 0, maxY: 2.25 },
       { name: 'Vanity', minX: 6.45, maxX: 7.04, minZ: -4.68, maxZ: -3.78, minY: 0, maxY: .89 },
       { name: 'Toilet', minX: 6.2, maxX: 7.04, minZ: -3.65, maxZ: -3.09, minY: 0, maxY: .9 },

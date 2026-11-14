@@ -139,6 +139,7 @@
     if (!gl.getShaderParameter(result, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(result));
     return result;
   }
+  const bakedTextures = new Map();
   let program, uniforms, depthProgram, depthUniforms;
   try {
     program = gl.createProgram();
@@ -149,13 +150,14 @@
       layout(location=3) in vec4 aColor;
       layout(location=4) in vec4 aTangent;
       layout(location=5) in vec2 aUV1;
+      layout(location=6) in vec3 aIrradiance;
       uniform mat4 uModel, uViewProjection, uActor;
       uniform mat3 uNormal;
       uniform float uHandedness;
       uniform bool uCat;
       uniform vec4 uCatFeet[4], uCatSteps[4];
       uniform vec3 uCatMotion, uCatPose;
-      out vec3 vNormal, vWorld;
+      out vec3 vNormal, vWorld, vIrradiance;
       out vec2 vUV, vUV1;
       out vec4 vTangent;
       out vec4 vColor;
@@ -211,7 +213,7 @@
           point = (uActor * vec4(moved, 1.0)).xyz;
           normal = mat3(uActor) * normal; tangent = mat3(uActor) * tangent;
         }
-        vNormal = normal;
+        vNormal = normal; vIrradiance = aIrradiance;
         vUV = aUV; vUV1 = aUV1; vColor = aColor;
         vWorld = point;
         vTangent = vec4(tangent, aTangent.w * uHandedness);
@@ -219,10 +221,13 @@
       }`));
     gl.attachShader(program, shader(gl.FRAGMENT_SHADER, `#version 300 es
       precision highp float;
-      in vec3 vNormal, vWorld;
+      in vec3 vNormal, vWorld, vIrradiance;
       in vec2 vUV, vUV1;
       in vec4 vColor, vTangent;
       uniform vec4 uBase;
+      uniform int uBakedMode;
+      uniform float uBakedRange;
+      uniform sampler2D uBakedTexture;
       uniform vec4 uCatShadow[2], uCatPaws[8];
       uniform vec2 uCatSupport;
       uniform vec4 uRoomLight;
@@ -245,6 +250,54 @@
       const float PI = 3.14159265;
       vec2 uv(int slot) { return (uUVTransforms[slot] * vec3(uUVSets[slot] == 1 ? vUV1 : vUV, 1.0)).xy; }
       vec3 linearColor(vec3 color) { return pow(max(color, vec3(0.0)), vec3(2.2)); }
+      // AgX transfer from Three.js (MIT); see /room/lighting/THREE-LICENSE.txt.
+      const mat3 LINEAR_REC2020_TO_LINEAR_SRGB = mat3(
+        vec3( 1.6605, - 0.1246, - 0.0182 ),
+        vec3( - 0.5876, 1.1329, - 0.1006 ),
+        vec3( - 0.0728, - 0.0083, 1.1187 )
+      );
+      const mat3 LINEAR_SRGB_TO_LINEAR_REC2020 = mat3(
+        vec3( 0.6274, 0.0691, 0.0164 ),
+        vec3( 0.3293, 0.9195, 0.0880 ),
+        vec3( 0.0433, 0.0113, 0.8956 )
+      );
+      vec3 agxDefaultContrastApprox( vec3 x ) {
+        vec3 x2 = x * x;
+        vec3 x4 = x2 * x2;
+        return + 15.5 * x4 * x2
+          - 40.14 * x4 * x
+          + 31.96 * x4
+          - 6.868 * x2 * x
+          + 0.4298 * x2
+          + 0.1191 * x
+          - 0.00232;
+      }
+      vec3 AgXToneMapping( vec3 color ) {
+        const mat3 AgXInsetMatrix = mat3(
+          vec3( 0.856627153315983, 0.137318972929847, 0.11189821299995 ),
+          vec3( 0.0951212405381588, 0.761241990602591, 0.0767994186031903 ),
+          vec3( 0.0482516061458583, 0.101439036467562, 0.811302368396859 )
+        );
+        const mat3 AgXOutsetMatrix = mat3(
+          vec3( 1.1271005818144368, - 0.1413297634984383, - 0.14132976349843826 ),
+          vec3( - 0.11060664309660323, 1.157823702216272, - 0.11060664309660294 ),
+          vec3( - 0.016493938717834573, - 0.016493938717834257, 1.2519364065950405 )
+        );
+        const float AgxMinEv = - 12.47393;  const float AgxMaxEv = 4.026069;
+        color *= 1.148698355;
+        color = LINEAR_SRGB_TO_LINEAR_REC2020 * color;
+        color = AgXInsetMatrix * color;
+        color = max( color, 1e-10 );  color = log2( color );
+        color = ( color - AgxMinEv ) / ( AgxMaxEv - AgxMinEv );
+        color = clamp( color, 0.0, 1.0 );
+        color = agxDefaultContrastApprox( color );
+        color = AgXOutsetMatrix * color;
+        color = pow( max( vec3( 0.0 ), color ), vec3( 2.2 ) );
+        color = LINEAR_REC2020_TO_LINEAR_SRGB * color;
+        color = clamp( color, 0.0, 1.0 );
+        return color;
+      }
+
       vec3 fresnel(float cosine, vec3 f0) { return f0 + (1.0 - f0) * pow(1.0 - cosine, 5.0); }
       float shadowVisibility(vec3 direction, float nDotL) {
         float major = max(max(abs(direction.x), abs(direction.y)), abs(direction.z));
@@ -322,6 +375,11 @@
         }
         contact *= 1.0 - 0.48 * min(pawContact, 1.0) * smoothstep(0.3, 0.95, n.y);
         vec3 f0 = mix(vec3(0.04), base.rgb, metallic), color = vec3(0.0);
+        vec3 baked = vIrradiance;
+        if (uBakedMode == 1) {
+          vec4 encoded = texture(uBakedTexture, vUV1);
+          baked = encoded.rgb * encoded.rgb * encoded.a * uBakedRange;
+        }
         float nv = max(dot(n, v), 0.001), alpha = roughness * roughness;
         for (int i = 0; i < 8; i++) {
           if (i >= uLightCount) break;
@@ -343,8 +401,9 @@
           vec3 specular = d * g * f / max(4.0 * nv * nl, 0.001);
           float visibility = i == uShadowIndex ? shadowVisibility(-delta, nl) : 1.0;
           vec3 radiance = uLightColor[i].rgb * uLightColor[i].a * attenuation;
-          color += ((1.0 - f) * (1.0 - metallic) * base.rgb / PI + specular) * radiance * nl * visibility;
+          color += ((uBakedMode == 0 ? (1.0 - f) * (1.0 - metallic) * base.rgb / PI : vec3(0)) + specular) * radiance * nl * visibility;
         }
+        vec3 directSpecular = color;
         // Approximate the large west window and the room's wood/cream bounce.
         // This stays analytic: no extra light, texture, render pass or update loop.
         float windowReach = (1.0 - smoothstep(0.35, 4.1, vWorld.x)) * uRoomLight.x;
@@ -361,10 +420,13 @@
         float ambientLevel = 0.008 + uRoomLight.x * 0.72 + mix(uRoomLight.y, uRoomLight.z, bathroom) * 0.272;
         vec3 ambientTint = mix(vec3(1), vec3(1.04,0.92,0.76), uRoomLight.w * (1.0 - uRoomLight.x));
         color = color * mix(0.60 + 0.40 * contact, 1.0, metallic) + ambient * ambientLevel * ambientTint * ao * contact + emission;
+        if (uBakedMode > 0) {
+          color = directSpecular + base.rgb * (1.0 - metallic) * baked * ambientLevel * ambientTint * mix(1.0, contact, .25)
+            + environment * fresnel(nv, f0) * (1.0 - roughness * .55) * ambientLevel + emission;
+        }
         if (uUnlit) color = base.rgb + emission;
         // Fixed filmic exposure: protect luminous fixtures without dimming the room.
-        color *= 0.9;
-        color = clamp((color * (2.51 * color + 0.03)) / (color * (2.43 * color + 0.59) + 0.14), 0.0, 1.0);
+        color = AgXToneMapping(color);
         outColor = vec4(pow(color, vec3(1.0 / 2.2)), base.a);
       }`));
     gl.linkProgram(program);
@@ -374,7 +436,7 @@
       'Roughness', 'Metallic', 'NormalScale', 'OcclusionStrength', 'MapMask', 'UVSets', 'UVTransforms', 'LightCount',
       'LightPosition', 'LightColor', 'LightDirection', 'LightCones', 'ShadowIndex', 'ShadowCube', 'ShadowPlanes',
       'Actor', 'Cat', 'CatFeet', 'CatSteps', 'CatMotion', 'CatPose', 'CatShadow', 'CatPaws', 'CatSupport', 'RoomLight',
-      'ClipEnabled', 'ClipPlane', 'DisplayBounds', 'SurfaceMode', 'SurfaceTexture', 'SurfaceProjection']
+      'BakedMode', 'BakedTexture', 'BakedRange', 'ClipEnabled', 'ClipPlane', 'DisplayBounds', 'SurfaceMode', 'SurfaceTexture', 'SurfaceProjection']
       .map(name => [name, gl.getUniformLocation(program, 'u' + name)]));
     depthProgram = gl.createProgram();
     gl.attachShader(depthProgram, shader(gl.VERTEX_SHADER, `#version 300 es
@@ -520,6 +582,7 @@
         occlusionStrength: m.occlusionTexture && m.occlusionTexture.strength !== undefined ? m.occlusionTexture.strength : 1,
         emissive: (m.emissiveFactor || [0, 0, 0]).map(v => v * (strength ? strength.emissiveStrength : 1)),
         blend: m.alphaMode === 'BLEND', cutoff: m.alphaMode === 'MASK' ? (m.alphaCutoff === undefined ? 0.5 : m.alphaCutoff) : -1,
+        bakedGroup: m.extras && m.extras.r4LightGroup, vertexLight: !!(m.extras && m.extras.r5VertexLight),
         unlit: !!(m.extensions && m.extensions.KHR_materials_unlit), doubleSided: !!m.doubleSided };
     });
     const fallback = { base: [0.7, 0.7, 0.7, 1], emissive: [0, 0, 0], cutoff: -1, maps: [], mapMask: 0, roughness: 0.8, metallic: 0,
@@ -546,6 +609,14 @@
       else { gl.disableVertexAttribArray(4); gl.vertexAttrib4f(4, 1, 0, 0, 1); }
       if (attrs.COLOR_0 !== undefined) { const color = accessor(json, binary, attrs.COLOR_0); attribute(3, color.data, color.components); }
       else { gl.disableVertexAttribArray(3); gl.vertexAttrib4f(3, 1, 1, 1, 1); }
+      if (attrs._R5_IRRADIANCE !== undefined) attribute(6, accessor(json, binary, attrs._R5_IRRADIANCE).data, 3);
+      else { gl.disableVertexAttribArray(6); gl.vertexAttrib3f(6, 0, 0, 0); }
+      if (material.vertexLight && attrs._R5_IRRADIANCE === undefined) throw new Error('Missing mesh lighting on ' + name);
+      if (material.bakedGroup && attrs.TEXCOORD_1 === undefined) throw new Error('Missing light UVs on ' + name);
+      if (/^(Bathroom large mirror|Closet mirror panel)$/.test(name)) {
+        material.blend = false; material.base = [.32, .34, .35, 1]; material.metallic = .65;
+      }
+      if (/^Sneaker (case frame|clear doors|shelves)$/.test(name)) material.depthWrite = true;
       let indexType;
       if (index) {
         const constructors = { 5121: Uint8Array, 5123: Uint16Array, 5125: Uint32Array };
@@ -611,7 +682,7 @@
       gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(values), gl.STATIC_DRAW);
       gl.enableVertexAttribArray(slot); gl.vertexAttribPointer(slot, 3, gl.FLOAT, false, 0, 0);
     }
-    for (const slot of [2, 3, 4, 5]) gl.disableVertexAttribArray(slot);
+    for (const slot of [2, 3, 4, 5, 6]) gl.disableVertexAttribArray(slot);
     gl.vertexAttrib2f(2, 0, 0); gl.vertexAttrib4f(3, 1, 1, 1, 1);
     gl.vertexAttrib4f(4, 1, 0, 0, 1); gl.vertexAttrib2f(5, 0, 0);
     gl.bindVertexArray(null);
@@ -623,7 +694,27 @@
         transforms: new Float32Array(Array(5).fill([1,0,0,0,1,0,0,0,1]).flat()) },
       indexType: null, count: vertices.length / 3, hasTangent: false, mirrored: false, ceiling: false };
   }
+  async function loadBakedLighting() {
+    if (!config.lightingUrl) return;
+    const response = await fetch(config.lightingUrl);
+    if (!response.ok) throw new Error('Room lighting could not load.');
+    const manifest = await response.json();
+    for (const [group, definition] of Object.entries(manifest.groups)) {
+      const image = await fetch(definition.url);
+      if (!image.ok) throw new Error('Room light atlas could not load.');
+      // RGBM alpha carries HDR magnitude, so decoding must preserve straight RGB.
+      const bitmap = await createImageBitmap(await image.blob(), { colorSpaceConversion: 'none', premultiplyAlpha: 'none' });
+      const texture = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, texture);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, bitmap); bitmap.close();
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      bakedTextures.set(group, { texture, range: definition.rgbmRange });
+    }
+  }
   async function loadModel() {
+    await loadBakedLighting();
     const model = await importModel(config.modelUrl || '/room/room-cat-furniture.glb');
     meshes = model.meshes; lights = model.lights; triangleCount = model.triangles;
     if (!lights.length) lights = [{ name: 'Window fallback', position: [0.2, 1.75, -1.3], direction: [0, -1, 0], type: 0,
@@ -902,7 +993,14 @@
       const px = x + Math.cos(i * Math.PI / 8) * radius, pz = z + Math.sin(i * Math.PI / 8) * radius;
       if (!bounds.some(b => px >= b.minX && px <= b.maxX && pz >= b.minZ && pz <= b.maxZ)) return false;
     }
+    if (config.entranceDoor && feetY < 2.13) {
+      const door = config.entranceDoor, d = door.direction, dx = x - door.hinge[0], dy = -z - door.hinge[1];
+      const u = dx * d[0] + dy * d[1], v = dx * -d[1] + dy * d[0];
+      if (u > -radius && u < door.width + radius && Math.abs(v) < .019 + radius) return false;
+      if (height > .50 && u > -.03 - radius && u < door.width + .03 + radius && v > -.38 - radius && v < .01 + radius) return false;
+    }
     for (const b of obstacles) {
+      if (config.entranceDoor && b.name === 'Open entrance door') continue;
       if ((b.minY === undefined ? 0 : b.minY) >= height + 0.10 || (b.maxY === undefined ? 3 : b.maxY) <= feetY + 0.04) continue;
       // Clear each furniture edge as soon as the toy's feet reach its top.
       // Waiting for the center to enter the smaller landing area creates an
@@ -1165,6 +1263,12 @@
     const transparent = visible.filter(mesh => mesh.material.blend).sort((a, b) => distance(b) - distance(a));
     function draw(mesh) {
       const m = mesh.material;
+      const baked = bakedTextures.get(m.bakedGroup);
+      gl.uniform1i(uniforms.BakedMode, m.vertexLight ? 2 : baked ? 1 : 0);
+      gl.uniform1f(uniforms.BakedRange, baked ? baked.range : 1);
+      gl.uniform1i(uniforms.BakedTexture, 8); gl.activeTexture(gl.TEXTURE8);
+      gl.bindTexture(gl.TEXTURE_2D, baked ? baked.texture : null);
+      gl.depthMask(!m.blend || !!m.depthWrite);
       gl.uniform1i(uniforms.Cat, !!mesh.cat);
       if (mesh.cat) {
         const pose = mesh.cat.pose;
@@ -1359,7 +1463,7 @@
   // The visitor controls the camera; each cat owns its pause and motion preference.
   window.RoomPreview = {
     get state() { return { position: { x: camera.x, y: camera.y, z: camera.z }, yaw: camera.yaw, pitch: camera.pitch,
-      height: camera.y, mode, loaded, meshes: meshes.length, triangles: triangleCount, lights: lights.length,
+      height: camera.y, mode, loaded, fidelity: config.lightingUrl ? 6 : 0, bakedAtlases: bakedTextures.size, meshes: meshes.length, triangles: triangleCount, lights: lights.length,
       shadowMapSize: shadow ? shadow.size : 0, shadowBuilds, mirrors: mirrorState(), desk: deskState(),
       lighting: { ...lighting },
       monitor: { loaded: monitor.loaded, uploads: monitor.uploads, source: monitor.source ? monitor.source.state : null },

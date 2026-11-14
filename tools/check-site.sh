@@ -33,7 +33,7 @@ WITHHELD=$(grep -v '^[[:space:]]*#' .vercelignore | grep -v '^[[:space:]]*$')
 case_fails=0
 for page in $PAGES; do
   dir=$(dirname "$page")
-  refs=$(grep -oE '(src|href)="[^"#?]+"' "$page" | sed -E 's/^[a-z]+="//; s/"$//')
+  refs=$(grep -oE '(src|href)="[^"#]+"' "$page" | sed -E 's/^[a-z]+="//; s/"$//; s/[?].*$//')
   for ref in $refs; do
     case "$ref" in
       http*|mailto:*|tel:*|//*|'') continue ;;
@@ -65,7 +65,7 @@ done
 # fine locally, which is the same failure mode as a case slip.
 ignore_fails=0
 for page in $PAGES; do
-  refs=$(grep -oE '(src|href)="/[^"#?]+"' "$page" | sed -E 's/^[a-z]+="\///; s/"$//')
+  refs=$(grep -oE '(src|href)="/[^"#]+"' "$page" | sed -E 's/^[a-z]+="\///; s/"$//; s/[?].*$//')
   for ref in $refs; do
     for w in $WITHHELD; do
       w_clean=${w%/}

@@ -1,0 +1,21 @@
+{
+  "version": 6,
+  "groups": {
+    "architecture": {
+      "url": "/room/lighting/diffuse-architecture-v6.webp",
+      "rgbmRange": 36
+    },
+    "furniture": {
+      "url": "/room/lighting/diffuse-furniture-v6.webp",
+      "rgbmRange": 6
+    },
+    "props": {
+      "url": "/room/lighting/diffuse-props-v6.webp",
+      "rgbmRange": 15
+    },
+    "detail": {
+      "url": "/room/lighting/diffuse-detail-v6.webp",
+      "rgbmRange": 5
+    }
+  }
+}
