@@ -11,6 +11,12 @@
     // clearance beneath the fixed pegboard tray above the desk-mounted screen.
     desk: { min: .748, max: .998 },
     spawn: { x: 2.96, z: -1.33, yaw: 0 },
+    // The open door now occupies the old east-side route point. Include clear
+    // aisle positions so either cat can start while its peer is already roaming.
+    catRoutes: {
+      mimi: [[2.05, -1.55], [1.45, -1.40], [1.65, -1.13], [2.08, -1.59], [2.72, -1.95], [3.15, -1.78], [2.2, -2.48], [2.2, -2.25], [1.05, -1.5]],
+      charlie: [[1.45, -1.40], [1.65, -1.13], [2.08, -1.59], [3.15, -1.78], [2.72, -1.95], [2.05, -1.55], [2.2, -2.48], [2.2, -2.25], [1.05, -1.5]]
+    },
     bounds: [
       { minX: 0, maxX: 4, minZ: -4.2, maxZ: 0 },
       { minX: 3.75, maxX: 4.95, minZ: -4.2, maxZ: -3.25 },

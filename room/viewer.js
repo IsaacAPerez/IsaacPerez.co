@@ -113,8 +113,8 @@
     { id: 'bathroom', name: 'Runtime | Bathroom mirror surface', normal: [-1, 0, 0] },
   ];
   const cats = window.createCatController ? [{ id: 'mimi', name: 'Mimi',
-    route: [[2.05,-1.55], [1.45,-1.40], [1.65,-1.13], [2.08,-1.59], [2.72,-1.95], [3.15,-1.78]] }, { id: 'charlie', name: 'Charlie',
-    route: [[1.45,-1.40], [1.65,-1.13], [2.08,-1.59], [3.15,-1.78], [2.72,-1.95], [2.05,-1.55]] }] : [];
+    route: config.catRoutes && config.catRoutes.mimi }, { id: 'charlie', name: 'Charlie',
+    route: config.catRoutes && config.catRoutes.charlie }] : [];
   let catPlay = null, ballMesh = null;
   const MAX_LIGHTS = 8, SHADOW_NEAR = 0.06, SHADOW_FAR = 16;
   const keys = new Set(), touchMoves = new Map();
